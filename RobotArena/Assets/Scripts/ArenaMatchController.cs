@@ -5,77 +5,23 @@ namespace RobotSavaslari
     public sealed class ArenaMatchController : MonoBehaviour
     {
         private const float DamagePerHit = 25f;
-        private const float ArenaHalfWidth = 6f;
-        private const float ArenaHalfDepth = 5f;
-
         private RobotHealth _robotOne;
         private RobotHealth _robotTwo;
         private bool _matchFinished;
         private string _winner;
         private GUIStyle _titleStyle;
 
-        private readonly Vector3 _robotOneStart = new Vector3(-3f, 1f, 0f);
-        private readonly Vector3 _robotTwoStart = new Vector3(3f, 1f, 0f);
+        private readonly Vector3 _robotOneStart = new Vector3(-4.15f, 1.6f, 0f);
+        private readonly Vector3 _robotTwoStart = new Vector3(4.15f, 1.6f, 0f);
 
         private void Awake()
         {
-            BuildArena();
             _robotOne = CreateRobot("Kirmizi Robot", _robotOneStart, new Color(0.85f, 0.16f, 0.12f, 1f));
             _robotTwo = CreateRobot("Mavi Robot", _robotTwoStart, new Color(0.12f, 0.38f, 0.9f, 1f));
 
             _robotOne.Defeated += HandleRobotDefeated;
             _robotTwo.Defeated += HandleRobotDefeated;
             PositionCamera();
-        }
-
-        private void BuildArena()
-        {
-            CreateArenaBox("Arena Floor", new Vector3(0f, -0.25f, 0f),
-                new Vector3(ArenaHalfWidth * 2f, 0.5f, ArenaHalfDepth * 2f),
-                new Color(0.19f, 0.21f, 0.24f, 1f));
-            CreateArenaBox("North Wall", new Vector3(0f, 0.6f, ArenaHalfDepth),
-                new Vector3(ArenaHalfWidth * 2f, 1.2f, 0.25f),
-                new Color(0.32f, 0.35f, 0.39f, 1f));
-            CreateArenaBox("South Wall", new Vector3(0f, 0.6f, -ArenaHalfDepth),
-                new Vector3(ArenaHalfWidth * 2f, 1.2f, 0.25f),
-                new Color(0.32f, 0.35f, 0.39f, 1f));
-            CreateArenaBox("East Wall", new Vector3(ArenaHalfWidth, 0.6f, 0f),
-                new Vector3(0.25f, 1.2f, ArenaHalfDepth * 2f),
-                new Color(0.32f, 0.35f, 0.39f, 1f));
-            CreateArenaBox("West Wall", new Vector3(-ArenaHalfWidth, 0.6f, 0f),
-                new Vector3(0.25f, 1.2f, ArenaHalfDepth * 2f),
-                new Color(0.32f, 0.35f, 0.39f, 1f));
-        }
-
-        private static void CreateArenaBox(string objectName, Vector3 position, Vector3 scale, Color color)
-        {
-            GameObject box = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            box.name = objectName;
-            box.transform.position = position;
-            box.transform.localScale = scale;
-            box.GetComponent<Renderer>().material = CreateMaterial(color);
-        }
-
-        private static RobotHealth CreateRobot(string robotName, Vector3 spawnPosition, Color color)
-        {
-            GameObject robot = GameObject.CreatePrimitive(PrimitiveType.Capsule);
-            robot.name = robotName;
-            robot.transform.position = spawnPosition;
-            robot.GetComponent<Renderer>().material = CreateMaterial(color);
-            return robot.AddComponent<RobotHealth>();
-        }
-
-        private static Material CreateMaterial(Color color)
-        {
-            Shader shader = Shader.Find("Universal Render Pipeline/Lit");
-            if (shader == null)
-            {
-                shader = Shader.Find("Standard");
-            }
-
-            Material material = new Material(shader);
-            material.color = color;
-            return material;
         }
 
         private static void PositionCamera()
@@ -91,6 +37,24 @@ namespace RobotSavaslari
             arenaCamera.fieldOfView = 55f;
         }
 
+        private static RobotHealth CreateRobot(string robotName, Vector3 spawnPosition, Color color)
+        {
+            GameObject robot = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+            robot.name = robotName;
+            robot.transform.position = spawnPosition;
+            robot.GetComponent<Renderer>().material = CreateMaterial(color);
+            return robot.AddComponent<RobotHealth>();
+        }
+
+        private static Material CreateMaterial(Color color)
+        {
+            Shader shader = Shader.Find("Universal Render Pipeline/Lit");
+            if (shader == null)
+                shader = Shader.Find("Standard");
+            Material material = new Material(shader);
+            material.color = color;
+            return material;
+        }
         private void HandleRobotDefeated(RobotHealth defeatedRobot)
         {
             RobotHealth remainingRobot = defeatedRobot == _robotOne ? _robotTwo : _robotOne;
@@ -187,3 +151,4 @@ namespace RobotSavaslari
         }
     }
 }
+

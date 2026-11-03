@@ -8,6 +8,7 @@ namespace RobotSavaslari.Editor
 {
     public static class BuildWindowsPlayer
     {
+        [MenuItem("RobotSavaslari/Build Windows Player")]
         public static void Build()
         {
             string[] scenes = EditorBuildSettings.scenes
