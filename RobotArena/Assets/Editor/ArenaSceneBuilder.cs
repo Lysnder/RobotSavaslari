@@ -13,6 +13,8 @@ namespace RobotSavaslari.Editor
         private const float HalfDepth = 5f;
         private const float FenceHeight = 3.4f;
         private const float FenceBottom = 0.3f;
+        private const string CombatFloorAssetPath = "Assets/Models/Arena/CombatArenaFloorSplit.glb";
+        private const float CombatFloorSurfaceY = 0.56f;
 
         [MenuItem("RobotSavaslari/Build Arena Environment")]
         public static void Build()
@@ -27,17 +29,17 @@ namespace RobotSavaslari.Editor
             if (oldRoot != null)
                 Object.DestroyImmediate(oldRoot);
 
-            Material floor = GetMaterial("ArenaFloor", new Color(0.075f, 0.095f, 0.12f), 0.78f, 0.25f);
+            GameObject oldFloorModel = GameObject.Find("Arena Hazard Modules");
+            if (oldFloorModel != null)
+                Object.DestroyImmediate(oldFloorModel);
+
             Material steel = GetMaterial("ArenaSteel", new Color(0.23f, 0.29f, 0.35f), 0.82f, 0.65f);
             Material darkSteel = GetMaterial("ArenaDarkSteel", new Color(0.045f, 0.06f, 0.075f), 0.82f, 0.55f);
             Material yellow = GetMaterial("ArenaSafetyYellow", new Color(1f, 0.67f, 0.08f), 0.35f, 0.15f);
-            Material red = GetMaterial("ArenaRed", new Color(0.78f, 0.09f, 0.08f), 0.45f, 0.2f);
-            Material blue = GetMaterial("ArenaBlue", new Color(0.08f, 0.32f, 0.88f), 0.45f, 0.2f);
             Material mesh = GetMaterial("ArenaMesh", new Color(0.31f, 0.43f, 0.49f), 0.58f, 0.72f);
-            Material white = GetMaterial("ArenaMarkings", new Color(0.78f, 0.83f, 0.84f), 0.4f, 0.1f);
 
             GameObject root = new GameObject("BattleBots Arena");
-            BuildFloor(root.transform, floor, steel, darkSteel, yellow, red, blue, white);
+            BuildFloor(root.transform, steel, darkSteel);
             BuildFence(root.transform, steel, darkSteel, mesh, yellow);
             BuildLighting(root.transform);
             ConfigureCamera();
@@ -56,38 +58,118 @@ namespace RobotSavaslari.Editor
             Debug.Log("BattleBots cage arena generated and saved to Arena.unity.");
         }
 
-        private static void BuildFloor(Transform root, Material floor, Material steel, Material darkSteel,
-            Material yellow, Material red, Material blue, Material white)
+        private static void BuildFloor(Transform root, Material steel, Material darkSteel)
         {
             Box(root, "Foundation", Vector3.zero, new Vector3(14f, 0.6f, 12f), darkSteel, true);
-            Box(root, "Combat Floor", new Vector3(0f, 0.34f, 0f), new Vector3(12.5f, 0.12f, 10.5f), floor, true);
             Box(root, "Outer Steel Rim", new Vector3(0f, 0.47f, 0f), new Vector3(12.9f, 0.18f, 10.9f), steel, true);
-            Box(root, "Inner Combat Plate", new Vector3(0f, 0.57f, 0f), new Vector3(12f, 0.04f, 10f), floor, true);
 
-            Box(root, "Safety Line North", new Vector3(0f, 0.60f, 4.55f), new Vector3(10.8f, 0.012f, 0.045f), yellow, false);
-            Box(root, "Safety Line South", new Vector3(0f, 0.60f, -4.55f), new Vector3(10.8f, 0.012f, 0.045f), yellow, false);
-            Box(root, "Safety Line East", new Vector3(5.55f, 0.60f, 0f), new Vector3(0.045f, 0.012f, 9.1f), yellow, false);
-            Box(root, "Safety Line West", new Vector3(-5.55f, 0.60f, 0f), new Vector3(0.045f, 0.012f, 9.1f), yellow, false);
-
-            Box(root, "Red Start Pad", new Vector3(-4.15f, 0.605f, 0f), new Vector3(1.35f, 0.018f, 2.6f), red, false);
-            Box(root, "Blue Start Pad", new Vector3(4.15f, 0.605f, 0f), new Vector3(1.35f, 0.018f, 2.6f), blue, false);
-            Box(root, "Center Stripe", new Vector3(0f, 0.602f, 0f), new Vector3(0.035f, 0.012f, 2.5f), white, false);
-            Box(root, "Center Stripe Crossbar", new Vector3(0f, 0.602f, 0f), new Vector3(2.5f, 0.012f, 0.035f), white, false);
-
-            for (int i = -4; i <= 4; i++)
+            GameObject modelAsset = AssetDatabase.LoadAssetAtPath<GameObject>(CombatFloorAssetPath);
+            if (modelAsset == null)
             {
-                float x = i * 0.68f;
-                Box(root, "Floor Panel Seam", new Vector3(x, 0.601f, 0f), new Vector3(0.012f, 0.008f, 8.8f), steel, false);
-            }
-            for (int i = -3; i <= 3; i++)
-            {
-                float z = i * 0.62f;
-                Box(root, "Floor Panel Seam", new Vector3(0f, 0.601f, z), new Vector3(10.8f, 0.008f, 0.012f), steel, false);
+                Debug.LogError($"Custom combat floor was not found at {CombatFloorAssetPath}.");
+                return;
             }
 
-            Text(root, "RED", new Vector3(-4.15f, 0.64f, -1.2f), red.color, 0.42f);
-            Text(root, "BLUE", new Vector3(4.15f, 0.64f, -1.2f), blue.color, 0.42f);
-            Text(root, "ROBOT ARENA  //  01", new Vector3(0f, 0.62f, -4.8f), white.color, 0.24f);
+            GameObject combatFloor = PrefabUtility.InstantiatePrefab(modelAsset, root) as GameObject;
+            if (combatFloor == null)
+            {
+                Debug.LogError("Unity could not instantiate the custom combat floor GLB.");
+                return;
+            }
+
+            combatFloor.name = "Custom Combat Floor";
+            combatFloor.transform.localPosition = Vector3.zero;
+            combatFloor.transform.localRotation = Quaternion.identity;
+            combatFloor.transform.localScale = Vector3.one;
+
+            RenameModelPart(combatFloor.transform, "model_part0", "Connector Detail");
+            Transform artifact = FindDescendant(combatFloor.transform, "model_part1");
+            if (artifact != null)
+            {
+                artifact.name = "Unused AI Fragment";
+                artifact.gameObject.SetActive(false);
+            }
+
+            RenameModelPart(combatFloor.transform, "model_part2", "Side Mechanism Detail");
+            RenameModelPart(combatFloor.transform, "model_part3", "Main Steel Deck");
+            RenameModelPart(combatFloor.transform, "model_part4", "Raised Detail Deck");
+            AddFloorMeshCollider(combatFloor.transform, "Side Mechanism Detail");
+            AddFloorMeshCollider(combatFloor.transform, "Main Steel Deck");
+            AddFloorMeshCollider(combatFloor.transform, "Raised Detail Deck");
+
+            if (!TryGetRendererBounds(combatFloor, out Bounds modelBounds) || modelBounds.size.x <= 0.01f || modelBounds.size.z <= 0.01f)
+            {
+                Debug.LogError("The custom combat floor GLB has no usable rendered bounds.");
+                return;
+            }
+
+            float fitScale = Mathf.Min((HalfWidth * 2f) / modelBounds.size.x, (HalfDepth * 2f) / modelBounds.size.z) * 0.98f;
+            combatFloor.transform.localScale = new Vector3(fitScale, 1f, fitScale);
+            if (TryGetRendererBounds(combatFloor, out modelBounds))
+            {
+                combatFloor.transform.localPosition = new Vector3(
+                    -modelBounds.center.x,
+                    CombatFloorSurfaceY - modelBounds.min.y,
+                    -modelBounds.center.z);
+            }
+
+            GameObject support = new GameObject("Hidden Floor Support Collider");
+            support.transform.SetParent(root, false);
+            support.transform.localPosition = new Vector3(0f, 0.42f, 0f);
+            BoxCollider supportCollider = support.AddComponent<BoxCollider>();
+            supportCollider.size = new Vector3(HalfWidth * 2f, 0.2f, HalfDepth * 2f);
+        }
+
+        private static void RenameModelPart(Transform root, string oldName, string newName)
+        {
+            Transform part = FindDescendant(root, oldName);
+            if (part != null)
+                part.name = newName;
+            else
+                Debug.LogWarning($"Combat floor part '{oldName}' was not found in the imported GLB.");
+        }
+
+        private static Transform FindDescendant(Transform root, string name)
+        {
+            if (root.name == name)
+                return root;
+            foreach (Transform child in root)
+            {
+                Transform match = FindDescendant(child, name);
+                if (match != null)
+                    return match;
+            }
+            return null;
+        }
+
+        private static void AddFloorMeshCollider(Transform root, string childName)
+        {
+            Transform part = FindDescendant(root, childName);
+            if (part == null)
+                return;
+
+            MeshFilter meshFilter = part.GetComponent<MeshFilter>();
+            if (meshFilter == null || meshFilter.sharedMesh == null)
+                return;
+
+            MeshCollider meshCollider = part.GetComponent<MeshCollider>();
+            if (meshCollider == null)
+                meshCollider = part.gameObject.AddComponent<MeshCollider>();
+            meshCollider.sharedMesh = meshFilter.sharedMesh;
+            meshCollider.convex = false;
+        }
+
+        private static bool TryGetRendererBounds(GameObject root, out Bounds bounds)
+        {
+            Renderer[] renderers = root.GetComponentsInChildren<Renderer>();
+            bounds = default;
+            if (renderers.Length == 0)
+                return false;
+
+            bounds = renderers[0].bounds;
+            for (int i = 1; i < renderers.Length; i++)
+                bounds.Encapsulate(renderers[i].bounds);
+            return true;
         }
 
         private static void BuildFence(Transform root, Material steel, Material darkSteel, Material mesh, Material yellow)
