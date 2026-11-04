@@ -19,6 +19,7 @@ namespace RobotSavaslari
 
         private Rigidbody _body;
         private RobotHealth _health;
+        private RobotDamageVisuals _damage;
         private Transform _weapon;
         private Collider[] _colliders;
         private float _boundaryRadius;
@@ -55,6 +56,8 @@ namespace RobotSavaslari
         {
             _body = GetComponent<Rigidbody>();
             _health = GetComponent<RobotHealth>();
+            _damage = GetComponent<RobotDamageVisuals>();
+            if (_damage == null) _damage = gameObject.AddComponent<RobotDamageVisuals>();
             _weapon = transform.Find("Top Spinner");
             _colliders = GetComponentsInChildren<Collider>();
             foreach (var collider in _colliders)
@@ -158,6 +161,7 @@ namespace RobotSavaslari
                 WeaponActive = keyboard.spaceKey.isPressed;
             }
 
+            WeaponActive &= _damage.WeaponOperational;
             ApplyDrive(drive, steer);
 
             if (_weapon != null && WeaponActive)
@@ -167,7 +171,8 @@ namespace RobotSavaslari
         private void ApplyDrive(float drive, float steer)
         {
             float dt = Time.fixedDeltaTime;
-            Quaternion heading = _body.rotation * Quaternion.Euler(0f, steer * turnSpeed * dt, 0f);
+            float steering = Mathf.Clamp(steer + drive * _damage.SteeringPull, -1f, 1f);
+            Quaternion heading = _body.rotation * Quaternion.Euler(0f, steering * turnSpeed * _damage.Turning * dt, 0f);
             // Use the physics heading, not the interpolated render transform.
             // A/D can pivot in place; steering remains responsive while reversing.
             _body.angularVelocity = Vector3.zero;
@@ -177,9 +182,9 @@ namespace RobotSavaslari
             Vector3 velocity = _body.linearVelocity;
             float forwardSpeed = Vector3.Dot(velocity, forward);
             float sidewaysSpeed = Vector3.Dot(velocity, right);
-            float targetSpeed = drive * (drive < 0f ? reverseSpeed : maxSpeed);
+            float targetSpeed = drive * (drive < 0f ? reverseSpeed : maxSpeed) * _damage.Mobility;
             bool slowing = drive == 0f || forwardSpeed * drive < 0f;
-            float nextForward = Mathf.MoveTowards(forwardSpeed, targetSpeed, (slowing ? braking : acceleration) * dt);
+            float nextForward = Mathf.MoveTowards(forwardSpeed, targetSpeed, (slowing ? braking : acceleration * _damage.Mobility) * dt);
             float nextSideways = Mathf.MoveTowards(sidewaysSpeed, 0f, lateralGrip * dt);
             // Bounded traction forces preserve collisions and pushing between robots.
             Vector3 correction = forward * (nextForward - forwardSpeed) + right * (nextSideways - sidewaysSpeed);
@@ -198,7 +203,7 @@ namespace RobotSavaslari
 
         private void DealContactDamage(Collision collision, bool impact)
         {
-            if (CombatStopped || _health.IsDefeated) return;
+            if (CombatStopped || _health.IsDefeated || collision.contactCount == 0) return;
             var opponent = collision.collider.GetComponentInParent<RobotPrototypeController>();
             if (opponent == null || opponent == this || opponent._health.IsDefeated || opponent.CombatStopped) return;
             // A moving body impact hurts even when its weapon is not running.
@@ -210,7 +215,14 @@ namespace RobotSavaslari
             if ((!ram && !weapon) || Time.time < _nextHitTime) return;
             _nextHitTime = Time.time + hitCooldown;
             _nextImpactTime = Time.time + hitCooldown;
-            opponent._health.TakeDamage(weapon ? hitDamage : hitDamage * 0.5f);
+            ContactPoint contact = collision.GetContact(0);
+            Vector3 direction = opponent.transform.position - transform.position;
+            direction.y = 0f;
+            direction = direction.sqrMagnitude > 0.001f ? direction.normalized : transform.forward;
+            float speed = Mathf.Clamp(collision.relativeVelocity.magnitude / 3f, 0.5f, 1.6f);
+            float damage = weapon ? hitDamage : hitDamage * 0.5f * speed;
+            opponent._health.TakeDamage(damage, contact.point, contact.normal,
+                direction * Mathf.Clamp(collision.relativeVelocity.magnitude * 0.5f + (weapon ? 3f : 1f), 1f, 7f), weapon);
         }
 
         public void ResetMotion()

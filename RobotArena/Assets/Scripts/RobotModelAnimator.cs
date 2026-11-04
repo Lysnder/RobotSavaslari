@@ -21,6 +21,17 @@ namespace RobotSavaslari
         private void Awake()
         {
             _controller = GetComponent<RobotPrototypeController>();
+            BindParts();
+        }
+
+        public void BindParts()
+        {
+            _wheels.Clear();
+            _wheelRest.Clear();
+            _wheelPrevious.Clear();
+            _wheelAngles.Clear();
+            _spinner = _lifter = null;
+            _spin = _lift = _attackTime = 0f;
             Transform model = transform.Find("Robot Model");
             if (model == null) return;
             foreach (Transform part in model.GetComponentsInChildren<Transform>())
@@ -42,6 +53,7 @@ namespace RobotSavaslari
             for (int i = 0; i < _wheels.Count; i++)
             {
                 var wheel = _wheels[i];
+                if (!wheel.gameObject.activeSelf) continue;
                 Vector3 movement = wheel.position - _wheelPrevious[i];
                 _wheelPrevious[i] = wheel.position;
                 // Actual wheel travel includes opposite motion during a pivot turn.
@@ -51,12 +63,12 @@ namespace RobotSavaslari
                 wheel.localRotation = Quaternion.AngleAxis(_wheelAngles[i], axle) * _wheelRest[i];
             }
             bool active = _controller.WeaponActive && !_controller.CombatStopped;
-            if (_spinner != null)
+            if (_spinner != null && _spinner.gameObject.activeSelf)
             {
                 if (active) _spin = Mathf.Repeat(_spin + spinnerSpeed * Time.deltaTime, 360f);
                 _spinner.localRotation = Quaternion.AngleAxis(_spin, _spinner.parent.InverseTransformDirection(transform.up)) * _spinnerRest;
             }
-            if (_lifter != null)
+            if (_lifter != null && _lifter.gameObject.activeSelf)
             {
                 _attackTime = active ? _attackTime + Time.deltaTime : 0f;
                 float target = active ? Mathf.Sin(Mathf.Repeat(_attackTime, 1.2f) / 1.2f * Mathf.PI) * liftAngle : 0f;
