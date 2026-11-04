@@ -1,2 +1,7 @@
 
 RobotArena/Builds/
+
+# Editable art and generated safety copies stay local; ship runtime GLBs only.
+RobotArena/ArtSource/
+*.blend1
+*.blend2
