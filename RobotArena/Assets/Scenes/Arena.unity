@@ -6891,6 +6891,7 @@ GameObject:
   - component: {fileID: 701033009}
   - component: {fileID: 701033008}
   - component: {fileID: 701033012}
+  - component: {fileID: 701033013}
   m_Layer: 0
   m_Name: Mavi Robot
   m_TagString: Untagged
@@ -6997,6 +6998,22 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.3372192, y: 0.817773, z: 1.65}
   m_Center: {x: 0, y: 0.4088865, z: 0}
+--- !u!114 &701033013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 701033007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 065d7d4758b4ff3448318163e3771e52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RobotSavaslari.RobotDamageVisuals
+  armorDurability: 22
+  wheelDurability: 30
+  weaponDurability: 45
+  debrisLifetime: 12
 --- !u!1 &706936013
 GameObject:
   m_ObjectHideFlags: 0
@@ -19998,6 +20015,7 @@ GameObject:
   - component: {fileID: 2016169476}
   - component: {fileID: 2016169475}
   - component: {fileID: 2016169479}
+  - component: {fileID: 2016169480}
   m_Layer: 0
   m_Name: Kirmizi Robot
   m_TagString: Untagged
@@ -20104,6 +20122,22 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.2499797, y: 0.6184304, z: 1.65}
   m_Center: {x: 0, y: 0.3092152, z: 0}
+--- !u!114 &2016169480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2016169474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 065d7d4758b4ff3448318163e3771e52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RobotSavaslari.RobotDamageVisuals
+  armorDurability: 22
+  wheelDurability: 30
+  weaponDurability: 45
+  debrisLifetime: 12
 --- !u!1 &2041151068
 GameObject:
   m_ObjectHideFlags: 0
