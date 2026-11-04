@@ -133,9 +133,9 @@ namespace RobotSavaslari
             else
             {
                 GUI.Label(new Rect(24f, Screen.height - 42f, Screen.width - 48f, 28f),
-                    "Mavi: W/S veya yukari/asagi: sur | A/D veya sol/sag: don | Space: silah | Carpisma: 5, silah temasi: 10 hasar");
+                    "Mavi: W/S veya yukari/asagi: sur | A/D veya sol/sag: don | Carpma hasari = hiz x (agirlik / rakip agirligi)");
                 GUI.Label(new Rect(24f, Screen.height - 68f, Screen.width - 48f, 24f),
-                    "Kirmizi bilgisayar seni takip eder. Hasar icin robotlarin temas etmesi gerekir.");
+                    "Kirmizi bilgisayar seni takip eder. Hasar vermek icin rakibe hizla carp.");
             }
         }
 

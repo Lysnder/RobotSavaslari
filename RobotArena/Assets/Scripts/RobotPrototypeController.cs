@@ -1,3 +1,4 @@
+using RobotSavaslari.Combat;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,8 +15,21 @@ namespace RobotSavaslari
         [SerializeField] private float lateralGrip = 28f;
         [SerializeField] private float reverseSpeed = 4f;
         [SerializeField] private float weaponSpinSpeed = 900f;
-        [SerializeField] private float hitDamage = 10f;
+        [Tooltip("Bu hizin (m/s) altindaki temaslar carpma sayilmaz; surtunme ve itisme hasar vermez.")]
+        [SerializeField, Min(0f)] private float minimumRamSpeed = 1f;
         [SerializeField] private float hitCooldown = 0.6f;
+
+        [Header("Geri tepme")]
+        [Tooltip("Carpilan robotun geri tepme hizi = carpma hizi x bu oran (agirlik oranina gore olceklenir).")]
+        [SerializeField, Min(0f)] private float knockbackRatio = 0.5f;
+        [Tooltip("Carpan robotun geri sekme hizi = carpma hizi x bu oran (agirlik oranina gore olceklenir).")]
+        [SerializeField, Min(0f)] private float recoilRatio = 0.3f;
+        [Tooltip("Geri tepme hizinin ust siniri (m/s).")]
+        [SerializeField, Min(0f)] private float maxKnockbackSpeed = 2.5f;
+        [Tooltip("Geri tepme sirasinda robotun kontrol edilemedigi sure (s).")]
+        [SerializeField, Min(0f)] private float knockbackDuration = 0.3f;
+        [Tooltip("Geri tepme sirasinda kalan yol tutusu (0 = buz, 1 = normal).")]
+        [SerializeField, Range(0f, 1f)] private float knockbackTraction = 0.15f;
 
         private Rigidbody _body;
         private RobotHealth _health;
@@ -28,7 +42,10 @@ namespace RobotSavaslari
         private LineRenderer _selectionRing;
         private Material _ringMaterial;
         private float _nextHitTime;
-        private float _nextImpactTime;
+        // Collision callbacks run after the solver has already changed velocities,
+        // so the ram speed is taken from the velocity at the start of the physics step.
+        private Vector3 _preStepVelocity;
+        private float _knockbackUntil;
         private RobotPrototypeController _opponent;
         public bool IsComputer { get; private set; }
         public bool CombatStopped { get; private set; }
@@ -40,7 +57,7 @@ namespace RobotSavaslari
             _opponent = opponent;
             CombatStopped = false;
             WeaponActive = false;
-            _nextHitTime = _nextImpactTime = 0f;
+            _nextHitTime = _knockbackUntil = 0f;
             var animator = GetComponent<RobotModelAnimator>();
             if (animator != null) animator.ResetPose();
         }
@@ -133,6 +150,7 @@ namespace RobotSavaslari
         {
             Keyboard keyboard = Keyboard.current;
             ConstrainToArena();
+            _preStepVelocity = _body.linearVelocity;
             WeaponActive = false;
             if (CombatStopped || _health.IsDefeated)
             {
@@ -162,13 +180,21 @@ namespace RobotSavaslari
             }
 
             WeaponActive &= _damage.WeaponOperational;
-            ApplyDrive(drive, steer);
+            float traction = 1f;
+            if (Time.time < _knockbackUntil)
+            {
+                // Let the recoil play out instead of traction cancelling it the next step.
+                drive = 0f;
+                steer = 0f;
+                traction = knockbackTraction;
+            }
+            ApplyDrive(drive, steer, traction);
 
             if (_weapon != null && WeaponActive)
                 _weapon.Rotate(Vector3.up, weaponSpinSpeed * Time.fixedDeltaTime, Space.Self);
         }
 
-        private void ApplyDrive(float drive, float steer)
+        private void ApplyDrive(float drive, float steer, float traction)
         {
             float dt = Time.fixedDeltaTime;
             float steering = Mathf.Clamp(steer + drive * _damage.SteeringPull, -1f, 1f);
@@ -184,8 +210,8 @@ namespace RobotSavaslari
             float sidewaysSpeed = Vector3.Dot(velocity, right);
             float targetSpeed = drive * (drive < 0f ? reverseSpeed : maxSpeed) * _damage.Mobility;
             bool slowing = drive == 0f || forwardSpeed * drive < 0f;
-            float nextForward = Mathf.MoveTowards(forwardSpeed, targetSpeed, (slowing ? braking : acceleration * _damage.Mobility) * dt);
-            float nextSideways = Mathf.MoveTowards(sidewaysSpeed, 0f, lateralGrip * dt);
+            float nextForward = Mathf.MoveTowards(forwardSpeed, targetSpeed, (slowing ? braking : acceleration * _damage.Mobility) * traction * dt);
+            float nextSideways = Mathf.MoveTowards(sidewaysSpeed, 0f, lateralGrip * traction * dt);
             // Bounded traction forces preserve collisions and pushing between robots.
             Vector3 correction = forward * (nextForward - forwardSpeed) + right * (nextSideways - sidewaysSpeed);
             _body.AddForce(correction / dt, ForceMode.Acceleration);
@@ -193,36 +219,50 @@ namespace RobotSavaslari
 
         private void OnCollisionEnter(Collision collision)
         {
-            DealContactDamage(collision, true);
+            TryRam(collision);
         }
 
-        private void OnCollisionStay(Collision collision)
-        {
-            DealContactDamage(collision, false);
-        }
-
-        private void DealContactDamage(Collision collision, bool impact)
+        // Each robot deals only its own outgoing ram damage; the opponent's
+        // OnCollisionEnter handles the reverse direction. A head-on crash
+        // therefore damages both, while a robot standing still deals none.
+        private void TryRam(Collision collision)
         {
             if (CombatStopped || _health.IsDefeated || collision.contactCount == 0) return;
+            // One cooldown also stops compound colliders from multiplying a single hit.
+            if (Time.time < _nextHitTime) return;
             var opponent = collision.collider.GetComponentInParent<RobotPrototypeController>();
             if (opponent == null || opponent == this || opponent._health.IsDefeated || opponent.CombatStopped) return;
-            // A moving body impact hurts even when its weapon is not running.
-            // One shared cooldown prevents compound colliders from multiplying damage.
-            bool ram = impact && collision.relativeVelocity.sqrMagnitude >= 1f && Time.time >= _nextImpactTime;
-            // Combat is independent of the visual model: imported robots may
-            // contain their weapon in one combined mesh rather than a separate spinner.
-            bool weapon = WeaponActive;
-            if ((!ram && !weapon) || Time.time < _nextHitTime) return;
-            _nextHitTime = Time.time + hitCooldown;
-            _nextImpactTime = Time.time + hitCooldown;
-            ContactPoint contact = collision.GetContact(0);
-            Vector3 direction = opponent.transform.position - transform.position;
+
+            Vector3 direction = opponent._body.position - _body.position;
             direction.y = 0f;
             direction = direction.sqrMagnitude > 0.001f ? direction.normalized : transform.forward;
-            float speed = Mathf.Clamp(collision.relativeVelocity.magnitude / 3f, 0.5f, 1.6f);
-            float damage = weapon ? hitDamage : hitDamage * 0.5f * speed;
-            opponent._health.TakeDamage(damage, contact.point, contact.normal,
-                direction * Mathf.Clamp(collision.relativeVelocity.magnitude * 0.5f + (weapon ? 3f : 1f), 1f, 7f), weapon);
+            // Only the part of our velocity that drives into the opponent counts.
+            float impactSpeed = Vector3.Dot(_preStepVelocity, direction);
+            if (impactSpeed < minimumRamSpeed) return;
+
+            float damage = DamageCalculator.Calculate(AttackData.Ram(impactSpeed, _body.mass, opponent._body.mass));
+            if (damage <= 0f) return;
+
+            _nextHitTime = Time.time + hitCooldown;
+            ContactPoint contact = collision.GetContact(0);
+            Vector3 debrisImpulse = direction * Mathf.Clamp(impactSpeed * 0.5f + 1f, 1f, 7f);
+            opponent._health.TakeDamage(damage, contact.point, contact.normal, debrisImpulse, false);
+
+            // The hit robot is pushed away and the rammer bounces back, both scaled by impact speed.
+            float pushed = KnockbackCalculator.Calculate(impactSpeed, opponent._body.mass, _body.mass, knockbackRatio, maxKnockbackSpeed);
+            float recoil = KnockbackCalculator.Calculate(impactSpeed, _body.mass, opponent._body.mass, recoilRatio, maxKnockbackSpeed);
+            opponent.ApplyKnockback(direction, pushed, knockbackDuration);
+            ApplyKnockback(-direction, recoil, knockbackDuration);
+        }
+
+        // Sets (rather than adds) the velocity along the knockback direction, so the
+        // result does not depend on how much the physics solver already exchanged.
+        private void ApplyKnockback(Vector3 direction, float speed, float duration)
+        {
+            if (speed <= 0f || _health.IsDefeated || CombatStopped) return;
+            Vector3 velocity = _body.linearVelocity;
+            _body.linearVelocity = velocity + direction * (speed - Vector3.Dot(velocity, direction));
+            _knockbackUntil = Mathf.Max(_knockbackUntil, Time.time + duration);
         }
 
         public void ResetMotion()
@@ -230,6 +270,8 @@ namespace RobotSavaslari
             if (_body == null) _body = GetComponent<Rigidbody>();
             _body.linearVelocity = Vector3.zero;
             _body.angularVelocity = Vector3.zero;
+            _preStepVelocity = Vector3.zero;
+            _knockbackUntil = 0f;
         }
     }
 }
