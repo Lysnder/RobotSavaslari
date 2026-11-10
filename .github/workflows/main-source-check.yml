@@ -1,0 +1,29 @@
+name: Main branch policy
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, reopened, synchronize, edited, ready_for_review]
+
+permissions: {}
+
+jobs:
+  main-source-check:
+    name: main-source-check
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Check source branch and repository
+        shell: bash
+        env:
+          HEAD_BRANCH: ${{ github.event.pull_request.head.ref }}
+          HEAD_REPO_ID: ${{ github.event.pull_request.head.repo.id }}
+          BASE_REPO_ID: ${{ github.event.pull_request.base.repo.id }}
+        run: |
+          if [[ "$HEAD_BRANCH" != "test" || "$HEAD_REPO_ID" != "$BASE_REPO_ID" ]]; then
+            echo "::error::main'e birlestirme yalnizca bu reponun test branch'inden yapilabilir."
+            exit 1
+          fi
+
+          echo "Kaynak branch kontrolu basarili: test -> main"

@@ -1,0 +1,30 @@
+{
+  "KitChassis": {
+    "triangles": 11876,
+    "bytes": 7159492
+  },
+  "KitWheel": {
+    "triangles": 1432,
+    "bytes": 94880
+  },
+  "Weapon_vertical": {
+    "triangles": 7131,
+    "bytes": 494112
+  },
+  "Weapon_drum": {
+    "triangles": 5939,
+    "bytes": 450020
+  },
+  "Weapon_horizontal": {
+    "triangles": 6030,
+    "bytes": 489540
+  },
+  "Armor_armor_light": {
+    "triangles": 2202,
+    "bytes": 338372
+  },
+  "Armor_armor_heavy": {
+    "triangles": 3679,
+    "bytes": 317852
+  }
+}
