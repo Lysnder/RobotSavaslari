@@ -1,2 +1,3 @@
 # Changes to automation and this ownership file require the repository owner's review.
+# Enforced by the main and test rulesets after this file reaches each branch.
 /.github/ @Lysnder
