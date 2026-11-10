@@ -1,0 +1,156 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &294014290350209247
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1227390049293859113, guid: 95eba3c0fb9095b458baf595b31a599c, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1724524803533565166, guid: 95eba3c0fb9095b458baf595b31a599c, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3227842017230391636, guid: 95eba3c0fb9095b458baf595b31a599c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3227842017230391636, guid: 95eba3c0fb9095b458baf595b31a599c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3227842017230391636, guid: 95eba3c0fb9095b458baf595b31a599c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3227842017230391636, guid: 95eba3c0fb9095b458baf595b31a599c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3227842017230391636, guid: 95eba3c0fb9095b458baf595b31a599c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3227842017230391636, guid: 95eba3c0fb9095b458baf595b31a599c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3227842017230391636, guid: 95eba3c0fb9095b458baf595b31a599c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3227842017230391636, guid: 95eba3c0fb9095b458baf595b31a599c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3227842017230391636, guid: 95eba3c0fb9095b458baf595b31a599c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3227842017230391636, guid: 95eba3c0fb9095b458baf595b31a599c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8555988671778873830, guid: 95eba3c0fb9095b458baf595b31a599c, type: 3}
+      propertyPath: acceleration
+      value: 26
+      objectReference: {fileID: 0}
+    - target: {fileID: 8555988671778873830, guid: 95eba3c0fb9095b458baf595b31a599c, type: 3}
+      propertyPath: maxTurnSpeed
+      value: 230
+      objectReference: {fileID: 0}
+    - target: {fileID: 8555988671778873830, guid: 95eba3c0fb9095b458baf595b31a599c, type: 3}
+      propertyPath: maxForwardSpeed
+      value: 7.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8555988671778873830, guid: 95eba3c0fb9095b458baf595b31a599c, type: 3}
+      propertyPath: maxReverseSpeed
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8555988671778873830, guid: 95eba3c0fb9095b458baf595b31a599c, type: 3}
+      propertyPath: turnAcceleration
+      value: 900
+      objectReference: {fileID: 0}
+    - target: {fileID: 8555988671778873830, guid: 95eba3c0fb9095b458baf595b31a599c, type: 3}
+      propertyPath: brakeDeceleration
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8555988671778873830, guid: 95eba3c0fb9095b458baf595b31a599c, type: 3}
+      propertyPath: turnBrakeDeceleration
+      value: 1200
+      objectReference: {fileID: 0}
+    - target: {fileID: 9081411762755248012, guid: 95eba3c0fb9095b458baf595b31a599c, type: 3}
+      propertyPath: m_Name
+      value: Robot_AyarB_Cevik
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9081411762755248012, guid: 95eba3c0fb9095b458baf595b31a599c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8836845395632021479}
+    - targetCorrespondingSourceObject: {fileID: 9081411762755248012, guid: 95eba3c0fb9095b458baf595b31a599c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8568044317341632804}
+    - targetCorrespondingSourceObject: {fileID: 9081411762755248012, guid: 95eba3c0fb9095b458baf595b31a599c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3385971533090152308}
+  m_SourcePrefab: {fileID: 100100000, guid: 95eba3c0fb9095b458baf595b31a599c, type: 3}
+--- !u!1 &8796422405215151955 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9081411762755248012, guid: 95eba3c0fb9095b458baf595b31a599c, type: 3}
+  m_PrefabInstance: {fileID: 294014290350209247}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8836845395632021479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8796422405215151955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7179d5eb6e2030a4ba60ecdab566bbeb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: RobotSavaslari.Atalay::RobotSavaslari.Atalay.PlayerKeyboardDriver
+  motor: {fileID: 0}
+  forwardKey: 37
+  backwardKey: 33
+  turnLeftKey: 15
+  turnRightKey: 18
+--- !u!114 &8568044317341632804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8796422405215151955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc24c80f3d0dac942985d8b79f2b4d5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: RobotSavaslari.Atalay::RobotSavaslari.Atalay.DriveProbe
+  motor: {fileID: 0}
+  keyboardDriver: {fileID: 0}
+  probeForward: 1
+  probeTurn: 0.35
+  toggleKey: 30
+--- !u!114 &3385971533090152308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8796422405215151955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cc0f58dcb03eaa48aed1e553ffdc56b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: RobotSavaslari.Atalay::RobotSavaslari.Atalay.CollisionReporter
+  minimumImpactSpeed: 0.4

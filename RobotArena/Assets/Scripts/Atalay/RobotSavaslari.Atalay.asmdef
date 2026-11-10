@@ -1,0 +1,17 @@
+{
+    "name": "RobotSavaslari.Atalay",
+    "rootNamespace": "RobotSavaslari.Atalay",
+    "references": [
+        "RobotSavaslari.Robots",
+        "Unity.InputSystem"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
