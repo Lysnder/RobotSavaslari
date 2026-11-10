@@ -17,7 +17,7 @@ namespace RobotSavaslari.Editor
     public static class RobotArenaSetup
     {
         public const string RobotPrefabPath = "Assets/Prefabs/Robot.prefab";
-        public const string ArenaScenePath = "Assets/Scenes/RobotArena.unity";
+        public const string ArenaScenePath = "Assets/Scenes/Tests/RobotMotor.unity";
 
         private const string PrefabFolder = "Assets/Prefabs";
         private const string MaterialFolder = "Assets/Materials";

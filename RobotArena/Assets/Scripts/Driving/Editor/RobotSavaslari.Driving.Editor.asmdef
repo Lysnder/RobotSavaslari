@@ -1,0 +1,19 @@
+{
+    "name": "RobotSavaslari.Driving.Editor",
+    "rootNamespace": "RobotSavaslari.Driving.Editor",
+    "references": [
+        "RobotSavaslari.Driving",
+        "RobotSavaslari.Robots"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

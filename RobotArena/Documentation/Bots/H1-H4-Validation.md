@@ -1,7 +1,7 @@
 # H1–H4 doğrulama — 11 Kasım 2026
 
 Unity 6000.4.4f1, açık Editor üzerinde son kod ve kaydedilmiş
-`Assets/Scenes/BotScenarios.unity` ile çalıştırıldı. Derleme hatası: 0.
+`Assets/Scenes/Tests/AI/BotScenarios.unity` ile çalıştırıldı. Derleme hatası: 0.
 Son Console ground-truth örneğinde hata ve uyarı: 0.
 
 ## Otomatik fizik senaryoları
@@ -56,7 +56,7 @@ Görüntüdeki toparlanma sayısı önceki otomatik denemeleri de içeren oturum
   bot ve motor komutları `(0,0)`, saldırı isteği `false`, maç sonucu `true` idi.
 - `ArenaMatchController.RestartMatch()` sonrasında iki can 100, bot `Idle`,
   `MatchRunning=true`, komut `(0,0)` idi; sonraki fizik adımı normal takipten başlar.
-- `BurakB4Regression.RunFresh()`: **B1–B3 ve B4 bildirim senaryoları PASS**.
+- `MatchRegression.RunFresh()`: **B1–B3 ve B4 bildirim senaryoları PASS**.
   Yalnız bildirim modu, geçersiz/tekrar bildirimler, iki aynı değerlendirme
   sırası ve yeniden başlatma korundu. Bu testin mevcut **Emin beraberlik politikası
   bekleniyor** notu bu işin dışındadır.

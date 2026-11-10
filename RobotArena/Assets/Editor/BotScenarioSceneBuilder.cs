@@ -7,10 +7,10 @@ namespace RobotSavaslari.Editor
 {
     public static class BotScenarioSceneBuilder
     {
-        [MenuItem("Robot Savaslari/Bot/Create H1-H4 Scenario Scene")]
+        [MenuItem("Robot Savaslari/Bot/Create Behavior Scenario Scene")]
         public static void Build()
         {
-            const string path = "Assets/Scenes/BotScenarios.unity";
+            const string path = "Assets/Scenes/Tests/AI/BotScenarios.unity";
             if (System.IO.File.Exists(path)) throw new System.InvalidOperationException("BotScenarios already exists. Open the scene instead.");
             Scene previous = SceneManager.GetActiveScene();
             Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Additive);

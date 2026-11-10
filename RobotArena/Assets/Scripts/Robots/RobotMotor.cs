@@ -9,6 +9,7 @@ namespace RobotSavaslari.Robots
     /// bırakıldığında <see cref="Stop"/> ya da <see cref="RobotMoveCommand.Idle"/>
     /// gönderilir ve robot frenleyerek durur.
     /// </summary>
+    [DefaultExecutionOrder(110)]
     [RequireComponent(typeof(Rigidbody))]
     [AddComponentMenu("Robot Savaşları/Robot Motor")]
     public class RobotMotor : MonoBehaviour
@@ -29,6 +30,29 @@ namespace RobotSavaslari.Robots
         private float turnCommand;
         private float forwardSpeed;
         private float turnSpeed;
+        private float mobility = 1f;
+        private float turning = 1f;
+        private float steeringPull;
+        private float traction = 1f;
+
+        public void SetDriveCondition(float mobilityScale, float turningScale, float pull, float grip)
+        {
+            mobility = Mathf.Clamp01(mobilityScale);
+            turning = Mathf.Clamp01(turningScale);
+            steeringPull = Mathf.Clamp(pull, -1f, 1f);
+            traction = Mathf.Clamp01(grip);
+        }
+
+        public void ResetMotion()
+        {
+            Stop();
+            forwardSpeed = turnSpeed = 0f;
+            if (body != null && !body.isKinematic)
+            {
+                body.linearVelocity = Vector3.zero;
+                body.angularVelocity = Vector3.zero;
+            }
+        }
 
         /// <summary>Şu an uygulanan ileri/geri komutu (-1..1).</summary>
         public float MoveCommand => moveCommand;
@@ -101,6 +125,17 @@ namespace RobotSavaslari.Robots
         private void FixedUpdate()
         {
             float deltaTime = Time.fixedDeltaTime;
+            if (body.isKinematic) return;
+            // A ram briefly releases traction so the physical recoil remains visible.
+            if (traction < 1f)
+            {
+                Vector3 planar = Vector3.ProjectOnPlane(body.linearVelocity, Vector3.up);
+                Vector3 slowed = Vector3.MoveTowards(planar, Vector3.zero, brakeDeceleration * traction * deltaTime);
+                body.linearVelocity += slowed - planar;
+                body.angularVelocity = Vector3.zero;
+                turnSpeed = 0f;
+                return;
+            }
 
             Vector3 forwardAxis = transform.forward;
             forwardAxis.y = 0f;
@@ -115,11 +150,11 @@ namespace RobotSavaslari.Robots
             forwardSpeed = Vector3.Dot(body.linearVelocity, forwardAxis);
 
             float targetSpeed = moveCommand >= 0f
-                ? moveCommand * maxForwardSpeed
-                : moveCommand * maxReverseSpeed;
+                ? moveCommand * maxForwardSpeed * mobility
+                : moveCommand * maxReverseSpeed * mobility;
 
             bool braking = Mathf.Approximately(moveCommand, 0f) || targetSpeed * forwardSpeed < 0f;
-            float speedChange = (braking ? brakeDeceleration : acceleration) * deltaTime;
+            float speedChange = (braking ? brakeDeceleration : acceleration * mobility) * deltaTime;
             forwardSpeed = Mathf.MoveTowards(forwardSpeed, targetSpeed, speedChange);
 
             // Yalnızca yatay hız sürülür; düşey bileşen yer çekimine bırakılır.
@@ -129,7 +164,7 @@ namespace RobotSavaslari.Robots
             // Dönüş hızı ise bileşenin kendi durumunda tutulur: zemin sürtünmesi
             // her adımda dönüşü yiyip bitirmesin, robot komutu verildiği hızda
             // dönsün. Duvar yine gövdeyi fiziken durdurur.
-            float targetTurnSpeed = turnCommand * maxTurnSpeed;
+            float targetTurnSpeed = Mathf.Clamp(turnCommand + moveCommand * steeringPull, -1f, 1f) * maxTurnSpeed * turning;
             bool turnBraking = Mathf.Approximately(turnCommand, 0f) || targetTurnSpeed * turnSpeed < 0f;
             float turnChange = (turnBraking ? turnBrakeDeceleration : turnAcceleration) * deltaTime;
             turnSpeed = Mathf.MoveTowards(turnSpeed, targetTurnSpeed, turnChange);

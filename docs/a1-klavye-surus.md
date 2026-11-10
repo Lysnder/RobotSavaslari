@@ -5,7 +5,7 @@ girdi kendi bileşeninde okunur ve ortak motora komut olarak gönderilir.
 
 ## Deneme sahnesi
 
-**`RobotArena/Assets/Scenes/Atalay/A1_KlavyeSurus.unity`**
+**`RobotArena/Assets/Scenes/Tests/Driving/KeyboardDriving.unity`**
 
 Düz bir alan, 5 metre aralıklı ölçü ızgarası, başlangıç işareti ve üzerinde
 Atalay'ın girdi bileşenleri bulunan ortak robot. Duvar yok — çarpışma
@@ -16,7 +16,7 @@ kartın teslim alanı dışında.
 
 ## Çalıştırma adımları
 
-1. Project panelinde `Assets/Scenes/Atalay/A1_KlavyeSurus` sahnesine çift tıkla.
+1. Project panelinde `Assets/Scenes/Tests/Driving/A1_KlavyeSurus` sahnesine çift tıkla.
 2. Play'e bas, Game görünümüne bir kez tıkla.
 3. Sol üstteki telemetri metnini açık tut; kabul maddeleri oradan okunur.
 
@@ -45,8 +45,8 @@ Fizik  : hiz  5.84 m/s   donus    0.0 derece/s   <- gövdenin hızı
 
 ## Bileşenler
 
-Hepsi `RobotArena/Assets/Scripts/Atalay/` altında, kendi assembly'sinde
-(`RobotSavaslari.Atalay`).
+Hepsi `RobotArena/Assets/Scripts/Driving/` altında, kendi assembly'sinde
+(`RobotSavaslari.Driving`).
 
 | Bileşen | İşi |
 | --- | --- |
@@ -94,10 +94,10 @@ basılıyken ileri komutu 1 kalır, yalnızca dönüş sıfırlanır.
 
 ### Otomatik testler
 
-`RobotArena/Assets/Tests/Atalay/PlayMode/PlayerKeyboardDriverTests.cs`
+`RobotArena/Assets/Tests/Driving/PlayMode/PlayerKeyboardDriverTests.cs`
 
 Sanal klavye (`InputTestFixture`) ile sürülür, gerçek tuşa basmaya gerek yok.
-Test Runner > PlayMode > `RobotSavaslari.Atalay.PlayModeTests`.
+Test Runner > PlayMode > `RobotSavaslari.Driving.PlayModeTests`.
 
 11 test: ileri, geri, iki yöne dönüş, ileri+dönüş birlikte, `W+S` ve `A+D`
 sıfırlaması, sıfırlamanın diğer ekseni etkilememesi, tuş bırakılınca komutun

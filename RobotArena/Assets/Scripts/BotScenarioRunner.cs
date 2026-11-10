@@ -73,7 +73,7 @@ namespace RobotSavaslari
             if (bot == null) return;
             GUILayout.BeginArea(new Rect(12, 12, 330, Mathf.Min(Screen.height - 24, 610)), GUI.skin.box);
             _scroll = GUILayout.BeginScrollView(_scroll);
-            GUILayout.Label("BOT H1-H4 / SENARYO LABORATUVARI");
+            GUILayout.Label("BOT DAVRANIS LABORATUVARI");
             int next = GUILayout.SelectionGrid((int)scenario, _labels, 3);
             if (next != (int)scenario) Select((Scenario)next);
             GUILayout.Label($"Sure: {Elapsed:0.0}s   Durum: {bot.State}");

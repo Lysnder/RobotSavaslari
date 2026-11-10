@@ -7,7 +7,7 @@ from mathutils import Vector
 
 ROOT = Path(__file__).resolve().parents[2]
 SOURCE = ROOT / "ArtSource/ModularKit"
-OUT = ROOT / "Assets/Burak/ModularRobots/Models"
+OUT = ROOT / "Assets/Art/ModularRobots/Models"
 OUT.mkdir(parents=True, exist_ok=True)
 bpy.ops.wm.read_factory_settings(use_empty=True)
 report = {}

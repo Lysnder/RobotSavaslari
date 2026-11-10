@@ -16,7 +16,7 @@ taktik katmanı kapalıdır; Arena'da yeni oluşturulan botta açıktır.
 
 ## Deneme sahnesi
 
-`Assets/Scenes/BotScenarios.unity`, Unity **6000.4.4f1**.
+`Assets/Scenes/Tests/AI/BotScenarios.unity`, Unity **6000.4.4f1**.
 
 1. Sahneyi tek başına aç ve Play'e bas. Laboratuvar botunda oyuncu kontrolü,
    RobotHealth veya gerçek dövüş bileşeni bulunmaz.
