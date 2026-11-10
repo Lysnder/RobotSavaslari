@@ -1,0 +1,22 @@
+{
+    "name": "RobotSavaslari.Robots.PlayModeTests",
+    "rootNamespace": "RobotSavaslari.Robots.Tests",
+    "references": [
+        "RobotSavaslari.Robots",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

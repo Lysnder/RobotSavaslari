@@ -1,0 +1,17 @@
+{
+    "name": "RobotSavaslari.Driving",
+    "rootNamespace": "RobotSavaslari.Driving",
+    "references": [
+        "RobotSavaslari.Robots",
+        "Unity.InputSystem"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

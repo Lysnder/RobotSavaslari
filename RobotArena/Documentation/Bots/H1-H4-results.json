@@ -1,0 +1,29 @@
+﻿{
+    "success":  true,
+    "command":  "command",
+    "data":  {
+                 "command":  "script eval",
+                 "parameters":  {
+                                    "code":  "return RobotSavaslari.Editor.BotScenarioChecks.RunInPlayMode();"
+                                },
+                 "result":  {
+                                "output":  null,
+                                "diagnostics":  [
+
+                                                ],
+                                "success":  true,
+                                "result":  "Front: PASS\nSide: PASS\nBehind: PASS\nRange hysteresis, attack gates, target loss/restore: PASS\nCorner escape x3, stop and restart: PASS\nAngled wall: PASS\nRange tuning 1.50/2.00m follow + corner: PASS\nMoving target 540 simulated seconds: PASS; max distance 4,38m; longest non-attack stall 0,52s; requests 8636"
+                            },
+                 "target":  {
+                                "host":  "127.0.0.1",
+                                "port":  7800,
+                                "projectPath":  "C:\\work\\unity\\RobotSavaslari\\RobotSavaslari\\RobotArena"
+                            }
+             },
+    "errors":  [
+
+               ],
+    "warnings":  [
+
+                 ]
+}

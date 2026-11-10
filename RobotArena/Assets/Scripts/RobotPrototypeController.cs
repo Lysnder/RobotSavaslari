@@ -1,8 +1,11 @@
 using UnityEngine;
+using RobotSavaslari.Driving;
+using RobotSavaslari.Combat;
 using UnityEngine.InputSystem;
 
 namespace RobotSavaslari
 {
+    [DefaultExecutionOrder(20)]
     [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(RobotHealth))]
     public sealed class RobotPrototypeController : MonoBehaviour
@@ -16,8 +19,16 @@ namespace RobotSavaslari
         [SerializeField] private float weaponSpinSpeed = 900f;
         [SerializeField] private float hitDamage = 10f;
         [SerializeField] private float hitCooldown = 0.6f;
+        [SerializeField, Min(0f)] private float minimumRamSpeed = 1f;
+        [SerializeField, Min(0f)] private float knockbackRatio = 0.5f;
+        [SerializeField, Min(0f)] private float recoilRatio = 0.3f;
+        [SerializeField, Min(0f)] private float maxKnockbackSpeed = 2.5f;
+        [SerializeField, Min(0f)] private float knockbackDuration = 0.3f;
+        [SerializeField, Range(0f, 1f)] private float knockbackTraction = 0.15f;
 
         private Rigidbody _body;
+        private RobotDriveMotor _motor;
+        private RobotBotController _bot;
         private RobotHealth _health;
         private RobotDamageVisuals _damage;
         private Transform _weapon;
@@ -28,8 +39,8 @@ namespace RobotSavaslari
         private LineRenderer _selectionRing;
         private Material _ringMaterial;
         private float _nextHitTime;
-        private float _nextImpactTime;
-        private RobotPrototypeController _opponent;
+        private Vector3 _preStepVelocity;
+        private PlayerKeyboardDriver _keyboardDriver;
         public bool IsComputer { get; private set; }
         public bool CombatStopped { get; private set; }
         public bool WeaponActive { get; private set; }
@@ -37,10 +48,32 @@ namespace RobotSavaslari
         public void ConfigureCombat(bool computer, RobotPrototypeController opponent)
         {
             IsComputer = computer;
-            _opponent = opponent;
             CombatStopped = false;
+            _keyboardDriver = GetComponent<PlayerKeyboardDriver>();
+            if (_keyboardDriver != null) _keyboardDriver.enabled = !computer && isActiveAndEnabled;
+            if (_motor == null) _motor = GetComponent<RobotDriveMotor>() ?? gameObject.AddComponent<RobotDriveMotor>();
+            if (_bot == null) _bot = GetComponent<RobotBotController>();
+            if (computer)
+            {
+                _bot = GetComponent<RobotBotController>();
+                if (_bot == null)
+                {
+                    _bot = gameObject.AddComponent<RobotBotController>();
+                    // Arena bodies touch near 1.65m; request before contact, stop inside weapon range.
+                    _bot.attackEnterDistance = 1.85f;
+                    _bot.followResumeDistance = 2.3f;
+                    _bot.attackStopInset = 0.3f;
+                    _bot.enableCombatTactics = true;
+                }
+                _bot.enabled = isActiveAndEnabled;
+                _bot.Target = opponent != null ? opponent.transform : null;
+                _bot.SetMatchRunning(isActiveAndEnabled);
+            }
+            else if (_bot != null) { _bot.SetMatchRunning(false); _bot.enabled = false; }
             WeaponActive = false;
-            _nextHitTime = _nextImpactTime = 0f;
+            _nextHitTime = 0f;
+            _preStepVelocity = Vector3.zero;
+            _motor.Clear(true);
             var animator = GetComponent<RobotModelAnimator>();
             if (animator != null) animator.ResetPose();
         }
@@ -48,6 +81,8 @@ namespace RobotSavaslari
         public void StopCombat()
         {
             CombatStopped = true;
+            if (_keyboardDriver != null) _keyboardDriver.enabled = false;
+            if (_bot != null) _bot.SetMatchRunning(false);
             WeaponActive = false;
             ResetMotion();
         }
@@ -55,6 +90,11 @@ namespace RobotSavaslari
         private void Awake()
         {
             _body = GetComponent<Rigidbody>();
+            _keyboardDriver = GetComponent<PlayerKeyboardDriver>();
+            _motor = GetComponent<RobotDriveMotor>() ?? gameObject.AddComponent<RobotDriveMotor>();
+            _motor.acceleration = acceleration; _motor.maxSpeed = maxSpeed;
+            _motor.turnSpeed = turnSpeed; _motor.braking = braking;
+            _motor.lateralGrip = lateralGrip; _motor.reverseSpeed = reverseSpeed;
             _health = GetComponent<RobotHealth>();
             _damage = GetComponent<RobotDamageVisuals>();
             if (_damage == null) _damage = gameObject.AddComponent<RobotDamageVisuals>();
@@ -73,7 +113,7 @@ namespace RobotSavaslari
             var ring = new GameObject("Selection Ring");
             ring.transform.SetParent(transform, false);
             _selectionRing = ring.AddComponent<LineRenderer>();
-            _ringMaterial = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
+            _ringMaterial = new Material(Resources.Load<Shader>("SelectionRing"));
             _ringMaterial.color = new Color(1f, 0.85f, 0.12f);
             _selectionRing.sharedMaterial = _ringMaterial;
             _selectionRing.useWorldSpace = false;
@@ -105,6 +145,19 @@ namespace RobotSavaslari
         private void OnDisable()
         {
             if (Selected == this) Selected = null;
+            if (_bot != null) { _bot.SetMatchRunning(false); _bot.enabled = false; }
+            if (_motor != null) _motor.Clear(true);
+            if (_keyboardDriver != null) _keyboardDriver.enabled = false;
+        }
+
+        private void OnEnable()
+        {
+            if (_keyboardDriver != null) _keyboardDriver.enabled = !IsComputer && !CombatStopped;
+            if (_bot != null && IsComputer && !CombatStopped)
+            {
+                _bot.enabled = true;
+                _bot.SetMatchRunning(true);
+            }
         }
 
         private void OnDestroy()
@@ -133,6 +186,7 @@ namespace RobotSavaslari
         {
             Keyboard keyboard = Keyboard.current;
             ConstrainToArena();
+            _preStepVelocity = _body.linearVelocity;
             WeaponActive = false;
             if (CombatStopped || _health.IsDefeated)
             {
@@ -144,13 +198,8 @@ namespace RobotSavaslari
             float steer = 0f;
             if (IsComputer)
             {
-                if (_opponent == null || _opponent._health.IsDefeated) return;
-                Vector3 direction = _opponent._body.position - _body.position;
-                direction.y = 0f;
-                float angle = Vector3.SignedAngle(_body.rotation * Vector3.forward, direction, Vector3.up);
-                steer = Mathf.Clamp(angle / 35f, -1f, 1f);
-                drive = Mathf.Abs(angle) < 65f ? 0.85f : 0f;
-                WeaponActive = direction.sqrMagnitude < 9f;
+                // Bot owns steering; combat consumes intent and retains its own damage cooldown.
+                WeaponActive = _bot != null && _bot.enabled && _bot.AttackRequested;
             }
             else if (keyboard != null)
             {
@@ -158,37 +207,14 @@ namespace RobotSavaslari
                           (keyboard.sKey.isPressed || keyboard.downArrowKey.isPressed ? 1f : 0f);
                 steer = (keyboard.dKey.isPressed || keyboard.rightArrowKey.isPressed ? 1f : 0f) -
                           (keyboard.aKey.isPressed || keyboard.leftArrowKey.isPressed ? 1f : 0f);
-                WeaponActive = keyboard.spaceKey.isPressed;
+                WeaponActive = keyboard.spaceKey.isPressed && (_keyboardDriver == null || _keyboardDriver.HasFocus);
             }
 
             WeaponActive &= _damage.WeaponOperational;
-            ApplyDrive(drive, steer);
+            if (!IsComputer && _keyboardDriver == null) _motor.Submit(drive, steer);
 
             if (_weapon != null && WeaponActive)
                 _weapon.Rotate(Vector3.up, weaponSpinSpeed * Time.fixedDeltaTime, Space.Self);
-        }
-
-        private void ApplyDrive(float drive, float steer)
-        {
-            float dt = Time.fixedDeltaTime;
-            float steering = Mathf.Clamp(steer + drive * _damage.SteeringPull, -1f, 1f);
-            Quaternion heading = _body.rotation * Quaternion.Euler(0f, steering * turnSpeed * _damage.Turning * dt, 0f);
-            // Use the physics heading, not the interpolated render transform.
-            // A/D can pivot in place; steering remains responsive while reversing.
-            _body.angularVelocity = Vector3.zero;
-            _body.MoveRotation(heading);
-            Vector3 forward = heading * Vector3.forward;
-            Vector3 right = heading * Vector3.right;
-            Vector3 velocity = _body.linearVelocity;
-            float forwardSpeed = Vector3.Dot(velocity, forward);
-            float sidewaysSpeed = Vector3.Dot(velocity, right);
-            float targetSpeed = drive * (drive < 0f ? reverseSpeed : maxSpeed) * _damage.Mobility;
-            bool slowing = drive == 0f || forwardSpeed * drive < 0f;
-            float nextForward = Mathf.MoveTowards(forwardSpeed, targetSpeed, (slowing ? braking : acceleration * _damage.Mobility) * dt);
-            float nextSideways = Mathf.MoveTowards(sidewaysSpeed, 0f, lateralGrip * dt);
-            // Bounded traction forces preserve collisions and pushing between robots.
-            Vector3 correction = forward * (nextForward - forwardSpeed) + right * (nextSideways - sidewaysSpeed);
-            _body.AddForce(correction / dt, ForceMode.Acceleration);
         }
 
         private void OnCollisionEnter(Collision collision)
@@ -206,23 +232,36 @@ namespace RobotSavaslari
             if (CombatStopped || _health.IsDefeated || collision.contactCount == 0) return;
             var opponent = collision.collider.GetComponentInParent<RobotPrototypeController>();
             if (opponent == null || opponent == this || opponent._health.IsDefeated || opponent.CombatStopped) return;
-            // A moving body impact hurts even when its weapon is not running.
-            // One shared cooldown prevents compound colliders from multiplying damage.
-            bool ram = impact && collision.relativeVelocity.sqrMagnitude >= 1f && Time.time >= _nextImpactTime;
-            // Combat is independent of the visual model: imported robots may
-            // contain their weapon in one combined mesh rather than a separate spinner.
-            bool weapon = WeaponActive;
-            if ((!ram && !weapon) || Time.time < _nextHitTime) return;
-            _nextHitTime = Time.time + hitCooldown;
-            _nextImpactTime = Time.time + hitCooldown;
-            ContactPoint contact = collision.GetContact(0);
-            Vector3 direction = opponent.transform.position - transform.position;
+            Vector3 direction = opponent._body.position - _body.position;
             direction.y = 0f;
             direction = direction.sqrMagnitude > 0.001f ? direction.normalized : transform.forward;
-            float speed = Mathf.Clamp(collision.relativeVelocity.magnitude / 3f, 0.5f, 1.6f);
-            float damage = weapon ? hitDamage : hitDamage * 0.5f * speed;
-            opponent._health.TakeDamage(damage, contact.point, contact.normal,
-                direction * Mathf.Clamp(collision.relativeVelocity.magnitude * 0.5f + (weapon ? 3f : 1f), 1f, 7f), weapon);
+            // Each robot owns its outgoing hit. A stationary defender never deals ram damage.
+            float impactSpeed = Vector3.Dot(_preStepVelocity, direction);
+            bool ram = impact && impactSpeed >= minimumRamSpeed;
+            bool weapon = WeaponActive;
+            if ((!ram && !weapon) || Time.time < _nextHitTime) return;
+            float damage = weapon ? hitDamage : DamageCalculator.Calculate(
+                AttackData.Ram(impactSpeed, _body.mass, opponent._body.mass));
+            if (damage <= 0f) return;
+            _nextHitTime = Time.time + hitCooldown;
+            ContactPoint contact = collision.GetContact(0);
+            Vector3 impulse = direction * Mathf.Clamp(impactSpeed * 0.5f + (weapon ? 3f : 1f), 1f, 7f);
+            opponent._health.TakeDamage(damage, contact.point, contact.normal, impulse, weapon);
+            if (ram)
+            {
+                float pushed = KnockbackCalculator.Calculate(impactSpeed, opponent._body.mass, _body.mass, knockbackRatio, maxKnockbackSpeed);
+                float recoil = KnockbackCalculator.Calculate(impactSpeed, _body.mass, opponent._body.mass, recoilRatio, maxKnockbackSpeed);
+                opponent.ApplyKnockback(direction, pushed);
+                ApplyKnockback(-direction, recoil);
+            }
+        }
+
+        private void ApplyKnockback(Vector3 direction, float speed)
+        {
+            if (speed <= 0f || _health.IsDefeated || CombatStopped) return;
+            Vector3 velocity = _body.linearVelocity;
+            _body.linearVelocity = velocity + direction * (speed - Vector3.Dot(velocity, direction));
+            _motor.ReleaseTraction(knockbackDuration, knockbackTraction);
         }
 
         public void ResetMotion()
@@ -230,6 +269,8 @@ namespace RobotSavaslari
             if (_body == null) _body = GetComponent<Rigidbody>();
             _body.linearVelocity = Vector3.zero;
             _body.angularVelocity = Vector3.zero;
+            _preStepVelocity = Vector3.zero;
+            if (_motor != null) _motor.Clear(true);
         }
     }
 }
