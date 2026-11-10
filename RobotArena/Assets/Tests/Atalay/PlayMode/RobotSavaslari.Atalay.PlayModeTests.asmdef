@@ -1,0 +1,25 @@
+{
+    "name": "RobotSavaslari.Atalay.PlayModeTests",
+    "rootNamespace": "RobotSavaslari.Atalay.Tests",
+    "references": [
+        "RobotSavaslari.Atalay",
+        "RobotSavaslari.Robots",
+        "Unity.InputSystem",
+        "Unity.InputSystem.TestFramework",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
