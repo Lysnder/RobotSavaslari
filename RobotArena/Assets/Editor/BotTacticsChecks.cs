@@ -21,7 +21,7 @@ namespace RobotSavaslari.Editor
             var update = typeof(RobotPrototypeController).GetMethod("FixedUpdate", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             var weapon = typeof(RobotPrototypeController).GetProperty("WeaponActive");
             var nextHit = typeof(RobotPrototypeController).GetField("_nextHitTime", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            var nextImpact = typeof(RobotPrototypeController).GetField("_nextImpactTime", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            var tractionUntil = typeof(RobotDriveMotor).GetField("_knockbackUntil", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             var simulation = Physics.simulationMode;
             var interpolation = motor.Body.interpolation; var playerInterpolation = playerMotor.Body.interpolation;
             var lines = new List<string>();
@@ -34,14 +34,15 @@ namespace RobotSavaslari.Editor
                     match.RestartMatch(); opponent.enabled = player.enabled = false;
                     motor.enabled = playerMotor.enabled = false; bot.enabled = true; bot.SetMatchRunning(true);
                     int before = bot.RepositionCount, attacks = 0;
-                    // Collision cooldowns use Time.time. Advance their remaining durations explicitly
+                    // Collision cooldowns and recoil traction use Time.time. Advance their timers explicitly
                     // because Physics.Simulate advances physics, not the player-loop clock.
                     for (int i = 0; i < 3000 && !match.MatchFinished; i++)
                     {
                         foreach (var robot in new[] { opponent, player })
                         {
                             nextHit.SetValue(robot, (float)nextHit.GetValue(robot) - 0.02f);
-                            nextImpact.SetValue(robot, (float)nextImpact.GetValue(robot) - 0.02f);
+                            var driveMotor = robot.GetComponent<RobotDriveMotor>();
+                            tractionUntil.SetValue(driveMotor, (float)tractionUntil.GetValue(driveMotor) - 0.02f);
                         }
                         Physics.SyncTransforms(); bot.Tick(0.02f); update.Invoke(opponent, null);
                         weapon.SetValue(player, spinningArmed && player.GetComponent<RobotDamageVisuals>().WeaponOperational);

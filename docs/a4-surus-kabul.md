@@ -2,7 +2,7 @@
 
 ## Kabul sahnesi
 
-**`RobotArena/Assets/Scenes/Atalay/A4_SurusKabul.unity`**
+**`RobotArena/Assets/Scenes/Tests/Driving/DrivingAcceptance.unity`**
 
 A2 ve A3'ün sekiz rotası tek sahnede, `Tab` ile sırayla:
 
@@ -39,7 +39,7 @@ rotaları Unity'de ayrıca oynanır.
 | Girdi kuralları | `PlayerKeyboardDriverTests.cs` | 11 |
 | Sürüş hissi ölçümleri | `DriveFeelMeasurementTests.cs` | 5 |
 | Çarpışma ve girdi güvenliği | `CollisionRecoveryTests.cs` | 7 |
-| Teslim sözleşmesi (EditMode) | `AtalayDeliveryTests.cs` | 7 |
+| Teslim sözleşmesi (EditMode) | `DrivingDeliveryTests.cs` | 7 |
 
 Son koşu: **32/32 PlayMode** (24 Atalay + 8 ortak) ve **11/11 EditMode**
 (7 Atalay + 4 ortak).
@@ -113,7 +113,7 @@ Tuşlar: `W` `S` ileri-geri, `A` `D` dönüş, yön tuşları da aynı işi yapa
 
 Dört kartın hiçbiri ortak `RobotMotor`'a, ortak robot prefab'ına, ana Arena
 sahnesine ya da proje ayarlarına dokunmadı. Bütün kod
-`RobotArena/Assets/Scripts/Atalay/`, bütün sahneler
-`RobotArena/Assets/Scenes/Atalay/`, ayar setleri ortak prefab'ın varyantları
+`RobotArena/Assets/Scripts/Driving/`, bütün sahneler
+`RobotArena/Assets/Scenes/Tests/Driving/`, ayar setleri ortak prefab'ın varyantları
 olarak `RobotArena/Assets/Prefabs/Atalay/` altında. EditMode testi deneme
 sahnelerinin derleme listesine girmediğini her koşuda doğruluyor.

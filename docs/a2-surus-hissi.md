@@ -2,7 +2,7 @@
 
 ## Deneme sahnesi
 
-**`RobotArena/Assets/Scenes/Atalay/A2_SurusHissi.unity`**
+**`RobotArena/Assets/Scenes/Tests/Driving/DrivingFeel.unity`**
 
 Dört işaretli rota, hepsi kendi başlangıç noktasından aynı yönle başlar:
 
@@ -98,7 +98,7 @@ Bu, duvara dayanınca hızın kendiliğinden sıfırlanmasını sağlıyor — i
 davranış — ama aynı zamanda zemin sürtünmesini her adımda ivmeden düşüyor.
 Kullanılabilir ivme = ayarlanan ivme − 11.8.
 
-**Tekrar adımları:** `RobotSavaslari.Atalay.PlayModeTests` >
+**Tekrar adımları:** `RobotSavaslari.Driving.PlayModeTests` >
 `DusukIvmeliAyarSurtunmeTabaninaTakilir`. Test ayarlanan ivmeyi, ölçülen net
 ivmeyi ve örtülen sürtünmeyi yazdırır.
 

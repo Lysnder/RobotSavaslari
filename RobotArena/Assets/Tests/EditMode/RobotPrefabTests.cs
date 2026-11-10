@@ -11,7 +11,7 @@ namespace RobotSavaslari.Robots.Tests
     public class RobotPrefabTests
     {
         private const string RobotPrefabPath = "Assets/Prefabs/Robot.prefab";
-        private const string ArenaScenePath = "Assets/Scenes/RobotArena.unity";
+        private const string ArenaScenePath = "Assets/Scenes/Gameplay/MainArena.unity";
 
         private GameObject prefab;
 
@@ -68,21 +68,14 @@ namespace RobotSavaslari.Robots.Tests
         }
 
         [Test]
-        public void ArenaSahnesiDerlemeListesinde()
+        public void AnaArenaTekEtkinDerlemeSahnesi()
         {
             Assert.IsTrue(System.IO.File.Exists(ArenaScenePath), $"Arena sahnesi bulunamadi: {ArenaScenePath}");
 
-            bool inBuildSettings = false;
-            foreach (EditorBuildSettingsScene scene in EditorBuildSettings.scenes)
-            {
-                if (scene.path == ArenaScenePath && scene.enabled)
-                {
-                    inBuildSettings = true;
-                    break;
-                }
-            }
+            var enabledScenes = System.Array.FindAll(EditorBuildSettings.scenes, scene => scene.enabled);
+            Assert.AreEqual(1, enabledScenes.Length, "Windows build tek ana sahneyle baslamali.");
+            Assert.AreEqual(ArenaScenePath, enabledScenes[0].path);
 
-            Assert.IsTrue(inBuildSettings, "Arena sahnesi derleme listesinde (Build Settings) degil.");
         }
     }
 }

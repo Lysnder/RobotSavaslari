@@ -8,7 +8,7 @@ hacmi, hareket bileşeni ve komutların nasıl bağlandığı.
 | Ne | Yol |
 | --- | --- |
 | Robot prefab'ı | `RobotArena/Assets/Prefabs/Robot.prefab` |
-| Test arenası sahnesi | `RobotArena/Assets/Scenes/RobotArena.unity` |
+| Test arenası sahnesi | `RobotArena/Assets/Scenes/Tests/RobotMotor.unity` |
 | Hareket bileşeni | `RobotArena/Assets/Scripts/Robots/RobotMotor.cs` |
 | Komut yapısı | `RobotArena/Assets/Scripts/Robots/RobotMoveCommand.cs` |
 | Klavye bileşeni | `RobotArena/Assets/Scripts/Robots/KeyboardRobotInput.cs` |

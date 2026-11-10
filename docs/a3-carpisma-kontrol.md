@@ -2,7 +2,7 @@
 
 ## Deneme sahnesi
 
-**`RobotArena/Assets/Scenes/Atalay/A3_CarpismaKontrol.unity`**
+**`RobotArena/Assets/Scenes/Tests/Driving/CollisionRecovery.unity`**
 
 Dört senaryo, her biri kendi başlangıç noktasıyla:
 
@@ -60,7 +60,7 @@ Kontrol kapatma `C` tuşuyla ya da sağ üstteki düğmeyle. Kapanırken motora
 | Odak geri gelince tuş basmadan robot komut almaz | ✅ otomatik test |
 | Kontrol kapalıyken sürüş girdisi motora ulaşmaz, açılınca eski değer kullanılmaz | ✅ otomatik test |
 
-Testler: `RobotArena/Assets/Tests/Atalay/PlayMode/CollisionRecoveryTests.cs`
+Testler: `RobotArena/Assets/Tests/Driving/PlayMode/CollisionRecoveryTests.cs`
 (7 test) — önden çarpışma sonrası geri sürüşle çıkma, açılı çarpışma sonrası yön
 düzeltme, köşeden geri çıkma, duvar boyunca sürüşte kontrolün kaybolmaması, odak
 kaybı, odak dönüşü, hareketsiz ve hızlı robotun ayrı ayrı durdurulması.

@@ -6,7 +6,7 @@ from PIL import Image
 from check_glb import load
 
 ROOT = Path(__file__).resolve().parents[2]
-FOLDER = ROOT / "Assets/Burak/ModularRobots/Models"
+FOLDER = ROOT / "Assets/Art/ModularRobots/Models"
 stats = {}
 for path in sorted(FOLDER.glob("*.glb")):
     doc, binary = load(path)
