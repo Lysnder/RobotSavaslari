@@ -4,15 +4,19 @@ using UnityEngine;
 namespace RobotSavaslari.Atalay
 {
     /// <summary>
-    /// Deneme sahnesinde üç satırlık küçük bir metin gösterir:
+    /// Deneme sahnelerinde sol üstte küçük bir metin gösterir:
     ///
     /// * <b>Girdi</b> — bileşenin klavyeden okuduğu değer.
     /// * <b>Komut</b> — motorun gerçekten aldığı değer.
     /// * <b>Fizik</b> — gövdenin o anki hızı.
     ///
     /// Üçünü yan yana görmek kontrol arızasını fizik davranışından ayırır:
-    /// girdi 0 ama fizik hâlâ hareketliyse bu kalan fiziksel kaymadır, komut
+    /// girdi 0 ama fizik hâlâ hareketliyse bu kalan fiziksel kaymadır, komutun
     /// kesilmemesi değildir.
+    ///
+    /// Robotu sahnede <see cref="DriveRig"/> doğuruyorsa referanslar
+    /// <see cref="Bind"/> ile her doğuşta yenilenir; robotun üstüne doğrudan
+    /// eklendiğinde kendi nesnesinden bulur.
     /// </summary>
     [AddComponentMenu("Robot Savaslari/Atalay/Surus Telemetri Metni")]
     public class DriveTelemetryHud : MonoBehaviour
@@ -20,12 +24,14 @@ namespace RobotSavaslari.Atalay
         [SerializeField] private RobotMotor motor;
         [SerializeField] private PlayerKeyboardDriver keyboardDriver;
         [SerializeField] private DriveProbe driveProbe;
+        [SerializeField] private CollisionReporter collisionReporter;
 
         [Header("Yerleşim")]
         [SerializeField] private Vector2 position = new Vector2(12f, 12f);
-        [SerializeField] private Vector2 size = new Vector2(360f, 132f);
+        [SerializeField] private Vector2 size = new Vector2(380f, 190f);
         [SerializeField] private int fontSize = 14;
 
+        private DriveRig rig;
         private GUIStyle style;
 
         private void Awake()
@@ -44,6 +50,27 @@ namespace RobotSavaslari.Atalay
             {
                 driveProbe = GetComponentInParent<DriveProbe>();
             }
+
+            if (collisionReporter == null)
+            {
+                collisionReporter = GetComponentInParent<CollisionReporter>();
+            }
+        }
+
+        /// <summary>Düzeneğin doğurduğu robota bağlanır.</summary>
+        public void Bind(DriveRig driveRig)
+        {
+            rig = driveRig;
+
+            if (rig == null)
+            {
+                return;
+            }
+
+            motor = rig.Motor;
+            keyboardDriver = rig.Driver;
+            driveProbe = rig.Probe;
+            collisionReporter = rig.Reporter;
         }
 
         private void OnGUI()
@@ -84,18 +111,48 @@ namespace RobotSavaslari.Atalay
             }
             else if (keyboardDriver != null && keyboardDriver.enabled)
             {
-                source = keyboardDriver.HasKeyboard ? "klavye" : "klavye yok";
+                source = !keyboardDriver.HasFocus
+                    ? "odak disinda - girdi okunmuyor"
+                    : keyboardDriver.HasKeyboard ? "klavye" : "klavye yok";
                 inputForward = keyboardDriver.ForwardInput;
                 inputTurn = keyboardDriver.TurnInput;
             }
+            else if (keyboardDriver != null)
+            {
+                source = "kontrol kapali";
+            }
+
+            string header = string.Empty;
+            if (rig != null)
+            {
+                string setName = rig.ActiveSet != null ? rig.ActiveSet.setName : "-";
+                string routeName = rig.ActiveRoute != null ? rig.ActiveRoute.RouteName : "-";
+                header =
+                    $"Rota   : {routeName}   ({rig.RunTime,5:0.0} s)\n" +
+                    $"Ayar   : {setName}\n";
+            }
+
+            string collision = string.Empty;
+            if (collisionReporter != null && collisionReporter.HasReport)
+            {
+                collision =
+                    $"\nCarpisma: {collisionReporter.ImpactSpeed,4:0.0} m/s, " +
+                    $"{collisionReporter.ImpactAngle,3:0} derece -> kalan {collisionReporter.ResidualSpeed,4:0.0} m/s";
+            }
+
+            string instructions = rig != null && rig.ActiveRoute != null && !string.IsNullOrEmpty(rig.ActiveRoute.Instructions)
+                ? $"\n{rig.ActiveRoute.Instructions}"
+                : string.Empty;
 
             return
+                header +
                 $"Kaynak : {source}\n" +
                 $"Girdi  : ileri/geri {inputForward,5:0.00}   donus {inputTurn,5:0.00}\n" +
                 $"Komut  : ileri/geri {motor.MoveCommand,5:0.00}   donus {motor.TurnCommand,5:0.00}\n" +
-                $"Fizik  : hiz {motor.ForwardSpeed,5:0.00} m/s   donus {motor.TurnSpeed,6:0.0} derece/s\n" +
-                "\n" +
-                "W/S ileri-geri   A/D donus   P deneme kontrolu";
+                $"Fizik  : hiz {motor.ForwardSpeed,5:0.00} m/s   donus {motor.TurnSpeed,6:0.0} derece/s" +
+                collision +
+                "\n\nW/S ileri-geri   A/D donus   P deneme kontrolu" +
+                instructions;
         }
     }
 }

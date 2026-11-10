@@ -35,6 +35,9 @@ namespace RobotSavaslari.Atalay
         /// <summary>Bağlı bir klavye var mı? Yoksa komut gönderilmez.</summary>
         public bool HasKeyboard { get; private set; }
 
+        /// <summary>Oyun penceresi odakta mı? Değilse girdi okunmaz.</summary>
+        public bool HasFocus { get; private set; } = true;
+
         /// <summary>Komutların gönderildiği motor.</summary>
         public RobotMotor Motor
         {
@@ -78,10 +81,45 @@ namespace RobotSavaslari.Atalay
             }
         }
 
+        /// <summary>
+        /// Pencere değişince basılı kalan tuş komutu sürdürmesin: odak
+        /// kaybında girdi de komut da temizlenir. Odak geri geldiğinde değerler
+        /// o karede klavyeden yeniden okunur, yani tuşa basılmadıkça robot
+        /// komut almaz.
+        /// </summary>
+        private void OnApplicationFocus(bool hasFocus)
+        {
+            HasFocus = hasFocus;
+
+            if (hasFocus)
+            {
+                return;
+            }
+
+            ClearInput();
+        }
+
+        private void ClearInput()
+        {
+            ForwardInput = 0f;
+            TurnInput = 0f;
+
+            if (motor != null)
+            {
+                motor.Stop();
+            }
+        }
+
         private void Update()
         {
             if (motor == null)
             {
+                return;
+            }
+
+            if (!HasFocus)
+            {
+                ClearInput();
                 return;
             }
 
@@ -90,9 +128,8 @@ namespace RobotSavaslari.Atalay
 
             if (!HasKeyboard)
             {
-                ForwardInput = 0f;
-                TurnInput = 0f;
-                motor.Stop();
+                // Klavye yoksa robot komutsuz kalır, son komutla kaymaya devam etmez.
+                ClearInput();
                 return;
             }
 
