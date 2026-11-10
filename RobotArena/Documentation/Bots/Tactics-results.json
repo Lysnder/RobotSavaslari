@@ -1,0 +1,29 @@
+﻿{
+    "success":  true,
+    "command":  "command",
+    "data":  {
+                 "command":  "script eval",
+                 "parameters":  {
+                                    "code":  "return RobotSavaslari.Editor.BotTacticsChecks.RunInPlayMode();"
+                                },
+                 "result":  {
+                                "output":  null,
+                                "diagnostics":  [
+
+                                                ],
+                                "success":  true,
+                                "result":  "Player pivot 30s: PASS; reposition 8; longest pivot 0,30s; longest attack 0,34s; attack frames 189/1500\nPlayer driving circle 30s: PASS; reposition 8; longest pivot 0,46s; longest attack 0,40s; attack frames 165/1500\nStationary target: attack / retreat / flank / wait, stop in all 3 phases, restart and target loss: PASS"
+                            },
+                 "target":  {
+                                "host":  "127.0.0.1",
+                                "port":  7800,
+                                "projectPath":  "C:\\work\\unity\\RobotSavaslari\\RobotSavaslari\\RobotArena"
+                            }
+             },
+    "errors":  [
+
+               ],
+    "warnings":  [
+
+                 ]
+}
