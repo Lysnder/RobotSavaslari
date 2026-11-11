@@ -130,6 +130,17 @@ namespace RobotSavaslari.Combat.Testing
                     return "ISKA";
                 });
 
+                Run(results, "E2", "Pencere kapandiktan sonra yaklasan hedef hasar almaz", p25, rig =>
+                {
+                    rig.Place(rig.B, rig.A, 4f, 0f);
+                    Expect(rig.A.Attack.RequestAttack(), AttackOutcome.Started, "istek");
+                    rig.Place(rig.B, rig.A, DefaultSpacing, 0f);
+                    rig.Advance(rig.A.Attack.ActiveDuration + 0.02f);
+                    Expect(rig.B.Health.CurrentHealth, 100f, "gec fizik adiminda hedef can");
+                    Expect(rig.A.Attack.LastReport.Outcome, AttackOutcome.Miss, "sonuc");
+                    return "gec adim onceki saldiriyi uzatmadi";
+                });
+
                 Run(results, "E2", "Kendi robotuna temas hasar vermez", p25, rig =>
                 {
                     rig.Place(rig.B, rig.A, 20f, 0f);

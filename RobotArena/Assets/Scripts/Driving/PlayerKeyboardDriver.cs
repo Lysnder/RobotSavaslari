@@ -71,14 +71,8 @@ namespace RobotSavaslari.Driving
         {
             // Kontrol kapatılınca okunan girdi de gönderilen komut da sıfırlanır,
             // böylece tekrar açıldığında eski değer kullanılmaz.
-            ForwardInput = 0f;
-            TurnInput = 0f;
             HasKeyboard = false;
-
-            if (motor != null)
-            {
-                motor.Stop();
-            }
+            ClearInput();
         }
 
         /// <summary>
@@ -133,27 +127,10 @@ namespace RobotSavaslari.Driving
                 return;
             }
 
-            ForwardInput = ReadAxis(keyboard, forwardKey, backwardKey);
-            TurnInput = ReadAxis(keyboard, turnRightKey, turnLeftKey);
+            ForwardInput = KeyboardDriveAxes.ReadAxis(keyboard, forwardKey, backwardKey, Key.UpArrow, Key.DownArrow);
+            TurnInput = KeyboardDriveAxes.ReadAxis(keyboard, turnRightKey, turnLeftKey, Key.RightArrow, Key.LeftArrow);
 
             motor.SetMoveCommand(ForwardInput, TurnInput);
-        }
-
-        /// <summary>
-        /// Tek eksen okur. İki tuş da basılıysa ya da hiçbiri basılı değilse 0 döner;
-        /// karşıt tuşlar birbirini bu noktada sıfırlar.
-        /// </summary>
-        private static float ReadAxis(Keyboard keyboard, Key positiveKey, Key negativeKey)
-        {
-            bool positive = positiveKey != Key.None && keyboard[positiveKey].isPressed;
-            bool negative = negativeKey != Key.None && keyboard[negativeKey].isPressed;
-
-            if (positive == negative)
-            {
-                return 0f;
-            }
-
-            return positive ? 1f : -1f;
         }
     }
 }

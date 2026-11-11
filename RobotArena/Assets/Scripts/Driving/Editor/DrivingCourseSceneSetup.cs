@@ -70,7 +70,7 @@ namespace RobotSavaslari.Driving.Editor
             TurnBrakeDeceleration = 1200f,
         };
 
-        [MenuItem("Robot Savaslari/Driving/Create Driving Courses")]
+        [MenuItem("RobotSavaslari/Driving/Create Driving Courses")]
         public static void Generate()
         {
             GameObject basePrefab = AssetDatabase.LoadAssetAtPath<GameObject>(RobotPrefabPath);

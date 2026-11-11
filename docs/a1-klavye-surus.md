@@ -16,16 +16,16 @@ kartın teslim alanı dışında.
 
 ## Çalıştırma adımları
 
-1. Project panelinde `Assets/Scenes/Tests/Driving/A1_KlavyeSurus` sahnesine çift tıkla.
+1. Project panelinde `Assets/Scenes/Tests/Driving/KeyboardDriving.unity` sahnesine çift tıkla.
 2. Play'e bas, Game görünümüne bir kez tıkla.
 3. Sol üstteki telemetri metnini açık tut; kabul maddeleri oradan okunur.
 
 | Tuş | Komut |
 | --- | --- |
-| `W` | ileri |
-| `S` | geri |
-| `A` | sola dön |
-| `D` | sağa dön |
+| `W` veya `↑` | ileri |
+| `S` veya `↓` | geri |
+| `A` veya `←` | sola dön |
+| `D` veya `→` | sağa dön |
 | `P` | deneme kontrolünü aç/kapat (klavye bileşenini kapatır) |
 
 ## Telemetri metni neyi ayırır
@@ -81,7 +81,8 @@ motor.Stop();                       // komutu bırak
 
 İleri ve geri aynı anda basılıysa ileri/geri ekseni **0**; sola ve sağa aynı
 anda basılıysa dönüş ekseni **0**. İki eksen birbirinden bağımsız: `W+A+D`
-basılıyken ileri komutu 1 kalır, yalnızca dönüş sıfırlanır.
+basılıyken ileri komutu 1 kalır, yalnızca dönüş sıfırlanır. WASD ile oklar
+birlikte kullanılabilir: `W+↑` tek ileri komutudur, `W+↓` ise sıfırdır.
 
 ## Kabul maddeleri
 
@@ -99,12 +100,16 @@ basılıyken ileri komutu 1 kalır, yalnızca dönüş sıfırlanır.
 Sanal klavye (`InputTestFixture`) ile sürülür, gerçek tuşa basmaya gerek yok.
 Test Runner > PlayMode > `RobotSavaslari.Driving.PlayModeTests`.
 
-11 test: ileri, geri, iki yöne dönüş, ileri+dönüş birlikte, `W+S` ve `A+D`
-sıfırlaması, sıfırlamanın diğer ekseni etkilememesi, tuş bırakılınca komutun
-kesilmesi, kontrol kapalıyken girdinin motora ulaşmaması, tekrar açılınca eski
-değerin kullanılmaması, deneme kontrolünün klavyesiz sürmesi.
+Testler düz ve dönüşlü sürüşü, aynı anda basılan karşıt tuşları ve iki eksenin
+bağımsızlığını sınar. Tuş bırakıldığında veya kontrol kapatıldığında komutun
+kesilmesi, kontrol yeniden açıldığında eski değerin kullanılmaması ve deneme
+kontrolünün klavyesiz sürmesi de kapsamdadır.
+Dört ek senaryo oklarla çapraz hareketi, WASD ve okların karışık kullanımını,
+klavye çıkarılınca komutların sıfırlanmasını ve ortak robot prefab'ındaki
+alternatif okuyucunun aynı çelişkili tuşları nasıl çözdüğünü sınar.
 
-Son koşu: **19/19 PlayMode** (11 A1 + 8 ortak) ve **4/4 EditMode** geçti.
+İlk A1 tesliminde **19/19 PlayMode** (11 A1 + 8 ortak) ve **4/4 EditMode**
+geçti. Bu tarihsel sonuç, sonradan eklenen ok tuşu testlerini içermez.
 Karşıt tuş kuralı ancak iki tuş gerçekten aynı anda basılıyken sınanabildiği
 için testler klavye durumunu tek olayla yazar (`KeyboardState`); tuşlara sırayla
 basmak ilk tuşu bırakılmış sayar.

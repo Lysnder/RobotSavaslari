@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
+using RobotSavaslari.Combat;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
 
 namespace RobotSavaslari.Editor
 {
@@ -18,34 +21,53 @@ namespace RobotSavaslari.Editor
             var opponent = bot.GetComponent<RobotPrototypeController>();
             var player = bot.Target.GetComponent<RobotPrototypeController>();
             var motor = bot.GetComponent<RobotDriveMotor>(); var playerMotor = player.GetComponent<RobotDriveMotor>();
-            var update = typeof(RobotPrototypeController).GetMethod("FixedUpdate", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            var weapon = typeof(RobotPrototypeController).GetProperty("WeaponActive");
+            var botAttack = opponent.GetComponent<MeleeAttack>();
+            var playerAttack = player.GetComponent<MeleeAttack>();
+            Require(botAttack != null && playerAttack != null, "Both real arena robots must own a melee attack");
             var nextHit = typeof(RobotPrototypeController).GetField("_nextHitTime", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             var tractionUntil = typeof(RobotDriveMotor).GetField("_knockbackUntil", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             var simulation = Physics.simulationMode;
             var interpolation = motor.Body.interpolation; var playerInterpolation = playerMotor.Body.interpolation;
             var lines = new List<string>();
+            var previousKeyboard = Keyboard.current;
+            var previousSettings = InputSystem.settings;
+            var checkSettings = UnityEngine.Object.Instantiate(previousSettings);
+            Keyboard keyboard = null;
+            var previousBotClock = botAttack.Clock; var previousPlayerClock = playerAttack.Clock;
+            float simulationTime = 0f;
             try
             {
                 Physics.simulationMode = SimulationMode.Script;
                 motor.Body.interpolation = playerMotor.Body.interpolation = RigidbodyInterpolation.None;
+                botAttack.Clock = playerAttack.Clock = () => simulationTime;
+                checkSettings.backgroundBehavior = InputSettings.BackgroundBehavior.IgnoreFocus;
+                checkSettings.editorInputBehaviorInPlayMode = InputSettings.EditorInputBehaviorInPlayMode.AllDeviceInputAlwaysGoesToGameView;
+                InputSystem.settings = checkSettings;
+                keyboard = InputSystem.AddDevice<Keyboard>();
+                keyboard.MakeCurrent();
+                if (Application.isBatchMode)
+                    player.gameObject.SendMessage("OnApplicationFocus", true, SendMessageOptions.DontRequireReceiver);
+                CheckSharedWeaponInput(match, bot, opponent, player, keyboard);
+                lines.Add("Space and bot intent each produced one profile hit; stopped and restarted attacks verified");
                 foreach (bool spinningArmed in new[] { false, true })
                 {
-                    match.RestartMatch(); opponent.enabled = player.enabled = false;
-                    motor.enabled = playerMotor.enabled = false; bot.enabled = true; bot.SetMatchRunning(true);
+                    match.RestartMatch();
+                    SetSpace(keyboard, spinningArmed);
                     int before = bot.RepositionCount, attacks = 0;
                     // Collision cooldowns and recoil traction use Time.time. Advance their timers explicitly
                     // because Physics.Simulate advances physics, not the player-loop clock.
                     for (int i = 0; i < 3000 && !match.MatchFinished; i++)
                     {
+                        simulationTime += 0.02f;
                         foreach (var robot in new[] { opponent, player })
                         {
                             nextHit.SetValue(robot, (float)nextHit.GetValue(robot) - 0.02f);
                             var driveMotor = robot.GetComponent<RobotDriveMotor>();
                             tractionUntil.SetValue(driveMotor, (float)tractionUntil.GetValue(driveMotor) - 0.02f);
                         }
-                        Physics.SyncTransforms(); bot.Tick(0.02f); update.Invoke(opponent, null);
-                        weapon.SetValue(player, spinningArmed && player.GetComponent<RobotDamageVisuals>().WeaponOperational);
+                        Physics.SyncTransforms(); bot.Tick(0.02f);
+                        botAttack.Tick(); playerAttack.Tick();
+                        opponent.TickCombatControls(); player.TickCombatControls();
                         playerMotor.Submit(spinningArmed ? 0.4f : 0, spinningArmed ? 1 : 0);
                         motor.Step(0.02f); playerMotor.Step(0.02f); Physics.Simulate(0.02f);
                         opponent.ConstrainToArena(); player.ConstrainToArena();
@@ -61,13 +83,57 @@ namespace RobotSavaslari.Editor
             }
             finally
             {
+                botAttack.Clock = previousBotClock; playerAttack.Clock = previousPlayerClock;
+                if (keyboard != null && keyboard.added) InputSystem.RemoveDevice(keyboard);
+                if (previousKeyboard != null && previousKeyboard.added) previousKeyboard.MakeCurrent();
+                InputSystem.settings = previousSettings;
+                UnityEngine.Object.Destroy(checkSettings);
                 Physics.simulationMode = simulation;
                 motor.Body.interpolation = interpolation; playerMotor.Body.interpolation = playerInterpolation;
-                opponent.enabled = player.enabled = motor.enabled = playerMotor.enabled = bot.enabled = true;
                 match.RestartMatch();
             }
         }
-        [MenuItem("Robot Savaslari/Bot/Run Arena Tactics Checks (Play Mode)")]
+
+        private static void SetSpace(Keyboard keyboard, bool pressed)
+        {
+            InputSystem.QueueStateEvent(keyboard, pressed ? new KeyboardState(Key.Space) : new KeyboardState());
+            InputSystem.Update();
+        }
+
+        private static void CheckSharedWeaponInput(ArenaMatchController match, RobotBotController bot,
+            RobotPrototypeController opponent, RobotPrototypeController player, Keyboard keyboard)
+        {
+            var playerHealth = player.GetComponent<RobotHealth>();
+            var botHealth = opponent.GetComponent<RobotHealth>();
+            var playerAttack = player.GetComponent<MeleeAttack>();
+            var botAttack = opponent.GetComponent<MeleeAttack>();
+            Place(player.GetComponent<Rigidbody>(), new Vector3(-0.8f, 0.82f, 0), 90f);
+            Place(opponent.GetComponent<Rigidbody>(), new Vector3(0.8f, 0.82f, 0), -90f);
+            Physics.SyncTransforms();
+            SetSpace(keyboard, false);
+            player.TickCombatControls();
+            Require(botHealth.CurrentHealth == botHealth.MaxHealth, "Idle input must not request a weapon hit");
+            SetSpace(keyboard, true);
+            player.TickCombatControls(); player.TickCombatControls();
+            Require(playerAttack.TargetsHitThisAttack == 1 &&
+                Mathf.Approximately(botHealth.CurrentHealth, botHealth.MaxHealth - playerAttack.Damage),
+                "Space must apply profile damage exactly once, without a collision callback");
+            bot.Tick(0.02f);
+            Require(bot.AttackRequested, "Front-facing bot in range must request an attack");
+            opponent.TickCombatControls(); opponent.TickCombatControls();
+            Require(botAttack.TargetsHitThisAttack == 1 &&
+                Mathf.Approximately(playerHealth.CurrentHealth, playerHealth.MaxHealth - botAttack.Damage),
+                "Bot intent must apply profile damage exactly once through the same weapon");
+            player.StopCombat(); opponent.StopCombat();
+            Require(playerAttack.RequestAttack() == AttackOutcome.MatchClosed &&
+                    botAttack.RequestAttack() == AttackOutcome.MatchClosed,
+                "Stopped combat must reject attacks from either robot");
+            match.RestartMatch();
+            Require(!playerAttack.IsAttacking && !botAttack.IsAttacking && playerAttack.CooldownRemaining <= 0f &&
+                botAttack.CooldownRemaining <= 0f && playerAttack.TargetsHitThisAttack == 0 &&
+                botAttack.TargetsHitThisAttack == 0, "New rounds must reset both weapons");
+        }
+        [MenuItem("RobotSavaslari/Bot/Run Arena Tactics Checks (Play Mode)")]
         public static void RunFromMenu() { Debug.Log(RunInPlayMode()); }
 
         public static string RunInPlayMode()

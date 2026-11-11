@@ -7,7 +7,7 @@ namespace RobotSavaslari.Editor
 {
     public static class BotScenarioSceneBuilder
     {
-        [MenuItem("Robot Savaslari/Bot/Create Behavior Scenario Scene")]
+        [MenuItem("RobotSavaslari/Bot/Create Behavior Scenario Scene")]
         public static void Build()
         {
             const string path = "Assets/Scenes/Tests/AI/BotScenarios.unity";

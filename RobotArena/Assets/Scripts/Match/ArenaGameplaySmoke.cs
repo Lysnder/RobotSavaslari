@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.SceneManagement;
+using RobotSavaslari.UI;
 
 namespace RobotSavaslari.Match
 {
@@ -69,6 +70,22 @@ namespace RobotSavaslari.Match
             Require(match != null && match.IsInitialized && !match.ManualNotificationsOnly, "Real gameplay controller initialized");
             Require(FindObjectsByType<MatchController>().Length == 1 && FindObjectsByType<ArenaMatchController>().Length == 0, "Single result authority");
             Require(FindObjectsByType<AudioListener>().Count(listener => listener.isActiveAndEnabled) == 1, "One active AudioListener");
+            Require(match.State == MatchController.MatchState.Ready && match.GetComponent<MainMenuScreen>() != null,
+                "Menu belongs to the arena match");
+            var settingsPanel = match.GetComponent<SettingsPanelController>();
+            Require(settingsPanel != null && !settingsPanel.IsOpen, "One shared settings panel starts closed");
+            Keys(Key.Escape);
+            for (int frame = 0; frame < 4 && !settingsPanel.IsOpen; frame++) yield return null;
+            Require(settingsPanel.IsOpen && Time.timeScale == 0f, "Settings opens from the arena menu and pauses it");
+            Keys(Key.Enter);
+            yield return null;
+            yield return null;
+            Require(match.State == MatchController.MatchState.Ready, "Settings ignores Enter to start");
+            Keys(Key.Escape);
+            for (int frame = 0; frame < 4 && settingsPanel.IsOpen; frame++) yield return null;
+            Require(!settingsPanel.IsOpen && Time.timeScale > 0f, "Settings closes and restores time");
+            Keys();
+            yield return null;
             var player = match.Player;
             if (Application.isBatchMode)
                 player.gameObject.SendMessage("OnApplicationFocus", true, SendMessageOptions.DontRequireReceiver);
@@ -86,7 +103,8 @@ namespace RobotSavaslari.Match
             for (int round = 1; round <= 2; round++)
             {
                 Key startKey = round == 1 ? Key.Enter : Key.R;
-                float startDeadline = Time.realtimeSinceStartup + 5f;
+                bool sawCountdown = false;
+                float startDeadline = Time.realtimeSinceStartup + 10f;
                 while (match.State != MatchController.MatchState.Playing || match.MatchCount != round)
                 {
                     Require(Time.realtimeSinceStartup < startDeadline,
@@ -94,10 +112,18 @@ namespace RobotSavaslari.Match
                         $"currentKeyboard={Keyboard.current?.deviceId} injectedKeyboard={keyboard.deviceId} " +
                         $"enabled={keyboard.enabled} key={startKey} pressed={keyboard[startKey].isPressed} " +
                         $"applicationFocused={Application.isFocused} initialized={match.IsInitialized}");
+                    if (match.State == MatchController.MatchState.Countdown)
+                    {
+                        sawCountdown = true;
+                        Require(!match.PlayerAllowed && !match.OpponentAllowed &&
+                                player.CombatStopped && opponent.CombatStopped && match.MatchCount == round - 1,
+                            "Countdown locks both robots until the round starts");
+                    }
                     Keys(startKey);
                     yield return null;
                 }
                 Keys();
+                Require(sawCountdown, "Each keyboard-started round shows the countdown");
                 Debug.Log($"ARENA_SMOKE START round={round} state={match.State} matchCount={match.MatchCount}");
                 Require(match.ResultCount == 0 && match.Outcome == MatchController.MatchOutcome.None, "Result UI reset");
                 Require(playerHealth.CurrentHealth == playerHealth.MaxHealth && opponentHealth.CurrentHealth == opponentHealth.MaxHealth, "Full health after start");
@@ -112,7 +138,8 @@ namespace RobotSavaslari.Match
                 float turnEnd = Time.time + .22f;
                 while (Time.time < turnEnd)
                 {
-                    Keys(Key.W, Key.D);
+                    if (round == 1) Keys(Key.W, Key.D);
+                    else Keys(Key.UpArrow, Key.RightArrow);
                     yield return null;
                 }
                 var driver = player.GetComponent<RobotSavaslari.Driving.PlayerKeyboardDriver>();

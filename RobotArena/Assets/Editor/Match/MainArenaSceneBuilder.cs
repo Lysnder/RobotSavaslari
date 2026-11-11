@@ -1,6 +1,8 @@
 using System;
 using System.IO;
+using RobotSavaslari.Combat;
 using RobotSavaslari.Driving;
+using RobotSavaslari.UI;
 using RobotSavaslari.Robots;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -10,7 +12,8 @@ namespace RobotSavaslari.Match.Editor
 {
     public static class MainArenaSceneBuilder
     {
-        public const string ScenePath = "Assets/Scenes/Gameplay/MainArena.unity";
+        public const string ScenePath = RobotSavaslari.Editor.GameplayStartup.ScenePath;
+        private const string WeaponProfilePath = "Assets/Settings/Combat/StandardMelee.asset";
 
         [MenuItem("RobotSavaslari/Gameplay/Rebuild Main Arena")]
         public static void Build()
@@ -28,11 +31,18 @@ namespace RobotSavaslari.Match.Editor
                 UnityEngine.Object.DestroyImmediate(oldMatch);
             foreach (var selection in UnityEngine.Object.FindObjectsByType<RobotSelectionController>())
                 UnityEngine.Object.DestroyImmediate(selection);
+            var weaponProfile = AssetDatabase.LoadAssetAtPath<CombatProfile>(WeaponProfilePath);
+            if (weaponProfile == null) throw new InvalidOperationException("Missing arena weapon profile: " + WeaponProfilePath);
             foreach (var robot in new[] { match.Player, match.Opponent })
             {
                 if (robot == null) throw new InvalidOperationException("Match robot reference is missing.");
                 if (robot.GetComponent<RobotMotor>() == null) robot.gameObject.AddComponent<RobotMotor>();
                 if (robot.GetComponent<RobotDriveMotor>() == null) robot.gameObject.AddComponent<RobotDriveMotor>();
+                using (var serializedRobot = new SerializedObject(robot))
+                {
+                    serializedRobot.FindProperty("weaponProfile").objectReferenceValue = weaponProfile;
+                    serializedRobot.ApplyModifiedPropertiesWithoutUndo();
+                }
                 robot.enabled = true;
             }
             var driver = match.Player.GetComponent<PlayerKeyboardDriver>();
@@ -40,12 +50,10 @@ namespace RobotSavaslari.Match.Editor
             driver.Motor = match.Player.GetComponent<RobotMotor>();
             match.ConfigureGameplay();
             match.gameObject.name = "Arena Match";
-            if (match.GetComponent<RobotSavaslari.UI.MainMenuController>() == null)
-                match.gameObject.AddComponent<RobotSavaslari.UI.MainMenuController>();
-            var playerSpawn = GameObject.Find("Player Spawn");
-            var opponentSpawn = GameObject.Find("Opponent Spawn");
-            if (playerSpawn != null) playerSpawn.name = "Player Spawn";
-            if (opponentSpawn != null) opponentSpawn.name = "Opponent Spawn";
+            if (match.GetComponent<SettingsPanelController>() == null)
+                match.gameObject.AddComponent<SettingsPanelController>();
+            if (match.GetComponent<MainMenuScreen>() == null)
+                match.gameObject.AddComponent<MainMenuScreen>();
             EditorSceneManager.MarkSceneDirty(scene);
             EditorSceneManager.SaveScene(scene);
             EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene(ScenePath, true) };

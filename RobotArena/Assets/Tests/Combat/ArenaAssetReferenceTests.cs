@@ -95,6 +95,16 @@ namespace RobotSavaslari.Tests
             Assert.That(match.Opponent, Is.Not.Null.And.Not.EqualTo(match.Player));
             Assert.That(match.Player.enabled && match.Opponent.enabled, Is.True);
             Assert.That(match.ManualNotificationsOnly, Is.False);
+            Assert.That(Components<RobotSavaslari.UI.MainMenuScreen>(scene), Has.Length.EqualTo(1));
+            Assert.That(Components<RobotSavaslari.UI.SettingsPanelController>(scene), Has.Length.EqualTo(1));
+            var defaultProfile = AssetDatabase.LoadAssetAtPath<RobotSavaslari.Combat.CombatProfile>(
+                "Assets/Settings/Combat/StandardMelee.asset");
+            Assert.That(defaultProfile, Is.Not.Null);
+            foreach (var robot in new[] { match.Player, match.Opponent })
+            {
+                using (var serializedRobot = new SerializedObject(robot))
+                    Assert.That(serializedRobot.FindProperty("weaponProfile").objectReferenceValue, Is.EqualTo(defaultProfile));
+            }
             using (var serialized = new SerializedObject(match))
             {
                 Assert.That(serialized.FindProperty("playerSpawn").objectReferenceValue, Is.Not.Null);

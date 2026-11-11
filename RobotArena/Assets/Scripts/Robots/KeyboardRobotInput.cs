@@ -80,42 +80,15 @@ namespace RobotSavaslari.Robots
                 return;
             }
 
-            float forward = Axis(keyboard, forwardKey, backwardKey);
-            float turn = Axis(keyboard, turnRightKey, turnLeftKey);
-
-            if (alsoUseArrowKeys)
-            {
-                if (Mathf.Approximately(forward, 0f))
-                {
-                    forward = Axis(keyboard, Key.UpArrow, Key.DownArrow);
-                }
-
-                if (Mathf.Approximately(turn, 0f))
-                {
-                    turn = Axis(keyboard, Key.RightArrow, Key.LeftArrow);
-                }
-            }
+            float forward = KeyboardDriveAxes.ReadAxis(keyboard, forwardKey, backwardKey,
+                alsoUseArrowKeys ? Key.UpArrow : Key.None, alsoUseArrowKeys ? Key.DownArrow : Key.None);
+            float turn = KeyboardDriveAxes.ReadAxis(keyboard, turnRightKey, turnLeftKey,
+                alsoUseArrowKeys ? Key.RightArrow : Key.None, alsoUseArrowKeys ? Key.LeftArrow : Key.None);
 
             // Tuş bırakıldığında eksen 0 olur, yani hareket girdisi kesilir.
             motor.SetMoveCommand(forward, turn);
         }
 
-        private static float Axis(Keyboard keyboard, Key positiveKey, Key negativeKey)
-        {
-            float value = 0f;
-
-            if (positiveKey != Key.None && keyboard[positiveKey].isPressed)
-            {
-                value += 1f;
-            }
-
-            if (negativeKey != Key.None && keyboard[negativeKey].isPressed)
-            {
-                value -= 1f;
-            }
-
-            return value;
-        }
     }
 #else
     /// <summary>

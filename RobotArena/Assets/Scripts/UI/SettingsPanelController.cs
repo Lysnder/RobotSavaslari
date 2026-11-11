@@ -6,11 +6,14 @@ namespace RobotSavaslari.UI
     /// <summary>
     /// Arena icinden ses ve goruntu ayarlarini duzenler.
     /// </summary>
-    public sealed class MainMenuController : MonoBehaviour
+    [DisallowMultipleComponent]
+    [DefaultExecutionOrder(-105)]
+    public sealed class SettingsPanelController : MonoBehaviour
     {
         private const float ReferenceHeight = 720f;
         public bool IsOpen { get; private set; }
 
+        private float _previousTimeScale;
         private GUIStyle _subtitleStyle;
         private GUIStyle _labelStyle;
         private GUIStyle _qualityStyle;
@@ -28,24 +31,29 @@ namespace RobotSavaslari.UI
             else
             {
                 GameSettings.Load();
+                _previousTimeScale = Time.timeScale;
+                Time.timeScale = 0f;
                 IsOpen = true;
             }
         }
 
+        private void OnDisable()
+        {
+            if (IsOpen) CloseSettings();
+        }
+
         private void OnGUI()
         {
+            if (!IsOpen) return;
             EnsureStyles();
             Matrix4x4 previousMatrix = GUI.matrix;
             bool previousEnabled = GUI.enabled;
             try
             {
-                float scale = Screen.height / ReferenceHeight;
+                float scale = Mathf.Max(0.01f, Mathf.Min(Screen.height / ReferenceHeight, Screen.width / 600f));
                 GUI.matrix = Matrix4x4.Scale(new Vector3(scale, scale, 1f));
                 float width = Screen.width / scale;
-                if (GUI.Button(new Rect(width - 174f, 16f, 158f, 36f), "Ayarlar (Esc)"))
-                    ToggleSettings();
-                if (IsOpen)
-                    DrawSettingsPage(width);
+                DrawSettingsPage(width);
             }
             finally
             {
@@ -119,6 +127,7 @@ namespace RobotSavaslari.UI
         private void CloseSettings()
         {
             GameSettings.Save();
+            Time.timeScale = _previousTimeScale;
             IsOpen = false;
         }
 

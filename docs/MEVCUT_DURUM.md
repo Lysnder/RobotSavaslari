@@ -1,5 +1,13 @@
 # Robot Savaşları mevcut durumu
 
+## PR #28 sonrasında
+
+PR #28 ile gelen menü, geri sayım ve yakın dövüşü kullanan sürümün tek oyun sahnesi `Assets/Scenes/Gameplay/MainArena.unity`. Ayarlar ve başlangıç menüsü bu sahnededir. Test sahneleri ve modüler robot önizlemesi ayrı kalır. Yakın dövüş profilleri `Assets/Settings/Combat/` altında; [dövüş ve kontrol açıklaması](../RobotArena/Assets/Scripts/Combat/README.md) güncel yolları listeler.
+
+**Doğrulama sınırı:** Aşağıdaki Unity test sayıları ve Windows oynanış sonuçları önceki teslimin kayıtlarıdır; PR #28 ve takip eden değişiklikleri kapsamaz. Yeni sürüm için Unity ve Windows sonuçları ayrıca kaydedilmelidir.
+
+## Önceki teslim — tarihsel kayıt
+
 11 Kasım 2026. Entegrasyonun başlangıç kaynağı `origin/test` revizyonu `49179104cb4d9950360e38b5e5e1837a177914ce`. Başlangıç `origin/main` revizyonu `89c46a70aa3ff37e0c1611ff1fef4f9ae868e8aa`. Özgün teslim karşılaştırmasında `feature/Eray-attackMoves` ucu `091bf7ff250dcf5617636db1d349fee4b54b777f` kullanıldı. Diğer uzak dalların başlangıç uçları `initial-refs.txt` kaydında bulunur.
 
 Ana oyun sahnesi `RobotArena/Assets/Scenes/Gameplay/MainArena.unity`. Unity sürümü `6000.4.4f1 (360f97ecca93)`. Temiz kopyanın ilk açılışındaki boş editör sahnesinden Play bu arenayı başlatır. Açık ve düzenlenen sahnelerde kullanıcının seçimi korunur. Windows derlemesi aynı arenayı doğrudan yükler. Arenada Enter veya **Maçı başlat**, W/S ile ileri-geri, A/D ile dönüş, Space ile silah ve sonuçtan sonra R veya **Yeni maç** kullanılır. **Ayarlar** düğmesi ve Esc ayar panelini açar.

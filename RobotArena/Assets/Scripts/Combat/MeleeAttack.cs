@@ -131,8 +131,11 @@ namespace RobotSavaslari.Combat
                 return;
             }
 
-            ScanTargets();
-            if (now >= _activeUntil)
+            // A zero-duration profile samples once, synchronously in RequestAttack.
+            // A late physics tick must not collect a hit after the window closed.
+            if (now < _activeUntil || (activeDuration == 0f && now == _activeUntil))
+                ScanTargets();
+            if (_active && now >= _activeUntil)
                 Finish(_hitLog.Count > 0 ? AttackOutcome.Hit : AttackOutcome.Miss, now);
         }
 
@@ -168,6 +171,8 @@ namespace RobotSavaslari.Combat
             Collider[] colliders = Physics.OverlapSphere(Origin, range, targetLayers, QueryTriggerInteraction.Ignore);
             foreach (Collider collider in colliders)
             {
+                // Damage callbacks can end the match synchronously, even before this loop returns.
+                if (!_active || !IsGateOpen || IsSelfDefeated) break;
                 RobotHealth target = collider.GetComponentInParent<RobotHealth>();
                 if (target == null || target == _health || target.IsDefeated) continue;
                 if (_hitLog.Contains(target) || !IsInReach(collider, out Vector3 point)) continue;

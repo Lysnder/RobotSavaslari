@@ -1,6 +1,6 @@
-# Dövüş modülü (E1–E4) — birleşim notu
+# Yakın dövüş: maç bağlantıları ve doğrulama
 
-Bu belge, Eray'ın dövüş modülünü maç akışına bağlayacak kişi içindir. Modül ortak koda (RobotPrototypeController, ArenaMatchController, ortak prefab, proje ayarları) dokunmaz.
+Ana arenadaki oyuncu ve bot aynı yakın dövüş bileşenini kullanır. Bağımsız deneme sahnesi profilleri ve sınır durumlarını maç oynamadan incelemek içindir.
 
 ## Dosyalar
 
@@ -13,10 +13,10 @@ Bu belge, Eray'ın dövüş modülünü maç akışına bağlayacak kişi içind
 | `CombatProfile.cs` | Hasar / menzil / bekleme / pencere / yay ayar profili |
 | `AttackTestTrigger.cs` | Klavyesiz saldırı isteği gönderen deneme bileşeni |
 | `Testing/` | Deneme düzeneği, kabul senaryoları, deneme sahnesi kontrolü |
-| `Editor/CombatChecks.cs` | Senaryoları editörden / komut satırından çalıştırır |
+| `Assets/Editor/Combat/CombatChecks.cs` | Senaryoları editörden / komut satırından çalıştırır |
 
-Deneme sahnesi: `Assets/Scenes/Dev/Eray/CombatTest.unity`
-Profiller: `Assets/Scenes/Dev/Eray/Profiles/Profil_Hasar25.asset`, `Profil_Hasar40.asset`
+Deneme sahnesi: `Assets/Scenes/Tests/Combat/MeleeCombatValidation.unity`
+Profiller: `Assets/Settings/Combat/StandardMelee.asset`, `HeavyMelee.asset`
 
 ## Kurallar
 
@@ -27,39 +27,15 @@ Profiller: `Assets/Scenes/Dev/Eray/Profiles/Profil_Hasar25.asset`, `Profil_Hasar
 - Pencere sürerken maç kapanırsa saldırı kesilir ve artık hasar yazılmaz.
 - Can ve yenilgi ortak `RobotHealth` bileşenindedir. Can 0'ın altına inmez ve `Defeated` olayı yalnız bir kez gelir.
 
-## Oyuncu ve botun ortak saldırı girişi
+## Ana arenadaki bağlantı
 
-```csharp
-// Oyuncu girdisi (Atalay'ın giriş sistemi):
-if (attackPressed) robot.GetComponent<MeleeAttack>().RequestAttack();
+Her iki robotun `RobotPrototypeController` bileşeninde `weaponProfile` alanı `StandardMelee` profiline bağlıdır. Oyuncunun Space komutu ve botun saldırı kararı aynı `MeleeAttack.RequestAttack()` yolundan geçer. Silah menzil, açı, etkin vuruş süresi ve bekleme süresine tabidir. Hıza ve kütleye dayanan fiziksel çarpma hasarı ayrı hesaplanır. Yeni maçta etkin saldırı penceresi ve bekleme süresi sıfırlanır.
 
-// Bot (rakip yapay zekâ):
-var attack = GetComponent<MeleeAttack>();
-if (attack.CooldownRemaining <= 0f && HedefOnumde()) attack.RequestAttack();
-
-// Sonucu dinlemek isteyen (ses, efekt, arayüz):
-attack.Resolved += (a, report) => Debug.Log(report.Describe());
-attack.TargetHit += (a, target, damage) => { /* isabet efekti */ };
-```
-
-`RequestAttack()` hiçbir tuşa bağlı değildir. `AttackTestTrigger.Fire()` de aynı çağrıyı yapar.
-
-## Maç akışına bağlantı
-
-1. **Robot prefab'ı:** Her robota `MeleeAttack` eklenir (`RobotHealth` zaten var). İstenen profil `profile` alanına atanır.
-2. **Maç izni:** Maç akışı `IMatchGate` uygular. Örneğin `ArenaMatchController : IMatchGate`, `IsOpen => !_matchFinished && !_countingDown`. Robotlar kurulurken `attack.Gate = matchController;` atanır. Sahnede `LocalMatchGate` kullanılacaksa `MeleeAttack.matchGate` alanına sürüklenmesi yeterlidir.
-3. **Yenilgi bildirimi:** Maç akışı zaten `RobotHealth.Defeated` olayını dinliyor. Bu olay robot başına bir kez gelir, ek bir bağlantı gerekmez.
-4. **Yeni maç:** `RobotHealth.Restore()` ile birlikte `MeleeAttack.ResetForNewMatch()` çağrılır. Bu çağrı beklemeyi, süren saldırıyı ve hedef kayıtlarını sıfırlar.
-
-Not: Ortak `RobotPrototypeController` hâlâ kendi çarpma hasarını uyguluyor. İki sistemin birlikte mi çalışacağı, yoksa çarpma hasarının kapatılıp kapatılmayacağı birleşimde karar verilmeli.
-
-## Geçici çözüm
-
-Repoda ortak robot prefab'ı olmadığı için deneme sahnesindeki iki robot `CombatTestRig.CreateRobot` ile kodla kurulur. Her robot gövde ve iki tekerlek collider'ı, `RobotHealth`, `MeleeAttack` ve `AttackTestTrigger` içerir. Ortak prefab eklendiğinde bu metot prefab örneklemeye çevrilmelidir.
+Deneme sahnesinde `CombatTestRig` gövde ve tekerlek collider'ları bulunan geçici robotlar kurar. İkinci profil (`HeavyMelee`) bu sahnede karşılaştırma içindir; oynanabilir iki robotun varsayılan profili aynıdır.
 
 ## Varsayılan dövüş ayarları
 
-| Ayar | Profil_Hasar25 | Profil_Hasar40 |
+| Ayar | StandardMelee | HeavyMelee |
 |---|---|---|
 | Hasar | 25 | 40 |
 | Menzil | 1.5 m | 1.5 m |
@@ -70,7 +46,7 @@ Repoda ortak robot prefab'ı olmadığı için deneme sahnesindeki iki robot `Co
 
 ## Çalıştırma
 
-**Deneme sahnesi:** `CombatTest.unity`'yi açın ve Play'e basın.
+**Deneme sahnesi:** `MeleeCombatValidation.unity`'yi açın ve Play'e basın.
 
 | Tuş | İşlev |
 |---|---|
@@ -86,7 +62,7 @@ Repoda ortak robot prefab'ı olmadığı için deneme sahnesindeki iki robot `Co
 Aynı işlemler ekrandaki düğmelerle de yapılabilir. "Oto saldırı" düğmesi klavyesiz saldırı isteğini gösterir.
 
 **Kabul senaryoları:**
-- Editörde: `RobotSavaslari > Eray > Dovus Kontrollerini Calistir` menüsü.
+- Editörde: `RobotSavaslari > Combat > Run Melee Checks` menüsü.
 - Komut satırında (editör kapalıyken):
 
 ```
@@ -95,7 +71,7 @@ Unity.exe -batchmode -nographics -projectPath RobotArena -executeMethod RobotSav
 
 Komut, tüm senaryolar geçerse 0, biri bile kalırsa 1 ile çıkar. Sonuç satırları logda `COMBATCHECK` önekiyle yazılır.
 
-## Senaryolar (22 adet)
+## Senaryo kapsamı
 
 - **E1:** 25 hasar yalnız hedefi 75'e indirir · aşırı hasar 0'da durur · ek hasar ikinci yenilgi bildirimi üretmez · yeni denemede her robot kendi başlangıç canına döner
 - **E2:** iki collider teması tek hasar (önden ve yandan) · süren temas tek hasar · menzil dışı ıska · kendi robotuna hasar yok · bekleme sürerken tekrarlı istek reddedilir · bekleme sonrası 50 · klavyesiz tetikleyici

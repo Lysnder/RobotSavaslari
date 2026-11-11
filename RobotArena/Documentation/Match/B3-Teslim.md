@@ -56,7 +56,7 @@ Unity 6000.4.4f1 Play Mode'da B1 ve B2 regresyonları geçti.
 - Eski maç bildiriminin reddi, yalnız iki robot, yeni maçta tek sonuç olayı.
 - Dört sonuçta dinleyici tam dört kez çağrıldı; olay birikmesi gözlenmedi.
 - Oyun kare sayısı 1618'den 3855'e ilerledi; test donmuş karede yapılmadı.
-- Console ve derleme hatası yok. `B3-result.png` incelendi; kazanan, yeniden
+- Console ve derleme hatası yok. [MatchRestart](../../Assets/Tests/MatchEvidence/MatchRestart.png) incelendi; kazanan, yeniden
   başlatma düğmesi, tek sonuç ve iki kapalı izin birlikte görünür.
 
 Tekrar test: temiz Play oturumunda Pipeline `script eval` ile

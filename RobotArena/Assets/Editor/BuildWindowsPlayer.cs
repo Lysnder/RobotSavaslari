@@ -13,19 +13,13 @@ namespace RobotSavaslari.Editor
             if (!File.Exists(GameplayStartup.ScenePath))
                 throw new InvalidOperationException("MainArena scene is missing.");
 
-            // Ana menu varsa oyun ondan acilir; OYNA butonu MainArena'yi yukler.
-            const string menuScene = "Assets/Scenes/MainMenu.unity";
-            string[] scenes = File.Exists(menuScene)
-                ? new[] { menuScene, GameplayStartup.ScenePath }
-                : new[] { GameplayStartup.ScenePath };
-
             string projectPath = Directory.GetParent(UnityEngine.Application.dataPath).FullName;
             string outputDirectory = Path.Combine(projectPath, "Builds", "Windows");
             Directory.CreateDirectory(outputDirectory);
 
             BuildPlayerOptions options = new BuildPlayerOptions
             {
-                scenes = scenes,
+                scenes = new[] { GameplayStartup.ScenePath },
                 locationPathName = Path.Combine(outputDirectory, "RobotSavaslari.exe"),
                 target = BuildTarget.StandaloneWindows64,
                 options = BuildOptions.None

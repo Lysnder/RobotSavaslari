@@ -1,25 +1,14 @@
-using System.Collections;
 using UnityEngine;
 
 namespace RobotSavaslari
 {
     public sealed class ArenaMatchController : MonoBehaviour
     {
-        [Tooltip("Mac baslamadan onceki geri sayim suresi (s).")]
-        [SerializeField, Min(1)] private int countdownSeconds = 3;
-        [Tooltip("Geri sayimdan sonra 'BASLA!' yazisinin ekranda kalma suresi (s).")]
-        [SerializeField, Min(0f)] private float startMessageDuration = 0.8f;
-
         private RobotHealth _robotOne;
         private RobotHealth _robotTwo;
         private bool _matchFinished;
         private string _winner;
         private GUIStyle _titleStyle;
-        private GUIStyle _countdownStyle;
-        private Coroutine _countdown;
-        private float _countdownEndTime;
-        private bool _countingDown;
-        private float _startMessageUntil;
 
         private readonly Vector3 _robotOneStart = new Vector3(3.15f, 0.82f, 0f);
         private readonly Vector3 _robotTwoStart = new Vector3(-3.15f, 0.82f, 0f);
@@ -38,34 +27,8 @@ namespace RobotSavaslari
 
             _robotOne.Defeated += HandleRobotDefeated;
             _robotTwo.Defeated += HandleRobotDefeated;
-            PositionCamera();
-            StartCountdown();
-        }
-
-        // Robotlar geri sayim boyunca kilitli kalir; sayim bitince mac baslar.
-        private void StartCountdown()
-        {
-            if (_countdown != null)
-                StopCoroutine(_countdown);
-            _countdown = StartCoroutine(CountdownThenStart());
-        }
-
-        private IEnumerator CountdownThenStart()
-        {
-            RobotPrototypeController.Select(null);
-            _robotOne.GetComponent<RobotPrototypeController>().StopCombat();
-            _robotTwo.GetComponent<RobotPrototypeController>().StopCombat();
-
-            _countingDown = true;
-            _startMessageUntil = 0f;
-            _countdownEndTime = Time.time + countdownSeconds;
-            while (Time.time < _countdownEndTime)
-                yield return null;
-
-            _countingDown = false;
-            _startMessageUntil = Time.time + startMessageDuration;
             ConfigureCombat();
-            _countdown = null;
+            PositionCamera();
         }
 
         private void ConfigureCombat()
@@ -155,8 +118,6 @@ namespace RobotSavaslari
             DrawRobotPanel(_robotOne, 24f, 105f, new Color(0.85f, 0.16f, 0.12f, 1f), BotRole());
             DrawRobotPanel(_robotTwo, Screen.width - 324f, 105f, new Color(0.12f, 0.38f, 0.9f, 1f), "OYUNCU - WASD / Ok tuslari");
 
-            DrawCountdown();
-
             if (_matchFinished)
             {
                 Rect resultPanel = new Rect((Screen.width - 360f) / 2f, (Screen.height - 150f) / 2f, 360f, 150f);
@@ -172,9 +133,9 @@ namespace RobotSavaslari
             else
             {
                 GUI.Label(new Rect(24f, Screen.height - 42f, Screen.width - 48f, 28f),
-                    "Mavi: W/S veya yukari/asagi: sur | A/D veya sol/sag: don | Space: silah | Carpma hasari = hiz x (agirlik / rakip agirligi)");
+                    "Mavi: W/S veya yukari/asagi: sur | A/D veya sol/sag: don | Space: silah | Carpma: hiz ve kutleye bagli | Silah: yakin dovus profili");
                 GUI.Label(new Rect(24f, Screen.height - 68f, Screen.width - 48f, 24f),
-                    "Kirmizi kisa hamlelerle saldirir, geri acilir ve yandan yaklasir. Hasar icin temas gerekir.");
+                    "Kirmizi kisa hamlelerle saldirir, geri acilir ve yandan yaklasir. Carpma icin fiziksel temas, silah icin menzil ve aci gerekir.");
             }
         }
 
@@ -194,53 +155,10 @@ namespace RobotSavaslari
             }
         }
 
-        private void DrawCountdown()
-        {
-            string text;
-            float phase; // 0 -> 1 her saniye icinde ilerler; yazi buyukten normale kuculur.
-            if (_countingDown)
-            {
-                float remaining = Mathf.Max(0f, _countdownEndTime - Time.time);
-                text = Mathf.CeilToInt(remaining).ToString();
-                phase = 1f - (remaining - Mathf.Floor(remaining));
-                if (Mathf.Approximately(phase, 1f)) phase = 0f;
-            }
-            else if (Time.time < _startMessageUntil)
-            {
-                text = "BASLA!";
-                phase = 1f - (_startMessageUntil - Time.time) / Mathf.Max(0.01f, startMessageDuration);
-            }
-            else
-            {
-                return;
-            }
-
-            if (_countdownStyle == null)
-            {
-                _countdownStyle = new GUIStyle(GUI.skin.label)
-                {
-                    fontStyle = FontStyle.Bold,
-                    alignment = TextAnchor.MiddleCenter
-                };
-            }
-
-            float baseSize = Screen.height * 0.22f;
-            _countdownStyle.fontSize = Mathf.RoundToInt(baseSize * Mathf.Lerp(1.35f, 1f, Mathf.Clamp01(phase * 3f)));
-            Color previous = GUI.color;
-            Rect rect = new Rect(0f, 0f, Screen.width, Screen.height);
-
-            // Arenanin acik zemininde okunabilsin diye golge ile cizilir.
-            GUI.color = new Color(0f, 0f, 0f, 0.65f);
-            GUI.Label(new Rect(rect.x + 4f, rect.y + 4f, rect.width, rect.height), text, _countdownStyle);
-            GUI.color = _countingDown ? new Color(1f, 0.85f, 0.2f, 1f) : new Color(0.35f, 1f, 0.45f, 1f);
-            GUI.Label(rect, text, _countdownStyle);
-            GUI.color = previous;
-        }
-
         public bool BlocksRobotSelection(Vector2 screenPoint)
         {
             Vector2 guiPoint = new Vector2(screenPoint.x, Screen.height - screenPoint.y);
-            return _matchFinished || _countingDown || new Rect(24f, 105f, 300f, 106f).Contains(guiPoint) ||
+            return _matchFinished || new Rect(24f, 105f, 300f, 106f).Contains(guiPoint) ||
                    new Rect(Screen.width - 324f, 105f, 300f, 106f).Contains(guiPoint);
         }
 
@@ -277,7 +195,7 @@ namespace RobotSavaslari
             ResetRobot(_robotTwo, _robotTwoStart, Quaternion.Euler(0f, 90f, 0f));
             _robotOne.Restore();
             _robotTwo.Restore();
-            StartCountdown();
+            ConfigureCombat();
         }
     }
 }

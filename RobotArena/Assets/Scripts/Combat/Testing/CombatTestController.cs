@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 namespace RobotSavaslari.Combat.Testing
 {
     /// <summary>
-    /// Eray'in dovus deneme sahnesi (E1-E4). Iki robotu kurar, deneme dugmeleri ve
+    /// Yakin dovus dogrulama sahnesi (E1-E4). Iki robotu kurar, deneme dugmeleri ve
     /// klavye ile can, saldiri, bekleme, mac izni ve profil davranislarini gosterir.
     /// </summary>
     public sealed class CombatTestController : MonoBehaviour
@@ -179,7 +179,7 @@ namespace RobotSavaslari.Combat.Testing
             GUI.matrix = Matrix4x4.Scale(new Vector3(scale, scale, 1f));
             float width = Screen.width / scale;
 
-            GUI.Label(new Rect(0f, 8f, width, 30f), "ERAY - DOVUS DENEME SAHNESI (E1-E4)", _titleStyle);
+            GUI.Label(new Rect(0f, 8f, width, 30f), "YAKIN DOVUS DOGRULAMA (E1-E4)", _titleStyle);
             DrawToolbar(width);
             DrawRobotPanel(_rig.A, 12f, 92f);
             DrawRobotPanel(_rig.B, width - 332f, 92f);
