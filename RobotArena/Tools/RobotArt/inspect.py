@@ -1,6 +1,6 @@
 import bpy, json, os
 from mathutils import Vector
-root = r'C:\Users\Burak\RobotSavaslari\RobotArena'
+root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 report = {}
 for name in ['BlueCombatRobot', 'RedLifterRobot']:
     bpy.ops.wm.read_factory_settings(use_empty=True)

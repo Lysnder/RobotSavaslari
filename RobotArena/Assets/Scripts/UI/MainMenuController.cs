@@ -1,61 +1,56 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 namespace RobotSavaslari.UI
 {
     /// <summary>
-    /// Ana menu: Oyna ve Ayarlar. Proje genelindeki diger arayuzler gibi IMGUI ile cizilir.
+    /// Arena icinden ses ve goruntu ayarlarini duzenler.
     /// </summary>
     public sealed class MainMenuController : MonoBehaviour
     {
-        private enum Page
-        {
-            Main,
-            Settings
-        }
-
-        // Tum olculer bu referans yukseklige gore yazilir ve ekran boyutuna gore olceklenir.
         private const float ReferenceHeight = 720f;
+        public bool IsOpen { get; private set; }
 
-        [SerializeField] private string gameSceneName = "Arena";
-
-        private Page _page = Page.Main;
-        private GUIStyle _titleStyle;
         private GUIStyle _subtitleStyle;
-        private GUIStyle _buttonStyle;
         private GUIStyle _labelStyle;
         private GUIStyle _qualityStyle;
+
+        private void Update()
+        {
+            if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
+                ToggleSettings();
+        }
+
+        public void ToggleSettings()
+        {
+            if (IsOpen)
+                CloseSettings();
+            else
+            {
+                GameSettings.Load();
+                IsOpen = true;
+            }
+        }
 
         private void OnGUI()
         {
             EnsureStyles();
-
-            float scale = Screen.height / ReferenceHeight;
-            GUI.matrix = Matrix4x4.Scale(new Vector3(scale, scale, 1f));
-            float width = Screen.width / scale;
-
-            HandleEscape();
-
-            GUI.Label(new Rect(0f, 110f, width, 70f), "ROBOT SAVASLARI", _titleStyle);
-
-            if (_page == Page.Main)
-                DrawMainPage(width);
-            else
-                DrawSettingsPage(width);
-
-            GUI.matrix = Matrix4x4.identity;
-        }
-
-        private void DrawMainPage(float width)
-        {
-            float x = (width - 280f) / 2f;
-            if (GUI.Button(new Rect(x, 300f, 280f, 60f), "OYNA", _buttonStyle))
-                SceneManager.LoadScene(gameSceneName);
-
-            if (GUI.Button(new Rect(x, 380f, 280f, 60f), "AYARLAR", _buttonStyle))
+            Matrix4x4 previousMatrix = GUI.matrix;
+            bool previousEnabled = GUI.enabled;
+            try
             {
-                GameSettings.Load();
-                _page = Page.Settings;
+                float scale = Screen.height / ReferenceHeight;
+                GUI.matrix = Matrix4x4.Scale(new Vector3(scale, scale, 1f));
+                float width = Screen.width / scale;
+                if (GUI.Button(new Rect(width - 174f, 16f, 158f, 36f), "Ayarlar (Esc)"))
+                    ToggleSettings();
+                if (IsOpen)
+                    DrawSettingsPage(width);
+            }
+            finally
+            {
+                GUI.matrix = previousMatrix;
+                GUI.enabled = previousEnabled;
             }
         }
 
@@ -96,13 +91,14 @@ namespace RobotSavaslari.UI
             GUI.Label(new Rect(labelX, 365f, 160f, 30f), "Grafik kalitesi", _labelStyle);
             int quality = GameSettings.QualityLevel;
             // Oklar yalnizca gidilecek bir seviye varken aktif olur.
-            GUI.enabled = quality > 0;
+            bool previousEnabled = GUI.enabled;
+            GUI.enabled = previousEnabled && quality > 0;
             if (GUI.Button(new Rect(valueX, 365f, 36f, 30f), "<"))
                 quality--;
-            GUI.enabled = quality < qualityNames.Length - 1;
+            GUI.enabled = previousEnabled && quality < qualityNames.Length - 1;
             if (GUI.Button(new Rect(valueX + valueWidth - 36f, 365f, 36f, 30f), ">"))
                 quality++;
-            GUI.enabled = true;
+            GUI.enabled = previousEnabled;
             GUI.Label(new Rect(valueX + 40f, 365f, valueWidth - 80f, 30f), qualityNames[quality], _qualityStyle);
             if (quality != GameSettings.QualityLevel)
             {
@@ -116,47 +112,26 @@ namespace RobotSavaslari.UI
                 GameSettings.Apply();
             }
 
-            if (GUI.Button(new Rect(x + panelWidth - 204f, 425f, 180f, 40f), "Kaydet ve Geri"))
+            if (GUI.Button(new Rect(x + panelWidth - 204f, 425f, 180f, 40f), "Kaydet ve Kapat"))
                 CloseSettings();
-        }
-
-        private void HandleEscape()
-        {
-            Event current = Event.current;
-            if (_page == Page.Settings && current.type == EventType.KeyDown && current.keyCode == KeyCode.Escape)
-            {
-                CloseSettings();
-                current.Use();
-            }
         }
 
         private void CloseSettings()
         {
             GameSettings.Save();
-            _page = Page.Main;
+            IsOpen = false;
         }
 
         private void EnsureStyles()
         {
-            if (_titleStyle != null || GUI.skin == null)
+            if (_subtitleStyle != null || GUI.skin == null)
                 return;
 
-            _titleStyle = new GUIStyle(GUI.skin.label)
-            {
-                fontSize = 52,
-                fontStyle = FontStyle.Bold,
-                alignment = TextAnchor.MiddleCenter
-            };
             _subtitleStyle = new GUIStyle(GUI.skin.label)
             {
                 fontSize = 24,
                 fontStyle = FontStyle.Bold,
                 alignment = TextAnchor.MiddleCenter
-            };
-            _buttonStyle = new GUIStyle(GUI.skin.button)
-            {
-                fontSize = 24,
-                fontStyle = FontStyle.Bold
             };
             _labelStyle = new GUIStyle(GUI.skin.label)
             {

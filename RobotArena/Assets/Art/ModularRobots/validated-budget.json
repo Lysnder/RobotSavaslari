@@ -1,0 +1,174 @@
+{
+  "files": {
+    "Armor_armor_heavy": {
+      "triangles": 3679,
+      "bytes": 317852
+    },
+    "Armor_armor_heavy_LOD1": {
+      "triangles": 1839,
+      "bytes": 257048
+    },
+    "Armor_armor_heavy_LOD2": {
+      "triangles": 441,
+      "bytes": 173324
+    },
+    "Armor_armor_light": {
+      "triangles": 2202,
+      "bytes": 338372
+    },
+    "Armor_armor_light_LOD1": {
+      "triangles": 1101,
+      "bytes": 306648
+    },
+    "Armor_armor_light_LOD2": {
+      "triangles": 264,
+      "bytes": 265648
+    },
+    "KitChassis": {
+      "triangles": 11876,
+      "bytes": 7159492
+    },
+    "KitChassis_LOD1": {
+      "triangles": 5938,
+      "bytes": 6896308
+    },
+    "KitChassis_LOD2": {
+      "triangles": 1425,
+      "bytes": 6612360
+    },
+    "KitWheel": {
+      "triangles": 1432,
+      "bytes": 94880
+    },
+    "KitWheel_LOD1": {
+      "triangles": 716,
+      "bytes": 50760
+    },
+    "KitWheel_LOD2": {
+      "triangles": 170,
+      "bytes": 16180
+    },
+    "Weapon_drum": {
+      "triangles": 5939,
+      "bytes": 450020
+    },
+    "Weapon_drum_LOD1": {
+      "triangles": 2969,
+      "bytes": 337108
+    },
+    "Weapon_drum_LOD2": {
+      "triangles": 709,
+      "bytes": 198440
+    },
+    "Weapon_horizontal": {
+      "triangles": 6030,
+      "bytes": 489540
+    },
+    "Weapon_horizontal_LOD1": {
+      "triangles": 3015,
+      "bytes": 408396
+    },
+    "Weapon_horizontal_LOD2": {
+      "triangles": 720,
+      "bytes": 307120
+    },
+    "Weapon_vertical": {
+      "triangles": 7131,
+      "bytes": 494112
+    },
+    "Weapon_vertical_LOD1": {
+      "triangles": 3565,
+      "bytes": 398072
+    },
+    "Weapon_vertical_LOD2": {
+      "triangles": 852,
+      "bytes": 275692
+    }
+  },
+  "assemblies": {
+    "vertical_light": [
+      {
+        "triangles": 29139,
+        "unique_module_bytes": 8086856
+      },
+      {
+        "triangles": 14569,
+        "unique_module_bytes": 7651788
+      },
+      {
+        "triangles": 3485,
+        "unique_module_bytes": 7169880
+      }
+    ],
+    "vertical_heavy": [
+      {
+        "triangles": 32093,
+        "unique_module_bytes": 8066336
+      },
+      {
+        "triangles": 16045,
+        "unique_module_bytes": 7602188
+      },
+      {
+        "triangles": 3839,
+        "unique_module_bytes": 7077556
+      }
+    ],
+    "drum_light": [
+      {
+        "triangles": 27947,
+        "unique_module_bytes": 8042764
+      },
+      {
+        "triangles": 13973,
+        "unique_module_bytes": 7590824
+      },
+      {
+        "triangles": 3342,
+        "unique_module_bytes": 7092628
+      }
+    ],
+    "drum_heavy": [
+      {
+        "triangles": 30901,
+        "unique_module_bytes": 8022244
+      },
+      {
+        "triangles": 15449,
+        "unique_module_bytes": 7541224
+      },
+      {
+        "triangles": 3696,
+        "unique_module_bytes": 7000304
+      }
+    ],
+    "horizontal_light": [
+      {
+        "triangles": 28038,
+        "unique_module_bytes": 8082284
+      },
+      {
+        "triangles": 14019,
+        "unique_module_bytes": 7662112
+      },
+      {
+        "triangles": 3353,
+        "unique_module_bytes": 7201308
+      }
+    ],
+    "horizontal_heavy": [
+      {
+        "triangles": 30992,
+        "unique_module_bytes": 8061764
+      },
+      {
+        "triangles": 15495,
+        "unique_module_bytes": 7612512
+      },
+      {
+        "triangles": 3707,
+        "unique_module_bytes": 7108984
+      }
+    ]
+  }
+}

@@ -1,0 +1,29 @@
+﻿{
+    "success":  true,
+    "command":  "command",
+    "data":  {
+                 "command":  "script eval",
+                 "parameters":  {
+                                    "code":  "return RobotSavaslari.Editor.BotTacticsChecks.RunCombatInPlayMode();"
+                                },
+                 "result":  {
+                                "output":  null,
+                                "diagnostics":  [
+
+                                                ],
+                                "success":  true,
+                                "result":  "Real combat stationary unarmed player 60s maximum: PASS; bot HP 78,8; player HP 0,0; reposition 4\nReal combat armed driving spin 60s maximum: PASS; bot HP 0,0; player HP 24,8; reposition 4"
+                            },
+                 "target":  {
+                                "host":  "127.0.0.1",
+                                "port":  7800,
+                                "projectPath":  "C:\\work\\unity\\RobotSavaslari\\RobotSavaslari\\RobotArena"
+                            }
+             },
+    "errors":  [
+
+               ],
+    "warnings":  [
+
+                 ]
+}

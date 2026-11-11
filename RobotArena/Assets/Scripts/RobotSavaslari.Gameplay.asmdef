@@ -1,0 +1,9 @@
+{
+    "name": "RobotSavaslari.Gameplay",
+    "rootNamespace": "RobotSavaslari",
+    "references": [
+        "RobotSavaslari.Robots",
+        "RobotSavaslari.Driving",
+        "Unity.InputSystem"
+    ]
+}

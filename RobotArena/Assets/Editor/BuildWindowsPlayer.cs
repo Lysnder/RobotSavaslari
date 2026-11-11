@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Linq;
 using UnityEditor;
 using UnityEditor.Build.Reporting;
 
@@ -11,15 +10,14 @@ namespace RobotSavaslari.Editor
         [MenuItem("RobotSavaslari/Build Windows Player")]
         public static void Build()
         {
-            string[] scenes = EditorBuildSettings.scenes
-                .Where(scene => scene.enabled)
-                .Select(scene => scene.path)
-                .ToArray();
+            if (!File.Exists(GameplayStartup.ScenePath))
+                throw new InvalidOperationException("MainArena scene is missing.");
 
-            if (!scenes.Any(scene => scene == "Assets/Scenes/Arena.unity"))
-            {
-                throw new InvalidOperationException("Arena scene must be enabled in Build Settings.");
-            }
+            // Ana menu varsa oyun ondan acilir; OYNA butonu MainArena'yi yukler.
+            const string menuScene = "Assets/Scenes/MainMenu.unity";
+            string[] scenes = File.Exists(menuScene)
+                ? new[] { menuScene, GameplayStartup.ScenePath }
+                : new[] { GameplayStartup.ScenePath };
 
             string projectPath = Directory.GetParent(UnityEngine.Application.dataPath).FullName;
             string outputDirectory = Path.Combine(projectPath, "Builds", "Windows");

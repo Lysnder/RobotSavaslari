@@ -24,7 +24,7 @@ namespace RobotSavaslari.Editor
             if (!AssetDatabase.IsValidFolder(MaterialFolder))
                 AssetDatabase.CreateFolder("Assets/Materials", "Arena");
 
-            Scene scene = EditorSceneManager.OpenScene("Assets/Scenes/Arena.unity", OpenSceneMode.Single);
+            Scene scene = EditorSceneManager.OpenScene("Assets/Scenes/Tests/CombatArena.unity", OpenSceneMode.Single);
             GameObject oldRoot = GameObject.Find("BattleBots Arena");
             if (oldRoot != null)
                 Object.DestroyImmediate(oldRoot);

@@ -419,7 +419,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7596054609887090473, guid: 7b1d15bc29c954344947c2f2d1388d32, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: 1686db11f9341f04a84131949aade930, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1491,7 +1491,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7596054609887090473, guid: fa1e63210a0f725409715ad1f38cca45, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: 4bc5f7f1b2918c341b0c1383b428dd06, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1659,7 +1659,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7596054609887090473, guid: 7b1d15bc29c954344947c2f2d1388d32, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: 1686db11f9341f04a84131949aade930, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2187,7 +2187,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7596054609887090473, guid: 7b1d15bc29c954344947c2f2d1388d32, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: 1686db11f9341f04a84131949aade930, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2694,8 +2694,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   m_RenderShadows: 1
   m_RequiresDepthTextureOption: 2
   m_RequiresOpaqueTextureOption: 2
@@ -2996,7 +2996,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7596054609887090473, guid: 7b1d15bc29c954344947c2f2d1388d32, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: 1686db11f9341f04a84131949aade930, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3074,7 +3074,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7596054609887090473, guid: 7b1d15bc29c954344947c2f2d1388d32, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: 1686db11f9341f04a84131949aade930, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3544,7 +3544,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7596054609887090473, guid: 7b1d15bc29c954344947c2f2d1388d32, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: 1686db11f9341f04a84131949aade930, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4039,8 +4039,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   m_UsePipelineSettings: 1
   m_AdditionalLightsShadowResolutionTier: 2
   m_CustomShadowLayers: 0
@@ -4246,7 +4246,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7596054609887090473, guid: 7b1d15bc29c954344947c2f2d1388d32, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: 1686db11f9341f04a84131949aade930, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5280,7 +5280,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7596054609887090473, guid: 7b1d15bc29c954344947c2f2d1388d32, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: 1686db11f9341f04a84131949aade930, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5448,7 +5448,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7596054609887090473, guid: 7b1d15bc29c954344947c2f2d1388d32, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: 1686db11f9341f04a84131949aade930, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5706,7 +5706,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7596054609887090473, guid: 7b1d15bc29c954344947c2f2d1388d32, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: 1686db11f9341f04a84131949aade930, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6368,7 +6368,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7596054609887090473, guid: 7b1d15bc29c954344947c2f2d1388d32, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: 1686db11f9341f04a84131949aade930, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6622,7 +6622,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7596054609887090473, guid: 7b1d15bc29c954344947c2f2d1388d32, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: 1686db11f9341f04a84131949aade930, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6892,6 +6892,9 @@ GameObject:
   - component: {fileID: 701033008}
   - component: {fileID: 701033012}
   - component: {fileID: 701033013}
+  - component: {fileID: 701033016}
+  - component: {fileID: 701033015}
+  - component: {fileID: 701033014}
   m_Layer: 0
   m_Name: Mavi Robot
   m_TagString: Untagged
@@ -6909,8 +6912,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 256c76c1fd10e1045a916f29b5c69760, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RobotSavaslari.RobotPrototypeController
+  m_Name:
+  m_EditorClassIdentifier: RobotSavaslari.Gameplay::RobotSavaslari.RobotPrototypeController
   acceleration: 26
   maxSpeed: 5.2
   turnSpeed: 300
@@ -6920,6 +6923,12 @@ MonoBehaviour:
   weaponSpinSpeed: 900
   hitDamage: 10
   hitCooldown: 0.6
+  minimumRamSpeed: 1
+  knockbackRatio: 0.5
+  recoilRatio: 0.3
+  maxKnockbackSpeed: 2.5
+  knockbackDuration: 0.3
+  knockbackTraction: 0.15
 --- !u!114 &701033009
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6930,8 +6939,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 67ae58f3a9874bd4a960349ed8b442e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RobotSavaslari.RobotHealth
+  m_Name:
+  m_EditorClassIdentifier: RobotSavaslari.Gameplay::RobotSavaslari.RobotHealth
   maxHealth: 100
 --- !u!54 &701033010
 Rigidbody:
@@ -7008,12 +7017,66 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 065d7d4758b4ff3448318163e3771e52, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RobotSavaslari.RobotDamageVisuals
+  m_Name:
+  m_EditorClassIdentifier: RobotSavaslari.Gameplay::RobotSavaslari.RobotDamageVisuals
   armorDurability: 22
   wheelDurability: 30
   weaponDurability: 45
   debrisLifetime: 12
+--- !u!114 &701033014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 701033007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7179d5eb6e2030a4ba60ecdab566bbeb, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: RobotSavaslari.Driving::RobotSavaslari.Driving.PlayerKeyboardDriver
+  motor: {fileID: 701033016}
+  forwardKey: 37
+  backwardKey: 33
+  turnLeftKey: 15
+  turnRightKey: 18
+--- !u!114 &701033015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 701033007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cec331139a3272e4db770f2fa90c9aa2, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: RobotSavaslari.Gameplay::RobotSavaslari.RobotDriveMotor
+  acceleration: 26
+  maxSpeed: 5.2
+  turnSpeed: 300
+  braking: 34
+  lateralGrip: 28
+  reverseSpeed: 4
+--- !u!114 &701033016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 701033007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cde816e511699364f9f835cb82e11822, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: RobotSavaslari.Robots::RobotSavaslari.Robots.RobotMotor
+  maxForwardSpeed: 6
+  maxReverseSpeed: 3
+  acceleration: 18
+  brakeDeceleration: 26
+  maxTurnSpeed: 180
+  turnAcceleration: 720
+  turnBrakeDeceleration: 1080
 --- !u!1 &706936013
 GameObject:
   m_ObjectHideFlags: 0
@@ -7186,7 +7249,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
   m_UsePipelineSettings: 1
   m_AdditionalLightsShadowResolutionTier: 2
@@ -7899,7 +7962,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7596054609887090473, guid: 4c0130e7d7545df42b28d80a7829ea65, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: 9b9167f787f72af4180a72a24ab0d3b0, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8000,8 +8063,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   m_IsGlobal: 1
   priority: 0
   blendDistance: 0
@@ -9358,7 +9421,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7596054609887090473, guid: 7b1d15bc29c954344947c2f2d1388d32, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: 1686db11f9341f04a84131949aade930, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10094,7 +10157,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
   m_UsePipelineSettings: 1
   m_AdditionalLightsShadowResolutionTier: 2
@@ -10179,7 +10242,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7596054609887090473, guid: 7b1d15bc29c954344947c2f2d1388d32, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: 1686db11f9341f04a84131949aade930, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10191,6 +10254,69 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3447742079981357586, guid: 7b1d15bc29c954344947c2f2d1388d32, type: 3}
   m_PrefabInstance: {fileID: 1073068130}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1091766388
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1091766390}
+  - component: {fileID: 1091766389}
+  - component: {fileID: 1091766391}
+  m_Layer: 0
+  m_Name: Arena Match
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1091766389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1091766388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 150131e9193ec3e49b0e327de0b48c88, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: RobotSavaslari.Gameplay::RobotSavaslari.Match.MatchController
+  player: {fileID: 701033008}
+  opponent: {fileID: 2016169475}
+  playerSpawn: {fileID: 1351811647}
+  opponentSpawn: {fileID: 1122396808}
+  manualNotificationsOnly: 0
+  gameplayInterface: 1
+--- !u!4 &1091766390
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1091766388}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1091766391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1091766388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: baf189137e9049609f4826f17fa1a4b9, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: RobotSavaslari.Gameplay::RobotSavaslari.UI.MainMenuController
 --- !u!1 &1096061716
 GameObject:
   m_ObjectHideFlags: 0
@@ -10371,6 +10497,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1107052363}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1122396807
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1122396808}
+  m_Layer: 0
+  m_Name: Opponent Spawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1122396808
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1122396807}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 3.15, y: 0.82, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1128632968
 GameObject:
   m_ObjectHideFlags: 0
@@ -10479,7 +10636,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
   m_UsePipelineSettings: 1
   m_AdditionalLightsShadowResolutionTier: 2
@@ -10946,7 +11103,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7596054609887090473, guid: 7b1d15bc29c954344947c2f2d1388d32, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: 1686db11f9341f04a84131949aade930, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -13012,7 +13169,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7596054609887090473, guid: 7b1d15bc29c954344947c2f2d1388d32, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: 1686db11f9341f04a84131949aade930, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -13024,6 +13181,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3447742079981357586, guid: 7b1d15bc29c954344947c2f2d1388d32, type: 3}
   m_PrefabInstance: {fileID: 1343122714}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1351811646
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1351811647}
+  m_Layer: 0
+  m_Name: Player Spawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1351811647
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1351811646}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -3.15, y: 0.82, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1360081244
 GameObject:
   m_ObjectHideFlags: 0
@@ -13401,7 +13589,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7596054609887090473, guid: 7b1d15bc29c954344947c2f2d1388d32, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: 1686db11f9341f04a84131949aade930, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -13839,7 +14027,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7596054609887090473, guid: 7b1d15bc29c954344947c2f2d1388d32, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: 1686db11f9341f04a84131949aade930, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -14503,7 +14691,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7596054609887090473, guid: 7b1d15bc29c954344947c2f2d1388d32, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: 1686db11f9341f04a84131949aade930, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -14581,7 +14769,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7596054609887090473, guid: 7b1d15bc29c954344947c2f2d1388d32, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: 1686db11f9341f04a84131949aade930, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -15249,7 +15437,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7596054609887090473, guid: c5c5ae15ae81e77448a8a7fd3e8fddc3, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: 6d11df8a82050854397118e207b7d764, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -15943,7 +16131,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7596054609887090473, guid: 7b1d15bc29c954344947c2f2d1388d32, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: 1686db11f9341f04a84131949aade930, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -17161,7 +17349,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
   m_UsePipelineSettings: 1
   m_AdditionalLightsShadowResolutionTier: 2
@@ -17336,7 +17524,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7596054609887090473, guid: 7b1d15bc29c954344947c2f2d1388d32, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: 1686db11f9341f04a84131949aade930, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -17584,8 +17772,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1800673101}
-  - component: {fileID: 1800673103}
-  - component: {fileID: 1800673104}
   m_Layer: 0
   m_Name: Arena Match Controller
   m_TagString: Untagged
@@ -17593,30 +17779,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1800673103
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1800673102}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ed6c990cbee4d429134ffcad6727e32, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1800673104
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1800673102}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f48da83b4ded04f4c8acd7304a0b2b08, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RobotSavaslari.RobotSelectionController
 --- !u!1 &1816075479
 GameObject:
   m_ObjectHideFlags: 0
@@ -18087,7 +18249,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7596054609887090473, guid: 00de6ad760abf9647bc68d9d02641152, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: 7635e78fe03e14a498414a2117db062d, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -18610,7 +18772,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7596054609887090473, guid: 7b1d15bc29c954344947c2f2d1388d32, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: 1686db11f9341f04a84131949aade930, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -18688,7 +18850,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7596054609887090473, guid: 7b1d15bc29c954344947c2f2d1388d32, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: 1686db11f9341f04a84131949aade930, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -19440,7 +19602,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7596054609887090473, guid: 7b1d15bc29c954344947c2f2d1388d32, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: 1686db11f9341f04a84131949aade930, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -19698,7 +19860,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7596054609887090473, guid: 7b1d15bc29c954344947c2f2d1388d32, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: 1686db11f9341f04a84131949aade930, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -20016,6 +20178,8 @@ GameObject:
   - component: {fileID: 2016169475}
   - component: {fileID: 2016169479}
   - component: {fileID: 2016169480}
+  - component: {fileID: 2016169482}
+  - component: {fileID: 2016169481}
   m_Layer: 0
   m_Name: Kirmizi Robot
   m_TagString: Untagged
@@ -20033,8 +20197,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 256c76c1fd10e1045a916f29b5c69760, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RobotSavaslari.RobotPrototypeController
+  m_Name:
+  m_EditorClassIdentifier: RobotSavaslari.Gameplay::RobotSavaslari.RobotPrototypeController
   acceleration: 26
   maxSpeed: 5.2
   turnSpeed: 300
@@ -20044,6 +20208,12 @@ MonoBehaviour:
   weaponSpinSpeed: 900
   hitDamage: 10
   hitCooldown: 0.6
+  minimumRamSpeed: 1
+  knockbackRatio: 0.5
+  recoilRatio: 0.3
+  maxKnockbackSpeed: 2.5
+  knockbackDuration: 0.3
+  knockbackTraction: 0.15
 --- !u!114 &2016169476
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20054,8 +20224,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 67ae58f3a9874bd4a960349ed8b442e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RobotSavaslari.RobotHealth
+  m_Name:
+  m_EditorClassIdentifier: RobotSavaslari.Gameplay::RobotSavaslari.RobotHealth
   maxHealth: 100
 --- !u!54 &2016169477
 Rigidbody:
@@ -20132,12 +20302,49 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 065d7d4758b4ff3448318163e3771e52, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RobotSavaslari.RobotDamageVisuals
+  m_Name:
+  m_EditorClassIdentifier: RobotSavaslari.Gameplay::RobotSavaslari.RobotDamageVisuals
   armorDurability: 22
   wheelDurability: 30
   weaponDurability: 45
   debrisLifetime: 12
+--- !u!114 &2016169481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2016169474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cec331139a3272e4db770f2fa90c9aa2, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: RobotSavaslari.Gameplay::RobotSavaslari.RobotDriveMotor
+  acceleration: 26
+  maxSpeed: 5.2
+  turnSpeed: 300
+  braking: 34
+  lateralGrip: 28
+  reverseSpeed: 4
+--- !u!114 &2016169482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2016169474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cde816e511699364f9f835cb82e11822, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: RobotSavaslari.Robots::RobotSavaslari.Robots.RobotMotor
+  maxForwardSpeed: 6
+  maxReverseSpeed: 3
+  acceleration: 18
+  brakeDeceleration: 26
+  maxTurnSpeed: 180
+  turnAcceleration: 720
+  turnBrakeDeceleration: 1080
 --- !u!1 &2041151068
 GameObject:
   m_ObjectHideFlags: 0
@@ -20294,7 +20501,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7596054609887090473, guid: 7b1d15bc29c954344947c2f2d1388d32, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: 1686db11f9341f04a84131949aade930, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -20574,7 +20781,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7596054609887090473, guid: 7b1d15bc29c954344947c2f2d1388d32, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: 1686db11f9341f04a84131949aade930, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -20652,7 +20859,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7596054609887090473, guid: 7b1d15bc29c954344947c2f2d1388d32, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value: 
+      value:
       objectReference: {fileID: 2100000, guid: 1686db11f9341f04a84131949aade930, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -20945,3 +21152,6 @@ SceneRoots:
   - {fileID: 1192328218}
   - {fileID: 701033011}
   - {fileID: 2016169478}
+  - {fileID: 1351811647}
+  - {fileID: 1122396808}
+  - {fileID: 1091766390}

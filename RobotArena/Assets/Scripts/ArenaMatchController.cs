@@ -152,7 +152,7 @@ namespace RobotSavaslari
             }
 
             GUI.Label(new Rect(0f, 12f, Screen.width, 34f), "ROBOT SAVASLARI - ARENA", _titleStyle);
-            DrawRobotPanel(_robotOne, 24f, 105f, new Color(0.85f, 0.16f, 0.12f, 1f), "BILGISAYAR - Maviyi takip eder");
+            DrawRobotPanel(_robotOne, 24f, 105f, new Color(0.85f, 0.16f, 0.12f, 1f), BotRole());
             DrawRobotPanel(_robotTwo, Screen.width - 324f, 105f, new Color(0.12f, 0.38f, 0.9f, 1f), "OYUNCU - WASD / Ok tuslari");
 
             DrawCountdown();
@@ -172,9 +172,25 @@ namespace RobotSavaslari
             else
             {
                 GUI.Label(new Rect(24f, Screen.height - 42f, Screen.width - 48f, 28f),
-                    "Mavi: W/S veya yukari/asagi: sur | A/D veya sol/sag: don | Carpma hasari = hiz x (agirlik / rakip agirligi)");
+                    "Mavi: W/S veya yukari/asagi: sur | A/D veya sol/sag: don | Space: silah | Carpma hasari = hiz x (agirlik / rakip agirligi)");
                 GUI.Label(new Rect(24f, Screen.height - 68f, Screen.width - 48f, 24f),
-                    "Kirmizi bilgisayar seni takip eder. Hasar vermek icin rakibe hizla carp.");
+                    "Kirmizi kisa hamlelerle saldirir, geri acilir ve yandan yaklasir. Hasar icin temas gerekir.");
+            }
+        }
+
+        private string BotRole()
+        {
+            var bot = _robotOne != null ? _robotOne.GetComponent<RobotBotController>() : null;
+            if (bot == null) return "BILGISAYAR";
+            switch (bot.State)
+            {
+                case RobotBotController.Decision.Disengaging: return "BOT - Geri aciliyor";
+                case RobotBotController.Decision.Repositioning: return "BOT - Yan pozisyon aliyor";
+                case RobotBotController.Decision.Waiting: return "BOT - Hamle arasi bekliyor";
+                case RobotBotController.Decision.Attacking: return "BOT - Saldiri hamlesi";
+                case RobotBotController.Decision.Turning: return "BOT - Hedefe yoneliyor";
+                case RobotBotController.Decision.Idle: return "BOT - Durdu";
+                default: return "BOT - Yaklasiyor";
             }
         }
 
@@ -224,7 +240,7 @@ namespace RobotSavaslari
         public bool BlocksRobotSelection(Vector2 screenPoint)
         {
             Vector2 guiPoint = new Vector2(screenPoint.x, Screen.height - screenPoint.y);
-            return _matchFinished || _countingDown ||new Rect(24f, 105f, 300f, 106f).Contains(guiPoint) ||
+            return _matchFinished || _countingDown || new Rect(24f, 105f, 300f, 106f).Contains(guiPoint) ||
                    new Rect(Screen.width - 324f, 105f, 300f, 106f).Contains(guiPoint);
         }
 

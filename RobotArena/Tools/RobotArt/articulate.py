@@ -1,6 +1,6 @@
 import bpy, numpy as np, os, json, math
 from mathutils import Vector
-ROOT=r'C:\Users\Burak\RobotSavaslari\RobotArena'
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 OUT=os.path.join(ROOT,'Assets','Models','Robots','Articulated')
 os.makedirs(OUT,exist_ok=True)
 report={}
