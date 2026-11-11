@@ -16,8 +16,7 @@ hacmi, hareket bileşeni ve komutların nasıl bağlandığı.
 | Malzemeler | `RobotArena/Assets/Materials/` |
 | Prefab + sahne üreten editör betiği | `RobotArena/Assets/Editor/RobotArenaSetup.cs` |
 
-Sahne `Build Settings` listesinde ilk sırada; `RobotArena.unity` açıp Play'e
-basmak yeterli.
+Bu sürüş denemesi için `Assets/Scenes/Tests/RobotMotor.unity` sahnesini açıp Play’e basın. Oyunun tek başlangıç sahnesi `Assets/Scenes/Gameplay/MainArena.unity` olarak kalır.
 
 ## Prefab yapısı
 
@@ -108,7 +107,7 @@ sequence.Play();
 
 ## Arena
 
-`RobotArena.unity` sahnesi 20 × 20 birimlik bir zemin ve dört duvardan oluşur
+`RobotMotor.unity` deneme sahnesi 20 × 20 birimlik bir zemin ve dört duvardan oluşur
 (kalınlık 0.5, yükseklik 1.5). Duvarlar köşelerde üst üste biner, yani köşede
 boşluk kalmaz. Zemin ve duvarlar statik; robot duvara ya da köşeye sürüldüğünde
 arenanın dışına geçmez.
@@ -134,6 +133,5 @@ Komut satırından:
 ## Prefab ve sahneyi yeniden üretmek
 
 Prefab, malzemeler ve sahne elle değil `Assets/Editor/RobotArenaSetup.cs` ile
-üretildi. Unity menüsünden **Robot Savaslari > Kurulum > Robot Prefab + Arena
-Sahnesi Olustur** komutu aynı dosyaların üzerine yazar; kurulum değişirse
+üretildi. Unity menüsünden **RobotSavaslari > Driving > Rebuild Robot Motor Test Scene** komutu aynı dosyaların üzerine yazar; kurulum değişirse
 betiği güncelleyip komutu yeniden çalıştırmak yeterli.

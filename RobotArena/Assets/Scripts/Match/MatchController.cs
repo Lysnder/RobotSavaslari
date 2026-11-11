@@ -1,13 +1,12 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace RobotSavaslari.Match
 {
-    // B1 harness: uses only the existing shared movement API.
+    // Owns round state for both the production arena and the explicit regression harness.
     [DefaultExecutionOrder(-100)]
     public sealed class MatchController : MonoBehaviour
     {
-        public enum MatchState { Ready, Playing, Result, Restarting }
+        public enum MatchState { Ready, Playing, Result, Restarting, Countdown }
         public enum MatchOutcome { None, PlayerVictory, OpponentVictory }
         [SerializeField] private RobotPrototypeController player;
         [SerializeField] private RobotPrototypeController opponent;
@@ -27,6 +26,12 @@ namespace RobotSavaslari.Match
         public RobotPrototypeController Player => player;
         public RobotPrototypeController Opponent => opponent;
         public bool IsInitialized => initialized;
+        [SerializeField, Min(1)] private int countdownSeconds = 3;
+        [SerializeField, Min(0f)] private float startMessageDuration = 0.8f;
+        private float countdownEndsAt;
+        private float startMessageEndsAt;
+        public float CountdownRemaining => State == MatchState.Countdown ? Mathf.Max(0f, countdownEndsAt - Time.time) : 0f;
+        public bool ShowStartMessage => State == MatchState.Playing && Time.time < startMessageEndsAt;
 
         public void ConfigureGameplay()
         {
@@ -36,9 +41,11 @@ namespace RobotSavaslari.Match
 
         private void Update()
         {
-            if (!gameplayInterface || Keyboard.current == null) return;
-            if (Keyboard.current.enterKey.wasPressedThisFrame) StartMatch();
-            if (Keyboard.current.rKey.wasPressedThisFrame) RestartMatch();
+            if (State == MatchState.Countdown && Time.time >= countdownEndsAt)
+            {
+                BeginPlaying();
+                startMessageEndsAt = Time.time + startMessageDuration;
+            }
         }
         public event System.Action<MatchOutcome> ResultDetermined;
         public bool PlayerAllowed => State == MatchState.Playing && player != null && !player.CombatStopped;
@@ -48,16 +55,19 @@ namespace RobotSavaslari.Match
         private bool initialized;
         private string lastNotification = "Henuz bildirim yok";
 
-        public void Configure(RobotPrototypeController p, RobotPrototypeController o, Transform ps, Transform os)
+        public void Configure(RobotPrototypeController playerRobot, RobotPrototypeController opponentRobot, Transform playerStart, Transform opponentStart)
         {
-            player = p; opponent = o; playerSpawn = ps; opponentSpawn = os;
+            player = playerRobot;
+            opponent = opponentRobot;
+            playerSpawn = playerStart;
+            opponentSpawn = opponentStart;
         }
 
         private void Start()
         {
             if (player == null || opponent == null || player == opponent || playerSpawn == null || opponentSpawn == null)
             {
-                Debug.LogError("B1: Iki farkli robot ve iki spawn atanmalidir.", this);
+                Debug.LogError("Maç için iki farklı robot ve iki doğma noktası atanmalıdır.", this);
                 enabled = false;
                 return;
             }
@@ -77,8 +87,9 @@ namespace RobotSavaslari.Match
 
         public void Prepare()
         {
-            if (!initialized || State == MatchState.Playing || IsRestarting) return;
+            if (!initialized || State == MatchState.Playing || State == MatchState.Countdown || IsRestarting) return;
             State = MatchState.Ready;
+            countdownEndsAt = startMessageEndsAt = 0f;
             ResetRobot(player, playerSpawn);
             ResetRobot(opponent, opponentSpawn);
             result = "";
@@ -102,17 +113,31 @@ namespace RobotSavaslari.Match
             robot.ResetMotion();
         }
 
+        // User input goes through the countdown. Direct start is kept for existing tools.
+        public bool RequestCountdown()
+        {
+            if (!initialized || (State != MatchState.Ready && State != MatchState.Result)) return false;
+            if (State == MatchState.Result) Prepare();
+            countdownEndsAt = Time.time + Mathf.Max(1, countdownSeconds);
+            State = MatchState.Countdown;
+            return true;
+        }
+
         public bool StartMatch()
         {
             if (!initialized || State != MatchState.Ready) return false;
-            // No Instantiate, coroutine or scene reload: repeated calls cannot add a match/robot.
+            BeginPlaying();
+            return true;
+        }
+
+        private void BeginPlaying()
+        {
             State = MatchState.Playing;
             MatchCount++;
             player.ConfigureCombat(false, opponent);
             opponent.ConfigureCombat(true, player);
             RobotPrototypeController.Select(player);
             DemoBotTarget = player.gameObject;
-            return true;
         }
 
         public bool RestartMatch()
@@ -193,7 +218,7 @@ namespace RobotSavaslari.Match
         }
 
         // Capture matchId when an asynchronous producer starts work, not when it completes.
-        // Same-frame tie handling is pending Emin's decision; currently first valid call wins.
+        // The current rule accepts the first valid defeat notification in this frame.
         public bool NotifyDefeat(GameObject robot, int matchId)
         {
             if (!initialized || State != MatchState.Playing || matchId != MatchCount ||
@@ -214,37 +239,10 @@ namespace RobotSavaslari.Match
             return true;
         }
 
-        private void DrawGameplay()
-        {
-            var previous = GUI.matrix;
-            GUI.matrix = Matrix4x4.Scale(new Vector3(Screen.width / 1000f, Screen.height / 700f, 1f));
-            GUILayout.BeginArea(new Rect(16, 16, 360, 170), GUI.skin.box);
-            GUILayout.Label("ROBOT SAVASLARI");
-            if (player != null && opponent != null)
-            {
-                GUILayout.Label("Oyuncu cani   " + Mathf.CeilToInt(player.GetComponent<RobotHealth>().CurrentHealth));
-                GUILayout.Label("Rakip cani    " + Mathf.CeilToInt(opponent.GetComponent<RobotHealth>().CurrentHealth));
-            }
-            GUILayout.Label("W / S ileri-geri   A / D donus   Space saldiri");
-            if (State == MatchState.Ready && GUILayout.Button("Maci baslat (Enter)")) StartMatch();
-            if (State == MatchState.Playing) GUILayout.Label("Mac " + MatchCount + " oynaniyor");
-            if (State == MatchState.Result)
-            {
-                GUILayout.Label(result);
-                if (GUILayout.Button("Yeni mac (R)")) RestartMatch();
-            }
-            if (IsRestarting) GUILayout.Label("Yeni mac hazirlaniyor");
-            GUILayout.EndArea();
-            GUI.matrix = previous;
-        }
-
         private void OnGUI()
         {
-            if (gameplayInterface)
-            {
-                DrawGameplay();
-                return;
-            }
+            // The shared arena's MainMenuScreen owns its HUD. Only test scenes use this panel.
+            if (gameplayInterface) return;
             var previous = GUI.matrix;
             GUI.matrix = Matrix4x4.Scale(new Vector3(Screen.width / 1000f, Screen.height / 700f, 1f));
             GUILayout.BeginArea(new Rect(16, 16, 430, 450), GUI.skin.box);
@@ -271,7 +269,7 @@ namespace RobotSavaslari.Match
                 GUI.enabled = previousEnabled;
             }
             GUILayout.Label("Bu macta sonuc sayisi: " + ResultCount + " | " + lastNotification);
-            GUILayout.Label("Eszamanli yenilgi: Emin'in karari bekleniyor.");
+            GUILayout.Label("Eşzamanlı yenilgi: ilk geçerli bildirim kabul edilir.");
             if (GUILayout.Button("Hazira don / spawnlari sifirla")) Prepare();
             if (player != null && opponent != null)
                 GUILayout.Label("Can: " + player.GetComponent<RobotHealth>().CurrentHealth + " / " + opponent.GetComponent<RobotHealth>().CurrentHealth +
@@ -287,7 +285,7 @@ namespace RobotSavaslari.Match
             if (GUILayout.Button("Gecersiz: null / yabanci robot / eski mac")) DemoInvalidNotifications();
             if (GUILayout.Button("Ayni an: oyuncu sonra rakip")) DemoSameEvaluation(true);
             if (GUILayout.Button("Ayni an: rakip sonra oyuncu")) DemoSameEvaluation(false);
-            GUILayout.Label("Gecici davranis: ilk bildirim. Beraberlik karari acik.");
+            GUILayout.Label("Aynı karede yalnızca bir sonuç üretilir.");
             GUILayout.Label("Otomatik: RobotSavaslari > Match > Run Match Regression");
             GUILayout.EndArea();
             GUI.matrix = previous;

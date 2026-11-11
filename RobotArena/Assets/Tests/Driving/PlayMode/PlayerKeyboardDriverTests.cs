@@ -58,6 +58,79 @@ namespace RobotSavaslari.Driving.Tests
         private void ReleaseAllKeys() => HoldKeys();
 
         [UnityTest]
+        public IEnumerator OkTuslariIkiEkseniAyniAndaSurer()
+        {
+            HoldKeys(Key.UpArrow, Key.LeftArrow);
+            yield return null;
+            Assert.AreEqual(1f, motor.MoveCommand);
+            Assert.AreEqual(-1f, motor.TurnCommand);
+
+            HoldKeys(Key.DownArrow, Key.RightArrow);
+            yield return null;
+            Assert.AreEqual(-1f, motor.MoveCommand);
+            Assert.AreEqual(1f, motor.TurnCommand);
+        }
+
+        [UnityTest]
+        public IEnumerator IkiTusTakimiAyniYonuBirKezSayarVeKarsitYonuSifirlar()
+        {
+            HoldKeys(Key.W, Key.UpArrow, Key.D, Key.RightArrow);
+            yield return null;
+            Assert.AreEqual(1f, driver.ForwardInput);
+            Assert.AreEqual(1f, driver.TurnInput);
+
+            // W and Up are the same direction: Down cancels both together.
+            HoldKeys(Key.W, Key.UpArrow, Key.DownArrow, Key.RightArrow);
+            yield return null;
+            Assert.AreEqual(0f, motor.MoveCommand);
+            Assert.AreEqual(1f, motor.TurnCommand);
+
+            HoldKeys(Key.UpArrow, Key.A, Key.RightArrow);
+            yield return null;
+            Assert.AreEqual(1f, motor.MoveCommand);
+            Assert.AreEqual(0f, motor.TurnCommand);
+
+            ReleaseAllKeys();
+            yield return null;
+            Assert.AreEqual(0f, motor.MoveCommand);
+            Assert.AreEqual(0f, motor.TurnCommand);
+        }
+
+        [UnityTest]
+        public IEnumerator KlavyeCikarilincaOkKomutlariTemizlenir()
+        {
+            HoldKeys(Key.UpArrow, Key.RightArrow);
+            yield return null;
+            Assert.AreEqual(1f, motor.MoveCommand);
+            Assert.AreEqual(1f, motor.TurnCommand);
+
+            InputSystem.RemoveDevice(keyboard);
+            yield return null;
+            Assert.IsFalse(driver.HasKeyboard);
+            Assert.AreEqual(0f, driver.ForwardInput);
+            Assert.AreEqual(0f, driver.TurnInput);
+            Assert.AreEqual(0f, motor.MoveCommand);
+            Assert.AreEqual(0f, motor.TurnCommand);
+        }
+
+        [UnityTest]
+        public IEnumerator OrtakRobotGirdisiKarisikKarsitTuslariSifirlar()
+        {
+            driver.enabled = false;
+            robot.AddComponent<KeyboardRobotInput>();
+
+            HoldKeys(Key.W, Key.DownArrow, Key.D, Key.LeftArrow);
+            yield return null;
+            Assert.AreEqual(0f, motor.MoveCommand);
+            Assert.AreEqual(0f, motor.TurnCommand);
+
+            HoldKeys(Key.DownArrow, Key.D);
+            yield return null;
+            Assert.AreEqual(-1f, motor.MoveCommand);
+            Assert.AreEqual(1f, motor.TurnCommand);
+        }
+
+        [UnityTest]
         public IEnumerator IleriTusuIleriKomutuGonderir()
         {
             HoldKeys(Key.W);

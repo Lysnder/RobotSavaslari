@@ -9,12 +9,12 @@ namespace RobotSavaslari.Combat.EditorChecks
     /// <summary>
     /// Dovus kurallarinin kontrolleri (E1-E4). Mevcut RobotDamageChecks duzeni gibi Play Mode gerektirmez;
     /// gecici robotlari sahne disinda kurar, gercek collider'larla senaryolari oynatir ve siler.
-    /// Menuden: RobotSavaslari/Eray/Dovus Kontrollerini Calistir
+    /// Menuden: RobotSavaslari/Combat/Run Melee Checks
     /// Komut satirindan: Unity -batchmode -projectPath ... -executeMethod RobotSavaslari.Combat.EditorChecks.CombatChecks.RunBatch
     /// </summary>
     public static class CombatChecks
     {
-        [MenuItem("RobotSavaslari/Eray/Dovus Kontrollerini Calistir")]
+        [MenuItem("RobotSavaslari/Combat/Run Melee Checks")]
         public static void RunFromMenu()
         {
             Run();

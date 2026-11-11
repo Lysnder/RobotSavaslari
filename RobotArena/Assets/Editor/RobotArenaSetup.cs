@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.IO;
 using RobotSavaslari.Robots;
 using UnityEditor;
@@ -26,7 +25,7 @@ namespace RobotSavaslari.Editor
         private const float WallThickness = 0.5f;
         private const float WallHeight = 1.5f;
 
-        [MenuItem("Robot Savaslari/Kurulum/Robot Prefab + Arena Sahnesi Olustur")]
+        [MenuItem("RobotSavaslari/Driving/Rebuild Robot Motor Test Scene")]
         public static void Generate()
         {
             EnsureFolder(PrefabFolder);
@@ -128,7 +127,6 @@ namespace RobotSavaslari.Editor
             SetBool(scripted.GetComponent<RobotCommandSequence>(), "playOnStart", true);
 
             EditorSceneManager.SaveScene(scene, ArenaScenePath);
-            AddSceneToBuildSettings(ArenaScenePath);
         }
 
         private static void CreateVisual(Transform parent, string name, Vector3 localPosition, Vector3 localScale, Material material)
@@ -195,18 +193,6 @@ namespace RobotSavaslari.Editor
             }
 
             return Shader.Find("Standard");
-        }
-
-        private static void AddSceneToBuildSettings(string scenePath)
-        {
-            List<EditorBuildSettingsScene> scenes = new List<EditorBuildSettingsScene>(EditorBuildSettings.scenes);
-            if (scenes.Exists(scene => scene.path == scenePath))
-            {
-                return;
-            }
-
-            scenes.Insert(0, new EditorBuildSettingsScene(scenePath, true));
-            EditorBuildSettings.scenes = scenes.ToArray();
         }
 
         private static void EnsureFolder(string folder)

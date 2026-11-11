@@ -6914,6 +6914,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 256c76c1fd10e1045a916f29b5c69760, type: 3}
   m_Name:
   m_EditorClassIdentifier: RobotSavaslari.Gameplay::RobotSavaslari.RobotPrototypeController
+  weaponProfile: {fileID: 11400000, guid: d0cca1b28fa54a5585fa7a0bbbe9e1b8, type: 2}
   acceleration: 26
   maxSpeed: 5.2
   turnSpeed: 300
@@ -6921,7 +6922,6 @@ MonoBehaviour:
   lateralGrip: 28
   reverseSpeed: 4
   weaponSpinSpeed: 900
-  hitDamage: 10
   hitCooldown: 0.6
   minimumRamSpeed: 1
   knockbackRatio: 0.5
@@ -10265,6 +10265,7 @@ GameObject:
   - component: {fileID: 1091766390}
   - component: {fileID: 1091766389}
   - component: {fileID: 1091766391}
+  - component: {fileID: 1091766392}
   m_Layer: 0
   m_Name: Arena Match
   m_TagString: Untagged
@@ -10316,7 +10317,19 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: baf189137e9049609f4826f17fa1a4b9, type: 3}
   m_Name:
-  m_EditorClassIdentifier: RobotSavaslari.Gameplay::RobotSavaslari.UI.MainMenuController
+  m_EditorClassIdentifier: RobotSavaslari.Gameplay::RobotSavaslari.UI.SettingsPanelController
+--- !u!114 &1091766392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1091766388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0407760feaf642b395395aace8f9dd34, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: RobotSavaslari.Gameplay::RobotSavaslari.UI.MainMenuScreen
 --- !u!1 &1096061716
 GameObject:
   m_ObjectHideFlags: 0
@@ -20199,6 +20212,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 256c76c1fd10e1045a916f29b5c69760, type: 3}
   m_Name:
   m_EditorClassIdentifier: RobotSavaslari.Gameplay::RobotSavaslari.RobotPrototypeController
+  weaponProfile: {fileID: 11400000, guid: d0cca1b28fa54a5585fa7a0bbbe9e1b8, type: 2}
   acceleration: 26
   maxSpeed: 5.2
   turnSpeed: 300
@@ -20206,7 +20220,6 @@ MonoBehaviour:
   lateralGrip: 28
   reverseSpeed: 4
   weaponSpinSpeed: 900
-  hitDamage: 10
   hitCooldown: 0.6
   minimumRamSpeed: 1
   knockbackRatio: 0.5

@@ -77,7 +77,7 @@ tekrarlanmaz; belirsiz üretim sonucu yeniden ücretlendirmeden önce uzlaştır
 
 Blender: `blender.exe --background --python-exit-code 1 --python Tools/RobotArt/build_modular_kit.py`
 Dosya kontrolü: `python Tools/RobotArt/check_modular_kit.py`
-Unity menüsü: `RobotSavaslari > Burak > Build Modular Robot Art Preview`.
+Unity menüsü: `RobotSavaslari > Tools > Build Modular Robot Preview`.
 Ham kaynaklardan yeniden export edilir; eski optimize çıktılar tekrar tekrar
 sadeleştirilmez. GLB dosyaları mevcut Git LFS kuralıyla izlenir.
 

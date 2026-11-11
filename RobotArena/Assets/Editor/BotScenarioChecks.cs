@@ -8,7 +8,7 @@ namespace RobotSavaslari.Editor
     public static class BotScenarioChecks
     {
         private const float Dt = 0.02f;
-        [MenuItem("Robot Savaslari/Bot/Run Behavior Checks (Play Mode)")]
+        [MenuItem("RobotSavaslari/Bot/Run Behavior Checks (Play Mode)")]
         public static void RunFromMenu() { Debug.Log(RunInPlayMode()); }
         // Drives the actual Rigidbody motor, collisions and decision code, with reproducible physics time.
         public static string RunInPlayMode()
