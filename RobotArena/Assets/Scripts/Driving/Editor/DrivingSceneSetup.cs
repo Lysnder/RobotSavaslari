@@ -24,7 +24,7 @@ namespace RobotSavaslari.Driving.Editor
         private const float GridExtent = 20f;
         private const float GridStep = 5f;
 
-        [MenuItem("Robot Savaslari/Driving/Create Keyboard Course")]
+        [MenuItem("RobotSavaslari/Driving/Create Keyboard Course")]
         public static void Generate()
         {
             GameObject robotPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(RobotPrefabPath);

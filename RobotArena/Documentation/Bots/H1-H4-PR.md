@@ -122,7 +122,7 @@ kaldırılınca yeni maç yöneticisi yukarıdaki `SetMatchRunning` kapısını 
 
 ## Tekrarlanabilir doğrulama
 
-`BotScenarios` Play modundayken **Robot Savaslari > Bot > Run H1-H4 Checks
+`BotScenarios` Play modundayken **RobotSavaslari > Bot > Run Behavior Checks
 (Play Mode)** menüsünü çalıştır. Alternatif C# girişi:
 
 ```csharp

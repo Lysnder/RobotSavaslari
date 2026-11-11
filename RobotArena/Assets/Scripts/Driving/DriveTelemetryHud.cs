@@ -151,7 +151,7 @@ namespace RobotSavaslari.Driving
                 $"Komut  : ileri/geri {motor.MoveCommand,5:0.00}   donus {motor.TurnCommand,5:0.00}\n" +
                 $"Fizik  : hiz {motor.ForwardSpeed,5:0.00} m/s   donus {motor.TurnSpeed,6:0.0} derece/s" +
                 collision +
-                "\n\nW/S ileri-geri   A/D donus   P deneme kontrolu" +
+                "\n\nSurus: WASD veya ok tuslari   P: deneme kontrolu" +
                 instructions;
         }
     }

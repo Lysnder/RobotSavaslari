@@ -36,7 +36,7 @@ Unity 6000.4.4f1, temiz Play oturumunda `MatchResultChecks.Run()` geçti:
 - Hazıra dönüşte temizleme ve mevcut can bileşeninin aynı bağlantıyı kullanması.
 
 B1 regresyon kontrolleri de yeni Play oturumunda geçti. Console hata sayısı ve
-derleme hatası sıfır. Sonuç paneli `B2-result.png` ekran görüntüsünde incelendi:
+derleme hatası sıfır. Sonuç paneli [MatchResult](../../Assets/Tests/MatchEvidence/MatchResult.png) ekran görüntüsünde incelendi:
 oyuncu galibiyeti, tek sonuç, yok sayılan sonraki bildirim ve iki kapalı izin
 birlikte görünür. Play kare sayısı 3263'ten 5806'ya ilerledi.
 

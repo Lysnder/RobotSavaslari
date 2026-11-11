@@ -49,7 +49,7 @@ Unity Editor kapatılıp yeniden açıldı: önceki süreç 24708, yeni süreç 
 Yeni süreçte `RunFresh()` üzerinden B1–B4 regresyonu PASS verdi. B3'ün üç
 ardışık yeniden başlatma kontrolü de PASS. Gerçek kare sayısı 7567'den 18380'e
 ilerledi. Yeni Console oturumunda hata 0, uyarı 0, derleme hatası yok.
-`B4-regression.png` sahne ve senaryo düğmelerinin görsel kanıtıdır.
+[MatchRegression](../../Assets/Tests/MatchEvidence/MatchRegression.png) sahne ve senaryo düğmelerinin görsel kanıtıdır.
 Eşzamanlı yenilgi yalnız mevcut davranış olarak test edildi; ekip kuralının
 kabulü bekliyor. Bu nedenle bütün ekip kabul maddelerinin kapandığı iddia edilmez.
 

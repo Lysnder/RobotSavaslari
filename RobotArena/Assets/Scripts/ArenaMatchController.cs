@@ -133,9 +133,9 @@ namespace RobotSavaslari
             else
             {
                 GUI.Label(new Rect(24f, Screen.height - 42f, Screen.width - 48f, 28f),
-                    "Mavi: W/S veya yukari/asagi: sur | A/D veya sol/sag: don | Space: silah | Carpisma: 5, silah temasi: 10 hasar");
+                    "Mavi: W/S veya yukari/asagi: sur | A/D veya sol/sag: don | Space: silah | Carpma: hiz ve kutleye bagli | Silah: yakin dovus profili");
                 GUI.Label(new Rect(24f, Screen.height - 68f, Screen.width - 48f, 24f),
-                    "Kirmizi kisa hamlelerle saldirir, geri acilir ve yandan yaklasir. Hasar icin temas gerekir.");
+                    "Kirmizi kisa hamlelerle saldirir, geri acilir ve yandan yaklasir. Carpma icin fiziksel temas, silah icin menzil ve aci gerekir.");
             }
         }
 

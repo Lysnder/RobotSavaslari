@@ -38,7 +38,7 @@ Normal Play modu görüntüsü:
 
 ## Tekrarlanabilir kontroller
 
-Arena Play modundayken **Robot Savaslari > Bot > Run Arena Tactics Checks
+Arena Play modundayken **RobotSavaslari > Bot > Run Arena Tactics Checks
 (Play Mode)** veya aşağıdaki C# girişini kullan:
 
 ```csharp
