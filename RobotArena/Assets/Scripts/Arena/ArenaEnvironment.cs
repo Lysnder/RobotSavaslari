@@ -15,6 +15,7 @@ namespace RobotSavaslari.Arena
         [SerializeField] private MatchController match;
         [SerializeField] private Transform playerSpawn,opponentSpawn;
         [SerializeField] private Material obstacleMaterial;
+        private RobotHealth playerHealth,opponentHealth;
         public ArenaLayout Layout => layouts!=null && layouts.Length>selectedLayout ? layouts[selectedLayout] : null;
         public IReadOnlyList<ArenaLayout> Layouts => layouts;
         public MatchController Match => match;
@@ -31,18 +32,20 @@ namespace RobotSavaslari.Arena
         private void OnEnable()
         {
             if(match==null)return;
-            match.Player.GetComponent<RobotHealth>().Restored+=ResetEffects;
-            match.Opponent.GetComponent<RobotHealth>().Restored+=ResetEffects;
+            playerHealth=match.Player!=null?match.Player.GetComponent<RobotHealth>():null;
+            opponentHealth=match.Opponent!=null?match.Opponent.GetComponent<RobotHealth>():null;
+            if(playerHealth!=null)playerHealth.Restored+=ResetEffects;
+            if(opponentHealth!=null)opponentHealth.Restored+=ResetEffects;
         }
         private void OnDisable()
         {
-            if(match==null)return;
-            match.Player.GetComponent<RobotHealth>().Restored-=ResetEffects;
-            match.Opponent.GetComponent<RobotHealth>().Restored-=ResetEffects;
+            if(playerHealth!=null)playerHealth.Restored-=ResetEffects;
+            if(opponentHealth!=null)opponentHealth.Restored-=ResetEffects;
             ResetEffects();
         }
         public void ResetEffects()
         {
+            ConveyorSurface.RemovePreviousMotion();
             if(Contents==null)return;
             foreach(var barrier in Contents.GetComponentsInChildren<WarningBarrier>())barrier.ResetCycle();
         }
@@ -69,6 +72,7 @@ namespace RobotSavaslari.Arena
             }
             var owned=new GameObject("Layout Contents");owned.transform.SetParent(transform,false);
             var bounds=GetComponent<ArenaBounds>();
+            if(GetComponent<ConveyorMotion>()==null)gameObject.AddComponent<ConveyorMotion>();
             foreach(var c in Layout.cells)
             {
                 Vector3 center=bounds.CellCenter(c.coordinate.x,c.coordinate.y);
@@ -89,6 +93,12 @@ namespace RobotSavaslari.Arena
                     hazard.AddComponent<WarningBarrier>().Configure(match,obstacleMaterial);
                 }
                 if(c.spawn==ArenaSpawn.Opponent) SetSpawn(opponentSpawn,center,-90);
+                if(c.content==ArenaContent.Conveyor)
+                {
+                    var belt=new GameObject("Arena Conveyor "+c.coordinate);
+                    belt.transform.SetParent(owned.transform,false);belt.transform.position=center;
+                    belt.AddComponent<ConveyorSurface>().Configure(match,c.direction,obstacleMaterial);
+                }
             }
             if(Application.isPlaying && match.IsInitialized) match.Prepare();
             else if(!Application.isPlaying)

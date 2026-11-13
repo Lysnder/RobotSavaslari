@@ -100,7 +100,7 @@ MonoBehaviour:
     wall: 0
     direction: {x: 1, y: 0}
   - coordinate: {x: 2, y: 1}
-    content: 0
+    content: 3
     spawn: 0
     wall: 0
     direction: {x: 1, y: 0}
@@ -140,7 +140,7 @@ MonoBehaviour:
     wall: 0
     direction: {x: 1, y: 0}
   - coordinate: {x: 3, y: 1}
-    content: 0
+    content: 3
     spawn: 0
     wall: 0
     direction: {x: 1, y: 0}

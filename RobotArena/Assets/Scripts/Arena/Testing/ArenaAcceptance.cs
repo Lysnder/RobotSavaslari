@@ -36,6 +36,8 @@ namespace RobotSavaslari.Arena.Testing
                 BeginLayouts();
             if (Array.IndexOf(Environment.GetCommandLineArgs(), "-arena-barrier-check") >= 0)
                 BeginBarriers();
+            if (Array.IndexOf(Environment.GetCommandLineArgs(), "-arena-conveyor-check") >= 0)
+                BeginConveyors();
         }
 
         public static void Begin(bool record = false)
@@ -55,6 +57,11 @@ namespace RobotSavaslari.Arena.Testing
             if(FindFirstObjectByType<ArenaAcceptance>()!=null)throw new InvalidOperationException("Verification already active");
             var check=new GameObject("Arena Barrier Verification").AddComponent<ArenaAcceptance>();check.mode=2;check.capture=true;
         }
+        public static void BeginConveyors()
+        {
+            if(FindFirstObjectByType<ArenaAcceptance>()!=null)throw new InvalidOperationException("Verification already active");
+            var check=new GameObject("Arena Conveyor Verification").AddComponent<ArenaAcceptance>();check.mode=3;check.capture=true;
+        }
 
         private IEnumerator Start()
         {
@@ -64,6 +71,7 @@ namespace RobotSavaslari.Arena.Testing
             output = Path.GetFullPath(Path.Combine(Application.dataPath, "../Documentation/Arena/" + (Application.isEditor ? "Editor" : "Windows")));
             if(mode==1) output=Path.Combine(output,"Layouts");
             if(mode==2) output=Path.Combine(output,"Barriers");
+            if(mode==3) output=Path.Combine(output,"Conveyors");
             int index = Array.IndexOf(args, "-arena-check-output");
             if (index >= 0 && index + 1 < args.Length) output = Path.GetFullPath(args[index + 1]);
             Directory.CreateDirectory(output);
@@ -83,7 +91,7 @@ namespace RobotSavaslari.Arena.Testing
             keyboard = InputSystem.AddDevice<Keyboard>();
             keyboard.MakeCurrent();
             yield return null;
-            IEnumerator run = mode==0 ? VerifyBoundary() : mode==1 ? VerifyLayouts() : VerifyBarriers();
+            IEnumerator run = mode==0 ? VerifyBoundary() : mode==1 ? VerifyLayouts() : mode==2 ? VerifyBarriers() : VerifyConveyors();
             var stack = new Stack<IEnumerator>();stack.Push(run);
             while (stack.Count>0)
             {
@@ -96,7 +104,7 @@ namespace RobotSavaslari.Arena.Testing
                 catch (Exception ex) { Finish(false, ex.ToString()); yield break; }
                 if(wait is IEnumerator nested) stack.Push(nested);else yield return wait;
             }
-            Finish(true, mode==0 ? "64 cells; eight perimeter waypoints in two rounds; rotated footprint; bot bounds; clean reset" : mode==1 ? "Open/Tactical selection guards, routes, generation, two actual matches per layout, reset persistence" : "Warning order, centre/edge occupancy, pause, three cycles, two matches, reset and one instance");
+            Finish(true, mode==0 ? "64 cells; eight perimeter waypoints in two rounds; rotated footprint; bot bounds; clean reset" : mode==1 ? "Open/Tactical selection guards, routes, generation, two actual matches per layout, reset persistence" : mode==2 ? "Warning order, centre/edge occupancy, pause, three cycles, two matches, reset and one instance" : "Equivalent player/bot transport, compound contacts, transition, corner, reverse, exit, disable and two-match reset");
         }
 
         private IEnumerator VerifyLayouts()
@@ -217,6 +225,74 @@ namespace RobotSavaslari.Arena.Testing
             match.Defeat(true);match.Prepare();checks.Add("two matches preserve identity and reset the cycle");
         }
 
+        private IEnumerator VerifyConveyors()
+        {
+            match=FindFirstObjectByType<MatchController>();bounds=FindFirstObjectByType<ArenaBounds>();
+            var arena=FindFirstObjectByType<ArenaEnvironment>();Require(arena.Select(0),"Open conveyor layout");yield return null;
+            var belts=arena.Contents.GetComponentsInChildren<ConveyorSurface>();Require(belts.Length==2,"Two adjacent conveyors");
+            Require(match.StartMatch(),"First conveyor match");yield return null;Keys();
+            match.Opponent.GetComponent<RobotBotController>().enabled=false;
+            match.Player.GetComponent<Driving.PlayerKeyboardDriver>().enabled=false;
+            var playerBody=match.Player.GetComponent<Rigidbody>();var botBody=match.Opponent.GetComponent<Rigidbody>();
+            float[] displacement=new float[2];int sampleIndex=0;
+            foreach(var robot in new[]{match.Player,match.Opponent})
+            {
+                var body=robot.GetComponent<Rigidbody>();var motor=robot.GetComponent<Robots.RobotMotor>();
+                playerBody.position=new Vector3(4,.82f,-4);botBody.position=new Vector3(4,.82f,3);
+                ConveyorSurface.RemovePreviousMotion();motor.ResetMotion();
+                body.position=belts[0].transform.position;body.rotation=Quaternion.Euler(0,90,0);body.linearVelocity=Vector3.zero;Physics.SyncTransforms();
+                Vector3 initial=body.position;
+                for(int step=0;step<30;step++)
+                {
+                    yield return new WaitForFixedUpdate();
+                    Require(Vector3.Distance(ConveyorSurface.AppliedVelocity(body),Vector3.right*ConveyorSurface.SurfaceSpeed)<.001f,"One bounded contribution per compound robot");
+                    Require(new Vector2(body.linearVelocity.x,body.linearVelocity.z).magnitude<1.1f,"Idle conveyor speed stays bounded");
+                }
+                displacement[sampleIndex++]=body.position.x-initial.x;
+                Require(displacement[sampleIndex-1]>.12f,"Measurable transport");
+                checks.Add((robot==match.Player?"Player":"Bot")+" idle displacement="+displacement[sampleIndex-1]+" m / "+(30*Time.fixedDeltaTime)+"s; surface="+ConveyorSurface.AppliedVelocity(body));
+            }
+            Require(Mathf.Abs(displacement[0]-displacement[1])<.04f,"Equivalent player/bot transport");
+            botBody.position=new Vector3(4,.82f,3);
+            var playerMotor=match.Player.GetComponent<Robots.RobotMotor>();
+            ConveyorSurface.RemovePreviousMotion();playerMotor.ResetMotion();playerBody.position=new Vector3(-5,.82f,-5);playerBody.rotation=Quaternion.Euler(0,90,0);Physics.SyncTransforms();
+            var driver=match.Player.GetComponent<Driving.PlayerKeyboardDriver>();driver.enabled=true;
+            driver.SendMessage("OnApplicationFocus",true,SendMessageOptions.DontRequireReceiver);
+            yield return DriveTo(new Vector2(2,-5));Keys();yield return new WaitForFixedUpdate();
+            Require(ConveyorSurface.AppliedVelocity(playerBody)==Vector3.zero,"Physical keyboard traversal exits the belts");
+            driver.enabled=false;checks.Add("Real keyboard entry, adjoining-belt traversal and physical exit");
+            ConveyorSurface.RemovePreviousMotion();playerMotor.ResetMotion();playerBody.position=new Vector3(-2,.82f,-5);playerBody.rotation=Quaternion.Euler(0,90,0);Physics.SyncTransforms();
+            for(int step=0;step<100;step++)
+            {
+                yield return new WaitForFixedUpdate();
+                Require(ConveyorSurface.AppliedVelocity(playerBody).magnitude<=ConveyorSurface.SurfaceSpeed+.001f,"Adjacent belts do not multiply speed");
+                Require(Mathf.Abs(playerBody.linearVelocity.x)<1.1f,"No unbounded idle accumulation");
+            }
+            checks.Add("Adjacent transition and compound colliders: <=0.8 m/s surface contribution");
+            ConveyorSurface.RemovePreviousMotion();playerMotor.ResetMotion();playerBody.position=belts[0].transform.position+new Vector3(.9f,0,.9f);Physics.SyncTransforms();
+            yield return new WaitForFixedUpdate();Require(ConveyorSurface.AppliedVelocity(playerBody).magnitude<=.801f,"Corner contact bounded");
+            playerBody.position=belts[0].transform.position;playerBody.linearVelocity=Vector3.zero;Physics.SyncTransforms();
+            for(int step=0;step<20;step++){match.Player.GetComponent<RobotDriveMotor>().Submit(-1,0);yield return new WaitForFixedUpdate();}
+            Require(playerBody.linearVelocity.x<-.1f && playerBody.linearVelocity.x> -3.2f,"Reverse driving overcomes belt without accumulation");
+            checks.Add("Reverse velocity="+playerBody.linearVelocity.x+" m/s");
+            ConveyorSurface.RemovePreviousMotion();playerMotor.ResetMotion();playerBody.position=belts[0].transform.position;playerBody.linearVelocity=Vector3.zero;Physics.SyncTransforms();
+            yield return new WaitForFixedUpdate();Require(ConveyorSurface.AppliedVelocity(playerBody).sqrMagnitude>0,"Contact active before exit");
+            // Controlled exit isolates stale surface force from the existing motor's natural braking.
+            playerBody.position=new Vector3(0,.82f,-2);playerBody.linearVelocity=Vector3.right*2;Physics.SyncTransforms();
+            yield return new WaitForFixedUpdate();Require(ConveyorSurface.AppliedVelocity(playerBody)==Vector3.zero,"Exit clears contribution by next physics step");
+            Require(playerBody.linearVelocity.x>0,"Residual natural momentum distinguished from applied surface velocity");
+            playerBody.position=belts[0].transform.position;playerMotor.ResetMotion();Physics.SyncTransforms();yield return new WaitForFixedUpdate();
+            foreach(var belt in belts)belt.enabled=false;
+            Require(ConveyorSurface.AppliedVelocity(playerBody)==Vector3.zero,"Disable clears surface state immediately");
+            foreach(var belt in belts)belt.enabled=true;
+            match.Defeat(false);match.Prepare();yield return null;
+            Require(ConveyorSurface.AppliedVelocity(playerBody)==Vector3.zero,"Reset has no cached force");
+            Require(match.StartMatch(),"Second conveyor match");yield return null;
+            Require(ConveyorSurface.AppliedVelocity(playerBody)==Vector3.zero,"Fresh spawn receives no stale force");
+            Require(arena.Contents.GetComponentsInChildren<ConveyorSurface>().Length==2,"Reset has exactly two original belts");
+            match.Defeat(true);match.Prepare();checks.Add("exit, disable and second match clean");
+        }
+
         private IEnumerator VerifyBoundary()
         {
             match = FindFirstObjectByType<MatchController>();
@@ -303,7 +379,7 @@ namespace RobotSavaslari.Arena.Testing
         {
             Status = (passed ? "PASS: " : "FAIL: ") + detail;
             CleanupInput();
-            File.WriteAllText(Path.Combine(output,mode==0?"boundary-results.json":mode==1?"layout-results.json":"barrier-results.json"), JsonUtility.ToJson(new Report { passed=passed,detail=detail,checks=checks.ToArray(),frames=frame,unity=Application.unityVersion },true));
+            File.WriteAllText(Path.Combine(output,mode==0?"boundary-results.json":mode==1?"layout-results.json":mode==2?"barrier-results.json":"conveyor-results.json"), JsonUtility.ToJson(new Report { passed=passed,detail=detail,checks=checks.ToArray(),frames=frame,unity=Application.unityVersion },true));
             if (passed) Debug.Log("ARENA_BOUNDARY " + Status); else Debug.LogError("ARENA_BOUNDARY " + Status);
             if (!Application.isEditor) Application.Quit(passed ? 0 : 1);
         }

@@ -78,3 +78,24 @@ wait includes idle + warning + occupancy timeout; an earlier short fixture wait
 was corrected before recording final results.
 Evidence: barrier-editmode.json, Barriers result JSON, barriers-editor.mp4 and
 barriers-windows.mp4 (continuous warning/rise/active/lower cycles).
+
+## Conveyor surfaces
+
+Cells (2,1) and (3,1) carry robots along the visible arrow at .8 m/s surface
+velocity. The contribution is removed at execution order 105 before the existing
+motor (110), then applied at 120. No motor or drive bridge source changes.
+Contacts are recomputed every step; compound colliders and adjoining surfaces
+resolve to one contribution per robot. A stopped wall contact does not receive a
+reverse cleanup kick. Exit stops application by the next physics step; the
+motor's braking momentum is reported separately. Disable and health reset clear
+the transient contribution and contacts.
+
+Editor and Windows x64 passed equivalent player/bot transport (both .46448 m in
+.6 s), real keyboard entry/traversal/exit, compound colliders, adjacent transition,
+corner contact, bounded idle speed, reverse (-2.16294 m/s), next-step exit,
+disable and two-match reset. Thirty arena/reference EditMode cases passed,
+including nonfinite/zero conveyor directions. Final Windows run exits without
+managed exceptions; teardown uses cached health references safely.
+Evidence: conveyor-editmode.json, Conveyors result JSON and conveyors-*.mp4.
+Test-only controlled placements isolate contact/exit cases; production transport
+uses rigidbody velocity and the existing motor, never robot transform teleport.

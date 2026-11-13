@@ -38,5 +38,11 @@ namespace RobotSavaslari.Tests
             Assert.That(ArenaLayoutValidator.FindRoute(layout,.1f),Is.Not.Empty);
             Assert.That(ArenaLayoutValidator.FindRoute(layout,1.9f),Is.Empty);
         }
+        [TestCase(0f,0f)] [TestCase(float.NaN,1f)] [TestCase(float.PositiveInfinity,0f)]
+        public void RejectsInvalidConveyorDirection(float x,float y)
+        {
+            var cell=layout.cells.Find(c=>c.content==ArenaContent.Conveyor);cell.direction=new Vector2(x,y);
+            Assert.That(ArenaLayoutValidator.Validate(layout,1),Has.Some.Contains("direction"));
+        }
     }
 }

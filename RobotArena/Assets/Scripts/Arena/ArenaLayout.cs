@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace RobotSavaslari.Arena
 {
-    public enum ArenaContent { Floor, Obstacle, Hazard }
+    public enum ArenaContent { Floor, Obstacle, Hazard, Conveyor }
     public enum ArenaSpawn { None, Player, Opponent }
     public enum ArenaWall { Standard, Reinforced }
 
@@ -39,6 +39,8 @@ namespace RobotSavaslari.Arena
             if (tactical)
                 foreach (var p in new[]{new Vector2Int(3,3),new Vector2Int(3,4)}) cells.Find(c=>c.coordinate==p).content=ArenaContent.Obstacle;
             cells.Find(c=>c.coordinate==new Vector2Int(6,6)).content=ArenaContent.Hazard;
+            cells.Find(c=>c.coordinate==new Vector2Int(2,1)).content=ArenaContent.Conveyor;
+            cells.Find(c=>c.coordinate==new Vector2Int(3,1)).content=ArenaContent.Conveyor;
         }
     }
 
@@ -60,6 +62,7 @@ namespace RobotSavaslari.Arena
                 if(c.spawn==ArenaSpawn.Player) player++;
                 if(c.spawn==ArenaSpawn.Opponent) opponent++;
                 if(c.spawn!=ArenaSpawn.None && c.content!=ArenaContent.Floor) errors.Add("Spawn requires unobstructed normal floor: "+c.coordinate);
+                if(c.content==ArenaContent.Conveyor && (float.IsNaN(c.direction.x)||float.IsNaN(c.direction.y)||float.IsInfinity(c.direction.x)||float.IsInfinity(c.direction.y)||c.direction.sqrMagnitude<.01f)) errors.Add("Conveyor requires a finite nonzero XZ direction: "+c.coordinate);
                 if(c.wall!=ArenaWall.Standard && c.coordinate.x!=0 && c.coordinate.x!=7 && c.coordinate.y!=0 && c.coordinate.y!=7) errors.Add("Wall variation must be on the perimeter: "+c.coordinate);
             }
             if(player!=1||opponent!=1) errors.Add("Exactly one distinct Player and Opponent spawn is required.");
