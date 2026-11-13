@@ -1,4 +1,5 @@
 using RobotSavaslari.Driving;
+using RobotSavaslari.Training;
 using RobotSavaslari.UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -25,6 +26,8 @@ namespace RobotSavaslari.Match
         private DriveBoost boost;
         private DriveHandbrake handbrake;
         private DriveBindingsScreen bindingsScreen;
+        private MainMenuScreen menu;
+        private TimeTrialSession timeTrial;
         private bool installed;
         private int lastMatchCount = -1;
         private MatchController.MatchState lastState = MatchController.MatchState.Result;
@@ -37,6 +40,12 @@ namespace RobotSavaslari.Match
 
         /// <summary>Bağlanan eşleme ekranı; tanı ve test için.</summary>
         public DriveBindingsScreen BindingsScreen => bindingsScreen;
+
+        /// <summary>Bağlanan sürüş eğitimi; tanı ve test için.</summary>
+        public TimeTrialSession TimeTrial => timeTrial;
+
+        /// <summary>Eğitim sürüyor mu? Sürerken eşleme ekranına girilmez.</summary>
+        private bool IsTrialActive => timeTrial != null && timeTrial.State != TimeTrialState.Inactive;
 
         /// <summary>Bağlantı kuruldu mu?</summary>
         public bool Installed => installed;
@@ -99,6 +108,38 @@ namespace RobotSavaslari.Match
             // Kayıtlı eşlemeler sürücüye uygulanır; kayıt yoksa varsayılanlar.
             DriveBindings.Apply(driver);
 
+            // Eğitim oturumu bu nesnede durur: robotun üstünde değil, çünkü
+            // rota işaretleri robotla birlikte hareket etmemeli.
+            if (timeTrial == null)
+            {
+                timeTrial = GetComponent<TimeTrialSession>();
+            }
+
+            if (timeTrial == null)
+            {
+                timeTrial = gameObject.AddComponent<TimeTrialSession>();
+            }
+
+            TimeTrialHud trialHud = GetComponent<TimeTrialHud>();
+            if (trialHud == null)
+            {
+                trialHud = gameObject.AddComponent<TimeTrialHud>();
+            }
+
+            trialHud.Session = timeTrial;
+
+            if (menu == null)
+            {
+                menu = FindAnyObjectByType<MainMenuScreen>();
+            }
+
+            if (settings == null)
+            {
+                settings = FindAnyObjectByType<SettingsPanelController>();
+            }
+
+            timeTrial.Bind(match, menu, settings, driver);
+
             installed = true;
             return true;
         }
@@ -149,13 +190,20 @@ namespace RobotSavaslari.Match
                 settings = FindAnyObjectByType<SettingsPanelController>();
             }
 
+            // Eşleme ekranına ve eğitime yalnızca kurulmuş, hazır bir maçta ve
+            // ayarlar kapalıyken girilir; maç başlayınca ikisi de kapanır.
+            bool readyAccess = match.IsInitialized
+                               && match.State == MatchController.MatchState.Ready
+                               && (settings == null || !settings.IsOpen);
+
             if (bindingsScreen != null)
             {
-                // Eşleme ekranına yalnızca hazır durumda ve ayarlar kapalıyken
-                // girilir; maç başlayınca ekran kendiliğinden kapanır.
-                bindingsScreen.AccessAllowed = match.IsInitialized
-                                               && match.State == MatchController.MatchState.Ready
-                                               && (settings == null || !settings.IsOpen);
+                bindingsScreen.AccessAllowed = readyAccess && !IsTrialActive;
+            }
+
+            if (timeTrial != null)
+            {
+                timeTrial.CanEnter = readyAccess && (bindingsScreen == null || !bindingsScreen.IsOpen);
             }
 
             bool newMatch = match.MatchCount != lastMatchCount;
