@@ -61,4 +61,20 @@ idempotent on finish, disable and destroy. Nested coroutine failures are reporte
 as failures. The final successful runs used a clean Editor session and the corrected
 approach endpoint outside the occupied opponent spawn.
 
-Further environment acceptance will be appended as it is completed.
+## Warning barriers
+
+One cell (6,6) in each layout uses a non-damaging kinematic barrier. Durations:
+idle 1.2 s, warning 1.4 s, rise .8 s, active 1.5 s, lower .8 s. Occupancy at the
+centre or edge postpones rising and cancels after 2 s of occupancy following the
+warning. Occupancy during rising disables the collider and lowers the barrier.
+Spawns cannot contain hazards; clearance validation treats raised barriers as
+obstacles. No robot teleport or launch force is used by the environment.
+
+Three lifecycle/occupancy EditMode tests passed. Editor and Windows passed actual
+centre/edge occupancy, pause freeze, three consecutive cycles, two matches and
+single-instance/reset checks. The final Windows log has no managed exception.
+Initial startup reset before preview initialization is explicitly safe. The test
+wait includes idle + warning + occupancy timeout; an earlier short fixture wait
+was corrected before recording final results.
+Evidence: barrier-editmode.json, Barriers result JSON, barriers-editor.mp4 and
+barriers-windows.mp4 (continuous warning/rise/active/lower cycles).

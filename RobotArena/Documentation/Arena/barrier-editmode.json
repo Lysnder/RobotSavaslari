@@ -1,0 +1,34 @@
+{
+  "status": "completed",
+  "duration": 0.34,
+  "summary": {
+    "total": 3,
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0,
+    "inconclusive": 0
+  },
+  "results": [
+    {
+      "FullName": "RobotSavaslari.Tests.WarningBarrierTests.OccupancyDefersAtCentreAndEdge(0.0f)",
+      "Status": "Passed",
+      "Duration": 0.0074457,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "RobotSavaslari.Tests.WarningBarrierTests.OccupancyDefersAtCentreAndEdge(0.9f)",
+      "Status": "Passed",
+      "Duration": 0.0011135,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "RobotSavaslari.Tests.WarningBarrierTests.WarningAlwaysPrecedesPhysicalRiseAndThreeCyclesComplete",
+      "Status": "Passed",
+      "Duration": 0.0020418,
+      "Message": null,
+      "StackTrace": null
+    }
+  ]
+}

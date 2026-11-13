@@ -28,6 +28,24 @@ namespace RobotSavaslari.Arena
         { layouts=choices;match=controller;playerSpawn=playerStart;opponentSpawn=opponentStart;obstacleMaterial=material; }
 
         private void Start() { Rebuild(); }
+        private void OnEnable()
+        {
+            if(match==null)return;
+            match.Player.GetComponent<RobotHealth>().Restored+=ResetEffects;
+            match.Opponent.GetComponent<RobotHealth>().Restored+=ResetEffects;
+        }
+        private void OnDisable()
+        {
+            if(match==null)return;
+            match.Player.GetComponent<RobotHealth>().Restored-=ResetEffects;
+            match.Opponent.GetComponent<RobotHealth>().Restored-=ResetEffects;
+            ResetEffects();
+        }
+        public void ResetEffects()
+        {
+            if(Contents==null)return;
+            foreach(var barrier in Contents.GetComponentsInChildren<WarningBarrier>())barrier.ResetCycle();
+        }
         public bool Select(int index)
         {
             if(!CanSelect || index<0 || index>=layouts.Length) return false;
@@ -64,6 +82,12 @@ namespace RobotSavaslari.Arena
                     obstacle.GetComponent<Renderer>().sharedMaterial=obstacleMaterial;
                 }
                 if(c.spawn==ArenaSpawn.Player) SetSpawn(playerSpawn,center,90);
+                if(c.content==ArenaContent.Hazard)
+                {
+                    var hazard=new GameObject("Arena Warning Barrier "+c.coordinate);
+                    hazard.transform.SetParent(owned.transform,false);hazard.transform.position=center;
+                    hazard.AddComponent<WarningBarrier>().Configure(match,obstacleMaterial);
+                }
                 if(c.spawn==ArenaSpawn.Opponent) SetSpawn(opponentSpawn,center,-90);
             }
             if(Application.isPlaying && match.IsInitialized) match.Prepare();

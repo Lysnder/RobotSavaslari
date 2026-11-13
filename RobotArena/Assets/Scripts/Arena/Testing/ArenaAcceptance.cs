@@ -34,6 +34,8 @@ namespace RobotSavaslari.Arena.Testing
                 Begin();
             if (Array.IndexOf(Environment.GetCommandLineArgs(), "-arena-layout-check") >= 0)
                 BeginLayouts();
+            if (Array.IndexOf(Environment.GetCommandLineArgs(), "-arena-barrier-check") >= 0)
+                BeginBarriers();
         }
 
         public static void Begin(bool record = false)
@@ -48,6 +50,11 @@ namespace RobotSavaslari.Arena.Testing
             var check=new GameObject("Arena Layout Verification").AddComponent<ArenaAcceptance>();
             check.mode=1;check.capture=true;
         }
+        public static void BeginBarriers()
+        {
+            if(FindFirstObjectByType<ArenaAcceptance>()!=null)throw new InvalidOperationException("Verification already active");
+            var check=new GameObject("Arena Barrier Verification").AddComponent<ArenaAcceptance>();check.mode=2;check.capture=true;
+        }
 
         private IEnumerator Start()
         {
@@ -56,6 +63,7 @@ namespace RobotSavaslari.Arena.Testing
             string[] args = Environment.GetCommandLineArgs();
             output = Path.GetFullPath(Path.Combine(Application.dataPath, "../Documentation/Arena/" + (Application.isEditor ? "Editor" : "Windows")));
             if(mode==1) output=Path.Combine(output,"Layouts");
+            if(mode==2) output=Path.Combine(output,"Barriers");
             int index = Array.IndexOf(args, "-arena-check-output");
             if (index >= 0 && index + 1 < args.Length) output = Path.GetFullPath(args[index + 1]);
             Directory.CreateDirectory(output);
@@ -75,7 +83,7 @@ namespace RobotSavaslari.Arena.Testing
             keyboard = InputSystem.AddDevice<Keyboard>();
             keyboard.MakeCurrent();
             yield return null;
-            IEnumerator run = mode==0 ? VerifyBoundary() : VerifyLayouts();
+            IEnumerator run = mode==0 ? VerifyBoundary() : mode==1 ? VerifyLayouts() : VerifyBarriers();
             var stack = new Stack<IEnumerator>();stack.Push(run);
             while (stack.Count>0)
             {
@@ -88,7 +96,7 @@ namespace RobotSavaslari.Arena.Testing
                 catch (Exception ex) { Finish(false, ex.ToString()); yield break; }
                 if(wait is IEnumerator nested) stack.Push(nested);else yield return wait;
             }
-            Finish(true, mode==0 ? "64 cells; eight perimeter waypoints in two rounds; rotated footprint; bot bounds; clean reset" : "Open/Tactical selection guards, routes, generation, two actual matches per layout, reset persistence");
+            Finish(true, mode==0 ? "64 cells; eight perimeter waypoints in two rounds; rotated footprint; bot bounds; clean reset" : mode==1 ? "Open/Tactical selection guards, routes, generation, two actual matches per layout, reset persistence" : "Warning order, centre/edge occupancy, pause, three cycles, two matches, reset and one instance");
         }
 
         private IEnumerator VerifyLayouts()
@@ -100,7 +108,7 @@ namespace RobotSavaslari.Arena.Testing
             panel.ToggleSettings();Require(!arena.Select(1),"Settings blocks selection");panel.ToggleSettings();
             var menu=match.GetComponent<UI.MainMenuScreen>();menu.enabled=false;Require(!arena.Select(1),"Inactive menu blocks selection");menu.enabled=true;
             foreach(int i in new[]{0,1,0,1,0}) {Require(arena.Select(i),"Ready selection");yield return null;}
-            Require(arena.Contents.GetComponentsInChildren<BoxCollider>().Length==0,"Open has no retired obstacle colliders");
+            foreach(var c in arena.Contents.GetComponentsInChildren<BoxCollider>())Require(!c.name.StartsWith("Arena Obstacle"),"Open has no retired obstacle colliders");
             for(int layoutIndex=0;layoutIndex<2;layoutIndex++)
             {
                 Require(arena.Select(layoutIndex),"Choose layout "+layoutIndex);yield return null;
@@ -162,6 +170,51 @@ namespace RobotSavaslari.Arena.Testing
                 Keys(keys.ToArray());yield return null;
             }
             Keys();yield return new WaitForSeconds(.25f);
+        }
+
+        private IEnumerator VerifyBarriers()
+        {
+            match=FindFirstObjectByType<MatchController>();bounds=FindFirstObjectByType<ArenaBounds>();
+            var arena=FindFirstObjectByType<ArenaEnvironment>();
+            Require(arena.Select(1),"Select Tactical for barrier scenario");yield return null;
+            var barrier=arena.Contents.GetComponentInChildren<WarningBarrier>();
+            Require(barrier!=null,"Production barrier present");int identity=barrier.GetInstanceID();
+            var player=match.Player;var body=player.GetComponent<Rigidbody>();Vector3 spawn=player.transform.position;
+            Require(match.StartMatch(),"First barrier match");yield return null;match.Opponent.StopCombat();Keys();
+            foreach(float offset in new[]{0f,.9f})
+            {
+                barrier.ResetCycle();body.position=barrier.transform.position+Vector3.right*offset;body.linearVelocity=Vector3.zero;Physics.SyncTransforms();
+                yield return new WaitForFixedUpdate();Require(barrier.IsOccupied(),"Occupancy centre/edge "+offset);
+                float stop=Time.realtimeSinceStartup+5.2f;bool warned=false;
+                while(Time.realtimeSinceStartup<stop)
+                {
+                    warned|=barrier.Phase==BarrierPhase.Warning;
+                    Require(barrier.Phase!=BarrierPhase.Rising&&barrier.Phase!=BarrierPhase.Active&&!barrier.BarrierCollider.enabled,"No blind rise under robot");
+                    Require((body.position-new Vector3(barrier.transform.position.x+offset,body.position.y,barrier.transform.position.z)).magnitude<.2f,"No occupancy teleport");
+                    Require(body.linearVelocity.magnitude<.5f,"No occupancy launch impulse");yield return null;
+                }
+                Require(warned&&barrier.DeferredCycles>0,"Warning precedes safe cancellation");checks.Add("occupied offset "+offset+" deferred safely");
+            }
+            body.position=spawn;body.linearVelocity=Vector3.zero;barrier.ResetCycle();Physics.SyncTransforms();
+            float warningDeadline=Time.realtimeSinceStartup+4;
+            while(barrier.Phase!=BarrierPhase.Warning){Require(Time.realtimeSinceStartup<warningDeadline,"Warning deadline");yield return null;}
+            var settingsPanel=match.GetComponent<UI.SettingsPanelController>();
+            float elapsed=barrier.Elapsed;settingsPanel.ToggleSettings();yield return new WaitForSecondsRealtime(.3f);
+            Require(barrier.Phase==BarrierPhase.Warning&&Mathf.Abs(barrier.Elapsed-elapsed)<.001f,"Pause freezes phase and timer");settingsPanel.ToggleSettings();
+            float deadline=Time.realtimeSinceStartup+23;BarrierPhase previous=barrier.Phase;
+            while(barrier.CompletedCycles<3)
+            {
+                Require(Time.realtimeSinceStartup<deadline,"Three barrier cycles deadline");
+                if(barrier.Phase!=previous){checks.Add(previous+" -> "+barrier.Phase);Require((int)barrier.Phase==((int)previous+1)%5,"Ordered lifecycle");previous=barrier.Phase;}
+                yield return null;
+            }
+            match.Defeat(false);match.Prepare();yield return null;
+            Require(barrier.Phase==BarrierPhase.Idle&&barrier.Elapsed==0&&!barrier.BarrierCollider.enabled&&barrier.CompletedCycles==0,"Reset clears phase timer collider");
+            Require(barrier.GetInstanceID()==identity && arena.Contents.GetComponentsInChildren<WarningBarrier>().Length==1,"Single barrier instance after reset");
+            Require(match.StartMatch(),"Second barrier match");yield return null;match.Opponent.StopCombat();
+            deadline=Time.realtimeSinceStartup+8;
+            while(barrier.CompletedCycles<1){Require(Time.realtimeSinceStartup<deadline,"Second match starts a fresh cycle");yield return null;}
+            match.Defeat(true);match.Prepare();checks.Add("two matches preserve identity and reset the cycle");
         }
 
         private IEnumerator VerifyBoundary()
@@ -250,7 +303,7 @@ namespace RobotSavaslari.Arena.Testing
         {
             Status = (passed ? "PASS: " : "FAIL: ") + detail;
             CleanupInput();
-            File.WriteAllText(Path.Combine(output,mode==0?"boundary-results.json":"layout-results.json"), JsonUtility.ToJson(new Report { passed=passed,detail=detail,checks=checks.ToArray(),frames=frame,unity=Application.unityVersion },true));
+            File.WriteAllText(Path.Combine(output,mode==0?"boundary-results.json":mode==1?"layout-results.json":"barrier-results.json"), JsonUtility.ToJson(new Report { passed=passed,detail=detail,checks=checks.ToArray(),frames=frame,unity=Application.unityVersion },true));
             if (passed) Debug.Log("ARENA_BOUNDARY " + Status); else Debug.LogError("ARENA_BOUNDARY " + Status);
             if (!Application.isEditor) Application.Quit(passed ? 0 : 1);
         }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace RobotSavaslari.Arena
 {
-    public enum ArenaContent { Floor, Obstacle }
+    public enum ArenaContent { Floor, Obstacle, Hazard }
     public enum ArenaSpawn { None, Player, Opponent }
     public enum ArenaWall { Standard, Reinforced }
 
@@ -38,6 +38,7 @@ namespace RobotSavaslari.Arena
             cells.Find(c=>c.coordinate==new Vector2Int(6,4)).spawn=ArenaSpawn.Opponent;
             if (tactical)
                 foreach (var p in new[]{new Vector2Int(3,3),new Vector2Int(3,4)}) cells.Find(c=>c.coordinate==p).content=ArenaContent.Obstacle;
+            cells.Find(c=>c.coordinate==new Vector2Int(6,6)).content=ArenaContent.Hazard;
         }
     }
 
@@ -101,7 +102,7 @@ namespace RobotSavaslari.Arena
             route.Reverse(); return route;
         }
 
-        public static bool IsBlocking(ArenaContent content) => content==ArenaContent.Obstacle;
+        public static bool IsBlocking(ArenaContent content) => content==ArenaContent.Obstacle || content==ArenaContent.Hazard;
         public static bool IsClear(ArenaLayout layout,Vector2 point,float radius)
         {
             float limit=7.81f-radius;
