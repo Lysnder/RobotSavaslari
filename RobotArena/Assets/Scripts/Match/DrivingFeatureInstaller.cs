@@ -1,4 +1,5 @@
 using RobotSavaslari.Driving;
+using RobotSavaslari.UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -19,9 +20,11 @@ namespace RobotSavaslari.Match
         private const string MainArenaSceneName = "MainArena";
 
         private MatchController match;
+        private SettingsPanelController settings;
         private PlayerKeyboardDriver driver;
         private DriveBoost boost;
         private DriveHandbrake handbrake;
+        private DriveBindingsScreen bindingsScreen;
         private bool installed;
         private int lastMatchCount = -1;
         private MatchController.MatchState lastState = MatchController.MatchState.Result;
@@ -31,6 +34,9 @@ namespace RobotSavaslari.Match
 
         /// <summary>Bağlanan el freni bileşeni; tanı ve test için.</summary>
         public DriveHandbrake Handbrake => handbrake;
+
+        /// <summary>Bağlanan eşleme ekranı; tanı ve test için.</summary>
+        public DriveBindingsScreen BindingsScreen => bindingsScreen;
 
         /// <summary>Bağlantı kuruldu mu?</summary>
         public bool Installed => installed;
@@ -82,6 +88,17 @@ namespace RobotSavaslari.Match
 
             gauge.Boost = boost;
 
+            bindingsScreen = driver.GetComponent<DriveBindingsScreen>();
+            if (bindingsScreen == null)
+            {
+                bindingsScreen = driver.gameObject.AddComponent<DriveBindingsScreen>();
+            }
+
+            bindingsScreen.Driver = driver;
+
+            // Kayıtlı eşlemeler sürücüye uygulanır; kayıt yoksa varsayılanlar.
+            DriveBindings.Apply(driver);
+
             installed = true;
             return true;
         }
@@ -125,6 +142,20 @@ namespace RobotSavaslari.Match
             if (match == null || boost == null)
             {
                 return;
+            }
+
+            if (settings == null)
+            {
+                settings = FindAnyObjectByType<SettingsPanelController>();
+            }
+
+            if (bindingsScreen != null)
+            {
+                // Eşleme ekranına yalnızca hazır durumda ve ayarlar kapalıyken
+                // girilir; maç başlayınca ekran kendiliğinden kapanır.
+                bindingsScreen.AccessAllowed = match.IsInitialized
+                                               && match.State == MatchController.MatchState.Ready
+                                               && (settings == null || !settings.IsOpen);
             }
 
             bool newMatch = match.MatchCount != lastMatchCount;

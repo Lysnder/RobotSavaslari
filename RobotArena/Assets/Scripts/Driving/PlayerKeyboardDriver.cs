@@ -107,6 +107,36 @@ namespace RobotSavaslari.Driving
             }
         }
 
+        /// <summary>
+        /// Eşlemeleri uygular. Tuşlar bu bileşende durduğu için kalıcı eşleme
+        /// deposu değerleri buraya yazar; depo yokken sahnede kurulan
+        /// varsayılanlar geçerli kalır.
+        /// </summary>
+        public void ApplyBindings(Key forward, Key backward, Key left, Key right, Key boostAction, Key handbrakeAction)
+        {
+            forwardKey = forward;
+            backwardKey = backward;
+            turnLeftKey = left;
+            turnRightKey = right;
+            boostKey = boostAction;
+            handbrakeKey = handbrakeAction;
+        }
+
+        /// <summary>Verilen eylemin şu anki tuşu; eşleme ekranı bunu gösterir.</summary>
+        public Key GetBinding(DriveAction action)
+        {
+            switch (action)
+            {
+                case DriveAction.Forward: return forwardKey;
+                case DriveAction.Backward: return backwardKey;
+                case DriveAction.TurnLeft: return turnLeftKey;
+                case DriveAction.TurnRight: return turnRightKey;
+                case DriveAction.Boost: return boostKey;
+                case DriveAction.Handbrake: return handbrakeKey;
+                default: return Key.None;
+            }
+        }
+
         private void Awake()
         {
             if (motor == null)
