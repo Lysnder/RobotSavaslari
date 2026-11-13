@@ -54,6 +54,7 @@ namespace RobotSavaslari.Match.Editor
                 match.gameObject.AddComponent<SettingsPanelController>();
             if (match.GetComponent<MainMenuScreen>() == null)
                 match.gameObject.AddComponent<MainMenuScreen>();
+            RobotSavaslari.Editor.ArenaSceneBuilder.ExpandGrid(scene);
             EditorSceneManager.MarkSceneDirty(scene);
             EditorSceneManager.SaveScene(scene);
             EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene(ScenePath, true) };
