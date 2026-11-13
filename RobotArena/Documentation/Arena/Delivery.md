@@ -37,4 +37,28 @@ and arena fields / ConstrainToArena in RobotPrototypeController. Motor, drive
 bridge, bot, match and menu/settings source files are not edited. Raw verification
 frames and local tools remain ignored. No Windows distribution or Steam upload.
 
-Further layout/environment acceptance will be appended as it is completed.
+## Open and Tactical layouts
+
+ArenaLayout assets under Settings/Arena use the same fixed 8x8/2 m grid.
+The existing MainArenaSceneBuilder wires the arena-owned environment component;
+it does not create a parallel match manager. Ready selection is bottom-left and
+checks the existing settings/menu enabled state. Selection during play is refused.
+Only Layout Contents is retired on regeneration; colliders are disabled before
+deferred destruction. Reset preserves layout and existing generated objects.
+
+Validation expands obstacle rectangles by the full measured turning radius plus
+.05 m, checks .5 m configuration-space connectivity and rejects isolated pockets,
+invalid/duplicate cells, incompatible spawn content and invalid perimeter walls.
+Tactical requires a detour (33 samples vs Open 25 at measured radius 1.061916 m).
+
+27 arena/reference EditMode cases passed. Editor and Windows x64 each passed
+two genuine health-ended matches per layout, real keyboard route traversal,
+selection guards, Open→Tactical→Open cleanup and second-round persistence.
+Evidence: layout-open.png / layout-tactical.png with green clearance routes,
+layouts-editor.mp4 / layouts-windows.mp4, layout-editmode.json and Layouts JSON.
+An interrupted fixture initially leaked temporary InputSettings; cleanup is now
+idempotent on finish, disable and destroy. Nested coroutine failures are reported
+as failures. The final successful runs used a clean Editor session and the corrected
+approach endpoint outside the occupied opponent spawn.
+
+Further environment acceptance will be appended as it is completed.
