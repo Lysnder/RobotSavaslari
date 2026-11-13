@@ -1,6 +1,6 @@
 {
   "status": "completed",
-  "duration": 0.34,
+  "duration": 0.33,
   "summary": {
     "total": 3,
     "passed": 3,
@@ -12,21 +12,21 @@
     {
       "FullName": "RobotSavaslari.Tests.WarningBarrierTests.OccupancyDefersAtCentreAndEdge(0.0f)",
       "Status": "Passed",
-      "Duration": 0.0074457,
+      "Duration": 0.0034408,
       "Message": null,
       "StackTrace": null
     },
     {
       "FullName": "RobotSavaslari.Tests.WarningBarrierTests.OccupancyDefersAtCentreAndEdge(0.9f)",
       "Status": "Passed",
-      "Duration": 0.0011135,
+      "Duration": 0.0010392,
       "Message": null,
       "StackTrace": null
     },
     {
       "FullName": "RobotSavaslari.Tests.WarningBarrierTests.WarningAlwaysPrecedesPhysicalRiseAndThreeCyclesComplete",
       "Status": "Passed",
-      "Duration": 0.0020418,
+      "Duration": 0.0018889,
       "Message": null,
       "StackTrace": null
     }

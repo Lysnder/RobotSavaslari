@@ -44,5 +44,22 @@ namespace RobotSavaslari.Tests
             var cell=layout.cells.Find(c=>c.content==ArenaContent.Conveyor);cell.direction=new Vector2(x,y);
             Assert.That(ArenaLayoutValidator.Validate(layout,1),Has.Some.Contains("direction"));
         }
+        [Test] public void FloorAndSpawnAreCompatibleButDuplicateSpawnIsRejected()
+        {
+            Assert.That(ArenaLayoutValidator.Validate(layout,1),Is.Empty);
+            layout.cells[0].spawn=ArenaSpawn.Player;
+            Assert.That(ArenaLayoutValidator.Validate(layout,1),Has.Some.Contains("distinct"));
+        }
+        [TestCase(ArenaContent.Obstacle)] [TestCase(ArenaContent.Hazard)] [TestCase(ArenaContent.Conveyor)]
+        public void RejectsIncompatibleSpawnContent(ArenaContent content)
+        {
+            layout.cells.Find(c=>c.spawn==ArenaSpawn.Player).content=content;
+            Assert.That(ArenaLayoutValidator.Validate(layout,1),Has.Some.Contains("Spawn requires"));
+        }
+        [TestCase(0f)] [TestCase(float.NaN)] [TestCase(float.PositiveInfinity)]
+        public void RejectsInvalidRobotClearance(float radius)
+        {
+            Assert.That(ArenaLayoutValidator.Validate(layout,radius),Has.Some.Contains("radius"));
+        }
     }
 }

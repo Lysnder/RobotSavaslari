@@ -41,6 +41,7 @@ namespace RobotSavaslari.Arena
             cells.Find(c=>c.coordinate==new Vector2Int(6,6)).content=ArenaContent.Hazard;
             cells.Find(c=>c.coordinate==new Vector2Int(2,1)).content=ArenaContent.Conveyor;
             cells.Find(c=>c.coordinate==new Vector2Int(3,1)).content=ArenaContent.Conveyor;
+            cells.Find(c=>c.coordinate==new Vector2Int(0,3)).wall=ArenaWall.Reinforced;
         }
     }
 
@@ -49,6 +50,7 @@ namespace RobotSavaslari.Arena
         public static List<string> Validate(ArenaLayout layout, float radius)
         {
             var errors=new List<string>();
+            if(float.IsNaN(radius)||float.IsInfinity(radius)||radius<=0){errors.Add("Robot turning radius must be finite and positive.");return errors;}
             if (layout==null) { errors.Add("Layout is missing."); return errors; }
             if (layout.cells==null || layout.cells.Count!=64) { errors.Add("Layout must contain exactly 64 cells."); return errors; }
             var seen=new HashSet<Vector2Int>();

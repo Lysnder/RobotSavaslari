@@ -1,0 +1,14 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <ui:VisualElement class="arena-editor">
+        <ui:Label text="Arena Layout · 8 × 8 · 2 m cells" class="title" />
+        <ui:VisualElement name="assetTools" />
+        <ui:VisualElement name="shortcuts" class="toolbar" />
+        <ui:VisualElement class="workspace">
+            <ui:VisualElement name="grid" />
+            <ui:VisualElement name="inspector" class="inspector" />
+        </ui:VisualElement>
+        <ui:Label text="Floor + spawn is supported. Wall variation is a perimeter layer. Hazard is a warning barrier, not a damage weapon. Arrows show conveyor XZ direction." class="help" />
+        <ui:VisualElement name="actions" class="toolbar" />
+        <ui:ScrollView class="validation"><ui:Label name="validation" class="help" /></ui:ScrollView>
+    </ui:VisualElement>
+</ui:UXML>

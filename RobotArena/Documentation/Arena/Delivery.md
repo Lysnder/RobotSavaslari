@@ -99,3 +99,71 @@ managed exceptions; teardown uses cached health references safely.
 Evidence: conveyor-editmode.json, Conveyors result JSON and conveyors-*.mp4.
 Test-only controlled placements isolate contact/exit cases; production transport
 uses rigidbody velocity and the existing motor, never robot transform teleport.
+
+## Cell authoring and integration
+
+Open `RobotSavaslari > Gameplay > Arena Layout Editor` in Unity. Choose Open or
+Tactical, or create an ArenaLayout asset. Click one of the 64 coordinate buttons,
+choose Content, Spawn, Wall and conveyor XZ direction, then Apply cell. Validate
+checks the actual MainArena robot turning radius. Generate in MainArena and save
+uses that same production scene and its existing spawn transforms. Changes to an
+asset do not affect a running match. Stop Play mode before authoring.
+
+Content is exclusive: Floor, Obstacle, Hazard (the non-damaging warning barrier)
+or Conveyor. Spawn is an additional role compatible with Floor only. Wall is an
+independent perimeter layer; reinforced segments extend the existing outer wall
+without narrowing its shared safety inset. The grid labels Block/Belt/Rival are
+compact labels for Obstacle/Conveyor/Opponent; the inspector and tooltips show the
+full roles. Duplicate coordinates are invalid even when their individual roles
+would be compatible. Each cell must have one definition. Exactly one Player and
+one Opponent spawn are required on separate cells.
+
+Validation refuses missing/duplicate/outside cells, incompatible spawn contents,
+unknown enum values, interior wall variants, invalid conveyor headings, missing
+spawns, inaccessible spawns, narrow passages and disconnected free regions.
+Invalid generation leaves the scene and its selected layout untouched.
+Generation replaces only the environment's `Layout Contents` child. Unrelated
+children/components, the original floor grid, robot references, MatchController,
+camera, scene GUID and existing menu/settings components survive. Custom layout
+asset choices survive the shared builder's configuration. Environment reset
+listens to existing health Restored events, with safe teardown subscriptions.
+
+Authoring tests include repeated Open/Tactical/Open generation, stable object
+counts, preservation of an external AudioSource sentinel, saving/reopening the
+production scene and failed-generation immutability. Editor screenshot and
+validation examples accompany the test result JSON. The sentinel and transient
+invalid assets are removed after verification.
+
+Recorded authoring acceptance: 40 arena/reference plus 3 barrier EditMode cases
+passed; generated Open/Tactical each passed two real matches in both Editor and
+Windows x64. See authoring-editmode.json, barrier-editmode.json, Layouts result
+JSON, refreshed layout route images, layout-editor.png, layout-editor-errors.png,
+validation-examples.txt and ready-layout-selection.png. Source and evidence are
+committed together; the PR records the exact commit used for final regression.
+
+### Repeat acceptance
+
+Open `Assets/Scenes/Gameplay/MainArena.unity` with Unity 6000.4.4f1. Play, select
+Open/Tactical at the bottom-left while Ready, then use the existing start flow.
+Drive with WASD and attack with Space. Existing result/replay controls remain the
+match owner's flow. Settings pause blocks layout input and barrier progression.
+For environment inspection, the barrier is at world XZ (5,5), belts at (-3,-5)
+and (-1,-5); both spawn positions are read from the selected asset.
+
+Automated production Play mode checks are opt-in calls to ArenaAcceptance:
+`Begin(true)`, `BeginLayouts()`, `BeginBarriers()`, `BeginConveyors()`. Run one
+per fresh Play session. These use real production scene objects and assertions;
+they are separate from the NUnit EditMode runner. Windows uses the respective
+flags `-arena-boundary-check`, `-arena-layout-check`, `-arena-barrier-check`,
+`-arena-conveyor-check`, optionally `-arena-capture`, with an absolute output
+directory after `-arena-check-output`. Each writes a passed/detail/checks JSON and
+exits 0 on success, 1 on assertion failure. Build through the existing
+`RobotSavaslari > Build Windows Player` workflow / BuildWindowsPlayer.Build.
+Videos are chronological 5 fps verification captures from the production camera.
+
+For integration, keep ArenaBounds and ArenaEnvironment on Modular Combat Floor,
+reference the existing two robots and spawn transforms, and retain Open/Tactical
+asset choices. ArenaBounds synchronizes the runtime bot's public extents. No bot
+decision or motor API dependency is added. B2/B3 objects are generated from the
+layout and reset by the environment; no combat/health implementation is replaced.
+Windows distribution packages and Steam operations are outside this delivery.

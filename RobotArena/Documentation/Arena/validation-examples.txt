@@ -1,0 +1,8 @@
+Out of range: Cell outside arena: (-1, 0)
+Duplicate coordinate: Overlapping cell definitions: (0, 1)
+Floor plus spawn: VALID
+Missing spawn: Exactly one distinct Player and Opponent spawn is required.
+Coincident spawns: Overlapping cell definitions: (1, 3)
+Narrow corridor: Spawns are disconnected or the corridor is too narrow for the robot and turning clearance.
+Disconnected arena: Spawns are disconnected or the corridor is too narrow for the robot and turning clearance.
+Hazard at spawn: Spawn requires unobstructed normal floor: (1, 3)

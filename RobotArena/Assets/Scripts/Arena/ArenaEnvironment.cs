@@ -26,7 +26,23 @@ namespace RobotSavaslari.Arena
             match.GetComponent<SettingsPanelController>()!=null && !match.GetComponent<SettingsPanelController>().IsOpen;
 
         public void Configure(ArenaLayout[] choices,MatchController controller,Transform playerStart,Transform opponentStart,Material material)
-        { layouts=choices;match=controller;playerSpawn=playerStart;opponentSpawn=opponentStart;obstacleMaterial=material; }
+        {
+            var selected=Layout;
+            layouts=choices;selectedLayout=System.Array.IndexOf(layouts,selected);if(selectedLayout<0)selectedLayout=0;
+            match=controller;playerSpawn=playerStart;opponentSpawn=opponentStart;obstacleMaterial=material;
+        }
+
+#if UNITY_EDITOR
+        public void GenerateLayout(ArenaLayout layout)
+        {
+            if(Application.isPlaying)throw new System.InvalidOperationException("Stop Play mode before authoring.");
+            var errors=ArenaLayoutValidator.Validate(layout,ClearanceRadius);
+            if(errors.Count>0)throw new System.InvalidOperationException(string.Join("\n",errors));
+            var choices=new List<ArenaLayout>(layouts);
+            if(!choices.Contains(layout))choices.Add(layout);
+            layouts=choices.ToArray();selectedLayout=choices.IndexOf(layout);Rebuild();
+        }
+#endif
 
         private void Start() { Rebuild(); }
         private void OnEnable()
@@ -76,6 +92,11 @@ namespace RobotSavaslari.Arena
             foreach(var c in Layout.cells)
             {
                 Vector3 center=bounds.CellCenter(c.coordinate.x,c.coordinate.y);
+                if(c.wall==ArenaWall.Reinforced)
+                {
+                    if(c.coordinate.x==0||c.coordinate.x==7)CreateWall(owned.transform,new Vector3(c.coordinate.x==0?-8:8,center.y+.6f,center.z),new Vector3(.3f,1.2f,2));
+                    if(c.coordinate.y==0||c.coordinate.y==7)CreateWall(owned.transform,new Vector3(center.x,center.y+.6f,c.coordinate.y==0?-8:8),new Vector3(2,1.2f,.3f));
+                }
                 if(c.content==ArenaContent.Obstacle)
                 {
                     var obstacle=GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -109,6 +130,12 @@ namespace RobotSavaslari.Arena
         }
 
         private static void SetSpawn(Transform spawn,Vector3 position,float yaw) => spawn.SetPositionAndRotation(position,Quaternion.Euler(0,yaw,0));
+        private void CreateWall(Transform parent,Vector3 position,Vector3 scale)
+        {
+            var wall=GameObject.CreatePrimitive(PrimitiveType.Cube);wall.name="Reinforced Perimeter";
+            wall.transform.SetParent(parent,false);wall.transform.position=position;wall.transform.localScale=scale;
+            wall.GetComponent<Renderer>().sharedMaterial=obstacleMaterial;
+        }
 
         private void OnGUI()
         {

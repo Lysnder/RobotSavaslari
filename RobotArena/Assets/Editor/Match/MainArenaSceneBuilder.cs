@@ -82,6 +82,8 @@ namespace RobotSavaslari.Match.Editor
             }
             var floor=GameObject.Find("Modular Combat Floor");
             var environment=floor.GetComponent<RobotSavaslari.Arena.ArenaEnvironment>()??floor.AddComponent<RobotSavaslari.Arena.ArenaEnvironment>();
+            var choices=new System.Collections.Generic.List<RobotSavaslari.Arena.ArenaLayout>(layouts);
+            if(environment.Layouts!=null)foreach(var existing in environment.Layouts)if(existing!=null&&!choices.Contains(existing))choices.Add(existing);
             const string materialPath="Assets/Materials/Arena/ArenaObstacle.mat";
             var material=AssetDatabase.LoadAssetAtPath<Material>(materialPath);
             if(material==null)
@@ -90,7 +92,7 @@ namespace RobotSavaslari.Match.Editor
                 material.color=new Color(.9f,.58f,.08f);
                 AssetDatabase.CreateAsset(material,materialPath);
             }
-            environment.Configure(layouts,match,GameObject.Find("Player Spawn").transform,GameObject.Find("Opponent Spawn").transform,material);
+            environment.Configure(choices.ToArray(),match,GameObject.Find("Player Spawn").transform,GameObject.Find("Opponent Spawn").transform,material);
             environment.Rebuild();
         }
 

@@ -32,7 +32,7 @@ MonoBehaviour:
   - coordinate: {x: 0, y: 3}
     content: 0
     spawn: 0
-    wall: 0
+    wall: 1
     direction: {x: 1, y: 0}
   - coordinate: {x: 0, y: 4}
     content: 0
