@@ -1,0 +1,16 @@
+.arena-editor { padding: 12px; flex-grow: 1; }
+.title { font-size: 18px; -unity-font-style: bold; margin-bottom: 10px; }
+.toolbar { flex-direction: row; margin-top: 6px; margin-bottom: 6px; }
+.workspace { flex-direction: row; margin-top: 8px; }
+.grid-row { flex-direction: row; }
+.cell { width: 52px; height: 46px; white-space: normal; font-size: 10px; color: white; }
+.cell.selected { border-top-width: 2px; border-bottom-width: 2px; border-left-width: 2px; border-right-width: 2px; border-top-color: #ffd65e; border-bottom-color: #ffd65e; border-left-color: #ffd65e; border-right-color: #ffd65e; }
+.cell.floor { background-color: #414952; }
+.cell.obstacle { background-color: #815118; }
+.cell.hazard { background-color: #8e322c; }
+.cell.conveyor { background-color: #116073; }
+.inspector { width: 280px; margin-left: 14px; }
+.help { white-space: normal; margin-top: 10px; }
+.validation { flex-grow: 1; min-height: 90px; }
+.error { color: #ffb2a0; }
+.valid { color: #a8e5bc; }

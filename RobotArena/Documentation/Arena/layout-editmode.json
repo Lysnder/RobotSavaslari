@@ -1,0 +1,202 @@
+{
+  "status": "completed",
+  "duration": 2.23,
+  "summary": {
+    "total": 27,
+    "passed": 27,
+    "failed": 0,
+    "skipped": 0,
+    "inconclusive": 0
+  },
+  "results": [
+    {
+      "FullName": "RobotSavaslari.Tests.ArenaGeometryTests.ProductionGridMatchesFloorPerimeterAndOriginalScale",
+      "Status": "Passed",
+      "Duration": 0.4183186,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "RobotSavaslari.Tests.ArenaGeometryTests.RebuildingKeepsSceneConnectionsAndObjectCount",
+      "Status": "Passed",
+      "Duration": 0.3569792,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "RobotSavaslari.Tests.ArenaLayoutTests.ClearanceRejectsPointRobotOnlyPassage",
+      "Status": "Passed",
+      "Duration": 0.009391,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "RobotSavaslari.Tests.ArenaLayoutTests.DefaultLayoutsHaveRobotWidthRoutes(False)",
+      "Status": "Passed",
+      "Duration": 0.0027996,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "RobotSavaslari.Tests.ArenaLayoutTests.DefaultLayoutsHaveRobotWidthRoutes(True)",
+      "Status": "Passed",
+      "Duration": 0.0021071,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "RobotSavaslari.Tests.ArenaLayoutTests.RejectsDisconnectedArena",
+      "Status": "Passed",
+      "Duration": 0.000981,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "RobotSavaslari.Tests.ArenaLayoutTests.RejectsInteriorWallVariation",
+      "Status": "Passed",
+      "Duration": 0.0005321,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "RobotSavaslari.Tests.ArenaLayoutTests.RejectsMissingSpawn",
+      "Status": "Passed",
+      "Duration": 0.0003584,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "RobotSavaslari.Tests.ArenaLayoutTests.RejectsObstructedSpawn",
+      "Status": "Passed",
+      "Duration": 0.0003428,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "RobotSavaslari.Tests.ArenaLayoutTests.RejectsOutsideCoordinates",
+      "Status": "Passed",
+      "Duration": 0.0004461,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "RobotSavaslari.Tests.ArenaLayoutTests.RejectsOverlappingDefinitions",
+      "Status": "Passed",
+      "Duration": 0.0003334,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "RobotSavaslari.Tests.ArenaLayoutTests.TacticalRequiresADetour",
+      "Status": "Passed",
+      "Duration": 0.0020726,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "RobotSavaslari.Tests.ArenaAssetReferenceTests.AssetMovesPreserveUniqueGuids",
+      "Status": "Passed",
+      "Duration": 0.3288478,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "RobotSavaslari.Tests.ArenaAssetReferenceTests.MainArenaIsTheOnlyEnabledBuildScene",
+      "Status": "Passed",
+      "Duration": 0.0014627,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences(\"Assets/Scenes/Gameplay/MainArena.unity\")",
+      "Status": "Passed",
+      "Duration": 0.0182822,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences(\"Assets/Scenes/Tests/AI/BotScenarios.unity\")",
+      "Status": "Passed",
+      "Duration": 0.0045822,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences(\"Assets/Scenes/Tests/Combat/MeleeCombatValidation.unity\")",
+      "Status": "Passed",
+      "Duration": 0.002668,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences(\"Assets/Scenes/Tests/CombatArena.unity\")",
+      "Status": "Passed",
+      "Duration": 0.0201772,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences(\"Assets/Scenes/Tests/Driving/CollisionRecovery.unity\")",
+      "Status": "Passed",
+      "Duration": 0.0057099,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences(\"Assets/Scenes/Tests/Driving/DrivingAcceptance.unity\")",
+      "Status": "Passed",
+      "Duration": 0.0049707,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences(\"Assets/Scenes/Tests/Driving/DrivingFeel.unity\")",
+      "Status": "Passed",
+      "Duration": 0.0037492,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences(\"Assets/Scenes/Tests/Driving/KeyboardDriving.unity\")",
+      "Status": "Passed",
+      "Duration": 0.0040053,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences(\"Assets/Scenes/Tests/MatchRegression.unity\")",
+      "Status": "Passed",
+      "Duration": 0.0197581,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences(\"Assets/Scenes/Tests/RobotMotor.unity\")",
+      "Status": "Passed",
+      "Duration": 0.0026556,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences(\"Assets/Scenes/Tests/Template.unity\")",
+      "Status": "Passed",
+      "Duration": 0.0085338,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences(\"Assets/Scenes/Tools/ModularRobotPreview.unity\")",
+      "Status": "Passed",
+      "Duration": 0.0472491,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "RobotSavaslari.Robots.Tests.RobotPrefabTests.AnaArenaTekEtkinDerlemeSahnesi",
+      "Status": "Passed",
+      "Duration": 0.0015738,
+      "Message": null,
+      "StackTrace": null
+    }
+  ]
+}

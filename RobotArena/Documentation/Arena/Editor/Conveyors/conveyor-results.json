@@ -1,0 +1,14 @@
+{
+    "passed": true,
+    "detail": "Equivalent player/bot transport, compound contacts, transition, corner, reverse, exit, disable and two-match reset",
+    "checks": [
+        "Player idle displacement=0,4644799 m / 0,5999998s; surface=(0.80, 0.00, 0.00)",
+        "Bot idle displacement=0,4644799 m / 0,5999998s; surface=(0.80, 0.00, 0.00)",
+        "Real keyboard entry, adjoining-belt traversal and physical exit",
+        "Adjacent transition and compound colliders: <=0.8 m/s surface contribution",
+        "Reverse velocity=-2,162937 m/s",
+        "exit, disable and second match clean"
+    ],
+    "frames": 27,
+    "unity": "6000.4.4f1"
+}
