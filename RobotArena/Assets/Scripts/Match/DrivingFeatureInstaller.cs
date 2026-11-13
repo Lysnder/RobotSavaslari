@@ -21,12 +21,16 @@ namespace RobotSavaslari.Match
         private MatchController match;
         private PlayerKeyboardDriver driver;
         private DriveBoost boost;
+        private DriveHandbrake handbrake;
         private bool installed;
         private int lastMatchCount = -1;
         private MatchController.MatchState lastState = MatchController.MatchState.Result;
 
         /// <summary>Bağlanan boost bileşeni; tanı ve test için.</summary>
         public DriveBoost Boost => boost;
+
+        /// <summary>Bağlanan el freni bileşeni; tanı ve test için.</summary>
+        public DriveHandbrake Handbrake => handbrake;
 
         /// <summary>Bağlantı kuruldu mu?</summary>
         public bool Installed => installed;
@@ -59,9 +63,16 @@ namespace RobotSavaslari.Match
                 boost = driver.gameObject.AddComponent<DriveBoost>();
             }
 
-            // Sürücü kendi Awake'inde boost'u arar; bileşen sonradan eklendiyse
-            // referansı burada verilir.
+            handbrake = driver.GetComponent<DriveHandbrake>();
+            if (handbrake == null)
+            {
+                handbrake = driver.gameObject.AddComponent<DriveHandbrake>();
+            }
+
+            // Sürücü kendi Awake'inde bu bileşenleri arar; sonradan
+            // eklendiklerinde referanslar burada verilir.
             driver.Boost = boost;
+            driver.Handbrake = handbrake;
 
             DriveBoostGauge gauge = driver.GetComponent<DriveBoostGauge>();
             if (gauge == null)
@@ -123,8 +134,14 @@ namespace RobotSavaslari.Match
 
             if (newMatch || returnedToStart)
             {
-                // Yeni maç ya da hazırlık: enerji, tüketim ve aktif komut temizlenir.
+                // Yeni maç ya da hazırlık: enerji, tüketim, aktif komut ve
+                // geçici dönüş durumu temizlenir.
                 boost.ResetState();
+
+                if (handbrake != null)
+                {
+                    handbrake.ResetState();
+                }
             }
 
             lastMatchCount = match.MatchCount;

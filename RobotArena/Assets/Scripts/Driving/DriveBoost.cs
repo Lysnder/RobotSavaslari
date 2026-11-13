@@ -41,6 +41,7 @@ namespace RobotSavaslari.Driving
         [SerializeField, Min(1f)] private float accelerationScale = 1.5f;
 
         private RobotMotor motor;
+        private DriveHandbrake handbrake;
         private float regenCountdown;
 
         /// <summary>Enerji kapasitesi.</summary>
@@ -58,14 +59,36 @@ namespace RobotSavaslari.Driving
         /// <summary>Sürücü boost istiyor mu? Uygulanması ayrı karardır.</summary>
         public bool IsRequested { get; private set; }
 
+        /// <summary>
+        /// El freni bu adımda devreye giriyor mu? Boost ve el freni birlikte
+        /// istendiğinde öncelik el frenindedir: manevra ile hızlanma çelişkili
+        /// isteklerdir, bu yüzden boost ne uygulanır ne de enerji harcar.
+        /// </summary>
+        public bool HandbrakeHasPriority
+        {
+            get
+            {
+                // Bileşenler çalışma anında eklendiği için referans Awake'te
+                // hazır olmayabilir; ilk ihtiyaçta çözülür.
+                if (handbrake == null)
+                {
+                    handbrake = GetComponent<DriveHandbrake>();
+                }
+
+                return handbrake != null && handbrake.WouldEngage;
+            }
+        }
+
         /// <summary>İstek uygulanabilir durumda mı? (yeterli enerji ve ileri komut)</summary>
         public bool CanEngage => Energy >= (IsBoosting ? Mathf.Epsilon : engageThreshold)
                                  && motor != null
-                                 && motor.MoveCommand > 0f;
+                                 && motor.MoveCommand > 0f
+                                 && !HandbrakeHasPriority;
 
         private void Awake()
         {
             motor = GetComponent<RobotMotor>();
+            handbrake = GetComponent<DriveHandbrake>();
             startingEnergy = Mathf.Min(startingEnergy, capacity);
             Energy = startingEnergy;
         }

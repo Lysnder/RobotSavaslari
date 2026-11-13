@@ -29,8 +29,14 @@ namespace RobotSavaslari.Driving
         [Tooltip("Space kamera/silah tarafında olduğu için boost varsayılanı LeftShift.")]
         [SerializeField] private Key boostKey = Key.LeftShift;
 
+        [Tooltip("Space kamera/silah tarafında olduğu için el freni varsayılanı LeftCtrl.")]
+        [SerializeField] private Key handbrakeKey = Key.LeftCtrl;
+
         [Tooltip("Boost enerjisi; boş bırakılırsa aynı nesnedeki bileşen kullanılır. Yoksa boost yok sayılır.")]
         [SerializeField] private DriveBoost boost;
+
+        [Tooltip("El freni; boş bırakılırsa aynı nesnedeki bileşen kullanılır. Yoksa el freni yok sayılır.")]
+        [SerializeField] private DriveHandbrake handbrake;
 
         /// <summary>Bu karede okunan ileri/geri değeri (-1, 0 ya da 1).</summary>
         public float ForwardInput { get; private set; }
@@ -40,6 +46,9 @@ namespace RobotSavaslari.Driving
 
         /// <summary>Boost tuşu bu karede basılı mı?</summary>
         public bool BoostInput { get; private set; }
+
+        /// <summary>El freni tuşu bu karede basılı mı?</summary>
+        public bool HandbrakeInput { get; private set; }
 
         /// <summary>Bağlı bir klavye var mı? Yoksa komut gönderilmez.</summary>
         public bool HasKeyboard { get; private set; }
@@ -80,6 +89,24 @@ namespace RobotSavaslari.Driving
             }
         }
 
+        /// <summary>
+        /// El freni. Üretim bağlantısı bileşeni çalışma anında eklediği için
+        /// dışarıdan atanabilir; atanmazsa el freni tuşu yok sayılır.
+        /// </summary>
+        public DriveHandbrake Handbrake
+        {
+            get => handbrake;
+            set
+            {
+                if (handbrake != null && handbrake != value)
+                {
+                    handbrake.SetHandbrakeRequested(false);
+                }
+
+                handbrake = value;
+            }
+        }
+
         private void Awake()
         {
             if (motor == null)
@@ -90,6 +117,11 @@ namespace RobotSavaslari.Driving
             if (boost == null)
             {
                 boost = GetComponent<DriveBoost>();
+            }
+
+            if (handbrake == null)
+            {
+                handbrake = GetComponent<DriveHandbrake>();
             }
 
             if (motor == null)
@@ -130,16 +162,23 @@ namespace RobotSavaslari.Driving
             ForwardInput = 0f;
             TurnInput = 0f;
             BoostInput = false;
+            HandbrakeInput = false;
 
             if (motor != null)
             {
                 motor.Stop();
             }
 
-            // Odak kaybında ya da kontrol kapanınca basılı boost sürmemeli.
+            // Odak kaybında ya da kontrol kapanınca basılı boost ve el freni
+            // sürmemeli; geçici dönüş durumu da burada bırakılır.
             if (boost != null)
             {
                 boost.SetBoostRequested(false);
+            }
+
+            if (handbrake != null)
+            {
+                handbrake.SetHandbrakeRequested(false);
             }
         }
 
@@ -169,12 +208,18 @@ namespace RobotSavaslari.Driving
             ForwardInput = KeyboardDriveAxes.ReadAxis(keyboard, forwardKey, backwardKey, Key.UpArrow, Key.DownArrow);
             TurnInput = KeyboardDriveAxes.ReadAxis(keyboard, turnRightKey, turnLeftKey, Key.RightArrow, Key.LeftArrow);
             BoostInput = KeyboardDriveAxes.IsHeld(keyboard, boostKey);
+            HandbrakeInput = KeyboardDriveAxes.IsHeld(keyboard, handbrakeKey);
 
             motor.SetMoveCommand(ForwardInput, TurnInput);
 
             if (boost != null)
             {
                 boost.SetBoostRequested(BoostInput);
+            }
+
+            if (handbrake != null)
+            {
+                handbrake.SetHandbrakeRequested(HandbrakeInput);
             }
         }
     }
