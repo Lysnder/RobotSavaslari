@@ -17,3 +17,8 @@ Unity Hub’da `RobotArena/` klasörünü açın ve `Assets/Scenes/Gameplay/Main
 * [A2 · Sürüş hissi ve tekrarlanabilir ayarlar](docs/a2-surus-hissi.md)
 * [A3 · Çarpışmadan sonra kontrol ve girdi güvenliği](docs/a3-carpisma-kontrol.md)
 * [A4 · Sürüş kabul seti ve bağlantı teslimi](docs/a4-surus-kabul.md)
+* [Sürüş boost'u ve enerji](docs/surus-boost.md)
+* [El freni](docs/surus-el-freni.md)
+* [Kalıcı sürüş tuş eşlemeleri](docs/surus-tuslari.md)
+* [MainArena sürüş eğitimi](docs/surus-egitimi.md)
+* [Kişisel rekor hayaleti](docs/surus-rekor-hayaleti.md)

@@ -128,6 +128,15 @@ namespace RobotSavaslari.Match
 
             trialHud.Session = timeTrial;
 
+            GhostRunner ghostRunner = GetComponent<GhostRunner>();
+            if (ghostRunner == null)
+            {
+                ghostRunner = gameObject.AddComponent<GhostRunner>();
+            }
+
+            ghostRunner.Session = timeTrial;
+            trialHud.Ghost = ghostRunner;
+
             if (menu == null)
             {
                 menu = FindAnyObjectByType<MainMenuScreen>();

@@ -24,11 +24,20 @@ namespace RobotSavaslari.Training
         private GUIStyle panelStyle;
 
 
+        [SerializeField] private GhostRunner ghost;
+
         /// <summary>Gösterilecek oturum.</summary>
         public TimeTrialSession Session
         {
             get => session;
             set => session = value;
+        }
+
+        /// <summary>Kişisel rekoru ve hayaleti yöneten bileşen.</summary>
+        public GhostRunner Ghost
+        {
+            get => ghost;
+            set => ghost = value;
         }
 
 
@@ -181,6 +190,14 @@ namespace RobotSavaslari.Training
 
             GUI.Label(new Rect(x, 18f, width, 22f), progress, panelStyle);
             GUI.Label(new Rect(x, 42f, width, 36f), session.Notice, panelStyle);
+
+            if (ghost != null && ghost.PersonalBestTime > 0f)
+            {
+                string record = ghost.HasGhost
+                    ? $"Rekor: {ghost.PersonalBestTime:0.00} s (hayalet ekranda)"
+                    : $"Rekor: {ghost.PersonalBestTime:0.00} s";
+                GUI.Label(new Rect(x, 64f, width, 20f), record, panelStyle);
+            }
 
             float buttonY = 92f;
             if (GUI.Button(new Rect(x + 10f, buttonY, width * 0.45f, 26f), "Yeniden dene"))
