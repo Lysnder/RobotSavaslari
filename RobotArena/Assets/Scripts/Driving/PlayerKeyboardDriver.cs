@@ -26,11 +26,20 @@ namespace RobotSavaslari.Driving
         [SerializeField] private Key turnLeftKey = Key.A;
         [SerializeField] private Key turnRightKey = Key.D;
 
+        [Tooltip("Space kamera/silah tarafında olduğu için boost varsayılanı LeftShift.")]
+        [SerializeField] private Key boostKey = Key.LeftShift;
+
+        [Tooltip("Boost enerjisi; boş bırakılırsa aynı nesnedeki bileşen kullanılır. Yoksa boost yok sayılır.")]
+        [SerializeField] private DriveBoost boost;
+
         /// <summary>Bu karede okunan ileri/geri değeri (-1, 0 ya da 1).</summary>
         public float ForwardInput { get; private set; }
 
         /// <summary>Bu karede okunan dönüş değeri (-1, 0 ya da 1).</summary>
         public float TurnInput { get; private set; }
+
+        /// <summary>Boost tuşu bu karede basılı mı?</summary>
+        public bool BoostInput { get; private set; }
 
         /// <summary>Bağlı bir klavye var mı? Yoksa komut gönderilmez.</summary>
         public bool HasKeyboard { get; private set; }
@@ -53,11 +62,34 @@ namespace RobotSavaslari.Driving
             }
         }
 
+        /// <summary>
+        /// Boost enerjisi. Üretim bağlantısı bileşeni çalışma anında eklediği
+        /// için dışarıdan atanabilir; atanmazsa boost tuşu yok sayılır.
+        /// </summary>
+        public DriveBoost Boost
+        {
+            get => boost;
+            set
+            {
+                if (boost != null && boost != value)
+                {
+                    boost.SetBoostRequested(false);
+                }
+
+                boost = value;
+            }
+        }
+
         private void Awake()
         {
             if (motor == null)
             {
                 motor = GetComponentInParent<RobotMotor>();
+            }
+
+            if (boost == null)
+            {
+                boost = GetComponent<DriveBoost>();
             }
 
             if (motor == null)
@@ -97,10 +129,17 @@ namespace RobotSavaslari.Driving
         {
             ForwardInput = 0f;
             TurnInput = 0f;
+            BoostInput = false;
 
             if (motor != null)
             {
                 motor.Stop();
+            }
+
+            // Odak kaybında ya da kontrol kapanınca basılı boost sürmemeli.
+            if (boost != null)
+            {
+                boost.SetBoostRequested(false);
             }
         }
 
@@ -129,8 +168,14 @@ namespace RobotSavaslari.Driving
 
             ForwardInput = KeyboardDriveAxes.ReadAxis(keyboard, forwardKey, backwardKey, Key.UpArrow, Key.DownArrow);
             TurnInput = KeyboardDriveAxes.ReadAxis(keyboard, turnRightKey, turnLeftKey, Key.RightArrow, Key.LeftArrow);
+            BoostInput = KeyboardDriveAxes.IsHeld(keyboard, boostKey);
 
             motor.SetMoveCommand(ForwardInput, TurnInput);
+
+            if (boost != null)
+            {
+                boost.SetBoostRequested(BoostInput);
+            }
         }
     }
 }

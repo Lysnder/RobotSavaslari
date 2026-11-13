@@ -13,7 +13,8 @@ namespace RobotSavaslari.Robots
             return (positive ? 1f : 0f) - (negative ? 1f : 0f);
         }
 
-        private static bool IsHeld(Keyboard keyboard, Key key) =>
+        // Single action bindings (boost, handbrake) read the same way as an axis side.
+        public static bool IsHeld(Keyboard keyboard, Key key) =>
             key != Key.None && keyboard[key].isPressed;
     }
 }
