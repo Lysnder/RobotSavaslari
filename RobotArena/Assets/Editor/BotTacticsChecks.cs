@@ -180,7 +180,8 @@ namespace RobotSavaslari.Editor
                         Require(!bot.AttackRequested || bot.Distance <= bot.attackEnterDistance && Mathf.Abs(bot.TargetAngle) <= bot.attackAngle, "Attack range/front gate");
                         Require(!IsManeuver(bot.State) || !bot.AttackRequested, "No attacks during reposition/opening");
                     }
-                    Require(bot.RepositionCount > before && retreat > 0 && flank > 0 && wait > 0, "Spinning opponent must provoke retreat, flank and opening");
+                    Require(bot.RepositionCount > before && retreat > 0 && flank > 0 && wait > 0,
+                        $"Spinning opponent must provoke retreat, flank and opening: drive={playerDrive}, reposition={bot.RepositionCount - before}, retreat={retreat}, flank={flank}, wait={wait}, state={bot.State}");
                     Require(longestTurn < bot.circleTimeout + 0.5f, "Bot must not endlessly pivot: " + longestTurn);
                     Require(requests > 0 && requests < 750 && longestAttack <= bot.attackBurstSeconds + 0.04f, "Attack pressure must leave openings");
                     report.Add($"Player {(playerDrive == 0 ? "pivot" : "driving circle")} 30s: PASS; reposition {bot.RepositionCount - before}; longest pivot {longestTurn:0.00}s; longest attack {longestAttack:0.00}s; attack frames {requests}/1500");
