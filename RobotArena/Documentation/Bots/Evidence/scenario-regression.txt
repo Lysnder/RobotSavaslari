@@ -1,0 +1,17 @@
+BotScenarioChecks.RunInPlayMode, existing BotScenarios scene:
+Front: PASS
+Side: PASS
+Behind: PASS
+Range hysteresis, attack gates, target loss/restore: PASS
+Corner escape x3, stop and restart: PASS
+Angled wall: PASS
+Range tuning 1.50/2.00m follow + corner: PASS
+Moving target 540 simulated seconds: PASS
+Maximum distance: 4.38 m; longest non-attack stall: 0.52 s; requests: 8636.
+
+RobotDamageChecks.RunInPlayMode, existing CombatArena scene:
+PASS: 30 checks on both imported robots (partition, wear, regional detachment,
+physics debris, mobility, weapon loss, reset, invalid damage and defeat).
+
+BotControllerTests seed 123, 0.80 simulated seconds:
+DECISION_MEASURE easySamples=2 hardSamples=5 easyError=5.845 hardError=-1.221

@@ -1,0 +1,17 @@
+﻿Tested runtime SHA: 7949ef4a8291306a2ef09e8a364dc7643b8f4bf0
+Windows x64 player exit code: 0
+Capture: offscreen arena camera, nominal 5 fps, no HUD/audio
+BOT_BEHAVIOR Aggressive/Easy damage PASS weaponRequests=0 wheels=2 restored=true closingSpeed=4,00 closest=0,00
+BOT_BEHAVIOR Aggressive/Easy round=1 PASS result=PlayerVictory playerHP=48,1 botHP=0,0 reaction=0,40
+BOT_BEHAVIOR Aggressive/Easy round=2 PASS result=PlayerVictory playerHP=46,7 botHP=0,0 reaction=0,40
+BOT_BEHAVIOR Aggressive/Hard damage PASS weaponRequests=0 wheels=2 restored=true closingSpeed=4,00 closest=0,00
+BOT_BEHAVIOR Aggressive/Hard round=1 PASS result=PlayerVictory playerHP=73,1 botHP=0,0 reaction=0,16
+BOT_BEHAVIOR Aggressive/Hard round=2 PASS result=PlayerVictory playerHP=73,1 botHP=0,0 reaction=0,16
+BOT_BEHAVIOR Counter/Easy damage PASS weaponRequests=0 wheels=2 restored=true closingSpeed=4,00 closest=0,00
+BOT_BEHAVIOR Counter/Easy round=1 PASS result=PlayerVictory playerHP=46,6 botHP=0,0 reaction=0,40
+BOT_BEHAVIOR Counter/Easy round=2 PASS result=PlayerVictory playerHP=72,2 botHP=0,0 reaction=0,40
+BOT_BEHAVIOR Counter/Hard damage PASS weaponRequests=0 wheels=2 restored=true closingSpeed=4,00 closest=0,00
+BOT_BEHAVIOR Counter/Hard round=1 PASS result=PlayerVictory playerHP=45,2 botHP=0,0 reaction=0,16
+BOT_BEHAVIOR Counter/Hard round=2 PASS result=PlayerVictory playerHP=45,4 botHP=0,0 reaction=0,16
+BOT_BEHAVIOR PASS Aggressive/Easy damage PASS weaponRequests=0 wheels=2 restored=true closingSpeed=4,00 closest=0,00
+Final result: all four combinations, two matches each, real keyboard movement/combat, damage/restore, selection and pause checks PASS.

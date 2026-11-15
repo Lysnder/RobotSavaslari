@@ -1,0 +1,349 @@
+﻿{
+    "status":  "completed",
+    "duration":  75.88,
+    "summary":  {
+                    "total":  48,
+                    "passed":  48,
+                    "failed":  0,
+                    "skipped":  0,
+                    "inconclusive":  0
+                },
+    "results":  [
+                    {
+                        "FullName":  "RobotSavaslari.Tests.BotControllerTests.ChargeDoesNotRestartCommittedCounterManeuver",
+                        "Status":  "Passed",
+                        "Duration":  0.0363102,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Tests.BotControllerTests.DifficultyHasMeasuredReactionAndAimDifferenceWithRepeatableSeed",
+                        "Status":  "Passed",
+                        "Duration":  0.0068143,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Tests.BotControllerTests.EscapeRejectsWallAndChoosesOtherSide",
+                        "Status":  "Passed",
+                        "Duration":  0.0021717,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Tests.BotControllerTests.ExistingStuckRecoveryStillHasPriority",
+                        "Status":  "Passed",
+                        "Duration":  0.0008997,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Tests.BotControllerTests.IncomingChargeEvadesButRetreatDoesNot",
+                        "Status":  "Passed",
+                        "Duration":  0.0005344,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Tests.BotControllerTests.PausePreservesStateAndRandomSequenceButNewMatchResets",
+                        "Status":  "Passed",
+                        "Duration":  0.000953,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Tests.BotControllerTests.ProfilesDoNotChangePhysicalStats(Aggressive,Easy)",
+                        "Status":  "Passed",
+                        "Duration":  0.0023754,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Tests.BotControllerTests.ProfilesDoNotChangePhysicalStats(Aggressive,Hard)",
+                        "Status":  "Passed",
+                        "Duration":  0.0008774,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Tests.BotControllerTests.ProfilesDoNotChangePhysicalStats(Counter,Easy)",
+                        "Status":  "Passed",
+                        "Duration":  0.0008178,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Tests.BotControllerTests.ProfilesDoNotChangePhysicalStats(Counter,Hard)",
+                        "Status":  "Passed",
+                        "Duration":  0.0005132,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Tests.BotControllerTests.RepeatedChargesSwitchDefenseAndTargetLossClearsMemory",
+                        "Status":  "Passed",
+                        "Duration":  0.0016593,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Tests.BotControllerTests.SameScenarioProducesDifferentPersonalityDecisions",
+                        "Status":  "Passed",
+                        "Duration":  0.0005614,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Driving.Tests.CollisionRecoveryTests.AciliCarpismaSonrasiYonDuzeltilebilir",
+                        "Status":  "Passed",
+                        "Duration":  6.6841473,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Driving.Tests.CollisionRecoveryTests.DuvarBoyuncaSurusteKontrolKaybolmaz",
+                        "Status":  "Passed",
+                        "Duration":  4.0730533,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Driving.Tests.CollisionRecoveryTests.HareketsizVeHizliRobotAyriAyriDurdurulur",
+                        "Status":  "Passed",
+                        "Duration":  5.1404048,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Driving.Tests.CollisionRecoveryTests.KoseyeSurulenRobotGeriCikabilir",
+                        "Status":  "Passed",
+                        "Duration":  7.1009066,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Driving.Tests.CollisionRecoveryTests.OdakGeriGelinceTusBasilmadanKomutGelmez",
+                        "Status":  "Passed",
+                        "Duration":  0.0786691,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Driving.Tests.CollisionRecoveryTests.OdakKaybindaKomutTemizlenir",
+                        "Status":  "Passed",
+                        "Duration":  0.0731668,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Driving.Tests.CollisionRecoveryTests.OndenCarpismaSonrasiGeriSurusleCikilir",
+                        "Status":  "Passed",
+                        "Duration":  6.0858962,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Driving.Tests.DriveFeelMeasurementTests.AyarSetleriAyarlananUstHizaUlasir",
+                        "Status":  "Passed",
+                        "Duration":  6.2289101,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Driving.Tests.DriveFeelMeasurementTests.AyniSurusFarkliFizikAdimindaAyniSonucuVerir",
+                        "Status":  "Passed",
+                        "Duration":  4.5635101,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Driving.Tests.DriveFeelMeasurementTests.DonusYaricapiAyarSetineGoreDegisir",
+                        "Status":  "Passed",
+                        "Duration":  4.7804483,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Driving.Tests.DriveFeelMeasurementTests.DusukIvmeliAyarSurtunmeTabaninaTakilir",
+                        "Status":  "Passed",
+                        "Duration":  2.0379055,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Driving.Tests.DriveFeelMeasurementTests.FrenMesafesiAyarSetineGoreDegisir",
+                        "Status":  "Passed",
+                        "Duration":  5.4015082,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Driving.Tests.DriveFeelMeasurementTests.TersKomutGecikmedenAlgilanir",
+                        "Status":  "Passed",
+                        "Duration":  5.4000879,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests.DenemeKontroluKlavyesizSurer",
+                        "Status":  "Passed",
+                        "Duration":  0.05857,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests.DonusTuslariIkiYoneCalisir",
+                        "Status":  "Passed",
+                        "Duration":  0.0582293,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests.GeriTusuGeriKomutuGonderir",
+                        "Status":  "Passed",
+                        "Duration":  0.0559172,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests.IkiTusTakimiAyniYonuBirKezSayarVeKarsitYonuSifirlar",
+                        "Status":  "Passed",
+                        "Duration":  0.0601058,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests.IleriTusuIleriKomutuGonderir",
+                        "Status":  "Passed",
+                        "Duration":  0.0574726,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests.IleriyleBirlikteDonusYapilabilir",
+                        "Status":  "Passed",
+                        "Duration":  0.0542666,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests.KarsitTuslarDigerEkseniEtkilemez",
+                        "Status":  "Passed",
+                        "Duration":  0.054556,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests.KarsitTuslarDonusEkseniniSifirlar",
+                        "Status":  "Passed",
+                        "Duration":  0.0648799,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests.KarsitTuslarIleriGeriEkseniniSifirlar",
+                        "Status":  "Passed",
+                        "Duration":  0.1166087,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests.KlavyeCikarilincaOkKomutlariTemizlenir",
+                        "Status":  "Passed",
+                        "Duration":  0.0593766,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests.KontrolKapaliykenGirdiMotoraUlasmaz",
+                        "Status":  "Passed",
+                        "Duration":  0.0568581,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests.KontrolTekrarAcilincaEskiDegerKullanilmaz",
+                        "Status":  "Passed",
+                        "Duration":  0.0566369,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests.OkTuslariIkiEkseniAyniAndaSurer",
+                        "Status":  "Passed",
+                        "Duration":  0.0576225,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests.OrtakRobotGirdisiKarisikKarsitTuslariSifirlar",
+                        "Status":  "Passed",
+                        "Duration":  0.0562251,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests.TusBirakilincaKomutSifirlanir",
+                        "Status":  "Passed",
+                        "Duration":  0.0550188,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Robots.Tests.RobotMotorPlayModeTests.DonusKomutuIkiYoneCalisir",
+                        "Status":  "Passed",
+                        "Duration":  1.3600977,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Robots.Tests.RobotMotorPlayModeTests.DuvaraSurulenRobotDisariGecmez",
+                        "Status":  "Passed",
+                        "Duration":  4.0198492,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Robots.Tests.RobotMotorPlayModeTests.GeriKomutuRobotuGeriGoturur",
+                        "Status":  "Passed",
+                        "Duration":  1.0196855,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Robots.Tests.RobotMotorPlayModeTests.IleriKomutuRobotuIleriGoturur",
+                        "Status":  "Passed",
+                        "Duration":  1.020047,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Robots.Tests.RobotMotorPlayModeTests.KlavyeOlmadanKomutDiziIleSurulur",
+                        "Status":  "Passed",
+                        "Duration":  2.1593389,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Robots.Tests.RobotMotorPlayModeTests.KomutBirakilincaHareketKesilir",
+                        "Status":  "Passed",
+                        "Duration":  2.5604348,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Robots.Tests.RobotMotorPlayModeTests.KomutlarAraliginDisindaKirpilir",
+                        "Status":  "Passed",
+                        "Duration":  0.0046473,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Robots.Tests.RobotMotorPlayModeTests.KoseyeSurulenRobotDisariGecmez",
+                        "Status":  "Passed",
+                        "Duration":  5.0145094,
+                        "Message":  null,
+                        "StackTrace":  null
+                    }
+                ]
+}
