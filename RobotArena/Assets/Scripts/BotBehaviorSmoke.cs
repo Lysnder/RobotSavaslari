@@ -128,7 +128,7 @@ namespace RobotSavaslari
                         if (_captureDirectory != null && Time.unscaledTime >= _nextCapture)
                         {
                             _nextCapture = Time.unscaledTime + .2f;
-                            ScreenCapture.CaptureScreenshot(Path.Combine(_captureDirectory, $"frame-{_captureFrame++:D5}.png"));
+                            CaptureCameraFrame(bot);
                         }
                         yield return null;
                     }
@@ -206,6 +206,30 @@ namespace RobotSavaslari
             if (_exitPlayer && !Application.isEditor) Application.Quit(passed ? 0 : 1);
         }
         private void OnDestroy() => Cleanup();
+        private void CaptureCameraFrame(RobotBotController bot)
+        {
+            // Hidden Windows players may have a black swapchain. Render the actual arena camera
+            // offscreen instead; the sidecar records the corresponding decision (HUD is excluded).
+            Camera camera = Camera.main;
+            if (camera == null) throw new InvalidOperationException("Evidence requires the arena camera");
+            RenderTexture previousTarget = camera.targetTexture, previousActive = RenderTexture.active;
+            var target = RenderTexture.GetTemporary(960, 540, 24, RenderTextureFormat.ARGB32);
+            var pixels = new Texture2D(960, 540, TextureFormat.RGB24, false);
+            try
+            {
+                camera.targetTexture = target; camera.Render(); RenderTexture.active = target;
+                pixels.ReadPixels(new Rect(0, 0, 960, 540), 0, 0); pixels.Apply();
+                string frame = $"frame-{_captureFrame++:D5}";
+                File.WriteAllBytes(Path.Combine(_captureDirectory, frame + ".png"), pixels.EncodeToPNG());
+                File.AppendAllText(Path.Combine(_captureDirectory, "decisions.tsv"),
+                    FormattableString.Invariant($"{frame}\t{bot.personality}\t{bot.difficulty}\t{bot.State}\t{bot.Distance:F3}\t{bot.Threat.ClosingSpeed:F3}\t{bot.Memory.Count}\t{bot.DefenseSide}\n"));
+            }
+            finally
+            {
+                camera.targetTexture = previousTarget; RenderTexture.active = previousActive;
+                RenderTexture.ReleaseTemporary(target); Destroy(pixels);
+            }
+        }
         private void OnGUI()
         {
             if (_captureDirectory == null || _observedBot == null) return;
