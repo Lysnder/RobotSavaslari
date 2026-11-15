@@ -22,3 +22,4 @@ Unity Hub’da `RobotArena/` klasörünü açın ve `Assets/Scenes/Gameplay/Main
 * [Kalıcı sürüş tuş eşlemeleri](docs/surus-tuslari.md)
 * [MainArena sürüş eğitimi](docs/surus-egitimi.md)
 * [Kişisel rekor hayaleti](docs/surus-rekor-hayaleti.md)
+* [Sürüşte el ile doğrulama protokolü](docs/surus-el-dogrulama.md)

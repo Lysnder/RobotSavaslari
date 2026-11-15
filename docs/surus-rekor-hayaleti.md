@@ -77,6 +77,6 @@ sınıflarına bağlanılmadı.
   yavaş turun rekoru ezmemesi, hayaletin fizik/dövüş bileşeni taşımaması,
   çıkışta hayaletin temizlenmesi.
 
-Son koşu: **83/83 PlayMode**, **49/49 EditMode**.
+Son koşu: **89/89 PlayMode**, **49/49 EditMode**.
 
 İlgili: [sürüş eğitimi](surus-egitimi.md)
