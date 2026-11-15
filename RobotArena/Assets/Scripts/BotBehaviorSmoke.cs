@@ -102,11 +102,17 @@ namespace RobotSavaslari
                         "No profile stat bonuses");
                     if (round == 0) CheckRealDamage(bot, damage, health);
                     Vector3 start = opponent.transform.position;
-                    bool moved = false, attacked = false;
+                    Vector3 playerStart = player.transform.position;
+                    bool moved = false, attacked = false, playerMoved = false, playerDamagedBot = false;
                     float deadline = Time.time + 75;
-                    if (Application.isBatchMode) player.gameObject.SendMessage("OnApplicationFocus", true, SendMessageOptions.DontRequireReceiver);
+                    var driver = player.GetComponent<Driving.PlayerKeyboardDriver>();
                     while (match.State == MatchController.MatchState.Playing && Time.time < deadline)
                     {
+                        // Opt-in automation may run with a hidden/unfocused player window. Exercise
+                        // the real keyboard path as focused; never change production focus handling.
+                        if (driver != null && !driver.HasFocus)
+                            player.gameObject.SendMessage("OnApplicationFocus", true, SendMessageOptions.DontRequireReceiver);
+                        _keyboard.MakeCurrent();
                         Vector3 offset = opponent.transform.position - player.transform.position; offset.y = 0;
                         float angle = Vector3.SignedAngle(player.transform.forward, offset, Vector3.up);
                         var keys = new List<Key> { Key.Space };
@@ -115,6 +121,9 @@ namespace RobotSavaslari
                         if (Mathf.Abs(angle) < 55) keys.Add(Time.time % 5 < .8f ? Key.S : Key.W);
                         InputSystem.QueueStateEvent(_keyboard, new KeyboardState(keys.ToArray()));
                         moved |= Vector3.Distance(start, opponent.transform.position) > .5f;
+                        playerMoved |= Vector3.Distance(playerStart, player.transform.position) > .5f &&
+                            driver != null && (Mathf.Abs(driver.ForwardInput) > 0 || Mathf.Abs(driver.TurnInput) > 0);
+                        playerDamagedBot |= health.CurrentHealth < health.MaxHealth;
                         attacked |= bot.AttackRequested;
                         if (_captureDirectory != null && Time.unscaledTime >= _nextCapture)
                         {
@@ -125,6 +134,7 @@ namespace RobotSavaslari
                     }
                     InputSystem.QueueStateEvent(_keyboard, new KeyboardState());
                     Require(moved && attacked, "Bot moves and uses shared melee intent");
+                    Require(playerMoved && playerDamagedBot, "Real keyboard driver moves the player and player combat damages the bot");
                     Require(match.State == MatchController.MatchState.Result && match.ResultCount == 1, "Physical combat reaches one result within 75 seconds");
                     Add($"{personality}/{difficulty} round={round + 1} PASS result={match.Outcome} playerHP={player.GetComponent<RobotHealth>().CurrentHealth:F1} botHP={health.CurrentHealth:F1} reaction={bot.EffectiveReactionSeconds:F2}");
                     yield return null;
