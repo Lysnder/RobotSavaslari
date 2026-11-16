@@ -1,0 +1,13 @@
+﻿Aggressive/Easy damage PASS weaponRequests=0 wheels=2 restored=true closingSpeed=4,00 closest=0,00
+Aggressive/Easy round=1 PASS result=PlayerVictory playerHP=43,3 botHP=0,0 reaction=0,40
+Aggressive/Easy round=2 PASS result=PlayerVictory playerHP=21,8 botHP=0,0 reaction=0,40
+Aggressive/Hard damage PASS weaponRequests=0 wheels=2 restored=true closingSpeed=4,00 closest=0,00
+Aggressive/Hard round=1 PASS result=PlayerVictory playerHP=45,2 botHP=0,0 reaction=0,16
+Aggressive/Hard round=2 PASS result=PlayerVictory playerHP=45,2 botHP=0,0 reaction=0,16
+Counter/Easy damage PASS weaponRequests=0 wheels=2 restored=true closingSpeed=4,00 closest=0,00
+Counter/Easy round=1 PASS result=PlayerVictory playerHP=46,8 botHP=0,0 reaction=0,40
+Counter/Easy round=2 PASS result=PlayerVictory playerHP=18,2 botHP=0,0 reaction=0,40
+Counter/Hard damage PASS weaponRequests=0 wheels=2 restored=true closingSpeed=4,00 closest=0,00
+Counter/Hard round=1 PASS result=PlayerVictory playerHP=71,9 botHP=0,0 reaction=0,16
+Counter/Hard round=2 PASS result=PlayerVictory playerHP=71,9 botHP=0,0 reaction=0,16
+Four combinations, two matches each, real damage/restore, selection and pause checks.

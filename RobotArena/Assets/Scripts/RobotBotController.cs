@@ -6,8 +6,22 @@ namespace RobotSavaslari
     [RequireComponent(typeof(RobotDriveMotor))]
     public sealed class RobotBotController : MonoBehaviour
     {
-        public enum Decision { Idle, Turning, Following, Attacking, BackingOut, EscapeTurn, EscapeDrive, Disengaging, Repositioning, Waiting }
+        public enum Decision { Idle, Turning, Following, Attacking, BackingOut, EscapeTurn, EscapeDrive, Disengaging, Repositioning, Waiting, Evading }
         [SerializeField] private Transform target;
+        [Header("Opponent decisions")]
+        public BotPersonality personality = BotPersonality.Aggressive;
+        public BotDifficulty difficulty = BotDifficulty.Hard;
+        public int decisionSeed = 740;
+        public BotAttackMemory Memory { get; } = new BotAttackMemory();
+        public BotThreatObservation Threat { get; private set; }
+        public BotDamageState OwnCondition { get; private set; }
+        public BotDamageState TargetCondition { get; private set; }
+        public float AimError { get; private set; }
+        public int DecisionSamples { get; private set; }
+        public int EvasionCount { get; private set; }
+        public Vector3 EvasionPoint { get; private set; }
+        public float DefenseSide { get; private set; }
+        public float EffectiveReactionSeconds => Mathf.Max(0.02f, reactionSeconds) * new BotDecisionProfile(difficulty).ReactionMultiplier;
         [Header("Tracking and attack (centre-to-centre metres)")]
         [Min(0.1f)] public float attackEnterDistance = 1.65f;
         [Min(0.1f)] public float followResumeDistance = 2.1f;
@@ -53,12 +67,33 @@ namespace RobotSavaslari
         private bool _engaged, _tacticsObserved;
         private Vector3 _retreatPoint, _flankPoint, _aimPosition;
         private float _flankSide = 1;
+        private System.Random _decisionRandom;
+        private RobotHealth _ownHealth;
+        private RobotDamageVisuals _ownDamage;
+        private float _evasionTime, _evasionCooldown, _profileCooldown;
+        private bool _sampleDecision;
+        private readonly Collider[] _obstacles = new Collider[64];
+        private readonly RaycastHit[] _pathHits = new RaycastHit[64];
+        private Collider[] _ownColliders;
         public Transform Target
         {
             get => target;
             set { if (target == value) return; target = value; ResetDecision(); }
         }
-        private void Awake() { _motor = GetComponent<RobotDriveMotor>(); }
+        private void Awake()
+        {
+            _motor = GetComponent<RobotDriveMotor>();
+            _ownHealth = GetComponent<RobotHealth>();
+            _ownDamage = GetComponent<RobotDamageVisuals>();
+            _ownColliders = GetComponentsInChildren<Collider>();
+            if (_ownHealth != null) _ownHealth.Restored += ResetDecision;
+        }
+        private void OnDestroy() { if (_ownHealth != null) _ownHealth.Restored -= ResetDecision; }
+        public void ConfigureDecisions(BotPersonality selectedPersonality, BotDifficulty selectedDifficulty, int seed = 740)
+        {
+            personality = selectedPersonality; difficulty = selectedDifficulty; decisionSeed = seed;
+            ResetDecision();
+        }
         private void OnValidate()
         {
             attackEnterDistance = Mathf.Max(0.1f, attackEnterDistance);
@@ -72,6 +107,11 @@ namespace RobotSavaslari
             _pressureTime = _circleTime = _spinTime = _tacticTime = _graceTime = _noDamageTime = _reactionTime = 0;
             _engaged = _tacticsObserved = false; _bestDistance = float.PositiveInfinity;
             _flankSide = 1;
+            Memory.Clear(); Threat = default;
+            _decisionRandom = new System.Random(decisionSeed);
+            _evasionTime = _evasionCooldown = _profileCooldown = AimError = DefenseSide = 0;
+            DecisionSamples = EvasionCount = 0; EvasionPoint = transform.position;
+            _previousTarget = target;
             _anchor = transform.position;
             if (_motor == null) _motor = GetComponent<RobotDriveMotor>();
             _motor.Clear(true);
@@ -81,6 +121,9 @@ namespace RobotSavaslari
         // Public deterministic decision step for the regression harness; motion stays in the shared motor.
         public void Tick(float dt)
         {
+            // Settings pauses scaled time. Do not observe, forget, sample randomness or reset a round.
+            if (dt <= 0 || float.IsNaN(dt) || float.IsInfinity(dt) || Time.timeScale <= 0)
+            { AttackRequested = false; Send(0, 0); return; }
             if (_previousTarget != target) { ResetDecision(); _previousTarget = target; }
             var ownHealth = GetComponent<RobotHealth>();
             var targetHealth = target != null ? target.GetComponentInParent<RobotHealth>() : null;
@@ -91,6 +134,14 @@ namespace RobotSavaslari
             Distance = delta.magnitude;
             TargetAngle = delta.sqrMagnitude < 0.0001f ? 0 : Vector3.SignedAngle(_motor.Body.rotation * Vector3.forward, delta, Vector3.up);
             AttackRequested = false;
+            OwnCondition = new BotDamageState(ownHealth, _ownDamage);
+            TargetCondition = new BotDamageState(targetHealth, target.GetComponentInParent<RobotDamageVisuals>());
+            if (enableCombatTactics)
+            {
+                ObserveOpponent(dt, delta);
+                bool recovering = State == Decision.BackingOut || State == Decision.EscapeTurn || State == Decision.EscapeDrive;
+                if (!recovering && TickOpponentDecisions(dt)) return;
+            }
             if (enableCombatTactics && TickCombatTactics(dt, targetHealth)) return;
             if (State == Decision.BackingOut || State == Decision.EscapeTurn || State == Decision.EscapeDrive)
             {
@@ -108,23 +159,22 @@ namespace RobotSavaslari
             float steeringAngle = TargetAngle;
             if (enableCombatTactics)
             {
-                _reactionTime -= dt;
-                if (_reactionTime <= 0) { _aimPosition = target.position; _reactionTime = reactionSeconds; }
                 Vector3 aim = _aimPosition - _motor.Body.position; aim.y = 0;
                 steeringAngle = Vector3.SignedAngle(_motor.Body.rotation * Vector3.forward, aim, Vector3.up);
             }
             float steerLimit = enableCombatTactics ? maximumSteer : 1;
             float steer = Mathf.Clamp(steeringAngle / Mathf.Max(1, fullSteerAngle), -steerLimit, steerLimit);
             bool facing = Mathf.Abs(TargetAngle) <= attackAngle;
-            AttackRequested = facing && Distance <= attackEnterDistance;
+            AttackRequested = OwnCondition.WeaponOperational && facing && Distance <= attackEnterDistance;
             if (AttackRequested) AttackRequest?.Invoke(this, target);
             if (!MatchRunning || target == null) { ResetDecision(); return; }
-            if (_attackHold && facing)
+            if (_attackHold && facing && OwnCondition.WeaponOperational)
             {
                 State = Decision.Attacking; Send(0, 0); _stuckTime = 0; _anchor = _motor.Body.position;
                 return;
             }
-            float drive = !_attackHold && Mathf.Abs(steeringAngle) <= driveAngle ? (enableCombatTactics ? pursuitDrive : 0.85f) : 0;
+            // An unarmed robot can still make a physical ram through the shared motor.
+            float drive = (!_attackHold || !OwnCondition.WeaponOperational) && Mathf.Abs(steeringAngle) <= driveAngle ? (enableCombatTactics ? pursuitDrive : 0.85f) : 0;
             State = drive > 0 ? Decision.Following : Decision.Turning;
             if (drive > 0)
             {
@@ -143,6 +193,13 @@ namespace RobotSavaslari
         }
         private bool TickCombatTactics(float dt, RobotHealth targetHealth)
         {
+            // Lost wheels favor holding an angle over repeatedly attempting wide flank arcs.
+            if (OwnCondition.LimitedMovement)
+            {
+                if (State == Decision.Disengaging || State == Decision.Repositioning || State == Decision.Waiting)
+                    State = Decision.Following;
+                return false;
+            }
             // Committed world-space maneuvers: the target's spin cannot keep rotating the waypoint.
             if (State == Decision.Disengaging || State == Decision.Repositioning || State == Decision.Waiting)
             {
@@ -187,7 +244,10 @@ namespace RobotSavaslari
             else _circleTime += dt;
             if (Distance <= attackEnterDistance && Mathf.Abs(TargetAngle) <= attackAngle) _engaged = true;
             if (_engaged) _pressureTime += dt;
-            if (_pressureTime >= attackBurstSeconds || _spinTime >= 0.85f ||
+            float pressureBudget = attackBurstSeconds * (personality == BotPersonality.Counter ? 0.65f : 1f);
+            if (OwnCondition.HealthFraction < 0.35f || !OwnCondition.WeaponOperational) pressureBudget *= 0.65f;
+            if (!TargetCondition.WeaponOperational || TargetCondition.HealthFraction < 0.3f) pressureBudget *= 1.25f;
+            if (_pressureTime >= pressureBudget || _spinTime >= 0.85f ||
                 _circleTime >= circleTimeout || targetHealth != null && _noDamageTime >= circleTimeout + 0.5f)
             {
                 BeginReposition(); DriveToPoint(_retreatPoint, true); return true;
@@ -220,7 +280,102 @@ namespace RobotSavaslari
             Vector3 forward = _motor.Body.rotation * Vector3.forward;
             float angle = Vector3.SignedAngle(reverse ? -forward : forward, offset, Vector3.up);
             float drive = offset.magnitude > 0.25f && Mathf.Abs(angle) < 65 ? (reverse ? -0.6f : pursuitDrive) : 0;
+            if (drive != 0 && !IsTacticalPathSafe(point)) drive = 0;
             Send(drive, Mathf.Clamp(angle / Mathf.Max(1, fullSteerAngle), -maximumSteer, maximumSteer));
+        }
+        private void ObserveOpponent(float dt, Vector3 separation)
+        {
+            var body = target.GetComponentInParent<Rigidbody>();
+            Threat = new BotThreatObservation(separation, _motor.Body.linearVelocity,
+                body != null ? body.linearVelocity : Vector3.zero, target.forward);
+            Memory.Observe(Threat.Incoming, TargetAngle, dt);
+            _evasionCooldown = Mathf.Max(0, _evasionCooldown - dt);
+            _profileCooldown = Mathf.Max(0, _profileCooldown - dt);
+            _reactionTime -= dt;
+            _sampleDecision = _reactionTime <= 0;
+            if (!_sampleDecision) return;
+            if (_decisionRandom == null) _decisionRandom = new System.Random(decisionSeed);
+            var profile = new BotDecisionProfile(difficulty);
+            bool missed = DecisionSamples > 0 && _decisionRandom.NextDouble() < profile.MissedDecisionChance;
+            _reactionTime = EffectiveReactionSeconds;
+            if (missed) { _sampleDecision = false; return; }
+            AimError = ((float)_decisionRandom.NextDouble() * 2f - 1f) * profile.AimErrorDegrees;
+            _aimPosition = _motor.Body.position + Quaternion.Euler(0, AimError, 0) * separation;
+            DecisionSamples++;
+        }
+
+        private bool TickOpponentDecisions(float dt)
+        {
+            // Finish existing bounded retreat/flank/opening cycles before starting another defense.
+            if (State == Decision.Disengaging || State == Decision.Repositioning || State == Decision.Waiting) return false;
+            if (State == Decision.Evading)
+            {
+                _evasionTime += dt;
+                if (!OwnCondition.LimitedMovement && _evasionTime < 0.45f)
+                { DriveToPoint(EvasionPoint, false); return true; }
+                State = Decision.Following; _graceTime = 0.65f;
+                _stuckTime = 0; _anchor = _motor.Body.position;
+            }
+            if (!_sampleDecision || OwnCondition.LimitedMovement) return false;
+            if (Threat.Incoming && _evasionCooldown <= 0)
+            {
+                // Repeated frontal charges switch the preferred defense side after three distinct onsets.
+                float side = TargetAngle < 0 ? 1 : -1;
+                if (Memory.AdaptDefense) side = -side;
+                Vector3 lateral = Vector3.Cross(Vector3.up, (target.position - _motor.Body.position).normalized);
+                float error = ((float)_decisionRandom.NextDouble() * 2 - 1) * new BotDecisionProfile(difficulty).PositionError;
+                Vector3 first = ClampTacticalPoint(_motor.Body.position + lateral * side * (1.5f + error));
+                Vector3 second = ClampTacticalPoint(_motor.Body.position - lateral * side * (1.5f + error));
+                bool firstSafe = IsTacticalPathSafe(first), secondSafe = IsTacticalPathSafe(second);
+                EvasionPoint = firstSafe ? first : secondSafe ? second : _motor.Body.position;
+                DefenseSide = firstSafe ? side : secondSafe ? -side : 0;
+                State = Decision.Evading; _evasionTime = 0; _evasionCooldown = 1.1f;
+                _attackHold = false; EvasionCount++;
+                DriveToPoint(EvasionPoint, false); return true;
+            }
+            // Counter takes one bounded angle-seeking pass, then commits for at least three seconds.
+            // Aggressive closes the same gap immediately with exactly the same motor capability.
+            bool poorEntry = Distance > attackEnterDistance && Distance < followResumeDistance + 0.8f &&
+                Vector3.Dot(target.forward, (_motor.Body.position - target.position).normalized) > 0.5f;
+            bool vulnerable = OwnCondition.HealthFraction < 0.35f || !OwnCondition.WeaponOperational;
+            if (_profileCooldown <= 0 && _graceTime <= 0 &&
+                (State == Decision.Following || State == Decision.Turning || State == Decision.Idle) &&
+                ((personality == BotPersonality.Counter && TargetCondition.WeaponOperational && poorEntry) ||
+                 vulnerable && TargetCondition.WeaponOperational && Distance < followResumeDistance))
+            {
+                BeginReposition(); _profileCooldown = disengageSeconds + repositionSeconds + openingSeconds + 3f;
+                DriveToPoint(_retreatPoint, true); return true;
+            }
+            return false;
+        }
+
+        public bool IsTacticalPathSafe(Vector3 point)
+        {
+            if (Mathf.Abs(point.x) > Mathf.Abs(tacticalHalfExtents.x) || Mathf.Abs(point.z) > Mathf.Abs(tacticalHalfExtents.y)) return false;
+            Vector3 start = _motor.Body.position;
+            Vector3 travel = point - start; travel.y = 0;
+            if (travel.magnitude < 0.3f) return false;
+            // A conservative horizontal footprint; ignore floors, self and triggers, never the opponent.
+            float radius = 0.65f;
+            foreach (var collider in _ownColliders)
+                if (collider != null && collider.enabled && !collider.isTrigger && collider.attachedRigidbody == _motor.Body)
+                    radius = Mathf.Max(radius, new Vector2(collider.bounds.extents.x, collider.bounds.extents.z).magnitude);
+            Vector3 centre = new Vector3(point.x, start.y + 0.2f, point.z);
+            int overlaps = Physics.OverlapBoxNonAlloc(centre, new Vector3(radius, 0.18f, radius), _obstacles,
+                Quaternion.identity, ~0, QueryTriggerInteraction.Ignore);
+            if (overlaps == _obstacles.Length) return false;
+            for (int i = 0; i < overlaps; i++) if (IsObstacle(_obstacles[i], start.y)) return false;
+            int hits = Physics.BoxCastNonAlloc(new Vector3(start.x, start.y + 0.2f, start.z),
+                new Vector3(radius, 0.18f, radius), travel.normalized, _pathHits, Quaternion.identity,
+                travel.magnitude, ~0, QueryTriggerInteraction.Ignore);
+            if (hits == _pathHits.Length) return false;
+            for (int i = 0; i < hits; i++) if (IsObstacle(_pathHits[i].collider, start.y)) return false;
+            return true;
+        }
+        private bool IsObstacle(Collider collider, float height)
+        {
+            return collider != null && collider.attachedRigidbody != _motor.Body &&
+                !collider.transform.IsChildOf(transform) && collider.bounds.max.y > height + 0.02f;
         }
         private void Send(float drive, float steer) { Command = new Vector2(drive, steer); _motor.Submit(drive, steer); }
     }

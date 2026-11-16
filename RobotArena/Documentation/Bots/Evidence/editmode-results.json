@@ -1,0 +1,314 @@
+﻿{
+    "status":  "completed",
+    "duration":  2.87,
+    "summary":  {
+                    "total":  43,
+                    "passed":  43,
+                    "failed":  0,
+                    "skipped":  0,
+                    "inconclusive":  0
+                },
+    "results":  [
+                    {
+                        "FullName":  "RobotSavaslari.Tests.ArenaAssetReferenceTests.AssetMovesPreserveUniqueGuids",
+                        "Status":  "Passed",
+                        "Duration":  1.2135615,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Tests.ArenaAssetReferenceTests.MainArenaIsTheOnlyEnabledBuildScene",
+                        "Status":  "Passed",
+                        "Duration":  0.0051413,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences(\"Assets/Scenes/Gameplay/MainArena.unity\")",
+                        "Status":  "Passed",
+                        "Duration":  0.0892841,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences(\"Assets/Scenes/Tests/AI/BotScenarios.unity\")",
+                        "Status":  "Passed",
+                        "Duration":  0.0042268,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences(\"Assets/Scenes/Tests/Combat/MeleeCombatValidation.unity\")",
+                        "Status":  "Passed",
+                        "Duration":  0.0127125,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences(\"Assets/Scenes/Tests/CombatArena.unity\")",
+                        "Status":  "Passed",
+                        "Duration":  0.0343199,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences(\"Assets/Scenes/Tests/Driving/CollisionRecovery.unity\")",
+                        "Status":  "Passed",
+                        "Duration":  0.0322269,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences(\"Assets/Scenes/Tests/Driving/DrivingAcceptance.unity\")",
+                        "Status":  "Passed",
+                        "Duration":  0.0206505,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences(\"Assets/Scenes/Tests/Driving/DrivingFeel.unity\")",
+                        "Status":  "Passed",
+                        "Duration":  0.0198514,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences(\"Assets/Scenes/Tests/Driving/KeyboardDriving.unity\")",
+                        "Status":  "Passed",
+                        "Duration":  0.0324868,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences(\"Assets/Scenes/Tests/MatchRegression.unity\")",
+                        "Status":  "Passed",
+                        "Duration":  0.1271755,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences(\"Assets/Scenes/Tests/RobotMotor.unity\")",
+                        "Status":  "Passed",
+                        "Duration":  0.0121741,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences(\"Assets/Scenes/Tests/Template.unity\")",
+                        "Status":  "Passed",
+                        "Duration":  0.0103652,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences(\"Assets/Scenes/Tools/ModularRobotPreview.unity\")",
+                        "Status":  "Passed",
+                        "Duration":  0.1978756,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Tests.BotDecisionTests.CloseContactAndPassingOffsetAreNotCharges",
+                        "Status":  "Passed",
+                        "Duration":  0.0012498,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Tests.BotDecisionTests.DifficultyChangesDecisionParametersOnly",
+                        "Status":  "Passed",
+                        "Duration":  0.0038885,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Tests.BotDecisionTests.MemoryIsBoundedExpiresAndResets",
+                        "Status":  "Passed",
+                        "Duration":  0.00094,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Tests.BotDecisionTests.OneContinuousChargeIsOneSample",
+                        "Status":  "Passed",
+                        "Duration":  0.0003228,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Tests.BotDecisionTests.PursuingStationaryTargetIsNotACharge",
+                        "Status":  "Passed",
+                        "Duration":  0.0002421,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Tests.BotDecisionTests.RepetitionAdaptsThenDifferentAnglesDiluteIt",
+                        "Status":  "Passed",
+                        "Duration":  0.0008526,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Tests.BotDecisionTests.ThreatUsesRelativeMotion(0,-4,True)",
+                        "Status":  "Passed",
+                        "Duration":  0.000901,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Tests.BotDecisionTests.ThreatUsesRelativeMotion(0,4,False)",
+                        "Status":  "Passed",
+                        "Duration":  0.0000468,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Tests.BotDecisionTests.ThreatUsesRelativeMotion(4,0,False)",
+                        "Status":  "Passed",
+                        "Duration":  0.0000368,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Tests.BotDecisionTests.ThreatUsesRelativeMotion(0,0,False)",
+                        "Status":  "Passed",
+                        "Duration":  0.0000357,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Tests.BotDecisionTests.ZeroDeltaPreservesMemory",
+                        "Status":  "Passed",
+                        "Duration":  0.0001516,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Tests.CombatCalculationTests.InvalidSpeedDoesNotDamage",
+                        "Status":  "Passed",
+                        "Duration":  0.0009013,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Tests.CombatCalculationTests.RamUsesOutgoingSpeedAndMassRatio(4.0f,20.0f,10.0f,8.0f)",
+                        "Status":  "Passed",
+                        "Duration":  0.0004757,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Tests.CombatCalculationTests.RamUsesOutgoingSpeedAndMassRatio(4.0f,10.0f,20.0f,2.0f)",
+                        "Status":  "Passed",
+                        "Duration":  0.0000684,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Tests.CombatCalculationTests.RamUsesOutgoingSpeedAndMassRatio(0.0f,10.0f,10.0f,0.0f)",
+                        "Status":  "Passed",
+                        "Duration":  0.0000501,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Tests.CombatCalculationTests.RamUsesOutgoingSpeedAndMassRatio(-4.0f,10.0f,10.0f,0.0f)",
+                        "Status":  "Passed",
+                        "Duration":  0.0000464,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Tests.CombatCalculationTests.RamUsesOutgoingSpeedAndMassRatio(4.0f,10.0f,0.0f,0.0f)",
+                        "Status":  "Passed",
+                        "Duration":  0.0000471,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Tests.CombatCalculationTests.RecoilIsMassScaledAndCapped",
+                        "Status":  "Passed",
+                        "Duration":  0.0003151,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Driving.Tests.DrivingDeliveryTests.AyarSetiOrtakPrefabinVaryantidir(\"Assets/Prefabs/Driving/Robot_AyarA_Sabit.prefab\")",
+                        "Status":  "Passed",
+                        "Duration":  0.0015481,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Driving.Tests.DrivingDeliveryTests.AyarSetiOrtakPrefabinVaryantidir(\"Assets/Prefabs/Driving/Robot_AyarB_Cevik.prefab\")",
+                        "Status":  "Passed",
+                        "Duration":  0.0001114,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Driving.Tests.DrivingDeliveryTests.AyarSetiSurusBilesenleriniTasir(\"Assets/Prefabs/Driving/Robot_AyarA_Sabit.prefab\")",
+                        "Status":  "Passed",
+                        "Duration":  0.000805,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Driving.Tests.DrivingDeliveryTests.AyarSetiSurusBilesenleriniTasir(\"Assets/Prefabs/Driving/Robot_AyarB_Cevik.prefab\")",
+                        "Status":  "Passed",
+                        "Duration":  0.0001197,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Driving.Tests.DrivingDeliveryTests.DenemeSahneleriDerlemeListesindeDegil",
+                        "Status":  "Passed",
+                        "Duration":  0.000201,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Driving.Tests.DrivingDeliveryTests.DenemeSahneleriYerinde",
+                        "Status":  "Passed",
+                        "Duration":  0.0004653,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Driving.Tests.DrivingDeliveryTests.IkiAyarSetiFarkliDegerlerTasir",
+                        "Status":  "Passed",
+                        "Duration":  0.0021407,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Robots.Tests.RobotPrefabTests.AnaArenaTekEtkinDerlemeSahnesi",
+                        "Status":  "Passed",
+                        "Duration":  0.0026285,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Robots.Tests.RobotPrefabTests.PrefabCarpismaHacmineSahip",
+                        "Status":  "Passed",
+                        "Duration":  0.0007384,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Robots.Tests.RobotPrefabTests.PrefabFizikGovdesineSahip",
+                        "Status":  "Passed",
+                        "Duration":  0.0009477,
+                        "Message":  null,
+                        "StackTrace":  null
+                    },
+                    {
+                        "FullName":  "RobotSavaslari.Robots.Tests.RobotPrefabTests.PrefabHareketVeKlavyeBilesenlerineSahip",
+                        "Status":  "Passed",
+                        "Duration":  0.0003364,
+                        "Message":  null,
+                        "StackTrace":  null
+                    }
+                ]
+}
