@@ -1,0 +1,27 @@
+{
+  "status": "completed",
+  "duration": 1.04,
+  "summary": {
+    "total": 2,
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "inconclusive": 0
+  },
+  "results": [
+    {
+      "FullName": "RobotSavaslari.Tests.ArenaGeometryTests.ProductionGridMatchesFloorPerimeterAndOriginalScale",
+      "Status": "Passed",
+      "Duration": 0.4272725,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "RobotSavaslari.Tests.ArenaGeometryTests.RebuildingKeepsSceneConnectionsAndObjectCount",
+      "Status": "Passed",
+      "Duration": 0.3729317,
+      "Message": null,
+      "StackTrace": null
+    }
+  ]
+}

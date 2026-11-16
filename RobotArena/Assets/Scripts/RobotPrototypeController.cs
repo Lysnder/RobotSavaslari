@@ -36,6 +36,8 @@ namespace RobotSavaslari
         private Transform _weapon;
         private Collider[] _colliders;
         private float _boundaryRadius;
+        private Arena.ArenaBounds _arenaBounds;
+        public float ArenaFootprintRadius => _boundaryRadius;
         public static RobotPrototypeController Selected { get; private set; }
         public bool IsSelected => Selected == this;
         private LineRenderer _selectionRing;
@@ -183,19 +185,20 @@ namespace RobotSavaslari
             if (_ringMaterial != null) Destroy(_ringMaterial);
         }
 
-        // Inner wall faces are x=+/-5.91 and z=+/-4.91.
-        // A rotation-independent footprint also protects corners while turning.
+        // The arena owns its perimeter. Legacy test scenes keep their original dimensions.
         public void ConstrainToArena()
         {
             if (_body == null) return;
+            if (_arenaBounds == null) _arenaBounds = FindFirstObjectByType<Arena.ArenaBounds>();
             Vector3 p = _body.position;
             Vector3 v = _body.linearVelocity;
-            float xLimit = Mathf.Max(0f, 5.89f - _boundaryRadius);
-            float zLimit = Mathf.Max(0f, 4.89f - _boundaryRadius);
-            float x = Mathf.Clamp(p.x, -xLimit, xLimit);
-            float z = Mathf.Clamp(p.z, -zLimit, zLimit);
-            if ((p.x >= xLimit && v.x > 0f) || (p.x <= -xLimit && v.x < 0f)) v.x = 0f;
-            if ((p.z >= zLimit && v.z > 0f) || (p.z <= -zLimit && v.z < 0f)) v.z = 0f;
+            Vector2 center = _arenaBounds != null ? _arenaBounds.Center : Vector2.zero;
+            Vector2 limits = _arenaBounds != null ? _arenaBounds.CenterLimits(_boundaryRadius) :
+                new Vector2(Mathf.Max(0, 5.89f - _boundaryRadius), Mathf.Max(0, 4.89f - _boundaryRadius));
+            float x = Mathf.Clamp(p.x, center.x - limits.x, center.x + limits.x);
+            float z = Mathf.Clamp(p.z, center.y - limits.y, center.y + limits.y);
+            if ((p.x >= center.x + limits.x && v.x > 0f) || (p.x <= center.x - limits.x && v.x < 0f)) v.x = 0f;
+            if ((p.z >= center.y + limits.y && v.z > 0f) || (p.z <= center.y - limits.y && v.z < 0f)) v.z = 0f;
             if (x != p.x || z != p.z) _body.position = new Vector3(x, p.y, z);
             _body.linearVelocity = v;
         }

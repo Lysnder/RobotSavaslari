@@ -6,3 +6,4 @@ RobotArena/ArtSource/
 *.blend1
 *.blend2
 RobotArena/Tools/RobotArt/__pycache__/
+RobotArena/Documentation/Arena/**/frames/

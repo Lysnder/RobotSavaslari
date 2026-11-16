@@ -1,0 +1,24 @@
+{
+    "passed": true,
+    "detail": "Warning order, centre/edge occupancy, pause, three cycles, two matches, reset and one instance",
+    "checks": [
+        "occupied offset 0 deferred safely",
+        "occupied offset 0,9 deferred safely",
+        "Warning -> Rising",
+        "Rising -> Active",
+        "Active -> Lowering",
+        "Lowering -> Idle",
+        "Idle -> Warning",
+        "Warning -> Rising",
+        "Rising -> Active",
+        "Active -> Lowering",
+        "Lowering -> Idle",
+        "Idle -> Warning",
+        "Warning -> Rising",
+        "Rising -> Active",
+        "Active -> Lowering",
+        "two matches preserve identity and reset the cycle"
+    ],
+    "frames": 169,
+    "unity": "6000.4.4f1"
+}

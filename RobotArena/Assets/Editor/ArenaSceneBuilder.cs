@@ -16,6 +16,70 @@ namespace RobotSavaslari.Editor
         private const string CombatFloorAssetPath = "Assets/Models/Arena/CombatArenaFloorSplit.glb";
         private const float CombatFloorSurfaceY = 0.56f;
 
+        // Extend the production geometry in place; never recreate robots or match/UI objects.
+        public static void ExpandGrid(Scene scene)
+        {
+            if (scene.path != GameplayStartup.ScenePath)
+                throw new System.InvalidOperationException("Grid expansion targets MainArena only.");
+            var floor = GameObject.Find("Modular Combat Floor");
+            var environment = GameObject.Find("BattleBots Arena");
+            if (floor == null || environment == null) throw new System.InvalidOperationException("Arena geometry missing.");
+            var existing = floor.GetComponent<RobotSavaslari.Arena.ArenaBounds>();
+            Vector2 old = existing != null ? existing.HalfExtents : new Vector2(6, 5);
+            Vector2 target = new Vector2(8, 8);
+            if (old != target)
+            {
+                foreach (Transform t in environment.GetComponentsInChildren<Transform>(true))
+                {
+                    if (t == environment.transform || t.IsChildOf(floor.transform)) continue;
+                    // Imported model children are not part of the static fence/foundation.
+                    if (t.GetComponent<Renderer>() == null && t.GetComponent<Collider>() == null) continue;
+                    Vector3 p = t.localPosition, s = t.localScale;
+                    if (Mathf.Abs(p.x) > old.x - .5f) p.x += Mathf.Sign(p.x) * (target.x - old.x);
+                    if (Mathf.Abs(p.z) > old.y - .5f) p.z += Mathf.Sign(p.z) * (target.y - old.y);
+                    if (s.x > old.x) s.x += 2 * (target.x - old.x);
+                    if (s.z > old.y) s.z += 2 * (target.y - old.y);
+                    t.localPosition = p; t.localScale = s;
+                    var box = t.GetComponent<BoxCollider>();
+                    if (box != null && t.name == "Hidden Floor Support Collider")
+                        box.size = new Vector3(16, box.size.y, 16);
+                }
+            }
+            var match = Object.FindFirstObjectByType<RobotSavaslari.Match.MatchController>();
+            var bounds = existing != null ? existing : floor.AddComponent<RobotSavaslari.Arena.ArenaBounds>();
+            bounds.Configure(new Vector2Int(8, 8), 2, .82f, new[] { match.Player, match.Opponent });
+            Transform template = floor.transform.Find("Floor 0-0");
+            if (template == null) throw new System.InvalidOperationException("Original floor panel missing.");
+            for (int column = 0; column < 8; column++)
+            for (int row = 0; row < 8; row++)
+            {
+                string name = column == 3 && row == 3 ? "Saw Module" : $"Floor {column}-{row}";
+                Transform cell = floor.transform.Find(name);
+                if (cell == null)
+                {
+                    cell = Object.Instantiate(template.gameObject, floor.transform).transform;
+                    cell.name = name;
+                }
+                var renderer = cell.GetComponentInChildren<Renderer>();
+                Vector3 desired = bounds.CellCenter(column, row);
+                Vector3 shift = desired - renderer.bounds.center;
+                shift.y = 0;
+                cell.position += shift;
+                var marker = cell.GetComponent<RobotSavaslari.Arena.ArenaCell>() ?? cell.gameObject.AddComponent<RobotSavaslari.Arena.ArenaCell>();
+                marker.Configure(column, row);
+            }
+            var support = floor.transform.Find("Continuous Floor Collider").GetComponent<BoxCollider>();
+            support.size = new Vector3(16, .2f, 16);
+            support.center = new Vector3(0, .72f, 0);
+            if (Camera.main != null)
+            {
+                Camera.main.transform.position = new Vector3(0, 22, -17);
+                Camera.main.transform.LookAt(new Vector3(0, .82f, 0));
+                Camera.main.fieldOfView = 52;
+            }
+            EditorSceneManager.MarkSceneDirty(scene);
+        }
+
         [MenuItem("RobotSavaslari/Build Arena Environment")]
         public static void Build()
         {

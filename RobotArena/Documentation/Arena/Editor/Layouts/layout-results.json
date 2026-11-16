@@ -1,0 +1,14 @@
+{
+    "passed": true,
+    "detail": "Open/Tactical selection guards, routes, generation, two actual matches per layout, reset persistence",
+    "checks": [
+        "Open clearance=1,061916 route samples=25",
+        "Open actual match 1 passed",
+        "Open actual match 2 passed",
+        "Tactical clearance=1,061916 route samples=33",
+        "Tactical actual match 1 passed",
+        "Tactical actual match 2 passed"
+    ],
+    "frames": 241,
+    "unity": "6000.4.4f1"
+}

@@ -54,6 +54,8 @@ namespace RobotSavaslari.Match.Editor
                 match.gameObject.AddComponent<SettingsPanelController>();
             if (match.GetComponent<MainMenuScreen>() == null)
                 match.gameObject.AddComponent<MainMenuScreen>();
+            RobotSavaslari.Editor.ArenaSceneBuilder.ExpandGrid(scene);
+            ConfigureLayouts(match);
             EditorSceneManager.MarkSceneDirty(scene);
             EditorSceneManager.SaveScene(scene);
             EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene(ScenePath, true) };
@@ -62,6 +64,38 @@ namespace RobotSavaslari.Match.Editor
         }
 
         // Explicit command-line verification entry point; normal editing keeps its current scene.
+        private static void ConfigureLayouts(MatchController match)
+        {
+            Directory.CreateDirectory("Assets/Settings/Arena");
+            AssetDatabase.Refresh();
+            var layouts=new RobotSavaslari.Arena.ArenaLayout[2];
+            for(int i=0;i<2;i++)
+            {
+                string path="Assets/Settings/Arena/"+(i==0?"Open":"Tactical")+".asset";
+                layouts[i]=AssetDatabase.LoadAssetAtPath<RobotSavaslari.Arena.ArenaLayout>(path);
+                if(layouts[i]==null)
+                {
+                    layouts[i]=ScriptableObject.CreateInstance<RobotSavaslari.Arena.ArenaLayout>();
+                    layouts[i].CreateDefault(i==1);
+                    AssetDatabase.CreateAsset(layouts[i],path);
+                }
+            }
+            var floor=GameObject.Find("Modular Combat Floor");
+            var environment=floor.GetComponent<RobotSavaslari.Arena.ArenaEnvironment>()??floor.AddComponent<RobotSavaslari.Arena.ArenaEnvironment>();
+            var choices=new System.Collections.Generic.List<RobotSavaslari.Arena.ArenaLayout>(layouts);
+            if(environment.Layouts!=null)foreach(var existing in environment.Layouts)if(existing!=null&&!choices.Contains(existing))choices.Add(existing);
+            const string materialPath="Assets/Materials/Arena/ArenaObstacle.mat";
+            var material=AssetDatabase.LoadAssetAtPath<Material>(materialPath);
+            if(material==null)
+            {
+                material=new Material(Shader.Find("Universal Render Pipeline/Lit"));
+                material.color=new Color(.9f,.58f,.08f);
+                AssetDatabase.CreateAsset(material,materialPath);
+            }
+            environment.Configure(choices.ToArray(),match,GameObject.Find("Player Spawn").transform,GameObject.Find("Opponent Spawn").transform,material);
+            environment.Rebuild();
+        }
+
         public static void RunGameplaySmoke()
         {
             EditorSceneManager.OpenScene(ScenePath);
