@@ -25,6 +25,10 @@ namespace RobotSavaslari.Robots
         [SerializeField, Min(0f)] private float turnAcceleration = 720f;
         [SerializeField, Min(0f)] private float turnBrakeDeceleration = 1080f;
 
+        [Header("Geçici sürüş değişimi")]
+        [Tooltip("Sürücünün isteyebileceği en büyük çarpan; hatalı bir değer robotu uçurmasın diye.")]
+        [SerializeField, Min(1f)] private float driveModifierCeiling = 3f;
+
         private Rigidbody body;
         private float moveCommand;
         private float turnCommand;
@@ -34,6 +38,9 @@ namespace RobotSavaslari.Robots
         private float turning = 1f;
         private float steeringPull;
         private float traction = 1f;
+        private float speedModifier = 1f;
+        private float accelerationModifier = 1f;
+        private float turnModifier = 1f;
 
         public void SetDriveCondition(float mobilityScale, float turningScale, float pull, float grip)
         {
@@ -43,9 +50,55 @@ namespace RobotSavaslari.Robots
             traction = Mathf.Clamp01(grip);
         }
 
+        /// <summary>
+        /// Sürücünün istediği geçici performans değişimi: boost gibi, kısa süreli
+        /// ve isteğe bağlı. Hasar koşulunun <see cref="SetDriveCondition"/>
+        /// üstüne çarpan olarak biner; 1 etkisiz demektir.
+        ///
+        /// Hasar oranlarından ayrı tutulur, çünkü o kanal 0–1 aralığındadır ve
+        /// her fizik adımında hasar köprüsü tarafından yeniden yazılır; oraya
+        /// yazılan bir boost hem sınırlanır hem de bir sonraki adımda silinir.
+        /// Değerler <see cref="driveModifierCeiling"/> ile sınırlanır.
+        /// </summary>
+        /// <param name="speedScale">İleri üst hız çarpanı. Geri hıza uygulanmaz.</param>
+        /// <param name="accelerationScale">Hızlanma çarpanı; fren etkilenmez.</param>
+        /// <param name="turnScale">Dönüş hızı çarpanı; el freni bunu yükseltir.</param>
+        public void SetDriveModifier(float speedScale, float accelerationScale, float turnScale = 1f)
+        {
+            speedModifier = Mathf.Clamp(speedScale, 0f, driveModifierCeiling);
+            accelerationModifier = Mathf.Clamp(accelerationScale, 0f, driveModifierCeiling);
+            turnModifier = Mathf.Clamp(turnScale, 0f, driveModifierCeiling);
+        }
+
+        /// <summary>Geçici değişimi bırakır: normal sınırlar geri gelir.</summary>
+        public void ClearDriveModifier() => SetDriveModifier(1f, 1f, 1f);
+
+        /// <summary>Uygulanan ileri hız çarpanı (1 = değişim yok).</summary>
+        public float SpeedModifier => speedModifier;
+
+        /// <summary>Uygulanan hızlanma çarpanı (1 = değişim yok).</summary>
+        public float AccelerationModifier => accelerationModifier;
+
+        /// <summary>Uygulanan dönüş çarpanı (1 = değişim yok).</summary>
+        public float TurnModifier => turnModifier;
+
+        /// <summary>
+        /// Hasar ve geçici değişim uygulandıktan sonra şu an geçerli olan dönüş
+        /// hızı sınırı (derece/s). El freni bu sınırı yükseltir ama
+        /// <see cref="driveModifierCeiling"/> üstüne çıkamaz.
+        /// </summary>
+        public float EffectiveMaxTurnSpeed => maxTurnSpeed * turning * turnModifier;
+
+        /// <summary>
+        /// Hasar ve geçici değişim uygulandıktan sonra şu an geçerli olan ileri
+        /// üst hız. Gösterge ve testler bu sınırı okur.
+        /// </summary>
+        public float EffectiveMaxForwardSpeed => maxForwardSpeed * mobility * speedModifier;
+
         public void ResetMotion()
         {
             Stop();
+            ClearDriveModifier();
             forwardSpeed = turnSpeed = 0f;
             if (body != null && !body.isKinematic)
             {
@@ -110,6 +163,7 @@ namespace RobotSavaslari.Robots
         {
             // Bileşen kapatılırsa robot komutla birlikte hızını da bırakmalı.
             Stop();
+            ClearDriveModifier();
 
             if (body != null && !body.isKinematic)
             {
@@ -149,12 +203,16 @@ namespace RobotSavaslari.Robots
             // kendiliğinden sıfırlanır, robot duvarı "ezmeye" devam etmez.
             forwardSpeed = Vector3.Dot(body.linearVelocity, forwardAxis);
 
+            // Geçici çarpan yalnızca ileri sürüşe uygulanır: boost geri vitesi
+            // tasarlanan sınırın üstüne çıkarmaz.
             float targetSpeed = moveCommand >= 0f
-                ? moveCommand * maxForwardSpeed * mobility
+                ? moveCommand * maxForwardSpeed * mobility * speedModifier
                 : moveCommand * maxReverseSpeed * mobility;
 
             bool braking = Mathf.Approximately(moveCommand, 0f) || targetSpeed * forwardSpeed < 0f;
-            float speedChange = (braking ? brakeDeceleration : acceleration * mobility) * deltaTime;
+            float speedChange = (braking
+                ? brakeDeceleration
+                : acceleration * mobility * accelerationModifier) * deltaTime;
             forwardSpeed = Mathf.MoveTowards(forwardSpeed, targetSpeed, speedChange);
 
             // Yalnızca yatay hız sürülür; düşey bileşen yer çekimine bırakılır.
@@ -164,7 +222,8 @@ namespace RobotSavaslari.Robots
             // Dönüş hızı ise bileşenin kendi durumunda tutulur: zemin sürtünmesi
             // her adımda dönüşü yiyip bitirmesin, robot komutu verildiği hızda
             // dönsün. Duvar yine gövdeyi fiziken durdurur.
-            float targetTurnSpeed = Mathf.Clamp(turnCommand + moveCommand * steeringPull, -1f, 1f) * maxTurnSpeed * turning;
+            float targetTurnSpeed = Mathf.Clamp(turnCommand + moveCommand * steeringPull, -1f, 1f)
+                                    * maxTurnSpeed * turning * turnModifier;
             bool turnBraking = Mathf.Approximately(turnCommand, 0f) || targetTurnSpeed * turnSpeed < 0f;
             float turnChange = (turnBraking ? turnBrakeDeceleration : turnAcceleration) * deltaTime;
             turnSpeed = Mathf.MoveTowards(turnSpeed, targetTurnSpeed, turnChange);

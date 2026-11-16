@@ -7,6 +7,22 @@ Unity projesi `RobotArena/` klasöründe (Unity 6000.4.4f1, URP, Input System).
 
 Unity Hub’da `RobotArena/` klasörünü açın ve `Assets/Scenes/Gameplay/MainArena.unity` sahnesinde **Play**’e basın. Windows sürümü de aynı sahneyle başlar. **Oyna** veya **Enter** geri sayımı başlatır; **WASD** veya **ok tuşları** sürer ve döndürür, **Space** yakın dövüşü kullanır. **Esc** ayarları açar. Sonuçtan sonra **R** ile yeni maç başlatılır.
 
+## Dal akışı
+
+```
+feature/... → test → main
+```
+
+Özellik dalları **`test`'e** açılır. `main`'e birleştirme yalnızca `test`
+dalından yapılır; bunu `.github/workflows/main-source-check.yml` zorunlu kılar.
+Özellik dalından doğrudan `main`'e PR açılırsa kontrol şu hatayla düşer:
+
+> main'e birlestirme yalnizca bu reponun test branch'inden yapilabilir.
+
+PR'ı yanlış tabanla açtıysanız yenisini oluşturmaya gerek yok — GitHub'da
+**Edit** ile tabanı `test` yapmak yeterli; numara, açıklama ve inceleme geçmişi
+korunur.
+
 ## Belgeler
 
 * [Projenin durumu ve doğrulama kapsamı](docs/MEVCUT_DURUM.md)
@@ -17,3 +33,9 @@ Unity Hub’da `RobotArena/` klasörünü açın ve `Assets/Scenes/Gameplay/Main
 * [A2 · Sürüş hissi ve tekrarlanabilir ayarlar](docs/a2-surus-hissi.md)
 * [A3 · Çarpışmadan sonra kontrol ve girdi güvenliği](docs/a3-carpisma-kontrol.md)
 * [A4 · Sürüş kabul seti ve bağlantı teslimi](docs/a4-surus-kabul.md)
+* [Sürüş boost'u ve enerji](docs/surus-boost.md)
+* [El freni](docs/surus-el-freni.md)
+* [Kalıcı sürüş tuş eşlemeleri](docs/surus-tuslari.md)
+* [MainArena sürüş eğitimi](docs/surus-egitimi.md)
+* [Kişisel rekor hayaleti](docs/surus-rekor-hayaleti.md)
+* [Sürüşte el ile doğrulama protokolü](docs/surus-el-dogrulama.md)
