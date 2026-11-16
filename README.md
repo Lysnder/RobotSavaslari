@@ -7,6 +7,22 @@ Unity projesi `RobotArena/` klasöründe (Unity 6000.4.4f1, URP, Input System).
 
 Unity Hub’da `RobotArena/` klasörünü açın ve `Assets/Scenes/Gameplay/MainArena.unity` sahnesinde **Play**’e basın. Windows sürümü de aynı sahneyle başlar. **Oyna** veya **Enter** geri sayımı başlatır; **WASD** veya **ok tuşları** sürer ve döndürür, **Space** yakın dövüşü kullanır. **Esc** ayarları açar. Sonuçtan sonra **R** ile yeni maç başlatılır.
 
+## Dal akışı
+
+```
+feature/... → test → main
+```
+
+Özellik dalları **`test`'e** açılır. `main`'e birleştirme yalnızca `test`
+dalından yapılır; bunu `.github/workflows/main-source-check.yml` zorunlu kılar.
+Özellik dalından doğrudan `main`'e PR açılırsa kontrol şu hatayla düşer:
+
+> main'e birlestirme yalnizca bu reponun test branch'inden yapilabilir.
+
+PR'ı yanlış tabanla açtıysanız yenisini oluşturmaya gerek yok — GitHub'da
+**Edit** ile tabanı `test` yapmak yeterli; numara, açıklama ve inceleme geçmişi
+korunur.
+
 ## Belgeler
 
 * [Projenin durumu ve doğrulama kapsamı](docs/MEVCUT_DURUM.md)
