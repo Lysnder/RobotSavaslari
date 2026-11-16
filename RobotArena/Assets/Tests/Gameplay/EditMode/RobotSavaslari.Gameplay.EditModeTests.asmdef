@@ -1,0 +1,27 @@
+{
+    "name": "RobotSavaslari.Gameplay.EditModeTests",
+    "rootNamespace": "RobotSavaslari.Gameplay.Tests",
+    "references": [
+        "RobotSavaslari.Gameplay",
+        "RobotSavaslari.Robots",
+        "RobotSavaslari.Driving",
+        "Unity.InputSystem",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
