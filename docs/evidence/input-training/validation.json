@@ -49,5 +49,6 @@
     "Unity.exe -batchmode -projectPath <RobotArena> -executeMethod RobotSavaslari.Editor.BuildWindowsPlayer.Build -quit -logFile <log>",
     "RobotSavaslari.exe -batchmode -arena-smoke -logFile <log>"
   ],
-  "test_run_note": "Full suites passed before moving the unchanged menu input predicate to avoid a PR #41 merge conflict. The final merged source then passed all 6 regression tests and all 9 match tests; the final standalone commit also built and passed both Windows matches."
+  "test_run_note": "Full suites passed before moving the unchanged menu input predicate to avoid a PR #41 merge conflict. The final merged source then passed all 6 regression tests and all 9 match tests; the final standalone commit also built and passed both Windows matches.",
+  "evidence_note": "Camera XML retains test results and assertions; repetitive captured console output is omitted. Original XML remains in the local evidence directory."
 }
