@@ -89,6 +89,7 @@ namespace RobotSavaslari.Driving.Tests
         [TestCase(Key.Enter)]
         [TestCase(Key.R)]
         [TestCase(Key.Space)]
+        [TestCase(Key.C)]
         public void SahiplenilmeyenTuslarReddedilir(Key key)
         {
             Assert.IsTrue(DriveBindings.IsReserved(key), $"{key} sahiplenilmemeli.");
@@ -140,10 +141,11 @@ namespace RobotSavaslari.Driving.Tests
             Assert.AreEqual(Key.LeftShift, DriveBindings.Boost);
         }
 
-        [Test]
-        public void SahiplenilmeyenTusKayitliysaVarsayilanaDoner()
+        [TestCase(Key.Space)]
+        [TestCase(Key.C)]
+        public void SahiplenilmeyenTusKayitliysaVarsayilanaDoner(Key key)
         {
-            PlayerPrefs.SetString("Settings.Driving." + DriveAction.Boost, Key.Space.ToString());
+            PlayerPrefs.SetString("Settings.Driving." + DriveAction.Boost, key.ToString());
             PlayerPrefs.Save();
 
             DriveBindings.Load();

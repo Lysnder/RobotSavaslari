@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='utf-8'?>
+<test-run id="2" testcasecount="5" result="Passed" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-17 07:37:49Z" end-time="2026-11-17 07:38:12Z" duration="22,5396823">
+  <test-suite type="TestSuite" id="1250" name="RobotArena" fullname="RobotArena" runstate="Runnable" testcasecount="196" result="Passed" start-time="2026-11-17 07:37:49Z" end-time="2026-11-17 07:38:12Z" duration="22.539682" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1190" name="RobotSavaslari.Presentation.PlayModeTests.dll" fullname="C:/Users/emins/Documents/Codex/robot-match-rules-20261117/RobotArena/Library/ScriptAssemblies/RobotSavaslari.Presentation.PlayModeTests.dll" runstate="Runnable" testcasecount="28" result="Passed" start-time="2026-11-17 07:37:49Z" end-time="2026-11-17 07:38:12Z" duration="22.534175" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="36608" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1191" name="RobotSavaslari" fullname="RobotSavaslari" runstate="Runnable" testcasecount="28" result="Passed" start-time="2026-11-17 07:37:49Z" end-time="2026-11-17 07:38:12Z" duration="22.533828" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1192" name="Presentation" fullname="RobotSavaslari.Presentation" runstate="Runnable" testcasecount="28" result="Passed" start-time="2026-11-17 07:37:49Z" end-time="2026-11-17 07:38:12Z" duration="22.533642" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1193" name="Tests" fullname="RobotSavaslari.Presentation.Tests" runstate="Runnable" testcasecount="28" result="Passed" start-time="2026-11-17 07:37:49Z" end-time="2026-11-17 07:38:12Z" duration="22.533400" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1169" name="DuelCameraPlayModeTests" fullname="RobotSavaslari.Presentation.Tests.DuelCameraPlayModeTests" classname="RobotSavaslari.Presentation.Tests.DuelCameraPlayModeTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-17 07:37:49Z" end-time="2026-11-17 07:38:12Z" duration="22.532375" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1173" name="FramesOnlyTheMatchRobotsNotDebris" fullname="RobotSavaslari.Presentation.Tests.DuelCameraPlayModeTests.FramesOnlyTheMatchRobotsNotDebris" methodname="FramesOnlyTheMatchRobotsNotDebris" classname="RobotSavaslari.Presentation.Tests.DuelCameraPlayModeTests" runstate="Runnable" seed="1460038022" result="Passed" start-time="2026-11-17 07:37:49Z" end-time="2026-11-17 07:37:51Z" duration="2.071874" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1170" name="KeepsBothRobotsInFrameNearAndFar" fullname="RobotSavaslari.Presentation.Tests.DuelCameraPlayModeTests.KeepsBothRobotsInFrameNearAndFar" methodname="KeepsBothRobotsInFrameNearAndFar" classname="RobotSavaslari.Presentation.Tests.DuelCameraPlayModeTests" runstate="Runnable" seed="2052741251" result="Passed" start-time="2026-11-17 07:37:51Z" end-time="2026-11-17 07:38:01Z" duration="9.304121" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1174" name="ModeToggleIsBlockedBySettingsAndPersistsIntoNextMatch" fullname="RobotSavaslari.Presentation.Tests.DuelCameraPlayModeTests.ModeToggleIsBlockedBySettingsAndPersistsIntoNextMatch" methodname="ModeToggleIsBlockedBySettingsAndPersistsIntoNextMatch" classname="RobotSavaslari.Presentation.Tests.DuelCameraPlayModeTests" runstate="Runnable" seed="388576765" result="Passed" start-time="2026-11-17 07:38:01Z" end-time="2026-11-17 07:38:04Z" duration="3.311063" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1171" name="OpponentPassingBehindTurnsAtLimitedRateWithoutFlip" fullname="RobotSavaslari.Presentation.Tests.DuelCameraPlayModeTests.OpponentPassingBehindTurnsAtLimitedRateWithoutFlip" methodname="OpponentPassingBehindTurnsAtLimitedRateWithoutFlip" classname="RobotSavaslari.Presentation.Tests.DuelCameraPlayModeTests" runstate="Runnable" seed="357764199" result="Passed" start-time="2026-11-17 07:38:04Z" end-time="2026-11-17 07:38:10Z" duration="6.028930" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1172" name="OverlappingRobotsKeepPreviousDirection" fullname="RobotSavaslari.Presentation.Tests.DuelCameraPlayModeTests.OverlappingRobotsKeepPreviousDirection" methodname="OverlappingRobotsKeepPreviousDirection" classname="RobotSavaslari.Presentation.Tests.DuelCameraPlayModeTests" runstate="Runnable" seed="1044476078" result="Passed" start-time="2026-11-17 07:38:10Z" end-time="2026-11-17 07:38:12Z" duration="1.805648" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

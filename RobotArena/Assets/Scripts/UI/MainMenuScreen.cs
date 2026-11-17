@@ -1,4 +1,5 @@
 using RobotSavaslari.Match;
+using RobotSavaslari.Driving;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,6 +10,9 @@ namespace RobotSavaslari.UI
     [RequireComponent(typeof(MatchController), typeof(SettingsPanelController))]
     public sealed class MainMenuScreen : MonoBehaviour
     {
+        private bool BindingsOpen => _match.Player != null &&
+            _match.Player.TryGetComponent<DriveBindingsScreen>(out var bindings) && bindings.IsOpen;
+
         private const float ReferenceHeight = 720f;
         private MatchController _match;
         private SettingsPanelController _settings;
@@ -27,6 +31,7 @@ namespace RobotSavaslari.UI
 
         private void Update()
         {
+            if (BindingsOpen) return;
             var keyboard = Keyboard.current;
             if (!_match.isActiveAndEnabled || !_match.IsInitialized || _showHistory || _settings.IsOpen || keyboard == null ||
                 keyboard.escapeKey.wasPressedThisFrame) return;
@@ -41,6 +46,7 @@ namespace RobotSavaslari.UI
         {
             if (!_match.isActiveAndEnabled || !_match.IsInitialized || _settings.IsOpen) return;
             EnsureStyles();
+            if (BindingsOpen) return;
             Matrix4x4 previous = GUI.matrix;
             try
             {

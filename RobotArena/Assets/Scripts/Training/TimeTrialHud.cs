@@ -108,7 +108,7 @@ namespace RobotSavaslari.Training
                 }
 
                 TimeTrialCheckpoint checkpoint = session.GetCheckpoint(index);
-                marker.transform.position = new Vector3(checkpoint.position.x, 0.03f, checkpoint.position.z);
+                marker.transform.position = new Vector3(checkpoint.position.x, session.SurfaceHeight + 0.03f, checkpoint.position.z);
                 marker.transform.localScale = new Vector3(checkpoint.radius * 2f, 0.02f, checkpoint.radius * 2f);
 
                 bool passed = index < session.NextCheckpointIndex;

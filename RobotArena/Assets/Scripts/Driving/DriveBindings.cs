@@ -49,6 +49,7 @@ namespace RobotSavaslari.Driving
             Key.NumpadEnter,
             Key.R,
             Key.Space,
+            Key.C,
             Key.UpArrow,
             Key.DownArrow,
             Key.LeftArrow,

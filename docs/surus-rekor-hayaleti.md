@@ -9,7 +9,8 @@ etkileşimsiz bir hayalet olarak izlenir.
 * Yalnızca **daha iyi geçerli** tur rekoru günceller. Geçersiz ya da daha yavaş
   tur rekoru ezmez.
 * Yeni denemede hayalet, denemeyle **aynı saatte** ilerler: `Yeniden dene`
-  süreyi sıfırlayınca hayalet de başa döner.
+  süreyi sıfırlayınca hayalet de başa döner. Yarım turda yeniden deneme de eski
+  kayıt örneklerini temizler; yeni turun kaydı sıfırdan başlar.
 * Eğitimden çıkış hayaleti temizler.
 * Panelde rekor süresi görünür; hayalet ekrandayken bunu da belirtir.
 
@@ -26,8 +27,12 @@ verisiyle karışmaz. Kayıt üç şey taşır:
 | `courseId` | Rota değişirse eski rekor aynı parkur sayılmaz |
 | `lapTime` + örnekler | Turun kendisi |
 
-`courseId` rotadan türer: başlangıç pozu ile her kontrol noktasının konumu ve
-yarıçapı. Rota bir metre bile kaysa kimlik değişir.
+`courseId`, başlangıç pozu ile kontrol noktalarının konumu/yarıçapına ek olarak
+seçili `ArenaEnvironment.Layout` içeriğinin Hash128 özetini taşır. Open ve
+Tactical ayrılır; aynı layout asset'i düzenlenirse onun kimliği de değişir.
+Kimlik `arena-v2-` öneki kullanır: arena düzeni bilinmeyen eski kayıtlar yeni
+parkur rekoru olarak kullanılmaz. Eski dosya silinmez; yeni geçerli rekor
+kaydedilince mevcut tek kayıt dosyası güncellenir.
 
 ### Bozuk ya da eksik kayıt
 
@@ -77,6 +82,11 @@ sınıflarına bağlanılmadı.
   yavaş turun rekoru ezmemesi, hayaletin fizik/dövüş bileşeni taşımaması,
   çıkışta hayaletin temizlenmesi.
 
-Son koşu: **89/89 PlayMode**, **49/49 EditMode**.
+17 Kasım 2026 doğrulaması: **184/184 tüm EditMode**, **32/32 eğitim PlayMode**,
+**55/55 sürüş PlayMode**, **5/5 düello kamera PlayMode**. Yeni altı MainArena
+regresyonu düzeltme öncesi 6 hata, sonrası 6 başarı üretti. PR #41 ile yerel
+birleştirmede aynı altı kontrol ve dokuz maç testi de geçti.
+
+[SHA, XML kanıtları ve komutlar](evidence/input-training/validation.json).
 
 İlgili: [sürüş eğitimi](surus-egitimi.md)

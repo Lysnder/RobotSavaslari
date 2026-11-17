@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using RobotSavaslari.Driving;
+using RobotSavaslari.Match;
 
 namespace RobotSavaslari.UI
 {
@@ -21,6 +23,9 @@ namespace RobotSavaslari.UI
 
         private void Update()
         {
+            var match = GetComponent<MatchController>();
+            if (match != null && match.Player != null &&
+                match.Player.TryGetComponent<DriveBindingsScreen>(out var bindings) && bindings.IsOpen) return;
             if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
                 ToggleSettings();
         }

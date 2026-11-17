@@ -21,13 +21,18 @@ ekrandaki düğmelerle.
 
 ## Rota
 
-Arena gerçekten dar — `RobotPrototypeController.ConstrainToArena()` sınırları
-**x ±5.89, z ±4.89** (yaklaşık 11.8 × 9.8 m). Rota buna göre kuruldu: beş
-kontrol noktası, kenarlardan içeride, saat yönünde bir tur ≈ 27 m.
+Güncel MainArena, `ArenaBounds` üzerinden 8 × 8 adet 2 m hücre ve 0.82 m
+zemin yüksekliği kullanır. Beş kontrol noktası kenarlardan içeride, saat yönünde
+bir tur oluşturur (yaklaşık 27 m).
 
 Kontrol noktaları **collider taşımaz**; tespit mesafe ölçümüyle yapılır. İki
 sebep: fiziğe sıfır müdahale ve testlerde deterministik davranış. Görsel
-işaretler de yalnızca render'dır ve robota parent edilmez.
+işaretler de yalnızca render'dır ve robota parent edilmez. İşaret merkezi
+`ArenaBounds.SurfaceHeight + 0.03` yüksekliğindedir; sabit dünya y=0.03 kullanılmaz.
+Arena bağlantısı olmayan bağımsız testlerde rota başlangıcının y değeri kullanılır.
+
+Her `Retry`, oturum Running kalsa da `AttemptNumber` değerini artırır. GhostRunner
+bu yeni denemede önceki örnekleri ve örnekleme saatini temizler.
 
 ## Giriş sırası — kaynaktan doğrulanmış tuzak
 
@@ -98,7 +103,12 @@ raporlanması, yanlış sıralı turun geçersiz kalması, sürenin işlemesi, y
 denemenin her şeyi sıfırlaması, çıkışta saklanan kontrol durumunun geri
 yüklenmesi, bitişten sonra sürenin durması.
 
-Son koşu: **72/72 PlayMode**, **49/49 EditMode**.
+17 Kasım 2026 doğrulaması: **184/184 tüm EditMode**, **32/32 eğitim PlayMode**,
+**55/55 sürüş PlayMode**, **5/5 düello kamera PlayMode**. Yeni altı MainArena
+regresyonu düzeltme öncesi 6 hata, sonrası 6 başarı üretti. PR #41 ile yerel
+birleştirmede aynı altı kontrol ve dokuz maç testi de geçti.
+
+[SHA, XML kanıtları ve komutlar](evidence/input-training/validation.json).
 
 İlgili: [boost](surus-boost.md) · [el freni](surus-el-freni.md) ·
 [sürüş tuşları](surus-tuslari.md)
