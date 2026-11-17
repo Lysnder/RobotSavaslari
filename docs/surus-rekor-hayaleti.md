@@ -82,6 +82,11 @@ sınıflarına bağlanılmadı.
   yavaş turun rekoru ezmemesi, hayaletin fizik/dövüş bileşeni taşımaması,
   çıkışta hayaletin temizlenmesi.
 
-Son koşu: **89/89 PlayMode**, **49/49 EditMode**.
+17 Kasım 2026 doğrulaması: **184/184 tüm EditMode**, **32/32 eğitim PlayMode**,
+**55/55 sürüş PlayMode**, **5/5 düello kamera PlayMode**. Yeni altı MainArena
+regresyonu düzeltme öncesi 6 hata, sonrası 6 başarı üretti. PR #41 ile yerel
+birleştirmede aynı altı kontrol ve dokuz maç testi de geçti.
+
+[SHA, XML kanıtları ve komutlar](evidence/input-training/validation.json).
 
 İlgili: [sürüş eğitimi](surus-egitimi.md)

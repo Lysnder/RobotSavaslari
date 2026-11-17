@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="32" result="Passed" total="32" passed="32" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-17 07:39:01Z" end-time="2026-11-17 07:39:09Z" duration="8,1745989">
+  <test-suite type="TestSuite" id="1250" name="RobotArena" fullname="RobotArena" runstate="Runnable" testcasecount="196" result="Passed" start-time="2026-11-17 07:39:01Z" end-time="2026-11-17 07:39:09Z" duration="8.174599" total="32" passed="32" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1243" name="RobotSavaslari.Training.PlayModeTests.dll" fullname="C:/Users/emins/Documents/Codex/robot-match-rules-20261117/RobotArena/Library/ScriptAssemblies/RobotSavaslari.Training.PlayModeTests.dll" runstate="Runnable" testcasecount="32" result="Passed" start-time="2026-11-17 07:39:01Z" end-time="2026-11-17 07:39:09Z" duration="8.168121" total="32" passed="32" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="52496" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1244" name="RobotSavaslari" fullname="RobotSavaslari" runstate="Runnable" testcasecount="32" result="Passed" start-time="2026-11-17 07:39:01Z" end-time="2026-11-17 07:39:09Z" duration="8.167836" total="32" passed="32" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1245" name="Training" fullname="RobotSavaslari.Training" runstate="Runnable" testcasecount="32" result="Passed" start-time="2026-11-17 07:39:01Z" end-time="2026-11-17 07:39:09Z" duration="8.167740" total="32" passed="32" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1246" name="Tests" fullname="RobotSavaslari.Training.Tests" runstate="Runnable" testcasecount="32" result="Passed" start-time="2026-11-17 07:39:01Z" end-time="2026-11-17 07:39:09Z" duration="8.167633" total="32" passed="32" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1207" name="GhostLapTests" fullname="RobotSavaslari.Training.Tests.GhostLapTests" classname="RobotSavaslari.Training.Tests.GhostLapTests" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-11-17 07:39:01Z" end-time="2026-11-17 07:39:04Z" duration="2.922334" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1213" name="AradegerHesabiSinirlardaTasmaz" fullname="RobotSavaslari.Training.Tests.GhostLapTests.AradegerHesabiSinirlardaTasmaz" methodname="AradegerHesabiSinirlardaTasmaz" classname="RobotSavaslari.Training.Tests.GhostLapTests" runstate="Runnable" seed="387435683" result="Passed" start-time="2026-11-17 07:39:01Z" end-time="2026-11-17 07:39:01Z" duration="0.017671" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1209" name="BaskaParkurKaydiKullanilmaz" fullname="RobotSavaslari.Training.Tests.GhostLapTests.BaskaParkurKaydiKullanilmaz" methodname="BaskaParkurKaydiKullanilmaz" classname="RobotSavaslari.Training.Tests.GhostLapTests" runstate="Runnable" seed="1950887264" result="Passed" start-time="2026-11-17 07:39:01Z" end-time="2026-11-17 07:39:01Z" duration="0.001431" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1211" name="BozukDosyaGuvenleAtlanir" fullname="RobotSavaslari.Training.Tests.GhostLapTests.BozukDosyaGuvenleAtlanir" methodname="BozukDosyaGuvenleAtlanir" classname="RobotSavaslari.Training.Tests.GhostLapTests" runstate="Runnable" seed="682190093" result="Passed" start-time="2026-11-17 07:39:01Z" end-time="2026-11-17 07:39:01Z" duration="0.010346" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Kisisel rekor okunamadi, rekorsuz devam ediliyor: JSON parse error: Missing a name for object member.
+]]></output>
+              </test-case>
+              <test-case id="1216" name="DahaYavasTurRekoruEzmez" fullname="RobotSavaslari.Training.Tests.GhostLapTests.DahaYavasTurRekoruEzmez" methodname="DahaYavasTurRekoruEzmez" classname="RobotSavaslari.Training.Tests.GhostLapTests" runstate="Runnable" seed="1571370506" result="Passed" start-time="2026-11-17 07:39:01Z" end-time="2026-11-17 07:39:03Z" duration="1.222420" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1218" name="EgitimdenCikisHayaletiTemizler" fullname="RobotSavaslari.Training.Tests.GhostLapTests.EgitimdenCikisHayaletiTemizler" methodname="EgitimdenCikisHayaletiTemizler" classname="RobotSavaslari.Training.Tests.GhostLapTests" runstate="Runnable" seed="1975424234" result="Passed" start-time="2026-11-17 07:39:03Z" end-time="2026-11-17 07:39:03Z" duration="0.413487" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1210" name="EksikKayitKullanilmaz" fullname="RobotSavaslari.Training.Tests.GhostLapTests.EksikKayitKullanilmaz" methodname="EksikKayitKullanilmaz" classname="RobotSavaslari.Training.Tests.GhostLapTests" runstate="Runnable" seed="1314851284" result="Passed" start-time="2026-11-17 07:39:03Z" end-time="2026-11-17 07:39:03Z" duration="0.000856" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1208" name="EskiSurumKaydiKullanilmaz" fullname="RobotSavaslari.Training.Tests.GhostLapTests.EskiSurumKaydiKullanilmaz" methodname="EskiSurumKaydiKullanilmaz" classname="RobotSavaslari.Training.Tests.GhostLapTests" runstate="Runnable" seed="809425018" result="Passed" start-time="2026-11-17 07:39:03Z" end-time="2026-11-17 07:39:03Z" duration="0.000614" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1214" name="GecerliTurRekorOlarakKaydedilir" fullname="RobotSavaslari.Training.Tests.GhostLapTests.GecerliTurRekorOlarakKaydedilir" methodname="GecerliTurRekorOlarakKaydedilir" classname="RobotSavaslari.Training.Tests.GhostLapTests" runstate="Runnable" seed="288645148" result="Passed" start-time="2026-11-17 07:39:03Z" end-time="2026-11-17 07:39:03Z" duration="0.414541" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1215" name="GecersizTurRekorOlmaz" fullname="RobotSavaslari.Training.Tests.GhostLapTests.GecersizTurRekorOlmaz" methodname="GecersizTurRekorOlmaz" classname="RobotSavaslari.Training.Tests.GhostLapTests" runstate="Runnable" seed="1510430102" result="Passed" start-time="2026-11-17 07:39:03Z" end-time="2026-11-17 07:39:04Z" duration="0.411931" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1217" name="HayaletFizikVeDovusBileseniTasimaz" fullname="RobotSavaslari.Training.Tests.GhostLapTests.HayaletFizikVeDovusBileseniTasimaz" methodname="HayaletFizikVeDovusBileseniTasimaz" classname="RobotSavaslari.Training.Tests.GhostLapTests" runstate="Runnable" seed="1684918231" result="Passed" start-time="2026-11-17 07:39:04Z" end-time="2026-11-17 07:39:04Z" duration="0.414112" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1212" name="KayitYazilipOkunur" fullname="RobotSavaslari.Training.Tests.GhostLapTests.KayitYazilipOkunur" methodname="KayitYazilipOkunur" classname="RobotSavaslari.Training.Tests.GhostLapTests" runstate="Runnable" seed="462757261" result="Passed" start-time="2026-11-17 07:39:04Z" end-time="2026-11-17 07:39:04Z" duration="0.005145" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1219" name="InputAndTrainingRegressionTests" fullname="RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests" classname="RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-11-17 07:39:04Z" end-time="2026-11-17 07:39:07Z" duration="2.518020" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1221" name="CameraKeyIsRejectedAndDoesNotChangeCameraDuringCapture" fullname="RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests.CameraKeyIsRejectedAndDoesNotChangeCameraDuringCapture" methodname="CameraKeyIsRejectedAndDoesNotChangeCameraDuringCapture" classname="RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests" runstate="Runnable" seed="792756145" result="Passed" start-time="2026-11-17 07:39:04Z" end-time="2026-11-17 07:39:05Z" duration="0.519346" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1223" name="CheckpointMarkersAreAboveArenaSurface" fullname="RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests.CheckpointMarkersAreAboveArenaSurface" methodname="CheckpointMarkersAreAboveArenaSurface" classname="RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests" runstate="Runnable" seed="1373703049" result="Passed" start-time="2026-11-17 07:39:05Z" end-time="2026-11-17 07:39:05Z" duration="0.302164" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1220" name="EnterDuringCaptureDoesNotStartMatch" fullname="RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests.EnterDuringCaptureDoesNotStartMatch" methodname="EnterDuringCaptureDoesNotStartMatch" classname="RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests" runstate="Runnable" seed="1544428935" result="Passed" start-time="2026-11-17 07:39:05Z" end-time="2026-11-17 07:39:05Z" duration="0.297709" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1222" name="EscapeCancelsCaptureWithoutOpeningSettings" fullname="RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests.EscapeCancelsCaptureWithoutOpeningSettings" methodname="EscapeCancelsCaptureWithoutOpeningSettings" classname="RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests" runstate="Runnable" seed="40581785" result="Passed" start-time="2026-11-17 07:39:05Z" end-time="2026-11-17 07:39:06Z" duration="0.314164" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1225" name="LayoutSelectionAndContentChangesInvalidateOldBest" fullname="RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests.LayoutSelectionAndContentChangesInvalidateOldBest" methodname="LayoutSelectionAndContentChangesInvalidateOldBest" classname="RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests" runstate="Runnable" seed="1394178302" result="Passed" start-time="2026-11-17 07:39:06Z" end-time="2026-11-17 07:39:06Z" duration="0.306139" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1224" name="RetryDuringUnfinishedLapDiscardsOldSamples" fullname="RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests.RetryDuringUnfinishedLapDiscardsOldSamples" methodname="RetryDuringUnfinishedLapDiscardsOldSamples" classname="RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests" runstate="Runnable" seed="635362966" result="Passed" start-time="2026-11-17 07:39:06Z" end-time="2026-11-17 07:39:07Z" duration="0.776886" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1226" name="MainArenaDrivingIntegrationTests" fullname="RobotSavaslari.Training.Tests.MainArenaDrivingIntegrationTests" classname="RobotSavaslari.Training.Tests.MainArenaDrivingIntegrationTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-11-17 07:39:07Z" end-time="2026-11-17 07:39:09Z" duration="1.909402" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1231" name="EgitimdenSonraIkinciEgitimeGirilebilir" fullname="RobotSavaslari.Training.Tests.MainArenaDrivingIntegrationTests.EgitimdenSonraIkinciEgitimeGirilebilir" methodname="EgitimdenSonraIkinciEgitimeGirilebilir" classname="RobotSavaslari.Training.Tests.MainArenaDrivingIntegrationTests" runstate="Runnable" seed="701448150" result="Passed" start-time="2026-11-17 07:39:07Z" end-time="2026-11-17 07:39:07Z" duration="0.290311" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1230" name="EgitimGirisCikisiMacSayaclariniDegistirmez" fullname="RobotSavaslari.Training.Tests.MainArenaDrivingIntegrationTests.EgitimGirisCikisiMacSayaclariniDegistirmez" methodname="EgitimGirisCikisiMacSayaclariniDegistirmez" classname="RobotSavaslari.Training.Tests.MainArenaDrivingIntegrationTests" runstate="Runnable" seed="1369545928" result="Passed" start-time="2026-11-17 07:39:07Z" end-time="2026-11-17 07:39:07Z" duration="0.326732" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1228" name="IkinciKurulumBilesenleriCogaltmaz" fullname="RobotSavaslari.Training.Tests.MainArenaDrivingIntegrationTests.IkinciKurulumBilesenleriCogaltmaz" methodname="IkinciKurulumBilesenleriCogaltmaz" classname="RobotSavaslari.Training.Tests.MainArenaDrivingIntegrationTests" runstate="Runnable" seed="1488919796" result="Passed" start-time="2026-11-17 07:39:07Z" end-time="2026-11-17 07:39:08Z" duration="0.322394" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1229" name="KayitliEslemeSahnedekiSurucuyeUygulanir" fullname="RobotSavaslari.Training.Tests.MainArenaDrivingIntegrationTests.KayitliEslemeSahnedekiSurucuyeUygulanir" methodname="KayitliEslemeSahnedekiSurucuyeUygulanir" classname="RobotSavaslari.Training.Tests.MainArenaDrivingIntegrationTests" runstate="Runnable" seed="1153656916" result="Passed" start-time="2026-11-17 07:39:08Z" end-time="2026-11-17 07:39:08Z" duration="0.331965" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1232" name="MacDurumuDegisinceBoostVeElFreniBirakilir" fullname="RobotSavaslari.Training.Tests.MainArenaDrivingIntegrationTests.MacDurumuDegisinceBoostVeElFreniBirakilir" methodname="MacDurumuDegisinceBoostVeElFreniBirakilir" classname="RobotSavaslari.Training.Tests.MainArenaDrivingIntegrationTests" runstate="Runnable" seed="892712984" result="Passed" start-time="2026-11-17 07:39:08Z" end-time="2026-11-17 07:39:08Z" duration="0.296562" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1227" name="SahnedekiOyuncuyaSurusBilesenleriBaglanir" fullname="RobotSavaslari.Training.Tests.MainArenaDrivingIntegrationTests.SahnedekiOyuncuyaSurusBilesenleriBaglanir" methodname="SahnedekiOyuncuyaSurusBilesenleriBaglanir" classname="RobotSavaslari.Training.Tests.MainArenaDrivingIntegrationTests" runstate="Runnable" seed="1244414597" result="Passed" start-time="2026-11-17 07:39:08Z" end-time="2026-11-17 07:39:09Z" duration="0.340519" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1233" name="TimeTrialSessionTests" fullname="RobotSavaslari.Training.Tests.TimeTrialSessionTests" classname="RobotSavaslari.Training.Tests.TimeTrialSessionTests" runstate="Runnable" testcasecount="9" result="Passed" start-time="2026-11-17 07:39:09Z" end-time="2026-11-17 07:39:09Z" duration="0.816967" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1242" name="BitisSonrasiSureIlerlemez" fullname="RobotSavaslari.Training.Tests.TimeTrialSessionTests.BitisSonrasiSureIlerlemez" methodname="BitisSonrasiSureIlerlemez" classname="RobotSavaslari.Training.Tests.TimeTrialSessionTests" runstate="Runnable" seed="1559111126" result="Passed" start-time="2026-11-17 07:39:09Z" end-time="2026-11-17 07:39:09Z" duration="0.302951" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1241" name="CikisSaklananKontrolDurumunuGeriYukler" fullname="RobotSavaslari.Training.Tests.TimeTrialSessionTests.CikisSaklananKontrolDurumunuGeriYukler" methodname="CikisSaklananKontrolDurumunuGeriYukler" classname="RobotSavaslari.Training.Tests.TimeTrialSessionTests" runstate="Runnable" seed="673868904" result="Passed" start-time="2026-11-17 07:39:09Z" end-time="2026-11-17 07:39:09Z" duration="0.001424" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1234" name="EgitimeGirisKontroluAcarVeBaslangicaKoyar" fullname="RobotSavaslari.Training.Tests.TimeTrialSessionTests.EgitimeGirisKontroluAcarVeBaslangicaKoyar" methodname="EgitimeGirisKontroluAcarVeBaslangicaKoyar" classname="RobotSavaslari.Training.Tests.TimeTrialSessionTests" runstate="Runnable" seed="532781387" result="Passed" start-time="2026-11-17 07:39:09Z" end-time="2026-11-17 07:39:09Z" duration="0.001410" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1235" name="GirisIzniYokkenGirilmez" fullname="RobotSavaslari.Training.Tests.TimeTrialSessionTests.GirisIzniYokkenGirilmez" methodname="GirisIzniYokkenGirilmez" classname="RobotSavaslari.Training.Tests.TimeTrialSessionTests" runstate="Runnable" seed="2008760659" result="Passed" start-time="2026-11-17 07:39:09Z" end-time="2026-11-17 07:39:09Z" duration="0.000916" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1236" name="KontrolNoktalariYalnizSirayilaIlerler" fullname="RobotSavaslari.Training.Tests.TimeTrialSessionTests.KontrolNoktalariYalnizSirayilaIlerler" methodname="KontrolNoktalariYalnizSirayilaIlerler" classname="RobotSavaslari.Training.Tests.TimeTrialSessionTests" runstate="Runnable" seed="1811057499" result="Passed" start-time="2026-11-17 07:39:09Z" end-time="2026-11-17 07:39:09Z" duration="0.001429" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1237" name="SirayilaGecilenTurTamamlanirVeBitisBirKezRaporlanir" fullname="RobotSavaslari.Training.Tests.TimeTrialSessionTests.SirayilaGecilenTurTamamlanirVeBitisBirKezRaporlanir" methodname="SirayilaGecilenTurTamamlanirVeBitisBirKezRaporlanir" classname="RobotSavaslari.Training.Tests.TimeTrialSessionTests" runstate="Runnable" seed="1708622299" result="Passed" start-time="2026-11-17 07:39:09Z" end-time="2026-11-17 07:39:09Z" duration="0.002302" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1239" name="SureIlerler" fullname="RobotSavaslari.Training.Tests.TimeTrialSessionTests.SureIlerler" methodname="SureIlerler" classname="RobotSavaslari.Training.Tests.TimeTrialSessionTests" runstate="Runnable" seed="1404861093" result="Passed" start-time="2026-11-17 07:39:09Z" end-time="2026-11-17 07:39:09Z" duration="0.301119" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1238" name="YanlisSiraliTurGecersizKalir" fullname="RobotSavaslari.Training.Tests.TimeTrialSessionTests.YanlisSiraliTurGecersizKalir" methodname="YanlisSiraliTurGecersizKalir" classname="RobotSavaslari.Training.Tests.TimeTrialSessionTests" runstate="Runnable" seed="2146916915" result="Passed" start-time="2026-11-17 07:39:09Z" end-time="2026-11-17 07:39:09Z" duration="0.002246" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1240" name="YenidenDenemeHerSeyiSifirlar" fullname="RobotSavaslari.Training.Tests.TimeTrialSessionTests.YenidenDenemeHerSeyiSifirlar" methodname="YenidenDenemeHerSeyiSifirlar" classname="RobotSavaslari.Training.Tests.TimeTrialSessionTests" runstate="Runnable" seed="466186371" result="Passed" start-time="2026-11-17 07:39:09Z" end-time="2026-11-17 07:39:09Z" duration="0.201932" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Saving results to: C:/Users/emins/AppData/LocalLow/DefaultCompany/RobotArena\TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

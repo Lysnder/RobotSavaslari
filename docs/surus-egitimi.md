@@ -103,7 +103,12 @@ raporlanması, yanlış sıralı turun geçersiz kalması, sürenin işlemesi, y
 denemenin her şeyi sıfırlaması, çıkışta saklanan kontrol durumunun geri
 yüklenmesi, bitişten sonra sürenin durması.
 
-Son koşu: **72/72 PlayMode**, **49/49 EditMode**.
+17 Kasım 2026 doğrulaması: **184/184 tüm EditMode**, **32/32 eğitim PlayMode**,
+**55/55 sürüş PlayMode**, **5/5 düello kamera PlayMode**. Yeni altı MainArena
+regresyonu düzeltme öncesi 6 hata, sonrası 6 başarı üretti. PR #41 ile yerel
+birleştirmede aynı altı kontrol ve dokuz maç testi de geçti.
+
+[SHA, XML kanıtları ve komutlar](evidence/input-training/validation.json).
 
 İlgili: [boost](surus-boost.md) · [el freni](surus-el-freni.md) ·
 [sürüş tuşları](surus-tuslari.md)

@@ -1,0 +1,53 @@
+{
+  "date": "2026-11-17",
+  "unity": "6000.4.4f1",
+  "base_test_sha": "3a7c500db7a9495bda036bac74ea2719a2c09856",
+  "implementation_sha": "1d129dbb30715d004963b2bc18f97ae4208a07b9",
+  "before": {
+    "new_mainarena_regressions": 6,
+    "failed": 6
+  },
+  "after": {
+    "editmode_passed": 184,
+    "training_playmode_passed": 32,
+    "driving_playmode_passed": 55,
+    "duel_camera_playmode_passed": 5
+  },
+  "combined_with_pr_41": {
+    "match_rules_sha": "eeed01e117f8ad357e247a3ed1eedadb597c6609",
+    "local_merge_sha": "4609afea6f63cc16ab6678b56d41d5b6f66310a0",
+    "conflicts": 0,
+    "input_training_regressions_passed": 6,
+    "match_rules_passed": 9
+  },
+  "windows": {
+    "build": "passed",
+    "build_exit_code": 0,
+    "real_matches": 2,
+    "gameplay_exit_code": 0,
+    "source_sha": "1d129dbb30715d004963b2bc18f97ae4208a07b9"
+  },
+  "checks": [
+    "Enter and NumpadEnter are rejected during capture without starting a match; Enter works after closing.",
+    "C cannot bind or change camera while the modal is open; camera C works after closing.",
+    "Escape cancels capture without opening Settings or pausing.",
+    "All five checkpoint marker renderer bounds are above ArenaBounds.SurfaceHeight and have no collider.",
+    "Retry during Running discards old samples; new lap saves strictly increasing sample timestamps.",
+    "Open and Tactical IDs differ; existing layout content edits change identity; switching back restores the matching record.",
+    "Stored C bindings fall back to default when loaded."
+  ],
+  "compatibility": "Old arena- IDs omit layout identity, so arena-v2- does not reuse them; the old file is retained until a new best overwrites the existing single-record store.",
+  "limits": [
+    "No full legacy Gameplay or full Presentation suite success is claimed.",
+    "No manual Windows keyboard/marker visual inspection; Unity input events and renderer bounds are automated checks."
+  ],
+  "commands": [
+    "Unity.exe -batchmode -nographics -projectPath <RobotArena> -runTests -testPlatform EditMode -testResults <xml> -logFile <log>",
+    "Unity.exe -batchmode -nographics -projectPath <RobotArena> -runTests -testPlatform PlayMode -assemblyNames RobotSavaslari.Training.PlayModeTests -testResults <xml> -logFile <log>",
+    "Unity.exe -batchmode -nographics -projectPath <RobotArena> -runTests -testPlatform PlayMode -assemblyNames RobotSavaslari.Driving.PlayModeTests -testResults <xml> -logFile <log>",
+    "Unity.exe -batchmode -nographics -projectPath <RobotArena> -runTests -testPlatform PlayMode -testFilter RobotSavaslari.Presentation.Tests.DuelCameraPlayModeTests -testResults <xml> -logFile <log>",
+    "Unity.exe -batchmode -projectPath <RobotArena> -executeMethod RobotSavaslari.Editor.BuildWindowsPlayer.Build -quit -logFile <log>",
+    "RobotSavaslari.exe -batchmode -arena-smoke -logFile <log>"
+  ],
+  "test_run_note": "Full suites passed before moving the unchanged menu input predicate to avoid a PR #41 merge conflict. The final merged source then passed all 6 regression tests and all 9 match tests; the final standalone commit also built and passed both Windows matches."
+}

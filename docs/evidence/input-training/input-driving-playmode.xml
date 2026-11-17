@@ -1,0 +1,480 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="55" result="Passed" total="55" passed="55" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-17 07:39:21Z" end-time="2026-11-17 07:41:20Z" duration="119,559993">
+  <test-suite type="TestSuite" id="1250" name="RobotArena" fullname="RobotArena" runstate="Runnable" testcasecount="196" result="Passed" start-time="2026-11-17 07:39:21Z" end-time="2026-11-17 07:41:20Z" duration="119.559993" total="55" passed="55" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1079" name="RobotSavaslari.Driving.PlayModeTests.dll" fullname="C:/Users/emins/Documents/Codex/robot-match-rules-20261117/RobotArena/Library/ScriptAssemblies/RobotSavaslari.Driving.PlayModeTests.dll" runstate="Runnable" testcasecount="55" result="Passed" start-time="2026-11-17 07:39:21Z" end-time="2026-11-17 07:41:20Z" duration="119.555480" total="55" passed="55" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="1944" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1080" name="RobotSavaslari" fullname="RobotSavaslari" runstate="Runnable" testcasecount="55" result="Passed" start-time="2026-11-17 07:39:21Z" end-time="2026-11-17 07:41:20Z" duration="119.555223" total="55" passed="55" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1081" name="Driving" fullname="RobotSavaslari.Driving" runstate="Runnable" testcasecount="55" result="Passed" start-time="2026-11-17 07:39:21Z" end-time="2026-11-17 07:41:20Z" duration="119.555135" total="55" passed="55" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1082" name="Tests" fullname="RobotSavaslari.Driving.Tests" runstate="Runnable" testcasecount="55" result="Passed" start-time="2026-11-17 07:39:21Z" end-time="2026-11-17 07:41:20Z" duration="119.554992" total="55" passed="55" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1018" name="CollisionRecoveryTests" fullname="RobotSavaslari.Driving.Tests.CollisionRecoveryTests" classname="RobotSavaslari.Driving.Tests.CollisionRecoveryTests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-11-17 07:39:21Z" end-time="2026-11-17 07:39:49Z" duration="28.772394" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1020" name="AciliCarpismaSonrasiYonDuzeltilebilir" fullname="RobotSavaslari.Driving.Tests.CollisionRecoveryTests.AciliCarpismaSonrasiYonDuzeltilebilir" methodname="AciliCarpismaSonrasiYonDuzeltilebilir" classname="RobotSavaslari.Driving.Tests.CollisionRecoveryTests" runstate="Runnable" seed="797037523" result="Passed" start-time="2026-11-17 07:39:21Z" end-time="2026-11-17 07:39:27Z" duration="6.592168" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1022" name="DuvarBoyuncaSurusteKontrolKaybolmaz" fullname="RobotSavaslari.Driving.Tests.CollisionRecoveryTests.DuvarBoyuncaSurusteKontrolKaybolmaz" methodname="DuvarBoyuncaSurusteKontrolKaybolmaz" classname="RobotSavaslari.Driving.Tests.CollisionRecoveryTests" runstate="Runnable" seed="1426253756" result="Passed" start-time="2026-11-17 07:39:27Z" end-time="2026-11-17 07:39:31Z" duration="4.022518" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1025" name="HareketsizVeHizliRobotAyriAyriDurdurulur" fullname="RobotSavaslari.Driving.Tests.CollisionRecoveryTests.HareketsizVeHizliRobotAyriAyriDurdurulur" methodname="HareketsizVeHizliRobotAyriAyriDurdurulur" classname="RobotSavaslari.Driving.Tests.CollisionRecoveryTests" runstate="Runnable" seed="630416705" result="Passed" start-time="2026-11-17 07:39:31Z" end-time="2026-11-17 07:39:36Z" duration="5.070065" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Komut kesildikten sonra kalan hareket: 0,38 m
+]]></output>
+              </test-case>
+              <test-case id="1021" name="KoseyeSurulenRobotGeriCikabilir" fullname="RobotSavaslari.Driving.Tests.CollisionRecoveryTests.KoseyeSurulenRobotGeriCikabilir" methodname="KoseyeSurulenRobotGeriCikabilir" classname="RobotSavaslari.Driving.Tests.CollisionRecoveryTests" runstate="Runnable" seed="614259976" result="Passed" start-time="2026-11-17 07:39:36Z" end-time="2026-11-17 07:39:43Z" duration="7.039765" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1024" name="OdakGeriGelinceTusBasilmadanKomutGelmez" fullname="RobotSavaslari.Driving.Tests.CollisionRecoveryTests.OdakGeriGelinceTusBasilmadanKomutGelmez" methodname="OdakGeriGelinceTusBasilmadanKomutGelmez" classname="RobotSavaslari.Driving.Tests.CollisionRecoveryTests" runstate="Runnable" seed="664326374" result="Passed" start-time="2026-11-17 07:39:43Z" end-time="2026-11-17 07:39:43Z" duration="0.010365" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1023" name="OdakKaybindaKomutTemizlenir" fullname="RobotSavaslari.Driving.Tests.CollisionRecoveryTests.OdakKaybindaKomutTemizlenir" methodname="OdakKaybindaKomutTemizlenir" classname="RobotSavaslari.Driving.Tests.CollisionRecoveryTests" runstate="Runnable" seed="26894500" result="Passed" start-time="2026-11-17 07:39:43Z" end-time="2026-11-17 07:39:43Z" duration="0.002847" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1019" name="OndenCarpismaSonrasiGeriSurusleCikilir" fullname="RobotSavaslari.Driving.Tests.CollisionRecoveryTests.OndenCarpismaSonrasiGeriSurusleCikilir" methodname="OndenCarpismaSonrasiGeriSurusleCikilir" classname="RobotSavaslari.Driving.Tests.CollisionRecoveryTests" runstate="Runnable" seed="1347584380" result="Passed" start-time="2026-11-17 07:39:43Z" end-time="2026-11-17 07:39:49Z" duration="6.026906" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Onden carpisma: 6,00 m/s, 0 derece, kalan 0,08 m/s
+]]></output>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1026" name="DriveBindingsScreenTests" fullname="RobotSavaslari.Driving.Tests.DriveBindingsScreenTests" classname="RobotSavaslari.Driving.Tests.DriveBindingsScreenTests" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-11-17 07:39:49Z" end-time="2026-11-17 07:39:49Z" duration="0.041003" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1030" name="CakisanTusReddedilirVeMesajGosterilir" fullname="RobotSavaslari.Driving.Tests.DriveBindingsScreenTests.CakisanTusReddedilirVeMesajGosterilir" methodname="CakisanTusReddedilirVeMesajGosterilir" classname="RobotSavaslari.Driving.Tests.DriveBindingsScreenTests" runstate="Runnable" seed="2033184566" result="Passed" start-time="2026-11-17 07:39:49Z" end-time="2026-11-17 07:39:49Z" duration="0.008901" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1027" name="EkranAcilincaKontrolKapanirKapanincaDoner" fullname="RobotSavaslari.Driving.Tests.DriveBindingsScreenTests.EkranAcilincaKontrolKapanirKapanincaDoner" methodname="EkranAcilincaKontrolKapanirKapanincaDoner" classname="RobotSavaslari.Driving.Tests.DriveBindingsScreenTests" runstate="Runnable" seed="42479984" result="Passed" start-time="2026-11-17 07:39:49Z" end-time="2026-11-17 07:39:49Z" duration="0.002824" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1032" name="ErisimKapanincaEkranKapanir" fullname="RobotSavaslari.Driving.Tests.DriveBindingsScreenTests.ErisimKapanincaEkranKapanir" methodname="ErisimKapanincaEkranKapanir" classname="RobotSavaslari.Driving.Tests.DriveBindingsScreenTests" runstate="Runnable" seed="1903156422" result="Passed" start-time="2026-11-17 07:39:49Z" end-time="2026-11-17 07:39:49Z" duration="0.002406" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1031" name="EscYakalamayiIptalEder" fullname="RobotSavaslari.Driving.Tests.DriveBindingsScreenTests.EscYakalamayiIptalEder" methodname="EscYakalamayiIptalEder" classname="RobotSavaslari.Driving.Tests.DriveBindingsScreenTests" runstate="Runnable" seed="1036567758" result="Passed" start-time="2026-11-17 07:39:49Z" end-time="2026-11-17 07:39:49Z" duration="0.002422" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1034" name="OkTuslariEslemeDegissseDeCalisir" fullname="RobotSavaslari.Driving.Tests.DriveBindingsScreenTests.OkTuslariEslemeDegissseDeCalisir" methodname="OkTuslariEslemeDegissseDeCalisir" classname="RobotSavaslari.Driving.Tests.DriveBindingsScreenTests" runstate="Runnable" seed="269399218" result="Passed" start-time="2026-11-17 07:39:49Z" end-time="2026-11-17 07:39:49Z" duration="0.003452" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1033" name="VarsayilanaDonusEslemeleriGeriGetirir" fullname="RobotSavaslari.Driving.Tests.DriveBindingsScreenTests.VarsayilanaDonusEslemeleriGeriGetirir" methodname="VarsayilanaDonusEslemeleriGeriGetirir" classname="RobotSavaslari.Driving.Tests.DriveBindingsScreenTests" runstate="Runnable" seed="1265169361" result="Passed" start-time="2026-11-17 07:39:49Z" end-time="2026-11-17 07:39:49Z" duration="0.002509" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1028" name="YakalamaSirasindaOyunaKomutGitmez" fullname="RobotSavaslari.Driving.Tests.DriveBindingsScreenTests.YakalamaSirasindaOyunaKomutGitmez" methodname="YakalamaSirasindaOyunaKomutGitmez" classname="RobotSavaslari.Driving.Tests.DriveBindingsScreenTests" runstate="Runnable" seed="67204073" result="Passed" start-time="2026-11-17 07:39:49Z" end-time="2026-11-17 07:39:49Z" duration="0.014463" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1029" name="YakalananTusEslemeyiDegistirirVeSurucuyeUygulanir" fullname="RobotSavaslari.Driving.Tests.DriveBindingsScreenTests.YakalananTusEslemeyiDegistirirVeSurucuyeUygulanir" methodname="YakalananTusEslemeyiDegistirirVeSurucuyeUygulanir" classname="RobotSavaslari.Driving.Tests.DriveBindingsScreenTests" runstate="Runnable" seed="605643959" result="Passed" start-time="2026-11-17 07:39:49Z" end-time="2026-11-17 07:39:49Z" duration="0.002710" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1035" name="DriveBoostTests" fullname="RobotSavaslari.Driving.Tests.DriveBoostTests" classname="RobotSavaslari.Driving.Tests.DriveBoostTests" runstate="Runnable" testcasecount="10" result="Passed" start-time="2026-11-17 07:39:49Z" end-time="2026-11-17 07:40:22Z" duration="32.397564" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1036" name="BoostAyniKosuldaNormaldenHizlidir" fullname="RobotSavaslari.Driving.Tests.DriveBoostTests.BoostAyniKosuldaNormaldenHizlidir" methodname="BoostAyniKosuldaNormaldenHizlidir" classname="RobotSavaslari.Driving.Tests.DriveBoostTests" runstate="Runnable" seed="393983063" result="Passed" start-time="2026-11-17 07:39:49Z" end-time="2026-11-17 07:39:53Z" duration="4.036936" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Normal hiz: 6,00 m/s, boost: 9,00 m/s
+]]></output>
+              </test-case>
+              <test-case id="1037" name="BoostBirakilincaNormalSinirGeriGelir" fullname="RobotSavaslari.Driving.Tests.DriveBoostTests.BoostBirakilincaNormalSinirGeriGelir" methodname="BoostBirakilincaNormalSinirGeriGelir" classname="RobotSavaslari.Driving.Tests.DriveBoostTests" runstate="Runnable" seed="1094218017" result="Passed" start-time="2026-11-17 07:39:53Z" end-time="2026-11-17 07:39:57Z" duration="4.039493" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1038" name="BoostEnerjiHarcarVeSonraYenilenir" fullname="RobotSavaslari.Driving.Tests.DriveBoostTests.BoostEnerjiHarcarVeSonraYenilenir" methodname="BoostEnerjiHarcarVeSonraYenilenir" classname="RobotSavaslari.Driving.Tests.DriveBoostTests" runstate="Runnable" seed="1396782133" result="Passed" start-time="2026-11-17 07:39:57Z" end-time="2026-11-17 07:40:01Z" duration="3.539975" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Baslangic 100,0 -> boost sonrasi 59,2 -> dolum 96,7
+]]></output>
+              </test-case>
+              <test-case id="1044" name="BoostsuzMotorEskiDavranisiKorur" fullname="RobotSavaslari.Driving.Tests.DriveBoostTests.BoostsuzMotorEskiDavranisiKorur" methodname="BoostsuzMotorEskiDavranisiKorur" classname="RobotSavaslari.Driving.Tests.DriveBoostTests" runstate="Runnable" seed="240275361" result="Passed" start-time="2026-11-17 07:40:01Z" end-time="2026-11-17 07:40:03Z" duration="2.520140" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1045" name="BoostTusuSurucuUzerindenIstekUretir" fullname="RobotSavaslari.Driving.Tests.DriveBoostTests.BoostTusuSurucuUzerindenIstekUretir" methodname="BoostTusuSurucuUzerindenIstekUretir" classname="RobotSavaslari.Driving.Tests.DriveBoostTests" runstate="Runnable" seed="1720595421" result="Passed" start-time="2026-11-17 07:40:03Z" end-time="2026-11-17 07:40:03Z" duration="0.003427" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1039" name="EnerjiBitinceBasiliBoostDurur" fullname="RobotSavaslari.Driving.Tests.DriveBoostTests.EnerjiBitinceBasiliBoostDurur" methodname="EnerjiBitinceBasiliBoostDurur" classname="RobotSavaslari.Driving.Tests.DriveBoostTests" runstate="Runnable" seed="2123950485" result="Passed" start-time="2026-11-17 07:40:03Z" end-time="2026-11-17 07:40:08Z" duration="4.136156" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1040" name="EnerjiKapasiteyiAsmaz" fullname="RobotSavaslari.Driving.Tests.DriveBoostTests.EnerjiKapasiteyiAsmaz" methodname="EnerjiKapasiteyiAsmaz" classname="RobotSavaslari.Driving.Tests.DriveBoostTests" runstate="Runnable" seed="673490636" result="Passed" start-time="2026-11-17 07:40:08Z" end-time="2026-11-17 07:40:15Z" duration="7.039911" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1041" name="GeriSurusteBoostUygulanmaz" fullname="RobotSavaslari.Driving.Tests.DriveBoostTests.GeriSurusteBoostUygulanmaz" methodname="GeriSurusteBoostUygulanmaz" classname="RobotSavaslari.Driving.Tests.DriveBoostTests" runstate="Runnable" seed="1681730686" result="Passed" start-time="2026-11-17 07:40:15Z" end-time="2026-11-17 07:40:17Z" duration="2.019917" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1043" name="HasarKosuluBoostlaBirlikteGecerliKalir" fullname="RobotSavaslari.Driving.Tests.DriveBoostTests.HasarKosuluBoostlaBirlikteGecerliKalir" methodname="HasarKosuluBoostlaBirlikteGecerliKalir" classname="RobotSavaslari.Driving.Tests.DriveBoostTests" runstate="Runnable" seed="517092249" result="Passed" start-time="2026-11-17 07:40:17Z" end-time="2026-11-17 07:40:20Z" duration="3.539981" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Hasarli 0,24 m/s -> hasarli+boost 2,87 m/s
+Hasarli ust hiz 3,00 -> boostlu 4,50 m/s
+]]></output>
+              </test-case>
+              <test-case id="1042" name="SifirlamaEnerjiyiVeCarpaniTemizler" fullname="RobotSavaslari.Driving.Tests.DriveBoostTests.SifirlamaEnerjiyiVeCarpaniTemizler" methodname="SifirlamaEnerjiyiVeCarpaniTemizler" classname="RobotSavaslari.Driving.Tests.DriveBoostTests" runstate="Runnable" seed="1901274281" result="Passed" start-time="2026-11-17 07:40:20Z" end-time="2026-11-17 07:40:22Z" duration="1.520034" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1046" name="DriveFeelMeasurementTests" fullname="RobotSavaslari.Driving.Tests.DriveFeelMeasurementTests" classname="RobotSavaslari.Driving.Tests.DriveFeelMeasurementTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-11-17 07:40:22Z" end-time="2026-11-17 07:40:50Z" duration="28.423060" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1047" name="AyarSetleriAyarlananUstHizaUlasir" fullname="RobotSavaslari.Driving.Tests.DriveFeelMeasurementTests.AyarSetleriAyarlananUstHizaUlasir" methodname="AyarSetleriAyarlananUstHizaUlasir" classname="RobotSavaslari.Driving.Tests.DriveFeelMeasurementTests" runstate="Runnable" seed="1223460888" result="Passed" start-time="2026-11-17 07:40:22Z" end-time="2026-11-17 07:40:28Z" duration="6.239325" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Hiz izi A - Sabit  0,5 s: 4,51 m/s
+Hiz izi A - Sabit  1,0 s: 5,00 m/s
+Hiz izi A - Sabit  1,5 s: 5,00 m/s
+Hiz izi A - Sabit  2,0 s: 5,00 m/s
+Hiz izi A - Sabit  2,5 s: 5,00 m/s
+Hiz izi A - Sabit  3,0 s: 5,00 m/s
+Hiz izi B - Cevik  0,5 s: 7,50 m/s
+Hiz izi B - Cevik  1,0 s: 7,50 m/s
+Hiz izi B - Cevik  1,5 s: 7,50 m/s
+Hiz izi B - Cevik  2,0 s: 7,50 m/s
+Hiz izi B - Cevik  2,5 s: 7,50 m/s
+Hiz izi B - Cevik  3,0 s: 7,50 m/s
+]]></output>
+              </test-case>
+              <test-case id="1052" name="AyniSurusFarkliFizikAdimindaAyniSonucuVerir" fullname="RobotSavaslari.Driving.Tests.DriveFeelMeasurementTests.AyniSurusFarkliFizikAdimindaAyniSonucuVerir" methodname="AyniSurusFarkliFizikAdimindaAyniSonucuVerir" classname="RobotSavaslari.Driving.Tests.DriveFeelMeasurementTests" runstate="Runnable" seed="1173672926" result="Passed" start-time="2026-11-17 07:40:28Z" end-time="2026-11-17 07:40:33Z" duration="4.562668" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Fizik adimi 0,0100 s -> 6,008 m
+Fizik adimi 0,0200 s -> 5,970 m
+Fizik adimi 0,0333 s -> 5,911 m
+]]></output>
+              </test-case>
+              <test-case id="1050" name="DonusYaricapiAyarSetineGoreDegisir" fullname="RobotSavaslari.Driving.Tests.DriveFeelMeasurementTests.DonusYaricapiAyarSetineGoreDegisir" methodname="DonusYaricapiAyarSetineGoreDegisir" classname="RobotSavaslari.Driving.Tests.DriveFeelMeasurementTests" runstate="Runnable" seed="1793594696" result="Passed" start-time="2026-11-17 07:40:33Z" end-time="2026-11-17 07:40:37Z" duration="4.779946" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[180 derece capi  A - Sabit: 5,38 m
+180 derece capi  B - Cevik: 4,35 m
+]]></output>
+              </test-case>
+              <test-case id="1048" name="DusukIvmeliAyarSurtunmeTabaninaTakilir" fullname="RobotSavaslari.Driving.Tests.DriveFeelMeasurementTests.DusukIvmeliAyarSurtunmeTabaninaTakilir" methodname="DusukIvmeliAyarSurtunmeTabaninaTakilir" classname="RobotSavaslari.Driving.Tests.DriveFeelMeasurementTests" runstate="Runnable" seed="1499403766" result="Passed" start-time="2026-11-17 07:40:37Z" end-time="2026-11-17 07:40:39Z" duration="2.039798" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Ayarlanan ivme: 12,0 m/s^2
+Olculen net ivme: 0,23 m/s^2
+Ortulen surtunme tabani: 11,8 m/s^2
+]]></output>
+              </test-case>
+              <test-case id="1049" name="FrenMesafesiAyarSetineGoreDegisir" fullname="RobotSavaslari.Driving.Tests.DriveFeelMeasurementTests.FrenMesafesiAyarSetineGoreDegisir" methodname="FrenMesafesiAyarSetineGoreDegisir" classname="RobotSavaslari.Driving.Tests.DriveFeelMeasurementTests" runstate="Runnable" seed="456271352" result="Passed" start-time="2026-11-17 07:40:39Z" end-time="2026-11-17 07:40:45Z" duration="5.400120" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Fren oncesi hiz  A - Sabit: 5,00 m/s (ayarlanan ust hiz 5,0)
+Fren oncesi hiz  B - Cevik: 7,50 m/s (ayarlanan ust hiz 7,5)
+Fren mesafesi  A - Sabit: 0,23 m
+Fren mesafesi  B - Cevik: 0,76 m
+]]></output>
+              </test-case>
+              <test-case id="1051" name="TersKomutGecikmedenAlgilanir" fullname="RobotSavaslari.Driving.Tests.DriveFeelMeasurementTests.TersKomutGecikmedenAlgilanir" methodname="TersKomutGecikmedenAlgilanir" classname="RobotSavaslari.Driving.Tests.DriveFeelMeasurementTests" runstate="Runnable" seed="1425554740" result="Passed" start-time="2026-11-17 07:40:45Z" end-time="2026-11-17 07:40:50Z" duration="5.399874" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Yon degisimi  A - Sabit: 0,120 s
+Yon degisimi  B - Cevik: 0,240 s
+]]></output>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1053" name="DriveHandbrakeTests" fullname="RobotSavaslari.Driving.Tests.DriveHandbrakeTests" classname="RobotSavaslari.Driving.Tests.DriveHandbrakeTests" runstate="Runnable" testcasecount="9" result="Passed" start-time="2026-11-17 07:40:50Z" end-time="2026-11-17 07:41:20Z" duration="29.879826" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1059" name="BoostVeElFreniBirlikteIstendigindeElFreniOnceliklidir" fullname="RobotSavaslari.Driving.Tests.DriveHandbrakeTests.BoostVeElFreniBirlikteIstendigindeElFreniOnceliklidir" methodname="BoostVeElFreniBirlikteIstendigindeElFreniOnceliklidir" classname="RobotSavaslari.Driving.Tests.DriveHandbrakeTests" runstate="Runnable" seed="8972151" result="Passed" start-time="2026-11-17 07:40:50Z" end-time="2026-11-17 07:40:53Z" duration="3.059268" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1054" name="ElFreniAyniHizdaDahaKeskinDondururVeHizKaybettirir" fullname="RobotSavaslari.Driving.Tests.DriveHandbrakeTests.ElFreniAyniHizdaDahaKeskinDondururVeHizKaybettirir" methodname="ElFreniAyniHizdaDahaKeskinDondururVeHizKaybettirir" classname="RobotSavaslari.Driving.Tests.DriveHandbrakeTests" runstate="Runnable" seed="1308775024" result="Passed" start-time="2026-11-17 07:40:53Z" end-time="2026-11-17 07:41:00Z" duration="6.719685" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Normal donus: 124,3 derece, cikis hizi 6,00 m/s
+El freni    : 222,2 derece, cikis hizi 3,30 m/s
+]]></output>
+              </test-case>
+              <test-case id="1060" name="ElFreniBirakilincaGeciciDurumTemizlenir" fullname="RobotSavaslari.Driving.Tests.DriveHandbrakeTests.ElFreniBirakilincaGeciciDurumTemizlenir" methodname="ElFreniBirakilincaGeciciDurumTemizlenir" classname="RobotSavaslari.Driving.Tests.DriveHandbrakeTests" runstate="Runnable" seed="179623908" result="Passed" start-time="2026-11-17 07:41:00Z" end-time="2026-11-17 07:41:03Z" duration="3.059948" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1055" name="ElFreniDonusHiziniSinirlarVeBedavaDonusVermez" fullname="RobotSavaslari.Driving.Tests.DriveHandbrakeTests.ElFreniDonusHiziniSinirlarVeBedavaDonusVermez" methodname="ElFreniDonusHiziniSinirlarVeBedavaDonusVermez" classname="RobotSavaslari.Driving.Tests.DriveHandbrakeTests" runstate="Runnable" seed="1576970253" result="Passed" start-time="2026-11-17 07:41:03Z" end-time="2026-11-17 07:41:07Z" duration="3.539776" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Donus sinirı 324 derece/s, en buyuk tek adim 5,71 derece
+]]></output>
+              </test-case>
+              <test-case id="1057" name="ElFreniHizUretmez" fullname="RobotSavaslari.Driving.Tests.DriveHandbrakeTests.ElFreniHizUretmez" methodname="ElFreniHizUretmez" classname="RobotSavaslari.Driving.Tests.DriveHandbrakeTests" runstate="Runnable" seed="573291444" result="Passed" start-time="2026-11-17 07:41:07Z" end-time="2026-11-17 07:41:10Z" duration="3.539928" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[El freni hiz tavani 3,30, olculen son hiz 3,30 m/s
+]]></output>
+              </test-case>
+              <test-case id="1062" name="ElFreniTusuSurucuUzerindenIstekUretir" fullname="RobotSavaslari.Driving.Tests.DriveHandbrakeTests.ElFreniTusuSurucuUzerindenIstekUretir" methodname="ElFreniTusuSurucuUzerindenIstekUretir" classname="RobotSavaslari.Driving.Tests.DriveHandbrakeTests" runstate="Runnable" seed="1945190818" result="Passed" start-time="2026-11-17 07:41:10Z" end-time="2026-11-17 07:41:10Z" duration="0.003285" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1058" name="NormalFrenIleElFreniFarkliDavranir" fullname="RobotSavaslari.Driving.Tests.DriveHandbrakeTests.NormalFrenIleElFreniFarkliDavranir" methodname="NormalFrenIleElFreniFarkliDavranir" classname="RobotSavaslari.Driving.Tests.DriveHandbrakeTests" runstate="Runnable" seed="1351627766" result="Passed" start-time="2026-11-17 07:41:10Z" end-time="2026-11-17 07:41:16Z" duration="6.076589" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1056" name="SifirHizdaElFreniDevreyeGirmez" fullname="RobotSavaslari.Driving.Tests.DriveHandbrakeTests.SifirHizdaElFreniDevreyeGirmez" methodname="SifirHizdaElFreniDevreyeGirmez" classname="RobotSavaslari.Driving.Tests.DriveHandbrakeTests" runstate="Runnable" seed="1980389271" result="Passed" start-time="2026-11-17 07:41:16Z" end-time="2026-11-17 07:41:17Z" duration="1.019777" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1061" name="SifirlamaVeKapatmaGeciciDurumuTemizler" fullname="RobotSavaslari.Driving.Tests.DriveHandbrakeTests.SifirlamaVeKapatmaGeciciDurumuTemizler" methodname="SifirlamaVeKapatmaGeciciDurumuTemizler" classname="RobotSavaslari.Driving.Tests.DriveHandbrakeTests" runstate="Runnable" seed="1096065507" result="Passed" start-time="2026-11-17 07:41:17Z" end-time="2026-11-17 07:41:20Z" duration="2.859985" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1063" name="PlayerKeyboardDriverTests" fullname="RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests" classname="RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests" runstate="Runnable" testcasecount="15" result="Passed" start-time="2026-11-17 07:41:20Z" end-time="2026-11-17 07:41:20Z" duration="0.040060" total="15" passed="15" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1078" name="DenemeKontroluKlavyesizSurer" fullname="RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests.DenemeKontroluKlavyesizSurer" methodname="DenemeKontroluKlavyesizSurer" classname="RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests" runstate="Runnable" seed="986878137" result="Passed" start-time="2026-11-17 07:41:20Z" end-time="2026-11-17 07:41:20Z" duration="0.003568" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1070" name="DonusTuslariIkiYoneCalisir" fullname="RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests.DonusTuslariIkiYoneCalisir" methodname="DonusTuslariIkiYoneCalisir" classname="RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests" runstate="Runnable" seed="709415741" result="Passed" start-time="2026-11-17 07:41:20Z" end-time="2026-11-17 07:41:20Z" duration="0.002257" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1069" name="GeriTusuGeriKomutuGonderir" fullname="RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests.GeriTusuGeriKomutuGonderir" methodname="GeriTusuGeriKomutuGonderir" classname="RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests" runstate="Runnable" seed="776801114" result="Passed" start-time="2026-11-17 07:41:20Z" end-time="2026-11-17 07:41:20Z" duration="0.002301" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1065" name="IkiTusTakimiAyniYonuBirKezSayarVeKarsitYonuSifirlar" fullname="RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests.IkiTusTakimiAyniYonuBirKezSayarVeKarsitYonuSifirlar" methodname="IkiTusTakimiAyniYonuBirKezSayarVeKarsitYonuSifirlar" classname="RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests" runstate="Runnable" seed="700027398" result="Passed" start-time="2026-11-17 07:41:20Z" end-time="2026-11-17 07:41:20Z" duration="0.003304" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1068" name="IleriTusuIleriKomutuGonderir" fullname="RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests.IleriTusuIleriKomutuGonderir" methodname="IleriTusuIleriKomutuGonderir" classname="RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests" runstate="Runnable" seed="1846277267" result="Passed" start-time="2026-11-17 07:41:20Z" end-time="2026-11-17 07:41:20Z" duration="0.002440" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1071" name="IleriyleBirlikteDonusYapilabilir" fullname="RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests.IleriyleBirlikteDonusYapilabilir" methodname="IleriyleBirlikteDonusYapilabilir" classname="RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests" runstate="Runnable" seed="484099823" result="Passed" start-time="2026-11-17 07:41:20Z" end-time="2026-11-17 07:41:20Z" duration="0.002059" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1074" name="KarsitTuslarDigerEkseniEtkilemez" fullname="RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests.KarsitTuslarDigerEkseniEtkilemez" methodname="KarsitTuslarDigerEkseniEtkilemez" classname="RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests" runstate="Runnable" seed="222814408" result="Passed" start-time="2026-11-17 07:41:20Z" end-time="2026-11-17 07:41:20Z" duration="0.002787" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1073" name="KarsitTuslarDonusEkseniniSifirlar" fullname="RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests.KarsitTuslarDonusEkseniniSifirlar" methodname="KarsitTuslarDonusEkseniniSifirlar" classname="RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests" runstate="Runnable" seed="241623565" result="Passed" start-time="2026-11-17 07:41:20Z" end-time="2026-11-17 07:41:20Z" duration="0.001975" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1072" name="KarsitTuslarIleriGeriEkseniniSifirlar" fullname="RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests.KarsitTuslarIleriGeriEkseniniSifirlar" methodname="KarsitTuslarIleriGeriEkseniniSifirlar" classname="RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests" runstate="Runnable" seed="1015892870" result="Passed" start-time="2026-11-17 07:41:20Z" end-time="2026-11-17 07:41:20Z" duration="0.002435" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1066" name="KlavyeCikarilincaOkKomutlariTemizlenir" fullname="RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests.KlavyeCikarilincaOkKomutlariTemizlenir" methodname="KlavyeCikarilincaOkKomutlariTemizlenir" classname="RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests" runstate="Runnable" seed="789201243" result="Passed" start-time="2026-11-17 07:41:20Z" end-time="2026-11-17 07:41:20Z" duration="0.003743" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1076" name="KontrolKapaliykenGirdiMotoraUlasmaz" fullname="RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests.KontrolKapaliykenGirdiMotoraUlasmaz" methodname="KontrolKapaliykenGirdiMotoraUlasmaz" classname="RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests" runstate="Runnable" seed="1072794744" result="Passed" start-time="2026-11-17 07:41:20Z" end-time="2026-11-17 07:41:20Z" duration="0.002131" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1077" name="KontrolTekrarAcilincaEskiDegerKullanilmaz" fullname="RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests.KontrolTekrarAcilincaEskiDegerKullanilmaz" methodname="KontrolTekrarAcilincaEskiDegerKullanilmaz" classname="RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests" runstate="Runnable" seed="698851236" result="Passed" start-time="2026-11-17 07:41:20Z" end-time="2026-11-17 07:41:20Z" duration="0.002315" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1064" name="OkTuslariIkiEkseniAyniAndaSurer" fullname="RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests.OkTuslariIkiEkseniAyniAndaSurer" methodname="OkTuslariIkiEkseniAyniAndaSurer" classname="RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests" runstate="Runnable" seed="807305044" result="Passed" start-time="2026-11-17 07:41:20Z" end-time="2026-11-17 07:41:20Z" duration="0.002118" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1067" name="OrtakRobotGirdisiKarisikKarsitTuslariSifirlar" fullname="RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests.OrtakRobotGirdisiKarisikKarsitTuslariSifirlar" methodname="OrtakRobotGirdisiKarisikKarsitTuslariSifirlar" classname="RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests" runstate="Runnable" seed="580528813" result="Passed" start-time="2026-11-17 07:41:20Z" end-time="2026-11-17 07:41:20Z" duration="0.002566" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1075" name="TusBirakilincaKomutSifirlanir" fullname="RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests.TusBirakilincaKomutSifirlanir" methodname="TusBirakilincaKomutSifirlanir" classname="RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests" runstate="Runnable" seed="2016619687" result="Passed" start-time="2026-11-17 07:41:20Z" end-time="2026-11-17 07:41:20Z" duration="0.002434" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Saving results to: C:/Users/emins/AppData/LocalLow/DefaultCompany/RobotArena\TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

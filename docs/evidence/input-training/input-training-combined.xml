@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="6" result="Passed" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-17 07:45:19Z" end-time="2026-11-17 07:45:22Z" duration="2,5680137">
+  <test-suite type="TestSuite" id="1264" name="RobotArena" fullname="RobotArena" runstate="Runnable" testcasecount="205" result="Passed" start-time="2026-11-17 07:45:19Z" end-time="2026-11-17 07:45:22Z" duration="2.568014" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1257" name="RobotSavaslari.Training.PlayModeTests.dll" fullname="C:/Users/emins/Documents/Codex/robot-match-rules-20261117/RobotArena/Library/ScriptAssemblies/RobotSavaslari.Training.PlayModeTests.dll" runstate="Runnable" testcasecount="32" result="Passed" start-time="2026-11-17 07:45:19Z" end-time="2026-11-17 07:45:22Z" duration="2.563050" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="48868" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1258" name="RobotSavaslari" fullname="RobotSavaslari" runstate="Runnable" testcasecount="32" result="Passed" start-time="2026-11-17 07:45:19Z" end-time="2026-11-17 07:45:22Z" duration="2.562737" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1259" name="Training" fullname="RobotSavaslari.Training" runstate="Runnable" testcasecount="32" result="Passed" start-time="2026-11-17 07:45:19Z" end-time="2026-11-17 07:45:22Z" duration="2.562572" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1260" name="Tests" fullname="RobotSavaslari.Training.Tests" runstate="Runnable" testcasecount="32" result="Passed" start-time="2026-11-17 07:45:19Z" end-time="2026-11-17 07:45:22Z" duration="2.562413" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1233" name="InputAndTrainingRegressionTests" fullname="RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests" classname="RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-11-17 07:45:19Z" end-time="2026-11-17 07:45:22Z" duration="2.561563" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1235" name="CameraKeyIsRejectedAndDoesNotChangeCameraDuringCapture" fullname="RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests.CameraKeyIsRejectedAndDoesNotChangeCameraDuringCapture" methodname="CameraKeyIsRejectedAndDoesNotChangeCameraDuringCapture" classname="RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests" runstate="Runnable" seed="1310325143" result="Passed" start-time="2026-11-17 07:45:19Z" end-time="2026-11-17 07:45:20Z" duration="0.485296" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1237" name="CheckpointMarkersAreAboveArenaSurface" fullname="RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests.CheckpointMarkersAreAboveArenaSurface" methodname="CheckpointMarkersAreAboveArenaSurface" classname="RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests" runstate="Runnable" seed="122815712" result="Passed" start-time="2026-11-17 07:45:20Z" end-time="2026-11-17 07:45:20Z" duration="0.339791" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1234" name="EnterDuringCaptureDoesNotStartMatch" fullname="RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests.EnterDuringCaptureDoesNotStartMatch" methodname="EnterDuringCaptureDoesNotStartMatch" classname="RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests" runstate="Runnable" seed="1225808080" result="Passed" start-time="2026-11-17 07:45:20Z" end-time="2026-11-17 07:45:20Z" duration="0.333149" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1236" name="EscapeCancelsCaptureWithoutOpeningSettings" fullname="RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests.EscapeCancelsCaptureWithoutOpeningSettings" methodname="EscapeCancelsCaptureWithoutOpeningSettings" classname="RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests" runstate="Runnable" seed="801912626" result="Passed" start-time="2026-11-17 07:45:20Z" end-time="2026-11-17 07:45:20Z" duration="0.314992" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1239" name="LayoutSelectionAndContentChangesInvalidateOldBest" fullname="RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests.LayoutSelectionAndContentChangesInvalidateOldBest" methodname="LayoutSelectionAndContentChangesInvalidateOldBest" classname="RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests" runstate="Runnable" seed="1774980274" result="Passed" start-time="2026-11-17 07:45:20Z" end-time="2026-11-17 07:45:21Z" duration="0.315695" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1238" name="RetryDuringUnfinishedLapDiscardsOldSamples" fullname="RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests.RetryDuringUnfinishedLapDiscardsOldSamples" methodname="RetryDuringUnfinishedLapDiscardsOldSamples" classname="RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests" runstate="Runnable" seed="1053534621" result="Passed" start-time="2026-11-17 07:45:21Z" end-time="2026-11-17 07:45:22Z" duration="0.764341" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Saving results to: C:/Users/emins/AppData/LocalLow/DefaultCompany/RobotArena\TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

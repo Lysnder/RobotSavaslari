@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="6" result="Failed(Child)" total="6" passed="0" failed="6" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-17 07:34:22Z" end-time="2026-11-17 07:34:25Z" duration="2,5229359">
+  <test-suite type="TestSuite" id="1250" name="RobotArena" fullname="RobotArena" runstate="Runnable" testcasecount="196" result="Failed" site="Child" start-time="2026-11-17 07:34:22Z" end-time="2026-11-17 07:34:25Z" duration="2.522936" total="6" passed="0" failed="6" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1243" name="RobotSavaslari.Training.PlayModeTests.dll" fullname="C:/Users/emins/Documents/Codex/robot-match-rules-20261117/RobotArena/Library/ScriptAssemblies/RobotSavaslari.Training.PlayModeTests.dll" runstate="Runnable" testcasecount="32" result="Failed" site="Child" start-time="2026-11-17 07:34:22Z" end-time="2026-11-17 07:34:25Z" duration="2.516631" total="6" passed="0" failed="6" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="50524" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1244" name="RobotSavaslari" fullname="RobotSavaslari" runstate="Runnable" testcasecount="32" result="Failed" site="Child" start-time="2026-11-17 07:34:22Z" end-time="2026-11-17 07:34:25Z" duration="2.516216" total="6" passed="0" failed="6" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1245" name="Training" fullname="RobotSavaslari.Training" runstate="Runnable" testcasecount="32" result="Failed" site="Child" start-time="2026-11-17 07:34:22Z" end-time="2026-11-17 07:34:25Z" duration="2.515962" total="6" passed="0" failed="6" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestSuite" id="1246" name="Tests" fullname="RobotSavaslari.Training.Tests" runstate="Runnable" testcasecount="32" result="Failed" site="Child" start-time="2026-11-17 07:34:22Z" end-time="2026-11-17 07:34:25Z" duration="2.515786" total="6" passed="0" failed="6" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-suite type="TestFixture" id="1219" name="InputAndTrainingRegressionTests" fullname="RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests" classname="RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests" runstate="Runnable" testcasecount="6" result="Failed" site="Child" start-time="2026-11-17 07:34:22Z" end-time="2026-11-17 07:34:25Z" duration="2.514745" total="6" passed="0" failed="6" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="1221" name="CameraKeyIsRejectedAndDoesNotChangeCameraDuringCapture" fullname="RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests.CameraKeyIsRejectedAndDoesNotChangeCameraDuringCapture" methodname="CameraKeyIsRejectedAndDoesNotChangeCameraDuringCapture" classname="RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests" runstate="Runnable" seed="1438989546" result="Failed" start-time="2026-11-17 07:34:22Z" end-time="2026-11-17 07:34:23Z" duration="0.571774" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Expected: W
+  But was:  C
+]]></message>
+                  <stack-trace><![CDATA[at RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests+<CameraKeyIsRejectedAndDoesNotChangeCameraDuringCapture>d__10.MoveNext () [0x00084] in C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Assets\Tests\Training\PlayMode\InputAndTrainingRegressionTests.cs:103
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@76560ee600cb\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1223" name="CheckpointMarkersAreAboveArenaSurface" fullname="RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests.CheckpointMarkersAreAboveArenaSurface" methodname="CheckpointMarkersAreAboveArenaSurface" classname="RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests" runstate="Runnable" seed="1260358257" result="Failed" start-time="2026-11-17 07:34:23Z" end-time="2026-11-17 07:34:23Z" duration="0.341825" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Expected: greater than 0.819999993f
+  But was:  0.00999999978f
+]]></message>
+                  <stack-trace><![CDATA[at RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests+<CheckpointMarkersAreAboveArenaSurface>d__12.MoveNext () [0x00098] in C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Assets\Tests\Training\PlayMode\InputAndTrainingRegressionTests.cs:134
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@76560ee600cb\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1220" name="EnterDuringCaptureDoesNotStartMatch" fullname="RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests.EnterDuringCaptureDoesNotStartMatch" methodname="EnterDuringCaptureDoesNotStartMatch" classname="RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests" runstate="Runnable" seed="1993817928" result="Failed" start-time="2026-11-17 07:34:23Z" end-time="2026-11-17 07:34:23Z" duration="0.315734" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Expected: Ready
+  But was:  Countdown
+]]></message>
+                  <stack-trace><![CDATA[at RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests+<EnterDuringCaptureDoesNotStartMatch>d__9.MoveNext () [0x00096] in C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Assets\Tests\Training\PlayMode\InputAndTrainingRegressionTests.cs:86
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@76560ee600cb\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1222" name="EscapeCancelsCaptureWithoutOpeningSettings" fullname="RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests.EscapeCancelsCaptureWithoutOpeningSettings" methodname="EscapeCancelsCaptureWithoutOpeningSettings" classname="RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests" runstate="Runnable" seed="1661126273" result="Failed" start-time="2026-11-17 07:34:23Z" end-time="2026-11-17 07:34:24Z" duration="0.319028" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Expected: True
+  But was:  False
+]]></message>
+                  <stack-trace><![CDATA[at RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests+<EscapeCancelsCaptureWithoutOpeningSettings>d__11.MoveNext () [0x00077] in C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Assets\Tests\Training\PlayMode\InputAndTrainingRegressionTests.cs:118
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@76560ee600cb\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1225" name="LayoutSelectionAndContentChangesInvalidateOldBest" fullname="RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests.LayoutSelectionAndContentChangesInvalidateOldBest" methodname="LayoutSelectionAndContentChangesInvalidateOldBest" classname="RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests" runstate="Runnable" seed="105775589" result="Failed" start-time="2026-11-17 07:34:24Z" end-time="2026-11-17 07:34:24Z" duration="0.337979" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Expected: not equal to "arena-5-090d1f6b"
+  But was:  "arena-5-090d1f6b"
+]]></message>
+                  <stack-trace><![CDATA[at RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests+<LayoutSelectionAndContentChangesInvalidateOldBest>d__14.MoveNext () [0x000d1] in C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Assets\Tests\Training\PlayMode\InputAndTrainingRegressionTests.cs:172
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@76560ee600cb\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="1224" name="RetryDuringUnfinishedLapDiscardsOldSamples" fullname="RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests.RetryDuringUnfinishedLapDiscardsOldSamples" methodname="RetryDuringUnfinishedLapDiscardsOldSamples" classname="RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests" runstate="Runnable" seed="1318312635" result="Failed" start-time="2026-11-17 07:34:24Z" end-time="2026-11-17 07:34:25Z" duration="0.618420" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Old attempt samples must be discarded immediately.
+  Expected: in range (1,2)
+  But was:  6
+]]></message>
+                  <stack-trace><![CDATA[at RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests+<RetryDuringUnfinishedLapDiscardsOldSamples>d__13.MoveNext () [0x000f2] in C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Assets\Tests\Training\PlayMode\InputAndTrainingRegressionTests.cs:151
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@76560ee600cb\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Saving results to: C:/Users/emins/AppData/LocalLow/DefaultCompany/RobotArena\TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

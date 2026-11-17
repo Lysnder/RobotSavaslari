@@ -1,0 +1,1324 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="184" result="Passed" total="184" passed="184" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-17 07:37:24Z" end-time="2026-11-17 07:37:26Z" duration="2,4969938">
+  <test-suite type="TestSuite" id="1000" name="RobotArena" fullname="RobotArena" runstate="Runnable" testcasecount="184" result="Passed" start-time="2026-11-17 07:37:24Z" end-time="2026-11-17 07:37:26Z" duration="2.496994" total="184" passed="184" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1038" name="RobotSavaslari.Arena.EditModeTests.dll" fullname="C:/Users/emins/Documents/Codex/robot-match-rules-20261117/RobotArena/Library/ScriptAssemblies/RobotSavaslari.Arena.EditModeTests.dll" runstate="Runnable" testcasecount="28" result="Passed" start-time="2026-11-17 07:37:24Z" end-time="2026-11-17 07:37:26Z" duration="2.297477" total="28" passed="28" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="51424" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1039" name="RobotSavaslari" fullname="RobotSavaslari" runstate="Runnable" testcasecount="28" result="Passed" start-time="2026-11-17 07:37:24Z" end-time="2026-11-17 07:37:26Z" duration="2.297289" total="28" passed="28" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1040" name="Tests" fullname="RobotSavaslari.Tests" runstate="Runnable" testcasecount="28" result="Passed" start-time="2026-11-17 07:37:24Z" end-time="2026-11-17 07:37:26Z" duration="2.297205" total="28" passed="28" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1001" name="ArenaAuthoringTests" fullname="RobotSavaslari.Tests.ArenaAuthoringTests" classname="RobotSavaslari.Tests.ArenaAuthoringTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-11-17 07:37:24Z" end-time="2026-11-17 07:37:26Z" duration="1.798269" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1003" name="InvalidGenerationDoesNotTouchCurrentScene" fullname="RobotSavaslari.Tests.ArenaAuthoringTests.InvalidGenerationDoesNotTouchCurrentScene" methodname="InvalidGenerationDoesNotTouchCurrentScene" classname="RobotSavaslari.Tests.ArenaAuthoringTests" runstate="Runnable" seed="1695738521" result="Passed" start-time="2026-11-17 07:37:24Z" end-time="2026-11-17 07:37:24Z" duration="0.371977" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1004" name="SharedBuilderPreservesCustomLayoutChoice" fullname="RobotSavaslari.Tests.ArenaAuthoringTests.SharedBuilderPreservesCustomLayoutChoice" methodname="SharedBuilderPreservesCustomLayoutChoice" classname="RobotSavaslari.Tests.ArenaAuthoringTests" runstate="Runnable" seed="2033874080" result="Passed" start-time="2026-11-17 07:37:24Z" end-time="2026-11-17 07:37:25Z" duration="0.632628" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1002" name="SixRolesGenerateIdempotentlyAndPreserveExternalReferencesAfterReopen" fullname="RobotSavaslari.Tests.ArenaAuthoringTests.SixRolesGenerateIdempotentlyAndPreserveExternalReferencesAfterReopen" methodname="SixRolesGenerateIdempotentlyAndPreserveExternalReferencesAfterReopen" classname="RobotSavaslari.Tests.ArenaAuthoringTests" runstate="Runnable" seed="1766455739" result="Passed" start-time="2026-11-17 07:37:25Z" end-time="2026-11-17 07:37:26Z" duration="0.783419" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1005" name="ArenaGeometryTests" fullname="RobotSavaslari.Tests.ArenaGeometryTests" classname="RobotSavaslari.Tests.ArenaGeometryTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.467383" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1006" name="ProductionGridMatchesFloorPerimeterAndOriginalScale" fullname="RobotSavaslari.Tests.ArenaGeometryTests.ProductionGridMatchesFloorPerimeterAndOriginalScale" methodname="ProductionGridMatchesFloorPerimeterAndOriginalScale" classname="RobotSavaslari.Tests.ArenaGeometryTests" runstate="Runnable" seed="1861108712" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.234575" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1007" name="RebuildingKeepsSceneConnectionsAndObjectCount" fullname="RobotSavaslari.Tests.ArenaGeometryTests.RebuildingKeepsSceneConnectionsAndObjectCount" methodname="RebuildingKeepsSceneConnectionsAndObjectCount" classname="RobotSavaslari.Tests.ArenaGeometryTests" runstate="Runnable" seed="259054700" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.228485" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1008" name="ArenaLayoutTests" fullname="RobotSavaslari.Tests.ArenaLayoutTests" classname="RobotSavaslari.Tests.ArenaLayoutTests" runstate="Runnable" testcasecount="20" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.022974" total="20" passed="20" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1019" name="ClearanceRejectsPointRobotOnlyPassage" fullname="RobotSavaslari.Tests.ArenaLayoutTests.ClearanceRejectsPointRobotOnlyPassage" methodname="ClearanceRejectsPointRobotOnlyPassage" classname="RobotSavaslari.Tests.ArenaLayoutTests" runstate="Runnable" seed="784594929" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.005148" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-suite type="ParameterizedMethod" id="1011" name="DefaultLayoutsHaveRobotWidthRoutes" fullname="RobotSavaslari.Tests.ArenaLayoutTests.DefaultLayoutsHaveRobotWidthRoutes" classname="RobotSavaslari.Tests.ArenaLayoutTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.004334" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1009" name="DefaultLayoutsHaveRobotWidthRoutes(False)" fullname="RobotSavaslari.Tests.ArenaLayoutTests.DefaultLayoutsHaveRobotWidthRoutes(False)" methodname="DefaultLayoutsHaveRobotWidthRoutes" classname="RobotSavaslari.Tests.ArenaLayoutTests" runstate="Runnable" seed="1152590500" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.002239" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1010" name="DefaultLayoutsHaveRobotWidthRoutes(True)" fullname="RobotSavaslari.Tests.ArenaLayoutTests.DefaultLayoutsHaveRobotWidthRoutes(True)" methodname="DefaultLayoutsHaveRobotWidthRoutes" classname="RobotSavaslari.Tests.ArenaLayoutTests" runstate="Runnable" seed="856078439" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.001803" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-case id="1024" name="FloorAndSpawnAreCompatibleButDuplicateSpawnIsRejected" fullname="RobotSavaslari.Tests.ArenaLayoutTests.FloorAndSpawnAreCompatibleButDuplicateSpawnIsRejected" methodname="FloorAndSpawnAreCompatibleButDuplicateSpawnIsRejected" classname="RobotSavaslari.Tests.ArenaLayoutTests" runstate="Runnable" seed="1010999932" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.002433" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1018" name="RejectsDisconnectedArena" fullname="RobotSavaslari.Tests.ArenaLayoutTests.RejectsDisconnectedArena" methodname="RejectsDisconnectedArena" classname="RobotSavaslari.Tests.ArenaLayoutTests" runstate="Runnable" seed="1173683220" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000703" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-suite type="ParameterizedMethod" id="1028" name="RejectsIncompatibleSpawnContent" fullname="RobotSavaslari.Tests.ArenaLayoutTests.RejectsIncompatibleSpawnContent" classname="RobotSavaslari.Tests.ArenaLayoutTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.001237" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1025" name="RejectsIncompatibleSpawnContent(Obstacle)" fullname="RobotSavaslari.Tests.ArenaLayoutTests.RejectsIncompatibleSpawnContent(Obstacle)" methodname="RejectsIncompatibleSpawnContent" classname="RobotSavaslari.Tests.ArenaLayoutTests" runstate="Runnable" seed="1054752404" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000544" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1026" name="RejectsIncompatibleSpawnContent(Hazard)" fullname="RobotSavaslari.Tests.ArenaLayoutTests.RejectsIncompatibleSpawnContent(Hazard)" methodname="RejectsIncompatibleSpawnContent" classname="RobotSavaslari.Tests.ArenaLayoutTests" runstate="Runnable" seed="853164333" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000184" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1027" name="RejectsIncompatibleSpawnContent(Conveyor)" fullname="RobotSavaslari.Tests.ArenaLayoutTests.RejectsIncompatibleSpawnContent(Conveyor)" methodname="RejectsIncompatibleSpawnContent" classname="RobotSavaslari.Tests.ArenaLayoutTests" runstate="Runnable" seed="91031276" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000160" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-case id="1017" name="RejectsInteriorWallVariation" fullname="RobotSavaslari.Tests.ArenaLayoutTests.RejectsInteriorWallVariation" methodname="RejectsInteriorWallVariation" classname="RobotSavaslari.Tests.ArenaLayoutTests" runstate="Runnable" seed="345758912" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000310" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-suite type="ParameterizedMethod" id="1023" name="RejectsInvalidConveyorDirection" fullname="RobotSavaslari.Tests.ArenaLayoutTests.RejectsInvalidConveyorDirection" classname="RobotSavaslari.Tests.ArenaLayoutTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.001005" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1020" name="RejectsInvalidConveyorDirection(0.0f,0.0f)" fullname="RobotSavaslari.Tests.ArenaLayoutTests.RejectsInvalidConveyorDirection(0.0f,0.0f)" methodname="RejectsInvalidConveyorDirection" classname="RobotSavaslari.Tests.ArenaLayoutTests" runstate="Runnable" seed="322489199" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000398" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1021" name="RejectsInvalidConveyorDirection(float.NaN,1.0f)" fullname="RobotSavaslari.Tests.ArenaLayoutTests.RejectsInvalidConveyorDirection(float.NaN,1.0f)" methodname="RejectsInvalidConveyorDirection" classname="RobotSavaslari.Tests.ArenaLayoutTests" runstate="Runnable" seed="749571441" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000185" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1022" name="RejectsInvalidConveyorDirection(float.PositiveInfinity,0.0f)" fullname="RobotSavaslari.Tests.ArenaLayoutTests.RejectsInvalidConveyorDirection(float.PositiveInfinity,0.0f)" methodname="RejectsInvalidConveyorDirection" classname="RobotSavaslari.Tests.ArenaLayoutTests" runstate="Runnable" seed="56641064" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000152" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="ParameterizedMethod" id="1032" name="RejectsInvalidRobotClearance" fullname="RobotSavaslari.Tests.ArenaLayoutTests.RejectsInvalidRobotClearance" classname="RobotSavaslari.Tests.ArenaLayoutTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000890" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1029" name="RejectsInvalidRobotClearance(0.0f)" fullname="RobotSavaslari.Tests.ArenaLayoutTests.RejectsInvalidRobotClearance(0.0f)" methodname="RejectsInvalidRobotClearance" classname="RobotSavaslari.Tests.ArenaLayoutTests" runstate="Runnable" seed="133156871" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000333" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1030" name="RejectsInvalidRobotClearance(float.NaN)" fullname="RobotSavaslari.Tests.ArenaLayoutTests.RejectsInvalidRobotClearance(float.NaN)" methodname="RejectsInvalidRobotClearance" classname="RobotSavaslari.Tests.ArenaLayoutTests" runstate="Runnable" seed="1421941692" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000088" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1031" name="RejectsInvalidRobotClearance(float.PositiveInfinity)" fullname="RobotSavaslari.Tests.ArenaLayoutTests.RejectsInvalidRobotClearance(float.PositiveInfinity)" methodname="RejectsInvalidRobotClearance" classname="RobotSavaslari.Tests.ArenaLayoutTests" runstate="Runnable" seed="659959956" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000072" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-case id="1015" name="RejectsMissingSpawn" fullname="RobotSavaslari.Tests.ArenaLayoutTests.RejectsMissingSpawn" methodname="RejectsMissingSpawn" classname="RobotSavaslari.Tests.ArenaLayoutTests" runstate="Runnable" seed="1325830569" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000267" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1016" name="RejectsObstructedSpawn" fullname="RobotSavaslari.Tests.ArenaLayoutTests.RejectsObstructedSpawn" methodname="RejectsObstructedSpawn" classname="RobotSavaslari.Tests.ArenaLayoutTests" runstate="Runnable" seed="1759241496" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000331" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1013" name="RejectsOutsideCoordinates" fullname="RobotSavaslari.Tests.ArenaLayoutTests.RejectsOutsideCoordinates" methodname="RejectsOutsideCoordinates" classname="RobotSavaslari.Tests.ArenaLayoutTests" runstate="Runnable" seed="1423089164" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000427" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1014" name="RejectsOverlappingDefinitions" fullname="RobotSavaslari.Tests.ArenaLayoutTests.RejectsOverlappingDefinitions" methodname="RejectsOverlappingDefinitions" classname="RobotSavaslari.Tests.ArenaLayoutTests" runstate="Runnable" seed="444054350" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000288" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1012" name="TacticalRequiresADetour" fullname="RobotSavaslari.Tests.ArenaLayoutTests.TacticalRequiresADetour" methodname="TacticalRequiresADetour" classname="RobotSavaslari.Tests.ArenaLayoutTests" runstate="Runnable" seed="1383406281" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.001811" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1033" name="WarningBarrierTests" fullname="RobotSavaslari.Tests.WarningBarrierTests" classname="RobotSavaslari.Tests.WarningBarrierTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.007747" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="ParameterizedMethod" id="1037" name="OccupancyDefersAtCentreAndEdge" fullname="RobotSavaslari.Tests.WarningBarrierTests.OccupancyDefersAtCentreAndEdge" classname="RobotSavaslari.Tests.WarningBarrierTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.006009" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1035" name="OccupancyDefersAtCentreAndEdge(0.0f)" fullname="RobotSavaslari.Tests.WarningBarrierTests.OccupancyDefersAtCentreAndEdge(0.0f)" methodname="OccupancyDefersAtCentreAndEdge" classname="RobotSavaslari.Tests.WarningBarrierTests" runstate="Runnable" seed="1417604278" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.005043" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1036" name="OccupancyDefersAtCentreAndEdge(0.9f)" fullname="RobotSavaslari.Tests.WarningBarrierTests.OccupancyDefersAtCentreAndEdge(0.9f)" methodname="OccupancyDefersAtCentreAndEdge" classname="RobotSavaslari.Tests.WarningBarrierTests" runstate="Runnable" seed="868658377" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000794" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-case id="1034" name="WarningAlwaysPrecedesPhysicalRiseAndThreeCyclesComplete" fullname="RobotSavaslari.Tests.WarningBarrierTests.WarningAlwaysPrecedesPhysicalRiseAndThreeCyclesComplete" methodname="WarningAlwaysPrecedesPhysicalRiseAndThreeCyclesComplete" classname="RobotSavaslari.Tests.WarningBarrierTests" runstate="Runnable" seed="288658766" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.001295" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1079" name="RobotSavaslari.Combat.EditModeTests.dll" fullname="C:/Users/emins/Documents/Codex/robot-match-rules-20261117/RobotArena/Library/ScriptAssemblies/RobotSavaslari.Combat.EditModeTests.dll" runstate="Runnable" testcasecount="32" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.127359" total="32" passed="32" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="51424" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1080" name="RobotSavaslari" fullname="RobotSavaslari" runstate="Runnable" testcasecount="32" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.127162" total="32" passed="32" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1081" name="Tests" fullname="RobotSavaslari.Tests" runstate="Runnable" testcasecount="32" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.127085" total="32" passed="32" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1041" name="ArenaAssetReferenceTests" fullname="RobotSavaslari.Tests.ArenaAssetReferenceTests" classname="RobotSavaslari.Tests.ArenaAssetReferenceTests" runstate="Runnable" testcasecount="14" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.122076" total="14" passed="14" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1055" name="AssetMovesPreserveUniqueGuids" fullname="RobotSavaslari.Tests.ArenaAssetReferenceTests.AssetMovesPreserveUniqueGuids" methodname="AssetMovesPreserveUniqueGuids" classname="RobotSavaslari.Tests.ArenaAssetReferenceTests" runstate="Runnable" seed="458801970" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.054602" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1056" name="MainArenaIsTheOnlyEnabledBuildScene" fullname="RobotSavaslari.Tests.ArenaAssetReferenceTests.MainArenaIsTheOnlyEnabledBuildScene" methodname="MainArenaIsTheOnlyEnabledBuildScene" classname="RobotSavaslari.Tests.ArenaAssetReferenceTests" runstate="Runnable" seed="2035206213" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000663" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-suite type="ParameterizedMethod" id="1054" name="MovedScenesKeepScriptsAndAssetReferences" fullname="RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences" classname="RobotSavaslari.Tests.ArenaAssetReferenceTests" runstate="Runnable" testcasecount="12" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.066025" total="12" passed="12" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1042" name="MovedScenesKeepScriptsAndAssetReferences(&quot;Assets/Scenes/Gameplay/MainArena.unity&quot;)" fullname="RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences(&quot;Assets/Scenes/Gameplay/MainArena.unity&quot;)" methodname="MovedScenesKeepScriptsAndAssetReferences" classname="RobotSavaslari.Tests.ArenaAssetReferenceTests" runstate="Runnable" seed="1763281137" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.011449" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1043" name="MovedScenesKeepScriptsAndAssetReferences(&quot;Assets/Scenes/Tests/AI/BotScenarios.unity&quot;)" fullname="RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences(&quot;Assets/Scenes/Tests/AI/BotScenarios.unity&quot;)" methodname="MovedScenesKeepScriptsAndAssetReferences" classname="RobotSavaslari.Tests.ArenaAssetReferenceTests" runstate="Runnable" seed="812394193" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.002784" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1044" name="MovedScenesKeepScriptsAndAssetReferences(&quot;Assets/Scenes/Tests/Combat/MeleeCombatValidation.unity&quot;)" fullname="RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences(&quot;Assets/Scenes/Tests/Combat/MeleeCombatValidation.unity&quot;)" methodname="MovedScenesKeepScriptsAndAssetReferences" classname="RobotSavaslari.Tests.ArenaAssetReferenceTests" runstate="Runnable" seed="1530678010" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.001831" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1045" name="MovedScenesKeepScriptsAndAssetReferences(&quot;Assets/Scenes/Tests/CombatArena.unity&quot;)" fullname="RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences(&quot;Assets/Scenes/Tests/CombatArena.unity&quot;)" methodname="MovedScenesKeepScriptsAndAssetReferences" classname="RobotSavaslari.Tests.ArenaAssetReferenceTests" runstate="Runnable" seed="1356275406" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.012746" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1046" name="MovedScenesKeepScriptsAndAssetReferences(&quot;Assets/Scenes/Tests/Driving/CollisionRecovery.unity&quot;)" fullname="RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences(&quot;Assets/Scenes/Tests/Driving/CollisionRecovery.unity&quot;)" methodname="MovedScenesKeepScriptsAndAssetReferences" classname="RobotSavaslari.Tests.ArenaAssetReferenceTests" runstate="Runnable" seed="1470898720" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.003548" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1047" name="MovedScenesKeepScriptsAndAssetReferences(&quot;Assets/Scenes/Tests/Driving/DrivingAcceptance.unity&quot;)" fullname="RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences(&quot;Assets/Scenes/Tests/Driving/DrivingAcceptance.unity&quot;)" methodname="MovedScenesKeepScriptsAndAssetReferences" classname="RobotSavaslari.Tests.ArenaAssetReferenceTests" runstate="Runnable" seed="126373708" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.002974" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1048" name="MovedScenesKeepScriptsAndAssetReferences(&quot;Assets/Scenes/Tests/Driving/DrivingFeel.unity&quot;)" fullname="RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences(&quot;Assets/Scenes/Tests/Driving/DrivingFeel.unity&quot;)" methodname="MovedScenesKeepScriptsAndAssetReferences" classname="RobotSavaslari.Tests.ArenaAssetReferenceTests" runstate="Runnable" seed="192283911" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.002373" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1049" name="MovedScenesKeepScriptsAndAssetReferences(&quot;Assets/Scenes/Tests/Driving/KeyboardDriving.unity&quot;)" fullname="RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences(&quot;Assets/Scenes/Tests/Driving/KeyboardDriving.unity&quot;)" methodname="MovedScenesKeepScriptsAndAssetReferences" classname="RobotSavaslari.Tests.ArenaAssetReferenceTests" runstate="Runnable" seed="560021791" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.003012" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1050" name="MovedScenesKeepScriptsAndAssetReferences(&quot;Assets/Scenes/Tests/MatchRegression.unity&quot;)" fullname="RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences(&quot;Assets/Scenes/Tests/MatchRegression.unity&quot;)" methodname="MovedScenesKeepScriptsAndAssetReferences" classname="RobotSavaslari.Tests.ArenaAssetReferenceTests" runstate="Runnable" seed="2049689024" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.013353" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1051" name="MovedScenesKeepScriptsAndAssetReferences(&quot;Assets/Scenes/Tests/RobotMotor.unity&quot;)" fullname="RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences(&quot;Assets/Scenes/Tests/RobotMotor.unity&quot;)" methodname="MovedScenesKeepScriptsAndAssetReferences" classname="RobotSavaslari.Tests.ArenaAssetReferenceTests" runstate="Runnable" seed="381158273" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.001830" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1052" name="MovedScenesKeepScriptsAndAssetReferences(&quot;Assets/Scenes/Tests/Template.unity&quot;)" fullname="RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences(&quot;Assets/Scenes/Tests/Template.unity&quot;)" methodname="MovedScenesKeepScriptsAndAssetReferences" classname="RobotSavaslari.Tests.ArenaAssetReferenceTests" runstate="Runnable" seed="680601436" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.001315" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1053" name="MovedScenesKeepScriptsAndAssetReferences(&quot;Assets/Scenes/Tools/ModularRobotPreview.unity&quot;)" fullname="RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences(&quot;Assets/Scenes/Tools/ModularRobotPreview.unity&quot;)" methodname="MovedScenesKeepScriptsAndAssetReferences" classname="RobotSavaslari.Tests.ArenaAssetReferenceTests" runstate="Runnable" seed="1629773661" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.007570" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+          </test-suite>
+          <test-suite type="TestFixture" id="1057" name="BotDecisionTests" fullname="RobotSavaslari.Tests.BotDecisionTests" classname="RobotSavaslari.Tests.BotDecisionTests" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.003480" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1064" name="CloseContactAndPassingOffsetAreNotCharges" fullname="RobotSavaslari.Tests.BotDecisionTests.CloseContactAndPassingOffsetAreNotCharges" methodname="CloseContactAndPassingOffsetAreNotCharges" classname="RobotSavaslari.Tests.BotDecisionTests" runstate="Runnable" seed="1718317916" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000606" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1069" name="DifficultyChangesDecisionParametersOnly" fullname="RobotSavaslari.Tests.BotDecisionTests.DifficultyChangesDecisionParametersOnly" methodname="DifficultyChangesDecisionParametersOnly" classname="RobotSavaslari.Tests.BotDecisionTests" runstate="Runnable" seed="191671312" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000185" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1067" name="MemoryIsBoundedExpiresAndResets" fullname="RobotSavaslari.Tests.BotDecisionTests.MemoryIsBoundedExpiresAndResets" methodname="MemoryIsBoundedExpiresAndResets" classname="RobotSavaslari.Tests.BotDecisionTests" runstate="Runnable" seed="1192319810" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000359" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1065" name="OneContinuousChargeIsOneSample" fullname="RobotSavaslari.Tests.BotDecisionTests.OneContinuousChargeIsOneSample" methodname="OneContinuousChargeIsOneSample" classname="RobotSavaslari.Tests.BotDecisionTests" runstate="Runnable" seed="1491702529" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000126" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1063" name="PursuingStationaryTargetIsNotACharge" fullname="RobotSavaslari.Tests.BotDecisionTests.PursuingStationaryTargetIsNotACharge" methodname="PursuingStationaryTargetIsNotACharge" classname="RobotSavaslari.Tests.BotDecisionTests" runstate="Runnable" seed="1306336868" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000100" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1066" name="RepetitionAdaptsThenDifferentAnglesDiluteIt" fullname="RobotSavaslari.Tests.BotDecisionTests.RepetitionAdaptsThenDifferentAnglesDiluteIt" methodname="RepetitionAdaptsThenDifferentAnglesDiluteIt" classname="RobotSavaslari.Tests.BotDecisionTests" runstate="Runnable" seed="799226331" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000100" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-suite type="ParameterizedMethod" id="1062" name="ThreatUsesRelativeMotion" fullname="RobotSavaslari.Tests.BotDecisionTests.ThreatUsesRelativeMotion" classname="RobotSavaslari.Tests.BotDecisionTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000599" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1058" name="ThreatUsesRelativeMotion(0,-4,True)" fullname="RobotSavaslari.Tests.BotDecisionTests.ThreatUsesRelativeMotion(0,-4,True)" methodname="ThreatUsesRelativeMotion" classname="RobotSavaslari.Tests.BotDecisionTests" runstate="Runnable" seed="1810652883" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000263" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1059" name="ThreatUsesRelativeMotion(0,4,False)" fullname="RobotSavaslari.Tests.BotDecisionTests.ThreatUsesRelativeMotion(0,4,False)" methodname="ThreatUsesRelativeMotion" classname="RobotSavaslari.Tests.BotDecisionTests" runstate="Runnable" seed="1868547117" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000032" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1060" name="ThreatUsesRelativeMotion(4,0,False)" fullname="RobotSavaslari.Tests.BotDecisionTests.ThreatUsesRelativeMotion(4,0,False)" methodname="ThreatUsesRelativeMotion" classname="RobotSavaslari.Tests.BotDecisionTests" runstate="Runnable" seed="1311337074" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000024" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1061" name="ThreatUsesRelativeMotion(0,0,False)" fullname="RobotSavaslari.Tests.BotDecisionTests.ThreatUsesRelativeMotion(0,0,False)" methodname="ThreatUsesRelativeMotion" classname="RobotSavaslari.Tests.BotDecisionTests" runstate="Runnable" seed="1671374047" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000021" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-case id="1068" name="ZeroDeltaPreservesMemory" fullname="RobotSavaslari.Tests.BotDecisionTests.ZeroDeltaPreservesMemory" methodname="ZeroDeltaPreservesMemory" classname="RobotSavaslari.Tests.BotDecisionTests" runstate="Runnable" seed="1857189831" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000078" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1070" name="CombatCalculationTests" fullname="RobotSavaslari.Tests.CombatCalculationTests" classname="RobotSavaslari.Tests.CombatCalculationTests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.001316" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1077" name="InvalidSpeedDoesNotDamage" fullname="RobotSavaslari.Tests.CombatCalculationTests.InvalidSpeedDoesNotDamage" methodname="InvalidSpeedDoesNotDamage" classname="RobotSavaslari.Tests.CombatCalculationTests" runstate="Runnable" seed="21204064" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000163" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-suite type="ParameterizedMethod" id="1076" name="RamUsesOutgoingSpeedAndMassRatio" fullname="RobotSavaslari.Tests.CombatCalculationTests.RamUsesOutgoingSpeedAndMassRatio" classname="RobotSavaslari.Tests.CombatCalculationTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000590" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1071" name="RamUsesOutgoingSpeedAndMassRatio(4.0f,20.0f,10.0f,8.0f)" fullname="RobotSavaslari.Tests.CombatCalculationTests.RamUsesOutgoingSpeedAndMassRatio(4.0f,20.0f,10.0f,8.0f)" methodname="RamUsesOutgoingSpeedAndMassRatio" classname="RobotSavaslari.Tests.CombatCalculationTests" runstate="Runnable" seed="2029922698" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000242" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1072" name="RamUsesOutgoingSpeedAndMassRatio(4.0f,10.0f,20.0f,2.0f)" fullname="RobotSavaslari.Tests.CombatCalculationTests.RamUsesOutgoingSpeedAndMassRatio(4.0f,10.0f,20.0f,2.0f)" methodname="RamUsesOutgoingSpeedAndMassRatio" classname="RobotSavaslari.Tests.CombatCalculationTests" runstate="Runnable" seed="300137089" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000028" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1073" name="RamUsesOutgoingSpeedAndMassRatio(0.0f,10.0f,10.0f,0.0f)" fullname="RobotSavaslari.Tests.CombatCalculationTests.RamUsesOutgoingSpeedAndMassRatio(0.0f,10.0f,10.0f,0.0f)" methodname="RamUsesOutgoingSpeedAndMassRatio" classname="RobotSavaslari.Tests.CombatCalculationTests" runstate="Runnable" seed="905386021" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000022" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1074" name="RamUsesOutgoingSpeedAndMassRatio(-4.0f,10.0f,10.0f,0.0f)" fullname="RobotSavaslari.Tests.CombatCalculationTests.RamUsesOutgoingSpeedAndMassRatio(-4.0f,10.0f,10.0f,0.0f)" methodname="RamUsesOutgoingSpeedAndMassRatio" classname="RobotSavaslari.Tests.CombatCalculationTests" runstate="Runnable" seed="545290580" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000020" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1075" name="RamUsesOutgoingSpeedAndMassRatio(4.0f,10.0f,0.0f,0.0f)" fullname="RobotSavaslari.Tests.CombatCalculationTests.RamUsesOutgoingSpeedAndMassRatio(4.0f,10.0f,0.0f,0.0f)" methodname="RamUsesOutgoingSpeedAndMassRatio" classname="RobotSavaslari.Tests.CombatCalculationTests" runstate="Runnable" seed="2099167752" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000020" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-case id="1078" name="RecoilIsMassScaledAndCapped" fullname="RobotSavaslari.Tests.CombatCalculationTests.RecoilIsMassScaledAndCapped" methodname="RecoilIsMassScaledAndCapped" classname="RobotSavaslari.Tests.CombatCalculationTests" runstate="Runnable" seed="964610268" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000193" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1115" name="RobotSavaslari.Driving.EditModeTests.dll" fullname="C:/Users/emins/Documents/Codex/robot-match-rules-20261117/RobotArena/Library/ScriptAssemblies/RobotSavaslari.Driving.EditModeTests.dll" runstate="Runnable" testcasecount="26" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.013496" total="26" passed="26" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="51424" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1116" name="RobotSavaslari" fullname="RobotSavaslari" runstate="Runnable" testcasecount="26" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.013420" total="26" passed="26" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1117" name="Driving" fullname="RobotSavaslari.Driving" runstate="Runnable" testcasecount="26" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.013378" total="26" passed="26" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1118" name="Tests" fullname="RobotSavaslari.Driving.Tests" runstate="Runnable" testcasecount="26" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.013326" total="26" passed="26" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1082" name="DriveBindingsTests" fullname="RobotSavaslari.Driving.Tests.DriveBindingsTests" classname="RobotSavaslari.Driving.Tests.DriveBindingsTests" runstate="Runnable" testcasecount="19" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.010341" total="19" passed="19" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1084" name="AltiEylemDeEslenebilir" fullname="RobotSavaslari.Driving.Tests.DriveBindingsTests.AltiEylemDeEslenebilir" methodname="AltiEylemDeEslenebilir" classname="RobotSavaslari.Driving.Tests.DriveBindingsTests" runstate="Runnable" seed="648091781" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.001640" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1102" name="AyniTusIkiEylemdeKayitliysaTumuVarsayilanaDoner" fullname="RobotSavaslari.Driving.Tests.DriveBindingsTests.AyniTusIkiEylemdeKayitliysaTumuVarsayilanaDoner" methodname="AyniTusIkiEylemdeKayitliysaTumuVarsayilanaDoner" classname="RobotSavaslari.Driving.Tests.DriveBindingsTests" runstate="Runnable" seed="274869254" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000935" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1104" name="AyniTusuAyniEylemeYenidenAtamakCakismaSayilmaz" fullname="RobotSavaslari.Driving.Tests.DriveBindingsTests.AyniTusuAyniEylemeYenidenAtamakCakismaSayilmaz" methodname="AyniTusuAyniEylemeYenidenAtamakCakismaSayilmaz" classname="RobotSavaslari.Driving.Tests.DriveBindingsTests" runstate="Runnable" seed="1829287663" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000281" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1098" name="BozukKayitVarsayilanaDoner" fullname="RobotSavaslari.Driving.Tests.DriveBindingsTests.BozukKayitVarsayilanaDoner" methodname="BozukKayitVarsayilanaDoner" classname="RobotSavaslari.Driving.Tests.DriveBindingsTests" runstate="Runnable" seed="66597469" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000371" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1085" name="CakismaReddedilirVeSebepBildirilir" fullname="RobotSavaslari.Driving.Tests.DriveBindingsTests.CakismaReddedilirVeSebepBildirilir" methodname="CakismaReddedilirVeSebepBildirilir" classname="RobotSavaslari.Driving.Tests.DriveBindingsTests" runstate="Runnable" seed="30444972" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000470" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1097" name="KayitYenidenAcilistaYuklenir" fullname="RobotSavaslari.Driving.Tests.DriveBindingsTests.KayitYenidenAcilistaYuklenir" methodname="KayitYenidenAcilistaYuklenir" classname="RobotSavaslari.Driving.Tests.DriveBindingsTests" runstate="Runnable" seed="1624217424" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000483" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1096" name="OkTuslariBirincilEslemeOlamaz" fullname="RobotSavaslari.Driving.Tests.DriveBindingsTests.OkTuslariBirincilEslemeOlamaz" classname="RobotSavaslari.Driving.Tests.DriveBindingsTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.001352" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1092" name="OkTuslariBirincilEslemeOlamaz(UpArrow)" fullname="RobotSavaslari.Driving.Tests.DriveBindingsTests.OkTuslariBirincilEslemeOlamaz(UpArrow)" methodname="OkTuslariBirincilEslemeOlamaz" classname="RobotSavaslari.Driving.Tests.DriveBindingsTests" runstate="Runnable" seed="49143094" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000369" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1093" name="OkTuslariBirincilEslemeOlamaz(DownArrow)" fullname="RobotSavaslari.Driving.Tests.DriveBindingsTests.OkTuslariBirincilEslemeOlamaz(DownArrow)" methodname="OkTuslariBirincilEslemeOlamaz" classname="RobotSavaslari.Driving.Tests.DriveBindingsTests" runstate="Runnable" seed="1982278485" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000229" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1094" name="OkTuslariBirincilEslemeOlamaz(LeftArrow)" fullname="RobotSavaslari.Driving.Tests.DriveBindingsTests.OkTuslariBirincilEslemeOlamaz(LeftArrow)" methodname="OkTuslariBirincilEslemeOlamaz" classname="RobotSavaslari.Driving.Tests.DriveBindingsTests" runstate="Runnable" seed="1926188304" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000235" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1095" name="OkTuslariBirincilEslemeOlamaz(RightArrow)" fullname="RobotSavaslari.Driving.Tests.DriveBindingsTests.OkTuslariBirincilEslemeOlamaz(RightArrow)" methodname="OkTuslariBirincilEslemeOlamaz" classname="RobotSavaslari.Driving.Tests.DriveBindingsTests" runstate="Runnable" seed="603677339" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000221" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-suite type="ParameterizedMethod" id="1101" name="SahiplenilmeyenTusKayitliysaVarsayilanaDoner" fullname="RobotSavaslari.Driving.Tests.DriveBindingsTests.SahiplenilmeyenTusKayitliysaVarsayilanaDoner" classname="RobotSavaslari.Driving.Tests.DriveBindingsTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000864" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1099" name="SahiplenilmeyenTusKayitliysaVarsayilanaDoner(Space)" fullname="RobotSavaslari.Driving.Tests.DriveBindingsTests.SahiplenilmeyenTusKayitliysaVarsayilanaDoner(Space)" methodname="SahiplenilmeyenTusKayitliysaVarsayilanaDoner" classname="RobotSavaslari.Driving.Tests.DriveBindingsTests" runstate="Runnable" seed="146567628" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000410" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1100" name="SahiplenilmeyenTusKayitliysaVarsayilanaDoner(C)" fullname="RobotSavaslari.Driving.Tests.DriveBindingsTests.SahiplenilmeyenTusKayitliysaVarsayilanaDoner(C)" methodname="SahiplenilmeyenTusKayitliysaVarsayilanaDoner" classname="RobotSavaslari.Driving.Tests.DriveBindingsTests" runstate="Runnable" seed="641215651" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000277" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-suite type="ParameterizedMethod" id="1091" name="SahiplenilmeyenTuslarReddedilir" fullname="RobotSavaslari.Driving.Tests.DriveBindingsTests.SahiplenilmeyenTuslarReddedilir" classname="RobotSavaslari.Driving.Tests.DriveBindingsTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.001542" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1086" name="SahiplenilmeyenTuslarReddedilir(Escape)" fullname="RobotSavaslari.Driving.Tests.DriveBindingsTests.SahiplenilmeyenTuslarReddedilir(Escape)" methodname="SahiplenilmeyenTuslarReddedilir" classname="RobotSavaslari.Driving.Tests.DriveBindingsTests" runstate="Runnable" seed="1104223593" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000340" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1087" name="SahiplenilmeyenTuslarReddedilir(Enter)" fullname="RobotSavaslari.Driving.Tests.DriveBindingsTests.SahiplenilmeyenTuslarReddedilir(Enter)" methodname="SahiplenilmeyenTuslarReddedilir" classname="RobotSavaslari.Driving.Tests.DriveBindingsTests" runstate="Runnable" seed="1476480072" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000227" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1088" name="SahiplenilmeyenTuslarReddedilir(R)" fullname="RobotSavaslari.Driving.Tests.DriveBindingsTests.SahiplenilmeyenTuslarReddedilir(R)" methodname="SahiplenilmeyenTuslarReddedilir" classname="RobotSavaslari.Driving.Tests.DriveBindingsTests" runstate="Runnable" seed="748093830" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000215" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1089" name="SahiplenilmeyenTuslarReddedilir(Space)" fullname="RobotSavaslari.Driving.Tests.DriveBindingsTests.SahiplenilmeyenTuslarReddedilir(Space)" methodname="SahiplenilmeyenTuslarReddedilir" classname="RobotSavaslari.Driving.Tests.DriveBindingsTests" runstate="Runnable" seed="1533742636" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000243" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1090" name="SahiplenilmeyenTuslarReddedilir(C)" fullname="RobotSavaslari.Driving.Tests.DriveBindingsTests.SahiplenilmeyenTuslarReddedilir(C)" methodname="SahiplenilmeyenTuslarReddedilir" classname="RobotSavaslari.Driving.Tests.DriveBindingsTests" runstate="Runnable" seed="1818586469" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000214" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1103" name="VarsayilanaDonusYalnizcaSurusAnahtarlariniEtkiler" fullname="RobotSavaslari.Driving.Tests.DriveBindingsTests.VarsayilanaDonusYalnizcaSurusAnahtarlariniEtkiler" methodname="VarsayilanaDonusYalnizcaSurusAnahtarlariniEtkiler" classname="RobotSavaslari.Driving.Tests.DriveBindingsTests" runstate="Runnable" seed="1853497376" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.001073" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1083" name="VarsayilanlarWasdVeEkTuslardir" fullname="RobotSavaslari.Driving.Tests.DriveBindingsTests.VarsayilanlarWasdVeEkTuslardir" methodname="VarsayilanlarWasdVeEkTuslardir" classname="RobotSavaslari.Driving.Tests.DriveBindingsTests" runstate="Runnable" seed="526694987" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000314" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1105" name="DrivingDeliveryTests" fullname="RobotSavaslari.Driving.Tests.DrivingDeliveryTests" classname="RobotSavaslari.Driving.Tests.DrivingDeliveryTests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.002835" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="ParameterizedMethod" id="1108" name="AyarSetiOrtakPrefabinVaryantidir" fullname="RobotSavaslari.Driving.Tests.DrivingDeliveryTests.AyarSetiOrtakPrefabinVaryantidir" classname="RobotSavaslari.Driving.Tests.DrivingDeliveryTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000934" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1106" name="AyarSetiOrtakPrefabinVaryantidir(&quot;Assets/Prefabs/Driving/Robot_AyarA_Sabit.prefab&quot;)" fullname="RobotSavaslari.Driving.Tests.DrivingDeliveryTests.AyarSetiOrtakPrefabinVaryantidir(&quot;Assets/Prefabs/Driving/Robot_AyarA_Sabit.prefab&quot;)" methodname="AyarSetiOrtakPrefabinVaryantidir" classname="RobotSavaslari.Driving.Tests.DrivingDeliveryTests" runstate="Runnable" seed="45006290" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000743" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1107" name="AyarSetiOrtakPrefabinVaryantidir(&quot;Assets/Prefabs/Driving/Robot_AyarB_Cevik.prefab&quot;)" fullname="RobotSavaslari.Driving.Tests.DrivingDeliveryTests.AyarSetiOrtakPrefabinVaryantidir(&quot;Assets/Prefabs/Driving/Robot_AyarB_Cevik.prefab&quot;)" methodname="AyarSetiOrtakPrefabinVaryantidir" classname="RobotSavaslari.Driving.Tests.DrivingDeliveryTests" runstate="Runnable" seed="104319538" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000052" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-suite type="ParameterizedMethod" id="1111" name="AyarSetiSurusBilesenleriniTasir" fullname="RobotSavaslari.Driving.Tests.DrivingDeliveryTests.AyarSetiSurusBilesenleriniTasir" classname="RobotSavaslari.Driving.Tests.DrivingDeliveryTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000420" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1109" name="AyarSetiSurusBilesenleriniTasir(&quot;Assets/Prefabs/Driving/Robot_AyarA_Sabit.prefab&quot;)" fullname="RobotSavaslari.Driving.Tests.DrivingDeliveryTests.AyarSetiSurusBilesenleriniTasir(&quot;Assets/Prefabs/Driving/Robot_AyarA_Sabit.prefab&quot;)" methodname="AyarSetiSurusBilesenleriniTasir" classname="RobotSavaslari.Driving.Tests.DrivingDeliveryTests" runstate="Runnable" seed="1307476459" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000223" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1110" name="AyarSetiSurusBilesenleriniTasir(&quot;Assets/Prefabs/Driving/Robot_AyarB_Cevik.prefab&quot;)" fullname="RobotSavaslari.Driving.Tests.DrivingDeliveryTests.AyarSetiSurusBilesenleriniTasir(&quot;Assets/Prefabs/Driving/Robot_AyarB_Cevik.prefab&quot;)" methodname="AyarSetiSurusBilesenleriniTasir" classname="RobotSavaslari.Driving.Tests.DrivingDeliveryTests" runstate="Runnable" seed="899972014" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000042" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1114" name="DenemeSahneleriDerlemeListesindeDegil" fullname="RobotSavaslari.Driving.Tests.DrivingDeliveryTests.DenemeSahneleriDerlemeListesindeDegil" methodname="DenemeSahneleriDerlemeListesindeDegil" classname="RobotSavaslari.Driving.Tests.DrivingDeliveryTests" runstate="Runnable" seed="87336879" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000097" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1113" name="DenemeSahneleriYerinde" fullname="RobotSavaslari.Driving.Tests.DrivingDeliveryTests.DenemeSahneleriYerinde" methodname="DenemeSahneleriYerinde" classname="RobotSavaslari.Driving.Tests.DrivingDeliveryTests" runstate="Runnable" seed="1935951343" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000243" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1112" name="IkiAyarSetiFarkliDegerlerTasir" fullname="RobotSavaslari.Driving.Tests.DrivingDeliveryTests.IkiAyarSetiFarkliDegerlerTasir" methodname="IkiAyarSetiFarkliDegerlerTasir" classname="RobotSavaslari.Driving.Tests.DrivingDeliveryTests" runstate="Runnable" seed="1833335972" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000676" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1162" name="RobotSavaslari.Gameplay.EditModeTests.dll" fullname="C:/Users/emins/Documents/Codex/robot-match-rules-20261117/RobotArena/Library/ScriptAssemblies/RobotSavaslari.Gameplay.EditModeTests.dll" runstate="Runnable" testcasecount="36" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.033233" total="36" passed="36" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="51424" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1163" name="RobotSavaslari" fullname="RobotSavaslari" runstate="Runnable" testcasecount="36" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.033141" total="36" passed="36" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1164" name="Gameplay" fullname="RobotSavaslari.Gameplay" runstate="Runnable" testcasecount="36" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.033078" total="36" passed="36" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1165" name="Tests" fullname="RobotSavaslari.Gameplay.Tests" runstate="Runnable" testcasecount="36" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.033015" total="36" passed="36" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1119" name="CombatRulesTests" fullname="RobotSavaslari.Gameplay.Tests.CombatRulesTests" classname="RobotSavaslari.Gameplay.Tests.CombatRulesTests" runstate="Runnable" testcasecount="27" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.006351" total="27" passed="27" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1130" name="AttackDataKeepsItsInputs" fullname="RobotSavaslari.Gameplay.Tests.CombatRulesTests.AttackDataKeepsItsInputs" methodname="AttackDataKeepsItsInputs" classname="RobotSavaslari.Gameplay.Tests.CombatRulesTests" runstate="Runnable" seed="1816320627" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000209" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1138" name="CooldownStartsWhenUsedAndCanBeReset" fullname="RobotSavaslari.Gameplay.Tests.CombatRulesTests.CooldownStartsWhenUsedAndCanBeReset" methodname="CooldownStartsWhenUsedAndCanBeReset" classname="RobotSavaslari.Gameplay.Tests.CombatRulesTests" runstate="Runnable" seed="993426501" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000243" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1139" name="HitLogCountsEachTargetOnce" fullname="RobotSavaslari.Gameplay.Tests.CombatRulesTests.HitLogCountsEachTargetOnce" methodname="HitLogCountsEachTargetOnce" classname="RobotSavaslari.Gameplay.Tests.CombatRulesTests" runstate="Runnable" seed="1772008024" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000377" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1136" name="KnockbackRejectsInvalidInput" fullname="RobotSavaslari.Gameplay.Tests.CombatRulesTests.KnockbackRejectsInvalidInput" classname="RobotSavaslari.Gameplay.Tests.CombatRulesTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000534" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1131" name="KnockbackRejectsInvalidInput(0.0f,1.0f,1.0f,1.0f,1.0f)" fullname="RobotSavaslari.Gameplay.Tests.CombatRulesTests.KnockbackRejectsInvalidInput(0.0f,1.0f,1.0f,1.0f,1.0f)" methodname="KnockbackRejectsInvalidInput" classname="RobotSavaslari.Gameplay.Tests.CombatRulesTests" runstate="Runnable" seed="1545102760" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000146" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1132" name="KnockbackRejectsInvalidInput(1.0f,0.0f,1.0f,1.0f,1.0f)" fullname="RobotSavaslari.Gameplay.Tests.CombatRulesTests.KnockbackRejectsInvalidInput(1.0f,0.0f,1.0f,1.0f,1.0f)" methodname="KnockbackRejectsInvalidInput" classname="RobotSavaslari.Gameplay.Tests.CombatRulesTests" runstate="Runnable" seed="993568796" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000027" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1133" name="KnockbackRejectsInvalidInput(1.0f,1.0f,float.NaN,1.0f,1.0f)" fullname="RobotSavaslari.Gameplay.Tests.CombatRulesTests.KnockbackRejectsInvalidInput(1.0f,1.0f,float.NaN,1.0f,1.0f)" methodname="KnockbackRejectsInvalidInput" classname="RobotSavaslari.Gameplay.Tests.CombatRulesTests" runstate="Runnable" seed="1275038003" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000020" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1134" name="KnockbackRejectsInvalidInput(1.0f,1.0f,1.0f,-1.0f,1.0f)" fullname="RobotSavaslari.Gameplay.Tests.CombatRulesTests.KnockbackRejectsInvalidInput(1.0f,1.0f,1.0f,-1.0f,1.0f)" methodname="KnockbackRejectsInvalidInput" classname="RobotSavaslari.Gameplay.Tests.CombatRulesTests" runstate="Runnable" seed="105092304" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000019" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1135" name="KnockbackRejectsInvalidInput(1.0f,1.0f,1.0f,1.0f,float.PositiveInfinity)" fullname="RobotSavaslari.Gameplay.Tests.CombatRulesTests.KnockbackRejectsInvalidInput(1.0f,1.0f,1.0f,1.0f,float.PositiveInfinity)" methodname="KnockbackRejectsInvalidInput" classname="RobotSavaslari.Gameplay.Tests.CombatRulesTests" runstate="Runnable" seed="388230993" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000019" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1137" name="LighterRobotIsPushedFurtherUpToTheCap" fullname="RobotSavaslari.Gameplay.Tests.CombatRulesTests.LighterRobotIsPushedFurtherUpToTheCap" methodname="LighterRobotIsPushedFurtherUpToTheCap" classname="RobotSavaslari.Gameplay.Tests.CombatRulesTests" runstate="Runnable" seed="1621413413" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000090" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1149" name="ProfileCountsHitsToDefeat" fullname="RobotSavaslari.Gameplay.Tests.CombatRulesTests.ProfileCountsHitsToDefeat" methodname="ProfileCountsHitsToDefeat" classname="RobotSavaslari.Gameplay.Tests.CombatRulesTests" runstate="Runnable" seed="291223805" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000276" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1128" name="RamDamageRejectsInvalidInput" fullname="RobotSavaslari.Gameplay.Tests.CombatRulesTests.RamDamageRejectsInvalidInput" classname="RobotSavaslari.Gameplay.Tests.CombatRulesTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000494" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1123" name="RamDamageRejectsInvalidInput(float.NaN,10.0f,10.0f)" fullname="RobotSavaslari.Gameplay.Tests.CombatRulesTests.RamDamageRejectsInvalidInput(float.NaN,10.0f,10.0f)" methodname="RamDamageRejectsInvalidInput" classname="RobotSavaslari.Gameplay.Tests.CombatRulesTests" runstate="Runnable" seed="2083067812" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000135" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1124" name="RamDamageRejectsInvalidInput(float.PositiveInfinity,10.0f,10.0f)" fullname="RobotSavaslari.Gameplay.Tests.CombatRulesTests.RamDamageRejectsInvalidInput(float.PositiveInfinity,10.0f,10.0f)" methodname="RamDamageRejectsInvalidInput" classname="RobotSavaslari.Gameplay.Tests.CombatRulesTests" runstate="Runnable" seed="613722717" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000025" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1125" name="RamDamageRejectsInvalidInput(4.0f,float.NaN,10.0f)" fullname="RobotSavaslari.Gameplay.Tests.CombatRulesTests.RamDamageRejectsInvalidInput(4.0f,float.NaN,10.0f)" methodname="RamDamageRejectsInvalidInput" classname="RobotSavaslari.Gameplay.Tests.CombatRulesTests" runstate="Runnable" seed="795274120" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000020" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1126" name="RamDamageRejectsInvalidInput(4.0f,-1.0f,10.0f)" fullname="RobotSavaslari.Gameplay.Tests.CombatRulesTests.RamDamageRejectsInvalidInput(4.0f,-1.0f,10.0f)" methodname="RamDamageRejectsInvalidInput" classname="RobotSavaslari.Gameplay.Tests.CombatRulesTests" runstate="Runnable" seed="950441642" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000018" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1127" name="RamDamageRejectsInvalidInput(4.0f,10.0f,float.NegativeInfinity)" fullname="RobotSavaslari.Gameplay.Tests.CombatRulesTests.RamDamageRejectsInvalidInput(4.0f,10.0f,float.NegativeInfinity)" methodname="RamDamageRejectsInvalidInput" classname="RobotSavaslari.Gameplay.Tests.CombatRulesTests" runstate="Runnable" seed="1655431278" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000019" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-suite type="ParameterizedMethod" id="1122" name="RamDamageThroughTheAttackEntryPoint" fullname="RobotSavaslari.Gameplay.Tests.CombatRulesTests.RamDamageThroughTheAttackEntryPoint" classname="RobotSavaslari.Gameplay.Tests.CombatRulesTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000311" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1120" name="RamDamageThroughTheAttackEntryPoint(4.0f,20.0f,10.0f,8.0f)" fullname="RobotSavaslari.Gameplay.Tests.CombatRulesTests.RamDamageThroughTheAttackEntryPoint(4.0f,20.0f,10.0f,8.0f)" methodname="RamDamageThroughTheAttackEntryPoint" classname="RobotSavaslari.Gameplay.Tests.CombatRulesTests" runstate="Runnable" seed="1106429726" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000146" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1121" name="RamDamageThroughTheAttackEntryPoint(3.0f,10.0f,10.0f,3.0f)" fullname="RobotSavaslari.Gameplay.Tests.CombatRulesTests.RamDamageThroughTheAttackEntryPoint(3.0f,10.0f,10.0f,3.0f)" methodname="RamDamageThroughTheAttackEntryPoint" classname="RobotSavaslari.Gameplay.Tests.CombatRulesTests" runstate="Runnable" seed="1079137642" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000023" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-suite type="ParameterizedMethod" id="1148" name="ReportsDescribeEveryOutcome" fullname="RobotSavaslari.Gameplay.Tests.CombatRulesTests.ReportsDescribeEveryOutcome" classname="RobotSavaslari.Gameplay.Tests.CombatRulesTests" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.001226" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1140" name="ReportsDescribeEveryOutcome(None,0,&quot;-&quot;)" fullname="RobotSavaslari.Gameplay.Tests.CombatRulesTests.ReportsDescribeEveryOutcome(None,0,&quot;-&quot;)" methodname="ReportsDescribeEveryOutcome" classname="RobotSavaslari.Gameplay.Tests.CombatRulesTests" runstate="Runnable" seed="771750659" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000498" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1141" name="ReportsDescribeEveryOutcome(Started,0,&quot;SALDIRI SURUYOR&quot;)" fullname="RobotSavaslari.Gameplay.Tests.CombatRulesTests.ReportsDescribeEveryOutcome(Started,0,&quot;SALDIRI SURUYOR&quot;)" methodname="ReportsDescribeEveryOutcome" classname="RobotSavaslari.Gameplay.Tests.CombatRulesTests" runstate="Runnable" seed="152925066" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000096" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1142" name="ReportsDescribeEveryOutcome(Hit,2,&quot;ISABET (2 hedef)&quot;)" fullname="RobotSavaslari.Gameplay.Tests.CombatRulesTests.ReportsDescribeEveryOutcome(Hit,2,&quot;ISABET (2 hedef)&quot;)" methodname="ReportsDescribeEveryOutcome" classname="RobotSavaslari.Gameplay.Tests.CombatRulesTests" runstate="Runnable" seed="1669017671" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000055" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1143" name="ReportsDescribeEveryOutcome(Miss,0,&quot;ISKA&quot;)" fullname="RobotSavaslari.Gameplay.Tests.CombatRulesTests.ReportsDescribeEveryOutcome(Miss,0,&quot;ISKA&quot;)" methodname="ReportsDescribeEveryOutcome" classname="RobotSavaslari.Gameplay.Tests.CombatRulesTests" runstate="Runnable" seed="1050192367" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000037" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1144" name="ReportsDescribeEveryOutcome(Cooldown,0,&quot;BEKLEME - istek reddedildi&quot;)" fullname="RobotSavaslari.Gameplay.Tests.CombatRulesTests.ReportsDescribeEveryOutcome(Cooldown,0,&quot;BEKLEME - istek reddedildi&quot;)" methodname="ReportsDescribeEveryOutcome" classname="RobotSavaslari.Gameplay.Tests.CombatRulesTests" runstate="Runnable" seed="1396945645" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000035" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1145" name="ReportsDescribeEveryOutcome(MatchClosed,0,&quot;MAC KAPALI&quot;)" fullname="RobotSavaslari.Gameplay.Tests.CombatRulesTests.ReportsDescribeEveryOutcome(MatchClosed,0,&quot;MAC KAPALI&quot;)" methodname="ReportsDescribeEveryOutcome" classname="RobotSavaslari.Gameplay.Tests.CombatRulesTests" runstate="Runnable" seed="1916630363" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000034" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1146" name="ReportsDescribeEveryOutcome(MatchClosed,1,&quot;MAC KAPANDI - saldiri kesildi&quot;)" fullname="RobotSavaslari.Gameplay.Tests.CombatRulesTests.ReportsDescribeEveryOutcome(MatchClosed,1,&quot;MAC KAPANDI - saldiri kesildi&quot;)" methodname="ReportsDescribeEveryOutcome" classname="RobotSavaslari.Gameplay.Tests.CombatRulesTests" runstate="Runnable" seed="804136282" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000033" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1147" name="ReportsDescribeEveryOutcome(AttackerDefeated,0,&quot;SALDIRAN YENIK&quot;)" fullname="RobotSavaslari.Gameplay.Tests.CombatRulesTests.ReportsDescribeEveryOutcome(AttackerDefeated,0,&quot;SALDIRAN YENIK&quot;)" methodname="ReportsDescribeEveryOutcome" classname="RobotSavaslari.Gameplay.Tests.CombatRulesTests" runstate="Runnable" seed="1853347135" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000033" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1150" name="RobotHitAndMoveCommandCarryTheirValues" fullname="RobotSavaslari.Gameplay.Tests.CombatRulesTests.RobotHitAndMoveCommandCarryTheirValues" methodname="RobotHitAndMoveCommandCarryTheirValues" classname="RobotSavaslari.Gameplay.Tests.CombatRulesTests" runstate="Runnable" seed="1376140916" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.001597" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1129" name="UnknownAttackTypeIsRejected" fullname="RobotSavaslari.Gameplay.Tests.CombatRulesTests.UnknownAttackTypeIsRejected" methodname="UnknownAttackTypeIsRejected" classname="RobotSavaslari.Gameplay.Tests.CombatRulesTests" runstate="Runnable" seed="437799653" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000183" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1151" name="CombatScenarioSuiteTests" fullname="RobotSavaslari.Gameplay.Tests.CombatScenarioSuiteTests" classname="RobotSavaslari.Gameplay.Tests.CombatScenarioSuiteTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.022732" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1152" name="EveryMeleeScenarioPasses" fullname="RobotSavaslari.Gameplay.Tests.CombatScenarioSuiteTests.EveryMeleeScenarioPasses" methodname="EveryMeleeScenarioPasses" classname="RobotSavaslari.Gameplay.Tests.CombatScenarioSuiteTests" runstate="Runnable" seed="2047718778" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.019119" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1156" name="ProfileIsAppliedToBothRobots" fullname="RobotSavaslari.Gameplay.Tests.CombatScenarioSuiteTests.ProfileIsAppliedToBothRobots" methodname="ProfileIsAppliedToBothRobots" classname="RobotSavaslari.Gameplay.Tests.CombatScenarioSuiteTests" runstate="Runnable" seed="1169008023" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000887" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1155" name="RealTimeRigCannotBeAdvancedByHand" fullname="RobotSavaslari.Gameplay.Tests.CombatScenarioSuiteTests.RealTimeRigCannotBeAdvancedByHand" methodname="RealTimeRigCannotBeAdvancedByHand" classname="RobotSavaslari.Gameplay.Tests.CombatScenarioSuiteTests" runstate="Runnable" seed="1501681192" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000534" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1153" name="ResultTextShowsVerdictCardAndDetail" fullname="RobotSavaslari.Gameplay.Tests.CombatScenarioSuiteTests.ResultTextShowsVerdictCardAndDetail" methodname="ResultTextShowsVerdictCardAndDetail" classname="RobotSavaslari.Gameplay.Tests.CombatScenarioSuiteTests" runstate="Runnable" seed="618422339" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000119" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1154" name="RigBuildsTwoOpposingRobotsAndCleansUp" fullname="RobotSavaslari.Gameplay.Tests.CombatScenarioSuiteTests.RigBuildsTwoOpposingRobotsAndCleansUp" methodname="RigBuildsTwoOpposingRobotsAndCleansUp" classname="RobotSavaslari.Gameplay.Tests.CombatScenarioSuiteTests" runstate="Runnable" seed="1218810207" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.001595" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1157" name="GameSettingsTests" fullname="RobotSavaslari.Gameplay.Tests.GameSettingsTests" classname="RobotSavaslari.Gameplay.Tests.GameSettingsTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.003743" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1160" name="ApplyPushesVolumeToTheListener" fullname="RobotSavaslari.Gameplay.Tests.GameSettingsTests.ApplyPushesVolumeToTheListener" methodname="ApplyPushesVolumeToTheListener" classname="RobotSavaslari.Gameplay.Tests.GameSettingsTests" runstate="Runnable" seed="1350707281" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.001645" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1158" name="LoadClampsVolumeAndQuality" fullname="RobotSavaslari.Gameplay.Tests.GameSettingsTests.LoadClampsVolumeAndQuality" methodname="LoadClampsVolumeAndQuality" classname="RobotSavaslari.Gameplay.Tests.GameSettingsTests" runstate="Runnable" seed="2054505939" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000741" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1161" name="ResetRestoresFullVolumeFullscreenAndBestQuality" fullname="RobotSavaslari.Gameplay.Tests.GameSettingsTests.ResetRestoresFullVolumeFullscreenAndBestQuality" methodname="ResetRestoresFullVolumeFullscreenAndBestQuality" classname="RobotSavaslari.Gameplay.Tests.GameSettingsTests" runstate="Runnable" seed="229935556" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000272" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1159" name="SaveWritesWhatLoadReadsBack" fullname="RobotSavaslari.Gameplay.Tests.GameSettingsTests.SaveWritesWhatLoadReadsBack" methodname="SaveWritesWhatLoadReadsBack" classname="RobotSavaslari.Gameplay.Tests.GameSettingsTests" runstate="Runnable" seed="94479404" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000404" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1232" name="RobotSavaslari.Presentation.EditModeTests.dll" fullname="C:/Users/emins/Documents/Codex/robot-match-rules-20261117/RobotArena/Library/ScriptAssemblies/RobotSavaslari.Presentation.EditModeTests.dll" runstate="Runnable" testcasecount="58" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.018342" total="58" passed="58" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="51424" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1233" name="RobotSavaslari" fullname="RobotSavaslari" runstate="Runnable" testcasecount="58" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.018206" total="58" passed="58" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1234" name="Presentation" fullname="RobotSavaslari.Presentation" runstate="Runnable" testcasecount="58" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.018162" total="58" passed="58" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1235" name="Tests" fullname="RobotSavaslari.Presentation.Tests" runstate="Runnable" testcasecount="58" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.018080" total="58" passed="58" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1166" name="CameraSettingsPersistenceTests" fullname="RobotSavaslari.Presentation.Tests.CameraSettingsPersistenceTests" classname="RobotSavaslari.Presentation.Tests.CameraSettingsPersistenceTests" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.005322" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1172" name="CameraResetKeepsAudioDisplayAndOtherPackagesKeys" fullname="RobotSavaslari.Presentation.Tests.CameraSettingsPersistenceTests.CameraResetKeepsAudioDisplayAndOtherPackagesKeys" methodname="CameraResetKeepsAudioDisplayAndOtherPackagesKeys" classname="RobotSavaslari.Presentation.Tests.CameraSettingsPersistenceTests" runstate="Runnable" seed="1026869162" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.001634" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1169" name="CorruptValuesFallBackToDefaults" fullname="RobotSavaslari.Presentation.Tests.CameraSettingsPersistenceTests.CorruptValuesFallBackToDefaults" methodname="CorruptValuesFallBackToDefaults" classname="RobotSavaslari.Presentation.Tests.CameraSettingsPersistenceTests" runstate="Runnable" seed="105149118" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000413" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1167" name="FirstLaunchWithoutSavedCameraValuesUsesDefaults" fullname="RobotSavaslari.Presentation.Tests.CameraSettingsPersistenceTests.FirstLaunchWithoutSavedCameraValuesUsesDefaults" methodname="FirstLaunchWithoutSavedCameraValuesUsesDefaults" classname="RobotSavaslari.Presentation.Tests.CameraSettingsPersistenceTests" runstate="Runnable" seed="1352315668" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000449" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1173" name="FullResetAlsoRestoresCameraDefaults" fullname="RobotSavaslari.Presentation.Tests.CameraSettingsPersistenceTests.FullResetAlsoRestoresCameraDefaults" methodname="FullResetAlsoRestoresCameraDefaults" classname="RobotSavaslari.Presentation.Tests.CameraSettingsPersistenceTests" runstate="Runnable" seed="526157538" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000309" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1168" name="OutOfRangeValuesAreClampedOnLoad" fullname="RobotSavaslari.Presentation.Tests.CameraSettingsPersistenceTests.OutOfRangeValuesAreClampedOnLoad" methodname="OutOfRangeValuesAreClampedOnLoad" classname="RobotSavaslari.Presentation.Tests.CameraSettingsPersistenceTests" runstate="Runnable" seed="1404339087" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000390" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1171" name="SavedValuesSurviveReload" fullname="RobotSavaslari.Presentation.Tests.CameraSettingsPersistenceTests.SavedValuesSurviveReload" methodname="SavedValuesSurviveReload" classname="RobotSavaslari.Presentation.Tests.CameraSettingsPersistenceTests" runstate="Runnable" seed="1270318112" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000474" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1170" name="SettersClampAndRejectInvalidNumbers" fullname="RobotSavaslari.Presentation.Tests.CameraSettingsPersistenceTests.SettersClampAndRejectInvalidNumbers" methodname="SettersClampAndRejectInvalidNumbers" classname="RobotSavaslari.Presentation.Tests.CameraSettingsPersistenceTests" runstate="Runnable" seed="2002837682" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000334" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1174" name="SmoothingSettingMapsToFollowSharpness" fullname="RobotSavaslari.Presentation.Tests.CameraSettingsPersistenceTests.SmoothingSettingMapsToFollowSharpness" methodname="SmoothingSettingMapsToFollowSharpness" classname="RobotSavaslari.Presentation.Tests.CameraSettingsPersistenceTests" runstate="Runnable" seed="1899325102" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000450" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1175" name="CombatCameraFramingTests" fullname="RobotSavaslari.Presentation.Tests.CombatCameraFramingTests" classname="RobotSavaslari.Presentation.Tests.CombatCameraFramingTests" runstate="Runnable" testcasecount="15" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.003939" total="15" passed="15" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1188" name="EnclosePairContainsEveryCornerOfBothRobots" fullname="RobotSavaslari.Presentation.Tests.CombatCameraFramingTests.EnclosePairContainsEveryCornerOfBothRobots" methodname="EnclosePairContainsEveryCornerOfBothRobots" classname="RobotSavaslari.Presentation.Tests.CombatCameraFramingTests" runstate="Runnable" seed="1619885666" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000723" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1187" name="FitDistanceUsesNarrowerFieldOfView" fullname="RobotSavaslari.Presentation.Tests.CombatCameraFramingTests.FitDistanceUsesNarrowerFieldOfView" methodname="FitDistanceUsesNarrowerFieldOfView" classname="RobotSavaslari.Presentation.Tests.CombatCameraFramingTests" runstate="Runnable" seed="889611474" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000292" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1191" name="KeepAboveFloorUsesRealFloorHeight" fullname="RobotSavaslari.Presentation.Tests.CombatCameraFramingTests.KeepAboveFloorUsesRealFloorHeight" methodname="KeepAboveFloorUsesRealFloorHeight" classname="RobotSavaslari.Presentation.Tests.CombatCameraFramingTests" runstate="Runnable" seed="885124267" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000163" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1186" name="NearPlaneRadiusCoversNearPlaneCorners" fullname="RobotSavaslari.Presentation.Tests.CombatCameraFramingTests.NearPlaneRadiusCoversNearPlaneCorners" methodname="NearPlaneRadiusCoversNearPlaneCorners" classname="RobotSavaslari.Presentation.Tests.CombatCameraFramingTests" runstate="Runnable" seed="748946089" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000129" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1176" name="OrbitDirectionPointsBehindAndAbovePivot" fullname="RobotSavaslari.Presentation.Tests.CombatCameraFramingTests.OrbitDirectionPointsBehindAndAbovePivot" methodname="OrbitDirectionPointsBehindAndAbovePivot" classname="RobotSavaslari.Presentation.Tests.CombatCameraFramingTests" runstate="Runnable" seed="1911067801" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000185" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1177" name="OrbitRotationLooksBackAtPivot" fullname="RobotSavaslari.Presentation.Tests.CombatCameraFramingTests.OrbitRotationLooksBackAtPivot" methodname="OrbitRotationLooksBackAtPivot" classname="RobotSavaslari.Presentation.Tests.CombatCameraFramingTests" runstate="Runnable" seed="1379553135" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000161" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1189" name="PairAxisYawKeepsPreviousWhenRobotsOverlap" fullname="RobotSavaslari.Presentation.Tests.CombatCameraFramingTests.PairAxisYawKeepsPreviousWhenRobotsOverlap" methodname="PairAxisYawKeepsPreviousWhenRobotsOverlap" classname="RobotSavaslari.Presentation.Tests.CombatCameraFramingTests" runstate="Runnable" seed="2011473696" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000298" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1190" name="RateLimitedYawNeverExceedsMaximumTurnRate" fullname="RobotSavaslari.Presentation.Tests.CombatCameraFramingTests.RateLimitedYawNeverExceedsMaximumTurnRate" methodname="RateLimitedYawNeverExceedsMaximumTurnRate" classname="RobotSavaslari.Presentation.Tests.CombatCameraFramingTests" runstate="Runnable" seed="1582897418" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000332" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1184" name="SmoothingWeightIsFrameRateIndependent" fullname="RobotSavaslari.Presentation.Tests.CombatCameraFramingTests.SmoothingWeightIsFrameRateIndependent" methodname="SmoothingWeightIsFrameRateIndependent" classname="RobotSavaslari.Presentation.Tests.CombatCameraFramingTests" runstate="Runnable" seed="513497682" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000141" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1183" name="WrapYawStaysInHalfOpenRange" fullname="RobotSavaslari.Presentation.Tests.CombatCameraFramingTests.WrapYawStaysInHalfOpenRange" classname="RobotSavaslari.Presentation.Tests.CombatCameraFramingTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000513" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1178" name="WrapYawStaysInHalfOpenRange(0.0f,0.0f)" fullname="RobotSavaslari.Presentation.Tests.CombatCameraFramingTests.WrapYawStaysInHalfOpenRange(0.0f,0.0f)" methodname="WrapYawStaysInHalfOpenRange" classname="RobotSavaslari.Presentation.Tests.CombatCameraFramingTests" runstate="Runnable" seed="978083259" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000139" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1179" name="WrapYawStaysInHalfOpenRange(190.0f,-170.0f)" fullname="RobotSavaslari.Presentation.Tests.CombatCameraFramingTests.WrapYawStaysInHalfOpenRange(190.0f,-170.0f)" methodname="WrapYawStaysInHalfOpenRange" classname="RobotSavaslari.Presentation.Tests.CombatCameraFramingTests" runstate="Runnable" seed="517983510" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000025" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1180" name="WrapYawStaysInHalfOpenRange(-190.0f,170.0f)" fullname="RobotSavaslari.Presentation.Tests.CombatCameraFramingTests.WrapYawStaysInHalfOpenRange(-190.0f,170.0f)" methodname="WrapYawStaysInHalfOpenRange" classname="RobotSavaslari.Presentation.Tests.CombatCameraFramingTests" runstate="Runnable" seed="167514349" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000020" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1181" name="WrapYawStaysInHalfOpenRange(750.0f,30.0f)" fullname="RobotSavaslari.Presentation.Tests.CombatCameraFramingTests.WrapYawStaysInHalfOpenRange(750.0f,30.0f)" methodname="WrapYawStaysInHalfOpenRange" classname="RobotSavaslari.Presentation.Tests.CombatCameraFramingTests" runstate="Runnable" seed="15636348" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000018" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1182" name="WrapYawStaysInHalfOpenRange(180.0f,-180.0f)" fullname="RobotSavaslari.Presentation.Tests.CombatCameraFramingTests.WrapYawStaysInHalfOpenRange(180.0f,-180.0f)" methodname="WrapYawStaysInHalfOpenRange" classname="RobotSavaslari.Presentation.Tests.CombatCameraFramingTests" runstate="Runnable" seed="1318807504" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000017" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1185" name="ZoomUsesDirectionOnlyAndClamps" fullname="RobotSavaslari.Presentation.Tests.CombatCameraFramingTests.ZoomUsesDirectionOnlyAndClamps" methodname="ZoomUsesDirectionOnlyAndClamps" classname="RobotSavaslari.Presentation.Tests.CombatCameraFramingTests" runstate="Runnable" seed="1377613537" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000202" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1192" name="MainArenaCameraSceneTests" fullname="RobotSavaslari.Presentation.Tests.MainArenaCameraSceneTests" classname="RobotSavaslari.Presentation.Tests.MainArenaCameraSceneTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000590" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1193" name="SavedArenaHasOneCameraOneListenerAndNoSerializedCameraController" fullname="RobotSavaslari.Presentation.Tests.MainArenaCameraSceneTests.SavedArenaHasOneCameraOneListenerAndNoSerializedCameraController" methodname="SavedArenaHasOneCameraOneListenerAndNoSerializedCameraController" classname="RobotSavaslari.Presentation.Tests.MainArenaCameraSceneTests" runstate="Runnable" seed="1794031397" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000372" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1194" name="MatchReplayClipTests" fullname="RobotSavaslari.Presentation.Tests.MatchReplayClipTests" classname="RobotSavaslari.Presentation.Tests.MatchReplayClipTests" runstate="Runnable" testcasecount="9" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.003545" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1203" name="ClearEmptiesFramesAndImpacts" fullname="RobotSavaslari.Presentation.Tests.MatchReplayClipTests.ClearEmptiesFramesAndImpacts" methodname="ClearEmptiesFramesAndImpacts" classname="RobotSavaslari.Presentation.Tests.MatchReplayClipTests" runstate="Runnable" seed="770656246" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000668" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1201" name="DetachedPartDisappearsAfterLastVisibleFrame" fullname="RobotSavaslari.Presentation.Tests.MatchReplayClipTests.DetachedPartDisappearsAfterLastVisibleFrame" methodname="DetachedPartDisappearsAfterLastVisibleFrame" classname="RobotSavaslari.Presentation.Tests.MatchReplayClipTests" runstate="Runnable" seed="740154232" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000579" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1195" name="EmptyClipCannotBeSampled" fullname="RobotSavaslari.Presentation.Tests.MatchReplayClipTests.EmptyClipCannotBeSampled" methodname="EmptyClipCannotBeSampled" classname="RobotSavaslari.Presentation.Tests.MatchReplayClipTests" runstate="Runnable" seed="667878405" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000138" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1202" name="ImpactsOutsideTheWindowAreDroppedAndCapacityIsBounded" fullname="RobotSavaslari.Presentation.Tests.MatchReplayClipTests.ImpactsOutsideTheWindowAreDroppedAndCapacityIsBounded" methodname="ImpactsOutsideTheWindowAreDroppedAndCapacityIsBounded" classname="RobotSavaslari.Presentation.Tests.MatchReplayClipTests" runstate="Runnable" seed="925638572" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000471" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1198" name="RepeatedOrOlderTimesAndWrongTrackCountsAreIgnored" fullname="RobotSavaslari.Presentation.Tests.MatchReplayClipTests.RepeatedOrOlderTimesAndWrongTrackCountsAreIgnored" methodname="RepeatedOrOlderTimesAndWrongTrackCountsAreIgnored" classname="RobotSavaslari.Presentation.Tests.MatchReplayClipTests" runstate="Runnable" seed="1920330248" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000125" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1197" name="RingBufferKeepsOnlyTheNewestFramesInFixedMemory" fullname="RobotSavaslari.Presentation.Tests.MatchReplayClipTests.RingBufferKeepsOnlyTheNewestFramesInFixedMemory" methodname="RingBufferKeepsOnlyTheNewestFramesInFixedMemory" classname="RobotSavaslari.Presentation.Tests.MatchReplayClipTests" runstate="Runnable" seed="1346611509" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000497" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1199" name="SamplingInterpolatesPositionAndRotationAndClamps" fullname="RobotSavaslari.Presentation.Tests.MatchReplayClipTests.SamplingInterpolatesPositionAndRotationAndClamps" methodname="SamplingInterpolatesPositionAndRotationAndClamps" classname="RobotSavaslari.Presentation.Tests.MatchReplayClipTests" runstate="Runnable" seed="1481361815" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000228" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1196" name="SingleFrameClipReturnsThatFrameForAnyTime" fullname="RobotSavaslari.Presentation.Tests.MatchReplayClipTests.SingleFrameClipReturnsThatFrameForAnyTime" methodname="SingleFrameClipReturnsThatFrameForAnyTime" classname="RobotSavaslari.Presentation.Tests.MatchReplayClipTests" runstate="Runnable" seed="908719881" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000131" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1200" name="SkippedFramesStillInterpolateAcrossTheGap" fullname="RobotSavaslari.Presentation.Tests.MatchReplayClipTests.SkippedFramesStillInterpolateAcrossTheGap" methodname="SkippedFramesStillInterpolateAcrossTheGap" classname="RobotSavaslari.Presentation.Tests.MatchReplayClipTests" runstate="Runnable" seed="824719786" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000072" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1204" name="RobotInspectionReportTests" fullname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests" classname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests" runstate="Runnable" testcasecount="25" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.004373" total="25" passed="25" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1231" name="CaptureOfNullRobotIsEmpty" fullname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.CaptureOfNullRobotIsEmpty" methodname="CaptureOfNullRobotIsEmpty" classname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests" runstate="Runnable" seed="947295004" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000665" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1225" name="ConditionIsDescribed" fullname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.ConditionIsDescribed" classname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000581" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1220" name="ConditionIsDescribed(0.0f,False,&quot;Sağlam&quot;)" fullname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.ConditionIsDescribed(0.0f,False,&quot;Sağlam&quot;)" methodname="ConditionIsDescribed" classname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests" runstate="Runnable" seed="1792585161" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000206" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1221" name="ConditionIsDescribed(0.004f,False,&quot;Sağlam&quot;)" fullname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.ConditionIsDescribed(0.004f,False,&quot;Sağlam&quot;)" methodname="ConditionIsDescribed" classname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests" runstate="Runnable" seed="2071840929" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000029" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1222" name="ConditionIsDescribed(0.42f,False,&quot;%42 hasarlı&quot;)" fullname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.ConditionIsDescribed(0.42f,False,&quot;%42 hasarlı&quot;)" methodname="ConditionIsDescribed" classname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests" runstate="Runnable" seed="1053300960" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000023" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1223" name="ConditionIsDescribed(5.0f,False,&quot;%100 hasarlı&quot;)" fullname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.ConditionIsDescribed(5.0f,False,&quot;%100 hasarlı&quot;)" methodname="ConditionIsDescribed" classname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests" runstate="Runnable" seed="738105866" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000019" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1224" name="ConditionIsDescribed(0.3f,True,&quot;Koptu&quot;)" fullname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.ConditionIsDescribed(0.3f,True,&quot;Koptu&quot;)" methodname="ConditionIsDescribed" classname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests" runstate="Runnable" seed="403699433" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000019" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1227" name="DetachedPartsAndDisabledWeaponAreCounted" fullname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.DetachedPartsAndDisabledWeaponAreCounted" methodname="DetachedPartsAndDisabledWeaponAreCounted" classname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests" runstate="Runnable" seed="1156595933" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000654" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1228" name="PartDamageAloneMeansDamaged" fullname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.PartDamageAloneMeansDamaged" methodname="PartDamageAloneMeansDamaged" classname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests" runstate="Runnable" seed="1052610357" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000089" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-suite type="ParameterizedMethod" id="1219" name="PartNamesAreDescribedForPlayers" fullname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.PartNamesAreDescribedForPlayers" classname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests" runstate="Runnable" testcasecount="14" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.001256" total="14" passed="14" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1205" name="PartNamesAreDescribedForPlayers(&quot;Body&quot;,&quot;Gövde&quot;)" fullname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.PartNamesAreDescribedForPlayers(&quot;Body&quot;,&quot;Gövde&quot;)" methodname="PartNamesAreDescribedForPlayers" classname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests" runstate="Runnable" seed="1877641189" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000133" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1206" name="PartNamesAreDescribedForPlayers(&quot;Spinner&quot;,&quot;Döner silah&quot;)" fullname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.PartNamesAreDescribedForPlayers(&quot;Spinner&quot;,&quot;Döner silah&quot;)" methodname="PartNamesAreDescribedForPlayers" classname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests" runstate="Runnable" seed="384710406" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000031" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1207" name="PartNamesAreDescribedForPlayers(&quot;Lifter&quot;,&quot;Kaldırıcı silah&quot;)" fullname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.PartNamesAreDescribedForPlayers(&quot;Lifter&quot;,&quot;Kaldırıcı silah&quot;)" methodname="PartNamesAreDescribedForPlayers" classname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests" runstate="Runnable" seed="1968236933" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000024" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1208" name="PartNamesAreDescribedForPlayers(&quot;Wheel_FL&quot;,&quot;Sol ön tekerlek&quot;)" fullname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.PartNamesAreDescribedForPlayers(&quot;Wheel_FL&quot;,&quot;Sol ön tekerlek&quot;)" methodname="PartNamesAreDescribedForPlayers" classname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests" runstate="Runnable" seed="492790606" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000033" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1209" name="PartNamesAreDescribedForPlayers(&quot;Wheel_RL&quot;,&quot;Sol arka tekerlek&quot;)" fullname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.PartNamesAreDescribedForPlayers(&quot;Wheel_RL&quot;,&quot;Sol arka tekerlek&quot;)" methodname="PartNamesAreDescribedForPlayers" classname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests" runstate="Runnable" seed="1963589289" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000026" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1210" name="PartNamesAreDescribedForPlayers(&quot;Wheel_FR&quot;,&quot;Sağ ön tekerlek&quot;)" fullname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.PartNamesAreDescribedForPlayers(&quot;Wheel_FR&quot;,&quot;Sağ ön tekerlek&quot;)" methodname="PartNamesAreDescribedForPlayers" classname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests" runstate="Runnable" seed="2078839187" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000175" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1211" name="PartNamesAreDescribedForPlayers(&quot;Wheel_RR&quot;,&quot;Sağ arka tekerlek&quot;)" fullname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.PartNamesAreDescribedForPlayers(&quot;Wheel_RR&quot;,&quot;Sağ arka tekerlek&quot;)" methodname="PartNamesAreDescribedForPlayers" classname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests" runstate="Runnable" seed="455015569" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000035" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1212" name="PartNamesAreDescribedForPlayers(&quot;Armor_FL&quot;,&quot;Sol ön zırh&quot;)" fullname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.PartNamesAreDescribedForPlayers(&quot;Armor_FL&quot;,&quot;Sol ön zırh&quot;)" methodname="PartNamesAreDescribedForPlayers" classname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests" runstate="Runnable" seed="1922620340" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000028" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1213" name="PartNamesAreDescribedForPlayers(&quot;Armor_RR&quot;,&quot;Sağ arka zırh&quot;)" fullname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.PartNamesAreDescribedForPlayers(&quot;Armor_RR&quot;,&quot;Sağ arka zırh&quot;)" methodname="PartNamesAreDescribedForPlayers" classname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests" runstate="Runnable" seed="1173686284" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000025" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1214" name="PartNamesAreDescribedForPlayers(&quot;Wheel_XY&quot;,&quot;Wheel_XY&quot;)" fullname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.PartNamesAreDescribedForPlayers(&quot;Wheel_XY&quot;,&quot;Wheel_XY&quot;)" methodname="PartNamesAreDescribedForPlayers" classname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests" runstate="Runnable" seed="421639355" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000025" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1215" name="PartNamesAreDescribedForPlayers(&quot;Wheel_FLX&quot;,&quot;Wheel_FLX&quot;)" fullname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.PartNamesAreDescribedForPlayers(&quot;Wheel_FLX&quot;,&quot;Wheel_FLX&quot;)" methodname="PartNamesAreDescribedForPlayers" classname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests" runstate="Runnable" seed="127483534" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000024" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1216" name="PartNamesAreDescribedForPlayers(&quot;Antenna&quot;,&quot;Antenna&quot;)" fullname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.PartNamesAreDescribedForPlayers(&quot;Antenna&quot;,&quot;Antenna&quot;)" methodname="PartNamesAreDescribedForPlayers" classname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests" runstate="Runnable" seed="1442390528" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000023" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1217" name="PartNamesAreDescribedForPlayers(&quot;&quot;,&quot;&quot;)" fullname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.PartNamesAreDescribedForPlayers(&quot;&quot;,&quot;&quot;)" methodname="PartNamesAreDescribedForPlayers" classname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests" runstate="Runnable" seed="1022899707" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000025" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1218" name="PartNamesAreDescribedForPlayers(null,&quot;&quot;)" fullname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.PartNamesAreDescribedForPlayers(null,&quot;&quot;)" methodname="PartNamesAreDescribedForPlayers" classname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests" runstate="Runnable" seed="162621031" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000024" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1230" name="RatiosAreClampedAndNaNIsTreatedAsNoDamage" fullname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.RatiosAreClampedAndNaNIsTreatedAsNoDamage" methodname="RatiosAreClampedAndNaNIsTreatedAsNoDamage" classname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests" runstate="Runnable" seed="553877892" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000161" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1229" name="RobotWithoutPartDataReportsHealthOnly" fullname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.RobotWithoutPartDataReportsHealthOnly" methodname="RobotWithoutPartDataReportsHealthOnly" classname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests" runstate="Runnable" seed="963106702" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000143" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1226" name="UndamagedRobotIsRecognised" fullname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.UndamagedRobotIsRecognised" methodname="UndamagedRobotIsRecognised" classname="RobotSavaslari.Presentation.Tests.RobotInspectionReportTests" runstate="Runnable" seed="943721212" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000135" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1241" name="RobotSavaslari.Robots.EditModeTests.dll" fullname="C:/Users/emins/Documents/Codex/robot-match-rules-20261117/RobotArena/Library/ScriptAssemblies/RobotSavaslari.Robots.EditModeTests.dll" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.002348" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="51424" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1242" name="RobotSavaslari" fullname="RobotSavaslari" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.002264" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1243" name="Robots" fullname="RobotSavaslari.Robots" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.002223" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1244" name="Tests" fullname="RobotSavaslari.Robots.Tests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.002162" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1236" name="RobotPrefabTests" fullname="RobotSavaslari.Robots.Tests.RobotPrefabTests" classname="RobotSavaslari.Robots.Tests.RobotPrefabTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.002101" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1240" name="AnaArenaTekEtkinDerlemeSahnesi" fullname="RobotSavaslari.Robots.Tests.RobotPrefabTests.AnaArenaTekEtkinDerlemeSahnesi" methodname="AnaArenaTekEtkinDerlemeSahnesi" classname="RobotSavaslari.Robots.Tests.RobotPrefabTests" runstate="Runnable" seed="1742083230" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000716" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1238" name="PrefabCarpismaHacmineSahip" fullname="RobotSavaslari.Robots.Tests.RobotPrefabTests.PrefabCarpismaHacmineSahip" methodname="PrefabCarpismaHacmineSahip" classname="RobotSavaslari.Robots.Tests.RobotPrefabTests" runstate="Runnable" seed="1251850591" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000353" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1237" name="PrefabFizikGovdesineSahip" fullname="RobotSavaslari.Robots.Tests.RobotPrefabTests.PrefabFizikGovdesineSahip" methodname="PrefabFizikGovdesineSahip" classname="RobotSavaslari.Robots.Tests.RobotPrefabTests" runstate="Runnable" seed="1184061008" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000432" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1239" name="PrefabHareketVeKlavyeBilesenlerineSahip" fullname="RobotSavaslari.Robots.Tests.RobotPrefabTests.PrefabHareketVeKlavyeBilesenlerineSahip" methodname="PrefabHareketVeKlavyeBilesenlerineSahip" classname="RobotSavaslari.Robots.Tests.RobotPrefabTests" runstate="Runnable" seed="1435479127" result="Passed" start-time="2026-11-17 07:37:26Z" end-time="2026-11-17 07:37:26Z" duration="0.000177" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Saving results to: C:/Users/emins/AppData/LocalLow/DefaultCompany/RobotArena\TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
