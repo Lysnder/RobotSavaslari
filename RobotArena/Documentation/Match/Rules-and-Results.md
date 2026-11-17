@@ -41,11 +41,15 @@ Rövanş kayıttaki temel maç modu ve süre kuralını yükler; eski can, parç
 
 ## Doğrulama
 
+Commit sonrası 9/9 maç testi tekrar çalıştırılan uygulama SHA: `8208cc1a62e445d17fdc3dfd535eb02afc53509c`. Sonraki kanıt commit’i üretim kodunu değiştirmez.
+
 - Unity 6000.4.4f1: tüm EditMode 195/195.
 - Yeni MainArena maç PlayMode: 9/9. 2–0, 2–1, beraberlik tekrarı, oran hesabı, pause/input temizliği, ölüm/overkill kaynak atfı, disable ve kalıcı rövanş.
 - Mevcut MatchRegression kontrolü geçti; mevcut CombatChecks 23/23 geçti.
 - Windows x64 derlendi. Kontrollü sağlık olaylarıyla seri/time-over/pause kuralları doğrulandı. Ayrı Windows süreci aynı geçmiş dosyasını okuyup geri sayımla temiz rövanş açtı.
 - Ayrıca mevcut arena-smoke Windows executable'da iki ardışık gerçek klavye/fizik/hasar maçını, tek sonuç ve reseti geçti.
+- Ek eski `MenuButtonsStartAndOpenSettings` testi, sonuç düğmelerine ulaşmadan değişmeyen Ayarlar düğmesinde başarısız oldu. Yalnız MainMenuScreen taban `test@3a7c500` sürümüne alınınca aynı hata tekrarlandı; ortak GUI test düzeneği bu teslimde değiştirilmedi. İki XML kanıt dosyası eklidir. Sonuç düğmelerinin otomatik tıklama yolu bu testle doğrulanamadı.
+- Diğer dört merge paketinin fiziksel olarak kaldırıldığı ayrı bir kabul çalıştırılmadı; mevcut üretim sahnesi ve ortak API’ler üzerinde doğrulandı.
 - Görünür Windows oturumunda sonuç panelleri ve mevcut replay/inspection düğmeleri birlikte incelendi. Ekran görüntüleri Evidence/MatchRules içindedir.
 
 Kanıt: `Evidence/MatchRules/validation.json`, test XML'leri, regresyon/Windows logları ve ekran görüntüleri. Kontrollü kural denemeleri, gerçek dövüş kabulünden ayrı işaretlenmiştir. Windows dağıtım dosyaları Git'e eklenmez.

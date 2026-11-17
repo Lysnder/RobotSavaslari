@@ -19,5 +19,15 @@
   "windows_rules_write_process": "passed",
   "windows_history_read_process": "passed",
   "windows_real_matches": 2,
-  "rules_acceptance": "Controlled health events; physical combat checked separately by arena-smoke."
+  "rules_acceptance": "Controlled health events; physical combat checked separately by arena-smoke.",
+  "tested_implementation_sha": "8208cc1a62e445d17fdc3dfd535eb02afc53509c",
+  "menu_button_harness": {
+    "result": "failed at unchanged Ayarlar button",
+    "baseline_comparison": "Same failure when only MainMenuScreen.cs is restored from test@3a7c500; shared harness/controller otherwise unchanged.",
+    "new_result_buttons": "visually verified in Windows; automated click path not reached"
+  },
+  "not_run": [
+    "Full legacy Gameplay group (previous hang)",
+    "Acceptance with the four merged packages physically removed"
+  ]
 }
