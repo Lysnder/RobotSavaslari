@@ -1,5 +1,6 @@
 using System;
 using RobotSavaslari.Driving;
+using RobotSavaslari.Arena;
 using RobotSavaslari.Match;
 using RobotSavaslari.Robots;
 using RobotSavaslari.UI;
@@ -57,6 +58,8 @@ namespace RobotSavaslari.Training
         private RobotPrototypeController opponentPrototype;
         private PlayerKeyboardDriver driver;
         private RobotMotor motor;
+        private ArenaEnvironment arena;
+        private ArenaBounds arenaBounds;
 
         private bool savedMatchEnabled;
         private bool savedMenuEnabled;
@@ -82,6 +85,9 @@ namespace RobotSavaslari.Training
 
         /// <summary>Bu denemede geçen süre (saniye).</summary>
         public float ElapsedTime { get; private set; }
+
+        public int AttemptNumber { get; private set; }
+        public float SurfaceHeight => arenaBounds != null ? arenaBounds.SurfaceHeight : startPosition.y;
 
         /// <summary>Son tamamlanan turun süresi; tur yoksa 0.</summary>
         public float LastLapTime { get; private set; }
@@ -126,7 +132,7 @@ namespace RobotSavaslari.Training
         public Vector3 StartPosition => startPosition;
 
         /// <summary>
-        /// Parkurun kimliği: başlangıç pozu ve kontrol noktalarından türer.
+        /// Parkurun kimliği: arena düzeni, başlangıç pozu ve kontrol noktalarından türer.
         /// Rota değişirse kimlik de değişir, böylece eski bir rekor yeni
         /// parkurda aynı turmuş gibi kullanılamaz.
         /// </summary>
@@ -149,7 +155,10 @@ namespace RobotSavaslari.Training
                         hash = hash * 31 + Mathf.RoundToInt(checkpoint.radius * 100f);
                     }
 
-                    return $"arena-{CheckpointCount}-{hash:x8}";
+                    // Include authored content so editing an existing layout also invalidates its old lap.
+                    string layoutId = arena != null && arena.Layout != null
+                        ? Hash128.Compute(JsonUtility.ToJson(arena.Layout)).ToString() : "none";
+                    return $"arena-v2-{CheckpointCount}-{hash:x8}-{layoutId}";
                 }
             }
         }
@@ -170,6 +179,8 @@ namespace RobotSavaslari.Training
             menu = mainMenu;
             settings = settingsPanel;
             driver = playerDriver;
+            arena = match != null ? FindAnyObjectByType<ArenaEnvironment>() : null;
+            arenaBounds = arena != null ? arena.GetComponent<ArenaBounds>() : null;
 
             if (driver != null)
             {
@@ -246,6 +257,7 @@ namespace RobotSavaslari.Training
         /// <summary>Denemeyi baştan alır: poz, hareket, kontrol noktaları ve süre sıfırlanır.</summary>
         public void Retry()
         {
+            AttemptNumber++;
             NextCheckpointIndex = 0;
             ElapsedTime = 0f;
             lapValid = true;

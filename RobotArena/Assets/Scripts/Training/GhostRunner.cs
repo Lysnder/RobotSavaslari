@@ -32,6 +32,7 @@ namespace RobotSavaslari.Training
         private TimeTrialState previousState = TimeTrialState.Inactive;
         private float lastSampleTime;
         private string loadedCourseId;
+        private int recordedAttempt;
 
         /// <summary>İzlenen eğitim oturumu.</summary>
         public TimeTrialSession Session
@@ -101,9 +102,11 @@ namespace RobotSavaslari.Training
                 return;
             }
 
-            if (previousState != TimeTrialState.Running && state == TimeTrialState.Running)
+            if (state == TimeTrialState.Running &&
+                (previousState != TimeTrialState.Running || recordedAttempt != session.AttemptNumber))
             {
                 BeginAttempt();
+                recordedAttempt = session.AttemptNumber;
             }
 
             if (state == TimeTrialState.Running)

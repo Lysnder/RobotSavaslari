@@ -18,7 +18,8 @@ korunur. Varsayılanlar WASD + ok takımı.
 
 MainArena **Ready** durumundayken alt ortadaki **Sürüş tuşları** düğmesi. Panel
 açılınca sürüş kontrolü geçici olarak kapanır; bir eylem satırına tıklayıp tuşa
-basılır. `Esc` yakalamayı iptal eder.
+basılır. `Esc` yakalamayı iptal eder; ayarları açmaz. Panel açıkken ana menü
+gizlenir; Enter/NumpadEnter maç başlatmaz, kamera tuş ve fare girdisi almaz.
 
 Erişim yalnızca maç kurulmuş, durum Ready ve ayarlar paneli kapalıyken açıktır.
 Maç başlarsa panel kendiliğinden kapanır ve kontrol eski durumuna döner.
@@ -27,8 +28,9 @@ Maç başlarsa panel kendiliğinden kapanır ve kontrol eski durumuna döner.
 
 Üç durumda atama **yapılmaz** ve sebep ekranda yazar:
 
-1. **Sürüşe ait olmayan tuş** — `Esc`, `Enter`, `NumpadEnter`, `R`, `Space`.
-   Bunlar menü, yeniden başlatma ve silah tarafına ait.
+1. **Sürüşe ait olmayan tuş** — `Esc`, `Enter`, `NumpadEnter`, `R`, `Space`, `C`.
+   Bunlar menü, yeniden başlatma, silah ve kamera tarafına ait. Önceden C'ye
+   atanmış kayıt yüklenirse ilgili eylem kendi varsayılanına döner.
 2. **Ok tuşları** — dört yönün sabit yardımcısı oldukları için birincil eşleme
    olarak atanamaz. Bu sayede eşleme değişse bile ok davranışı korunur.
 3. **Başka bir eylemde kullanılıyor** — mesaj hangi eylem olduğunu söyler:
@@ -69,8 +71,8 @@ Son durumda kısmi kurtarma yapılmaz: tek tek düzeltmek yeni çakışmalar
 ## Uç durumlar
 
 * **Yakalama sırasında oyuna komut gitmez**: panel açıkken sürücü kapalıdır,
-  kapanınca eski durumuna döner. Yeni bir bastırma mekanizması icat edilmedi,
-  el freni kartında test edilmiş "kontrol kapalı" yolu yeniden kullanıldı.
+  kapanınca eski durumuna döner. Menü, ayarlar ve kamera da aynı ekranın
+  `IsOpen` durumuna bakarak girdilerini engeller.
 * **Klavye çıkarılırsa** yakalama güvenle biter.
 * **İptal** eşlemeyi değiştirmez.
 
@@ -90,7 +92,7 @@ ile bildirir; bu da `MainMenuScreen`'in kullandığı gating kalıbının aynıs
 
 ## Testler
 
-* `Tests/Driving/EditMode/DriveBindingsTests.cs` — 17 test: varsayılanlar, altı
+* `Tests/Driving/EditMode/DriveBindingsTests.cs` — 19 test: varsayılanlar, altı
   eylemin eşlenmesi, çakışma reddi ve mesajı, sahiplenilmeyen tuşlar, ok
   tuşları, kaydın yeniden yüklenmesi, bozuk kayıt, aynı tuşun iki eylemde
   olması, sıfırlamanın yalnızca sürüş anahtarlarını etkilemesi.

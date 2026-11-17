@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using RobotSavaslari.Match;
+using RobotSavaslari.Driving;
 using RobotSavaslari.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -122,7 +123,8 @@ namespace RobotSavaslari.Presentation
         public Vector3 Pivot => _pivot;
         public float FloorHeight { get; private set; }
         public float NearPlaneRadius => CombatCameraFraming.NearPlaneRadius(_camera.nearClipPlane, _camera.fieldOfView, _camera.aspect);
-        public bool AcceptsPointerInput => isActiveAndEnabled && _match != null && (_settings == null || !_settings.IsOpen);
+        public bool AcceptsPointerInput => isActiveAndEnabled && _match != null && (_settings == null || !_settings.IsOpen) &&
+            !(_match.Player != null && _match.Player.TryGetComponent<DriveBindingsScreen>(out var bindings) && bindings.IsOpen);
 
         private void Awake()
         {
