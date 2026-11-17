@@ -1,4 +1,9 @@
+using System;
+using RobotSavaslari.Combat;
+using RobotSavaslari.Driving;
+using RobotSavaslari.UI;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace RobotSavaslari.Match
 {
@@ -7,7 +12,7 @@ namespace RobotSavaslari.Match
     public sealed class MatchController : MonoBehaviour
     {
         public enum MatchState { Ready, Playing, Result, Restarting, Countdown }
-        public enum MatchOutcome { None, PlayerVictory, OpponentVictory }
+        public enum MatchOutcome { None, PlayerVictory, OpponentVictory, Draw }
         [SerializeField] private RobotPrototypeController player;
         [SerializeField] private RobotPrototypeController opponent;
         [SerializeField] private Transform playerSpawn;
@@ -33,6 +38,71 @@ namespace RobotSavaslari.Match
         public float CountdownRemaining => State == MatchState.Countdown ? Mathf.Max(0f, countdownEndsAt - Time.time) : 0f;
         public bool ShowStartMessage => State == MatchState.Playing && Time.time < startMessageEndsAt;
 
+        [SerializeField] private MatchRules rules = new MatchRules();
+        private SettingsPanelController settings;
+        private PlayerKeyboardDriver pausedDriver;
+        private bool driverWasEnabled, pauseObserved, waitForInputRelease;
+        private RobotHealth playerHealth, opponentHealth;
+        private double lastClock;
+        private float elapsedSeconds, totalSeconds;
+        private int roundsPlayed, roundAtStart;
+        private string encounterId;
+        private RobotMatchStatistics playerRound = new RobotMatchStatistics(), opponentRound = new RobotMatchStatistics();
+        private RobotMatchStatistics playerTotal = new RobotMatchStatistics(), opponentTotal = new RobotMatchStatistics();
+        private PauseCombatGate playerGate, opponentGate;
+        private MatchHistoryStore historyStore;
+
+        public MatchRules Rules => rules.Copy();
+        public int PlayerWins { get; private set; }
+        public int OpponentWins { get; private set; }
+        public int DrawnRounds { get; private set; }
+        public int RoundNumber => State == MatchState.Result && LastRound != null ? LastRound.roundNumber : PlayerWins + OpponentWins + 1;
+        public bool EncounterComplete { get; private set; }
+        public bool IsSeriesComplete => rules.mode == MatchMode.FirstToTwo && EncounterComplete;
+        public MatchOutcome SeriesOutcome => IsSeriesComplete && LastMatch != null ? LastMatch.outcome : MatchOutcome.None;
+        public bool IsPaused => (settings != null && settings.IsOpen) || Time.timeScale <= 0f;
+        public float ElapsedSeconds => elapsedSeconds;
+        public bool IsTimed => rules.timeLimitSeconds > 0f;
+        public float RemainingSeconds => IsTimed ? Mathf.Max(0f, rules.timeLimitSeconds - elapsedSeconds) : 0f;
+        public bool IsTimeWarning => State == MatchState.Playing && IsTimed && RemainingSeconds <= 10f;
+        public RoundResult LastRound { get; private set; }
+        public MatchRecord LastMatch { get; private set; }
+        public MatchHistoryStore HistoryStore { get => historyStore ?? (historyStore = new MatchHistoryStore()); set => historyStore = value; }
+        public string HistoryNotice { get; private set; }
+
+        public bool ConfigureRules(MatchRules selection)
+        {
+            if (!initialized || !isActiveAndEnabled || State != MatchState.Ready || IsPaused || selection == null || !selection.IsValid) return false;
+            rules = selection.Copy();
+            ResetEncounter();
+            return true;
+        }
+
+        public bool Rematch(MatchRecord record)
+        {
+            if (!initialized || !isActiveAndEnabled || IsPaused || record == null || !record.IsValid ||
+                (State != MatchState.Ready && State != MatchState.Result)) return false;
+            Prepare();
+            return ConfigureRules(record.rules) && RequestCountdown();
+        }
+
+        public bool ContinueSeries()
+        {
+            return rules.mode == MatchMode.FirstToTwo && !EncounterComplete && State == MatchState.Result && RequestCountdown();
+        }
+
+        private void OnEnable() { lastClock = Time.timeAsDouble; }
+        private void OnDisable() { RestorePausedDriver(); }
+
+        private sealed class PauseCombatGate : IMatchGate
+        {
+            public MatchController match;
+            public IMatchGate inner;
+            public bool player;
+            public bool IsOpen => match != null && match.isActiveAndEnabled && match.State == MatchState.Playing &&
+                !match.IsPaused && (!player || !match.waitForInputRelease) && inner != null && inner.IsOpen;
+        }
+
         public void ConfigureGameplay()
         {
             gameplayInterface = true;
@@ -41,15 +111,81 @@ namespace RobotSavaslari.Match
 
         private void Update()
         {
+            if (!initialized) return;
+            SynchronizePause();
+            if (IsPaused) return;
             if (State == MatchState.Countdown && Time.time >= countdownEndsAt)
             {
                 BeginPlaying();
                 startMessageEndsAt = Time.time + startMessageDuration;
             }
+            AdvanceClock();
+            ResolveTimeLimit();
+        }
+
+        private void FixedUpdate()
+        {
+            if (!initialized || IsPaused) return;
+            AdvanceClock();
+            ResolveTimeLimit();
+        }
+
+        private void AdvanceClock()
+        {
+            double now = Time.timeAsDouble;
+            if (State == MatchState.Playing && !IsPaused && now > lastClock) elapsedSeconds += (float)(now - lastClock);
+            lastClock = Math.Max(lastClock, now);
+        }
+
+        private void ResolveTimeLimit()
+        {
+            if (State != MatchState.Playing || !IsTimed || elapsedSeconds < rules.timeLimitSeconds) return;
+            elapsedSeconds = rules.timeLimitSeconds;
+            CompleteRound(MatchRules.CompareHealth(playerHealth.CurrentHealth, playerHealth.MaxHealth,
+                opponentHealth.CurrentHealth, opponentHealth.MaxHealth), RoundFinishReason.TimeOver);
+        }
+
+        private void SynchronizePause()
+        {
+            bool paused = IsPaused;
+            if (paused && !pauseObserved)
+            {
+                pausedDriver = player.GetComponent<PlayerKeyboardDriver>();
+                driverWasEnabled = pausedDriver != null && pausedDriver.enabled;
+                if (driverWasEnabled) pausedDriver.enabled = false;
+            }
+            if (!paused && pauseObserved) waitForInputRelease = driverWasEnabled;
+            pauseObserved = paused;
+            if (!paused && waitForInputRelease && (Keyboard.current == null || !Keyboard.current.anyKey.isPressed)) RestorePausedDriver();
+            BindCombatGates();
+        }
+
+        private void RestorePausedDriver()
+        {
+            if (pausedDriver != null && driverWasEnabled && State == MatchState.Playing && player != null &&
+                player.isActiveAndEnabled && !player.CombatStopped) pausedDriver.enabled = true;
+            pausedDriver = null;
+            driverWasEnabled = waitForInputRelease = pauseObserved = false;
+        }
+
+        private void BindCombatGates()
+        {
+            if (State != MatchState.Playing) return;
+            BindCombatGate(player, ref playerGate, true);
+            BindCombatGate(opponent, ref opponentGate, false);
+        }
+
+        private void BindCombatGate(RobotPrototypeController robot, ref PauseCombatGate gate, bool forPlayer)
+        {
+            var attack = robot.GetComponent<MeleeAttack>();
+            if (attack == null || attack.Gate == gate) return;
+            if (gate == null) gate = new PauseCombatGate { match = this, player = forPlayer };
+            gate.inner = attack.Gate;
+            attack.Gate = gate;
         }
         public event System.Action<MatchOutcome> ResultDetermined;
-        public bool PlayerAllowed => State == MatchState.Playing && player != null && !player.CombatStopped;
-        public bool OpponentAllowed => State == MatchState.Playing && opponent != null && !opponent.CombatStopped;
+        public bool PlayerAllowed => isActiveAndEnabled && !IsPaused && !waitForInputRelease && State == MatchState.Playing && player != null && !player.CombatStopped;
+        public bool OpponentAllowed => isActiveAndEnabled && !IsPaused && State == MatchState.Playing && opponent != null && !opponent.CombatStopped;
         private string playerProbe = "Henuz denenmedi", opponentProbe = "Henuz denenmedi";
         private string result = "";
         private bool initialized;
@@ -71,8 +207,14 @@ namespace RobotSavaslari.Match
                 enabled = false;
                 return;
             }
-            player.GetComponent<RobotHealth>().Defeated += OnDefeated;
-            opponent.GetComponent<RobotHealth>().Defeated += OnDefeated;
+            settings = GetComponent<SettingsPanelController>();
+            playerHealth = player.GetComponent<RobotHealth>();
+            opponentHealth = opponent.GetComponent<RobotHealth>();
+            playerHealth.Defeated += OnDefeated;
+            opponentHealth.Defeated += OnDefeated;
+            playerHealth.Damaged += OnPlayerDamaged;
+            opponentHealth.Damaged += OnOpponentDamaged;
+            if (rules == null || !rules.IsValid) rules = new MatchRules();
             initialized = true;
             SetManualMode(manualNotificationsOnly);
             Prepare();
@@ -81,14 +223,35 @@ namespace RobotSavaslari.Match
         private void OnDestroy()
         {
             if (!initialized) return;
-            if (player != null) player.GetComponent<RobotHealth>().Defeated -= OnDefeated;
-            if (opponent != null) opponent.GetComponent<RobotHealth>().Defeated -= OnDefeated;
+            if (playerHealth != null) { playerHealth.Defeated -= OnDefeated; playerHealth.Damaged -= OnPlayerDamaged; }
+            if (opponentHealth != null) { opponentHealth.Defeated -= OnDefeated; opponentHealth.Damaged -= OnOpponentDamaged; }
         }
 
         public void Prepare()
         {
             if (!initialized || State == MatchState.Playing || State == MatchState.Countdown || IsRestarting) return;
+            ResetEncounter();
+            PrepareRound();
+        }
+
+        private void ResetEncounter()
+        {
+            PlayerWins = OpponentWins = DrawnRounds = roundsPlayed = 0;
+            totalSeconds = 0f;
+            playerTotal = new RobotMatchStatistics(); opponentTotal = new RobotMatchStatistics();
+            EncounterComplete = false;
+            encounterId = Guid.NewGuid().ToString("N");
+            LastMatch = null;
+            HistoryNotice = null;
+        }
+
+        private void PrepareRound()
+        {
+            RestorePausedDriver();
             State = MatchState.Ready;
+            elapsedSeconds = 0f; lastClock = Time.timeAsDouble;
+            LastRound = null;
+            playerRound = new RobotMatchStatistics(); opponentRound = new RobotMatchStatistics();
             countdownEndsAt = startMessageEndsAt = 0f;
             ResetRobot(player, playerSpawn);
             ResetRobot(opponent, opponentSpawn);
@@ -116,8 +279,12 @@ namespace RobotSavaslari.Match
         // User input goes through the countdown. Direct start is kept for existing tools.
         public bool RequestCountdown()
         {
-            if (!initialized || (State != MatchState.Ready && State != MatchState.Result)) return false;
-            if (State == MatchState.Result) Prepare();
+            if (!initialized || !isActiveAndEnabled || IsPaused || (State != MatchState.Ready && State != MatchState.Result)) return false;
+            if (State == MatchState.Result)
+            {
+                if (EncounterComplete) Prepare();
+                else PrepareRound();
+            }
             countdownEndsAt = Time.time + Mathf.Max(1, countdownSeconds);
             State = MatchState.Countdown;
             return true;
@@ -125,7 +292,7 @@ namespace RobotSavaslari.Match
 
         public bool StartMatch()
         {
-            if (!initialized || State != MatchState.Ready) return false;
+            if (!initialized || !isActiveAndEnabled || IsPaused || State != MatchState.Ready) return false;
             BeginPlaying();
             return true;
         }
@@ -133,16 +300,19 @@ namespace RobotSavaslari.Match
         private void BeginPlaying()
         {
             State = MatchState.Playing;
+            elapsedSeconds = 0f; lastClock = Time.timeAsDouble;
+            roundAtStart = PlayerWins + OpponentWins + 1;
             MatchCount++;
             player.ConfigureCombat(false, opponent);
             opponent.ConfigureCombat(true, player);
             RobotPrototypeController.Select(player);
             DemoBotTarget = player.gameObject;
+            BindCombatGates();
         }
 
         public bool RestartMatch()
         {
-            if (!initialized || State != MatchState.Result) return false;
+            if (!initialized || !isActiveAndEnabled || IsPaused || State != MatchState.Result) return false;
             State = MatchState.Restarting;
             StartCoroutine(RestartRoutine());
             return true;
@@ -153,7 +323,8 @@ namespace RobotSavaslari.Match
             // Yield once so the loading guard also covers rapid clicks in the same frame.
             yield return null;
             State = MatchState.Result;
-            Prepare();
+            if (!isActiveAndEnabled || IsPaused) yield break;
+            if (EncounterComplete) Prepare(); else PrepareRound();
             StartMatch();
         }
 
@@ -221,22 +392,74 @@ namespace RobotSavaslari.Match
         // The current rule accepts the first valid defeat notification in this frame.
         public bool NotifyDefeat(GameObject robot, int matchId)
         {
-            if (!initialized || State != MatchState.Playing || matchId != MatchCount ||
+            if (!initialized || !isActiveAndEnabled || IsPaused || State != MatchState.Playing || matchId != MatchCount ||
                 robot == null || (robot != player.gameObject && robot != opponent.gameObject))
             {
                 lastNotification = "YOK SAYILDI (durum / mac / kimlik)";
                 return false;
             }
-            // Lock before invoking external listeners, including reentrant notifications.
-            State = MatchState.Result;
-            Outcome = robot == player.gameObject ? MatchOutcome.OpponentVictory : MatchOutcome.PlayerVictory;
-            result = Outcome == MatchOutcome.OpponentVictory ? "Rakip kazandi" : "Oyuncu kazandi";
-            ResultCount++;
-            lastNotification = "KABUL: " + robot.name;
-            player.StopCombat();
-            opponent.StopCombat();
-            ResultDetermined?.Invoke(Outcome);
+            AdvanceClock();
+            CompleteRound(robot == player.gameObject ? MatchOutcome.OpponentVictory : MatchOutcome.PlayerVictory, RoundFinishReason.Defeat);
             return true;
+        }
+
+        private void OnPlayerDamaged(RobotHit hit)
+        {
+            if (State != MatchState.Playing || !isActiveAndEnabled || IsPaused) return;
+            playerRound.receivedDamage += hit.Amount;
+            if (hit.Source == opponentHealth) opponentRound.dealtDamage += hit.Amount;
+        }
+
+        private void OnOpponentDamaged(RobotHit hit)
+        {
+            if (State != MatchState.Playing || !isActiveAndEnabled || IsPaused) return;
+            opponentRound.receivedDamage += hit.Amount;
+            if (hit.Source == playerHealth) playerRound.dealtDamage += hit.Amount;
+        }
+
+        private void CompleteRound(MatchOutcome outcome, RoundFinishReason reason)
+        {
+            if (State != MatchState.Playing) return;
+            // Lock before stopping combat or publishing any callbacks.
+            State = MatchState.Result;
+            Outcome = outcome;
+            result = outcome == MatchOutcome.PlayerVictory ? "Oyuncu kazandi" : outcome == MatchOutcome.OpponentVictory ? "Rakip kazandi" : "Berabere";
+            if (reason == RoundFinishReason.TimeOver) result = "Süre doldu - " + result;
+            ResultCount++;
+            lastNotification = "KABUL: " + outcome;
+            player.StopCombat(); opponent.StopCombat();
+            SnapshotStatistics(playerRound, player); SnapshotStatistics(opponentRound, opponent);
+            LastRound = new RoundResult { matchId = MatchCount, roundNumber = roundAtStart, durationSeconds = elapsedSeconds,
+                outcome = outcome, reason = reason, player = playerRound, opponent = opponentRound };
+            if (outcome == MatchOutcome.PlayerVictory) PlayerWins++;
+            else if (outcome == MatchOutcome.OpponentVictory) OpponentWins++;
+            else DrawnRounds++;
+            roundsPlayed++; totalSeconds += elapsedSeconds;
+            Accumulate(playerTotal, playerRound); Accumulate(opponentTotal, opponentRound);
+            EncounterComplete = rules.mode == MatchMode.Single || PlayerWins == 2 || OpponentWins == 2;
+            if (EncounterComplete)
+            {
+                LastMatch = new MatchRecord { id = encounterId, endedAtUtc = DateTimeOffset.UtcNow.ToString("O"), rules = rules.Copy(),
+                    outcome = outcome, playerWins = PlayerWins, opponentWins = OpponentWins, drawnRounds = DrawnRounds,
+                    roundsPlayed = roundsPlayed, durationSeconds = totalSeconds, player = playerTotal, opponent = opponentTotal };
+                if (gameplayInterface && !HistoryStore.Append(LastMatch)) HistoryNotice = HistoryStore.LastError;
+            }
+            ResultDetermined?.Invoke(Outcome);
+        }
+
+        private static void SnapshotStatistics(RobotMatchStatistics statistics, RobotPrototypeController robot)
+        {
+            var health = robot.GetComponent<RobotHealth>();
+            statistics.remainingHealth = health.CurrentHealth; statistics.maximumHealth = health.MaxHealth;
+            var damage = robot.GetComponent<RobotDamageVisuals>();
+            statistics.detachedParts = damage != null ? damage.DetachedCount : 0;
+        }
+
+        private static void Accumulate(RobotMatchStatistics total, RobotMatchStatistics round)
+        {
+            total.remainingHealth = round.remainingHealth; total.maximumHealth = round.maximumHealth;
+            total.dealtDamage += round.dealtDamage; total.receivedDamage += round.receivedDamage;
+            total.detachedParts += round.detachedParts;
         }
 
         private void OnGUI()

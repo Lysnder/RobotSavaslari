@@ -181,7 +181,7 @@ namespace RobotSavaslari.Combat
                 Vector3 direction = point - Origin;
                 direction.y = 0f;
                 direction = direction.sqrMagnitude > 1e-6f ? direction.normalized : transform.forward;
-                target.TakeDamage(damage, point, -direction, direction * 2f, true);
+                target.TakeDamage(damage, point, -direction, direction * 2f, true, _health);
                 TargetHit?.Invoke(this, target, damage);
             }
         }

@@ -97,14 +97,14 @@ namespace RobotSavaslari.Gameplay.Tests
             ImmediateGui.Draw(Menu);
             Match.Defeat(true);
             ImmediateGui.Draw(Menu);
-            var panel = new Rect((width - 420f) * 0.5f, (ImmediateGui.ScaledHeight - 218f) * 0.5f, 420f, 218f);
-            ImmediateGui.ClickScaled(Menu, Scaled(panel.x + 85f, panel.y + 142f, 250f, 50f));
+            var panel = new Rect((width - 560f) * 0.5f, (ImmediateGui.ScaledHeight - 218f) * 0.5f, 560f, 218f);
+            ImmediateGui.ClickScaled(Menu, Scaled(panel.x + 286f, panel.y + 154f, 262f, 44f));
             Assert.That(Match.State, Is.EqualTo(State.Ready), "Ana menu button");
 
             Match.RequestCountdown();
             yield return new WaitUntil(() => Match.State == State.Playing);
             Match.Defeat(false);
-            ImmediateGui.ClickScaled(Menu, Scaled(panel.x + 85f, panel.y + 74f, 250f, 50f));
+            ImmediateGui.ClickScaled(Menu, Scaled(panel.x + 12f, panel.y + 154f, 262f, 44f));
             Assert.That(Match.State, Is.EqualTo(State.Countdown), "Yeni mac button");
 
             yield return new WaitUntil(() => Match.State == State.Playing);

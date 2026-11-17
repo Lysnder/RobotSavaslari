@@ -1,0 +1,638 @@
+[Licensing::Module] Trying to connect to existing licensing client channel...
+Built from '6000.4/staging' branch; Version is '6000.4.4f1 (360f97ecca93) revision 3542935'; Using compiler version '194234433'; Build Type 'Release'
+[Licensing::IpcConnector] Channel LicenseClient-emins doesn't exist
+OS: 'Windows 11  (10.0.26300) Professional' Language: 'tr' Physical Memory: 63152 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1
+System  architecture: x64
+Process architecture: x64
+Date: 2026-11-17T06:58:59Z
+[Licensing::Module] Successfully launched the LicensingClient (PId: 45168)
+
+COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\6000.4.4f1\Editor\Unity.exe
+-batchmode
+-nographics
+-projectPath
+C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena
+-executeMethod
+RobotSavaslari.Combat.EditorChecks.CombatChecks.RunBatch
+-logFile
+C:\Users\emins\Documents\Codex\robot-match-rules-20261117\evidence\combat-regression.log
+Successfully changed project path to: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena
+C:/Users/emins/Documents/Codex/robot-match-rules-20261117/RobotArena
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gfx=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+Player connection [8596]  Target information:
+
+Player connection [8596]  * "[IP] 192.168.50.121 [Port] 55504 [Flags] 2 [Guid] 3647053378 [EditorId] 3647053378 [Version] 1048832 [Id] WindowsEditor(7,DesktopLysander) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor"
+
+Player connection [8596]  * "[IP] 172.30.0.1 [Port] 55504 [Flags] 2 [Guid] 3647053378 [EditorId] 3647053378 [Version] 1048832 [Id] WindowsEditor(7,DesktopLysander) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor"
+
+Player connection [8596]  * "[IP] 10.2.0.2 [Port] 55504 [Flags] 2 [Guid] 3647053378 [EditorId] 3647053378 [Version] 1048832 [Id] WindowsEditor(7,DesktopLysander) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor"
+
+Player connection [8596] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [8596] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-emins" at "2026-11-17T06:58:59.5593088Z"
+[Package Manager] Connected to IPC stream "Upm-57280" after 0.2 seconds.
+[Licensing::Module] Licensing is not yet initialized.
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.18.1+9fbee8e
+  Session Id:              917eaccab9cc464c9bf8bda6a8e1ea06
+  Correlation Id:          841e22fd6ffea01283ee96e6a2dd8e20
+  External correlation Id: 8220520846680762845
+  Machine Id:              hNIKNdYAJ2DItM4RCUITCgj5XVg=
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-emins" (connect: 0.25s, validation: 0.03s, handshake: 1.41s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-emins-notifications" at "2026-11-17T06:59:01.0005154Z"
+[Licensing::Module] Connected to LicensingClient (PId: 45168, launch time: 0.00, total connection time: 1.69s)
+[Licensing::Module] Error: Access token is unavailable; failed to update
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: 18966932212652-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+[Licensing::Client] Successfully updated license, isAsync: True, time: 0.01
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] Licensing Background thread has ended after 1.71s
+[Licensing::Module] Licensing is initialized (took 1.36s).
+[Licensing::Client] Successfully resolved entitlement details
+Library Redirect Path: Library/
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+Initialize engine version: 6000.4.4f1 (360f97ecca93)
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/6000.4.4f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/Users/emins/Documents/Codex/robot-match-rules-20261117/RobotArena/Assets
+Forcing GfxDevice: Null
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+NullGfxDevice:
+    Version:  NULL 1.0 [1.0]
+    Renderer: Null Device
+    Vendor:   Unity Technologies
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/6000.4.4f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/6000.4.4f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/6000.4.4f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56280
+CodeReloadManager initialized
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+ImportWorker Server TCP listen port: 0
+AcceleratorClientConnectionCallback - disconnected - :0
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.4.4f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Registered in 0.001910 seconds.
+Native extension for WindowsStandalone target not found
+Package Manager log level set to [2]
+ScheduleIndexationOnStartup MainProcess:False IndexOnStartup:False
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.218 seconds
+Domain Reload Profiling: 489ms
+	BeginReloadAssembly (89ms)
+		CreateAndSetChildDomain (17ms)
+	RebuildCommonClasses (24ms)
+	RebuildNativeTypeToScriptingClass (8ms)
+	initialDomainReloadingComplete (40ms)
+	LoadAllAssembliesAndSetupDomain (110ms)
+		LoadAssemblies (70ms)
+		AnalyzeDomain (104ms)
+			TypeCache.Refresh (104ms)
+				TypeCache.ScanAssembly (96ms)
+	FinalizeReload (219ms)
+		SetupLoadedEditorAssemblies (0ms)
+			InitializePlatformSupportModulesInManaged (25ms)
+			BeforeProcessingInitializeOnLoad (47ms)
+			ProcessInitializeOnLoadAttributes (56ms)
+			ProcessInitializeOnLoadMethodAttributes (50ms)
+[Licensing::Client] Successfully resolved entitlement details
+Application.AssetDatabase Initial Refresh Start
+[Package Manager] Restoring resolved packages state from cache
+[Licensing::Client] Successfully resolved entitlement details
+[Package Manager] Registered 60 packages:
+  Packages from [https://packages.unity.com]:
+    com.unity.cloud.gltfast@6.20.0 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.cloud.gltfast@11ddc2436f97)
+    com.unity.ai.navigation@2.0.12 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.ai.navigation@734c2c4c5591)
+    com.unity.collab-proxy@2.12.4 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.collab-proxy@0b1559bcd34e)
+    com.unity.ide.rider@3.0.39 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.ide.rider@4504839d03f7)
+    com.unity.ide.visualstudio@2.0.27 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.ide.visualstudio@dc1ddd4f09b6)
+    com.unity.inputsystem@1.19.0 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.inputsystem@21a28c3a6c83)
+    com.unity.timeline@1.8.12 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.timeline@8cd8509afae5)
+    com.unity.visualscripting@1.9.11 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.visualscripting@8bed5ad90189)
+    com.unity.pipeline@0.9.1-exp.1 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.pipeline@363b8bb9e91d)
+    com.unity.nuget.mono-cecil@1.11.6 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.nuget.mono-cecil@ecb9724e46ff)
+    com.unity.nuget.newtonsoft-json@3.2.2 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.nuget.newtonsoft-json@4dfd81071c64)
+    com.unity.burst@1.8.30 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.burst@2f3d916873ea)
+    com.unity.mathematics@1.3.3 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.mathematics@19a9377c4ffa)
+    com.unity.searcher@4.9.4 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.searcher@d45a78918735)
+    com.unity.test-framework.performance@3.4.0 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.test-framework.performance@aa81a99c4a75)
+  Built-in packages:
+    com.unity.multiplayer.center@1.0.1 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.multiplayer.center@f01f4ba8d00a)
+    com.unity.render-pipelines.universal@17.4.0 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.render-pipelines.universal@18d0e59f18f1)
+    com.unity.test-framework@1.6.0 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.test-framework@76560ee600cb)
+    com.unity.ugui@2.0.0 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.ugui@d8a2716f3013)
+    com.unity.modules.accessibility@1.0.0 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.modules.accessibility)
+    com.unity.modules.adaptiveperformance@1.0.0 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.modules.adaptiveperformance)
+    com.unity.modules.ai@1.0.0 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.modules.ai)
+    com.unity.modules.androidjni@1.0.0 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.modules.androidjni)
+    com.unity.modules.animation@1.0.0 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.modules.animation)
+    com.unity.modules.assetbundle@1.0.0 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.modules.assetbundle)
+    com.unity.modules.audio@1.0.0 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.modules.audio)
+    com.unity.modules.cloth@1.0.0 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.modules.cloth)
+    com.unity.modules.director@1.0.0 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.modules.director)
+    com.unity.modules.imageconversion@1.0.0 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.modules.imageconversion)
+    com.unity.modules.imgui@1.0.0 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.modules.imgui)
+    com.unity.modules.jsonserialize@1.0.0 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.modules.jsonserialize)
+    com.unity.modules.particlesystem@1.0.0 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.modules.particlesystem)
+    com.unity.modules.physics@1.0.0 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.modules.physics)
+    com.unity.modules.physics2d@1.0.0 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.modules.physics2d)
+    com.unity.modules.screencapture@1.0.0 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.modules.screencapture)
+    com.unity.modules.terrain@1.0.0 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.modules.terrain)
+    com.unity.modules.terrainphysics@1.0.0 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.modules.terrainphysics)
+    com.unity.modules.tilemap@1.0.0 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.modules.tilemap)
+    com.unity.modules.ui@1.0.0 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.modules.ui)
+    com.unity.modules.uielements@1.0.0 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.modules.uielements)
+    com.unity.modules.umbra@1.0.0 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.modules.umbra)
+    com.unity.modules.unityanalytics@1.0.0 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.modules.unityanalytics)
+    com.unity.modules.unitywebrequest@1.0.0 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.modules.unitywebrequest)
+    com.unity.modules.unitywebrequestassetbundle@1.0.0 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.modules.unitywebrequestassetbundle)
+    com.unity.modules.unitywebrequestaudio@1.0.0 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.modules.unitywebrequestaudio)
+    com.unity.modules.unitywebrequesttexture@1.0.0 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.modules.unitywebrequesttexture)
+    com.unity.modules.unitywebrequestwww@1.0.0 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.modules.unitywebrequestwww)
+    com.unity.modules.vectorgraphics@1.0.0 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.modules.vectorgraphics)
+    com.unity.modules.vehicles@1.0.0 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.modules.vehicles)
+    com.unity.modules.video@1.0.0 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.modules.video)
+    com.unity.modules.vr@1.0.0 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.modules.vr)
+    com.unity.modules.wind@1.0.0 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.modules.wind)
+    com.unity.modules.xr@1.0.0 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.modules.xr)
+    com.unity.modules.subsystems@1.0.0 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.modules.subsystems)
+    com.unity.modules.hierarchycore@1.0.0 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.modules.hierarchycore)
+    com.unity.ext.nunit@2.0.5 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.ext.nunit@d8c07649098d)
+    com.unity.render-pipelines.core@17.4.0 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.render-pipelines.core@2269be549234)
+    com.unity.shadergraph@17.4.0 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.shadergraph@cd28a7c13031)
+    com.unity.render-pipelines.universal-config@17.4.0 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.render-pipelines.universal-config@0db4263b9e6b)
+    com.unity.collections@6.4.0 (location: C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\PackageCache\com.unity.collections@9c2353fb96f6)
+[Subsystems] No new subsystems found in resolved package list.
+[Package Manager] Done registering packages in 0.02 seconds
+Starting: C:\Program Files\Unity\Hub\Editor\6000.4.4f1\Editor\Data\Tools\BuildPipeline\bee_backend.exe --ipc --defer-dag-verification --dagfile="Library/Bee/1900b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
+WorkingDir: C:/Users/emins/Documents/Codex/robot-match-rules-20261117/RobotArena
+DisplayProgressbar: Compiling Scripts
+ExitCode: 0 Duration: 0s336ms
+[ 933/1213  0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+*** Tundra build success (0.29 seconds), 1 items updated, 1213 evaluated
+AssetDatabase: script compilation time: 0.639613s
+Begin MonoManager ReloadAssembly
+Assembly Assembly-CSharp-Editor-firstpass.dll at Library/ScriptAssemblies/Assembly-CSharp-Editor-firstpass.dll not valid. Loading of assembly skipped.
+Assembly Assembly-CSharp-firstpass.dll at Library/ScriptAssemblies/Assembly-CSharp-firstpass.dll not valid. Loading of assembly skipped.
+Assembly DocCodeExamples.dll at Library/ScriptAssemblies/DocCodeExamples.dll not valid. Loading of assembly skipped.
+Assembly TestNewCustomAssembly.dll at Library/ScriptAssemblies/TestNewCustomAssembly.dll not valid. Loading of assembly skipped.
+Assembly Unity.Collections.BurstCompatibilityGen.dll at Library/ScriptAssemblies/Unity.Collections.BurstCompatibilityGen.dll not valid. Loading of assembly skipped.
+Assembly Unity.Collections.DocCodeSamples.dll at Library/ScriptAssemblies/Unity.Collections.DocCodeSamples.dll not valid. Loading of assembly skipped.
+Assembly Unity.Collections.PerformanceTests.dll at Library/ScriptAssemblies/Unity.Collections.PerformanceTests.dll not valid. Loading of assembly skipped.
+Assembly Unity.Collections.Tests.dll at Library/ScriptAssemblies/Unity.Collections.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.Collections.Tests.Playmode.dll at Library/ScriptAssemblies/Unity.Collections.Tests.Playmode.dll not valid. Loading of assembly skipped.
+Assembly Unity.InputSystem.IntegrationTests.dll at Library/ScriptAssemblies/Unity.InputSystem.IntegrationTests.dll not valid. Loading of assembly skipped.
+Assembly Unity.Mathematics.Tests.dll at Library/ScriptAssemblies/Unity.Mathematics.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.Multiplayer.Center.Editor.Tests.dll at Library/ScriptAssemblies/Unity.Multiplayer.Center.Editor.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.Multiplayer.Center.Tests.dll at Library/ScriptAssemblies/Unity.Multiplayer.Center.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.Nuget.Mono-Cecil.dll at Library/ScriptAssemblies/Unity.Nuget.Mono-Cecil.dll not valid. Loading of assembly skipped.
+Assembly Unity.PathTracing.Editor.Tests.dll at Library/ScriptAssemblies/Unity.PathTracing.Editor.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.PathTracing.Runtime.Tests.dll at Library/ScriptAssemblies/Unity.PathTracing.Runtime.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.RenderPipelines.Core.Editor.Tests.dll at Library/ScriptAssemblies/Unity.RenderPipelines.Core.Editor.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.RenderPipelines.Core.Runtime.Tests.dll at Library/ScriptAssemblies/Unity.RenderPipelines.Core.Runtime.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.RenderPipelines.Universal.Config.Editor.Tests.dll at Library/ScriptAssemblies/Unity.RenderPipelines.Universal.Config.Editor.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.RenderPipelines.Universal.Editor.Tests.dll at Library/ScriptAssemblies/Unity.RenderPipelines.Universal.Editor.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.RenderPipelines.Universal.Runtime.Tests.dll at Library/ScriptAssemblies/Unity.RenderPipelines.Universal.Runtime.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.Searcher.EditorTests.dll at Library/ScriptAssemblies/Unity.Searcher.EditorTests.dll not valid. Loading of assembly skipped.
+Assembly Unity.ShaderGraph.Editor.Tests.dll at Library/ScriptAssemblies/Unity.ShaderGraph.Editor.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.TextMeshPro.Editor.Tests.dll at Library/ScriptAssemblies/Unity.TextMeshPro.Editor.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.TextMeshPro.Tests.dll at Library/ScriptAssemblies/Unity.TextMeshPro.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.UnifiedRayTracing.Editor.Tests.dll at Library/ScriptAssemblies/Unity.UnifiedRayTracing.Editor.Tests.dll not valid. Loading of assembly skipped.
+Assembly UnityEditor.UI.Common.Tests.dll at Library/ScriptAssemblies/UnityEditor.UI.Common.Tests.dll not valid. Loading of assembly skipped.
+Assembly UnityEditor.UI.EditorTests.dll at Library/ScriptAssemblies/UnityEditor.UI.EditorTests.dll not valid. Loading of assembly skipped.
+Assembly UnityEngine.UI.Tests.dll at Library/ScriptAssemblies/UnityEngine.UI.Tests.dll not valid. Loading of assembly skipped.
+Native extension for WindowsStandalone target not found
+Start HTTP server: port:7800
+Pipeline: Descriptor written to C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Library\Pipeline\.unity-pipeline-port
+ScheduleIndexationOnStartup MainProcess:True IndexOnStartup:True
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  2.351 seconds
+Domain Reload Profiling: 3104ms
+	BeginReloadAssembly (247ms)
+		DisableScriptedObjects (19ms)
+		CreateAndSetChildDomain (147ms)
+	RebuildCommonClasses (21ms)
+	RebuildNativeTypeToScriptingClass (8ms)
+	initialDomainReloadingComplete (56ms)
+	LoadAllAssembliesAndSetupDomain (422ms)
+		LoadAssemblies (264ms)
+		AnalyzeDomain (213ms)
+			TypeCache.Refresh (153ms)
+				TypeCache.ScanAssembly (144ms)
+			BuildScriptInfoCaches (53ms)
+			ResolveRequiredComponents (6ms)
+	FinalizeReload (2352ms)
+		SetupLoadedEditorAssemblies (0ms)
+			InitializePlatformSupportModulesInManaged (13ms)
+			BeforeProcessingInitializeOnLoad (102ms)
+			ProcessInitializeOnLoadAttributes (1869ms)
+			ProcessInitializeOnLoadMethodAttributes (190ms)
+			AfterProcessingInitializeOnLoad (9ms)
+		AwakeInstancesAfterBackupRestoration (20ms)
+(Values over 0.050ms)
+Asset Pipeline Refresh (id=4ee85f43ed4cfe84a91dd421460fb034): Total: 4.244 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=2743 ms
+		Asset DB Callback time: managed=37 ms, native=18 ms
+		Scripting: domain reloads=1, domain reload time=759 ms, compile time=644 ms, other=41 ms
+		Project Asset Count: scripts=1490, non-scripts=2544
+		Asset File Changes: new=0, changed=0, moved=0, deleted=0
+		Scan Filter Count: 0
+	InvokePackagesCallback: 20.348ms
+	ApplyChangesToAssetFolders: 0.640ms
+	Scan: 142.047ms
+	CategorizeScriptCompilationAssets: 36.466ms
+	ProcessAssetsWithTransientArtifactChanges: 42.617ms
+	CategorizeAssets: 33.025ms
+	CompileScripts: 643.610ms
+	ImportOutOfDateAssets: 2359.167ms (2357.976ms without children)
+		UnloadImportedAssets: 0.582ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.332ms
+		OnDemandSchedulerStart: 0.257ms
+	PostProcessAllAssets: 37.156ms
+		MonoPostProcessAllAssets: 37.113ms
+			UniversalRenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 17.799ms
+			WindowAssetPostprocessingWatcher.OnPostprocessAllAssets 2.147ms
+			SpeedTree9Postprocessor.OnPostprocessAllAssets 1.933ms
+			RenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 0.683ms
+			TerrainToolbarOverlayPostProcessor.OnPostprocessAllAssets 0.251ms
+			ReferencedClipsPostProcessor.OnPostprocessAllAssets 0.227ms
+			InputActionAssetPostprocessor.OnPostprocessAllAssets 0.220ms
+			ProjectSettingsPostprocessor.OnPostprocessAllAssets 0.183ms
+			AssetDatabaseCallbacks.OnPostprocessAllAssets 0.118ms
+			SyncVS.PostprocessSyncProject 0.066ms
+	UnloadStreamsBegin: 2.062ms
+	PersistCurrentRevisions: 0.078ms
+	GenerateScriptTypeHashes: 2.609ms
+	GenerateScriptTypeSerializationHashes: 6.042ms
+	Untracked: 918.887ms
+
+Application.AssetDatabase Initial Refresh End
+Shader Hidden/ChartRasterizerHardware is not supported: GPU does not support conservative rasterization
+Shader Hidden/ChartRasterizerHardware is not supported: GPU does not support conservative rasterization
+Scanning for USB devices : 34.073ms
+Initializing Unity extensions:
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+[MODES] Loading mode Default (0) for mode-current-id-RobotArena
+Unloading 28 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 7264 unused Assets / (2.2 MB). Loaded Objects now: 8119.
+Memory consumption went from 220.4 MB to 218.2 MB.
+Total: 5.515800 ms (FindLiveObjects: 0.220800 ms CreateObjectMapping: 0.158900 ms MarkObjects: 4.129400 ms  DeleteObjects: 1.004800 ms)
+
+Curl error 6: Could not resolve host: config.uca.cloud.unity3d.com
+COMBATCHECK PASS [E1] 100 cana 25 hasar yalniz hedefi 75'e dusurur - hedef 75, diger 100
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+RobotSavaslari.Combat.EditorChecks.CombatChecks:Run () (at Assets/Editor/Combat/CombatChecks.cs:44)
+RobotSavaslari.Combat.EditorChecks.CombatChecks:RunBatch () (at Assets/Editor/Combat/CombatChecks.cs:28)
+
+(Filename: Assets/Editor/Combat/CombatChecks.cs Line: 44)
+
+COMBATCHECK PASS [E1] Kalan candan buyuk hasar 0 gosterir - can 0, eksiye inmedi
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+RobotSavaslari.Combat.EditorChecks.CombatChecks:Run () (at Assets/Editor/Combat/CombatChecks.cs:44)
+RobotSavaslari.Combat.EditorChecks.CombatChecks:RunBatch () (at Assets/Editor/Combat/CombatChecks.cs:28)
+
+(Filename: Assets/Editor/Combat/CombatChecks.cs Line: 44)
+
+COMBATCHECK PASS [E1] Sifirdan sonra ek hasar ikinci yenilgi bildirimi uretmez - 1 bildirim
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+RobotSavaslari.Combat.EditorChecks.CombatChecks:Run () (at Assets/Editor/Combat/CombatChecks.cs:44)
+RobotSavaslari.Combat.EditorChecks.CombatChecks:RunBatch () (at Assets/Editor/Combat/CombatChecks.cs:28)
+
+(Filename: Assets/Editor/Combat/CombatChecks.cs Line: 44)
+
+COMBATCHECK PASS [E1] Yeni denemede iki robot kendi baslangic canina doner - A 100/100, B 120/120
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+RobotSavaslari.Combat.EditorChecks.CombatChecks:Run () (at Assets/Editor/Combat/CombatChecks.cs:44)
+RobotSavaslari.Combat.EditorChecks.CombatChecks:RunBatch () (at Assets/Editor/Combat/CombatChecks.cs:28)
+
+(Filename: Assets/Editor/Combat/CombatChecks.cs Line: 44)
+
+COMBATCHECK PASS [E2] Bir saldirinin iki collider'a temasi 100 cani yalniz 75'e indirir - 3 collider menzilde, tek hasar
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+RobotSavaslari.Combat.EditorChecks.CombatChecks:Run () (at Assets/Editor/Combat/CombatChecks.cs:44)
+RobotSavaslari.Combat.EditorChecks.CombatChecks:RunBatch () (at Assets/Editor/Combat/CombatChecks.cs:28)
+
+(Filename: Assets/Editor/Combat/CombatChecks.cs Line: 44)
+
+COMBATCHECK PASS [E2] Yandan yaklasma: govde + tekerlek yine tek hasar - 2 collider menzilde, tek hasar
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+RobotSavaslari.Combat.EditorChecks.CombatChecks:Run () (at Assets/Editor/Combat/CombatChecks.cs:44)
+RobotSavaslari.Combat.EditorChecks.CombatChecks:RunBatch () (at Assets/Editor/Combat/CombatChecks.cs:28)
+
+(Filename: Assets/Editor/Combat/CombatChecks.cs Line: 44)
+
+COMBATCHECK PASS [E2] Suren temas ikinci hasar yazmaz - pencere boyunca 14 temas kontrolu, tek hasar
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+RobotSavaslari.Combat.EditorChecks.CombatChecks:Run () (at Assets/Editor/Combat/CombatChecks.cs:44)
+RobotSavaslari.Combat.EditorChecks.CombatChecks:RunBatch () (at Assets/Editor/Combat/CombatChecks.cs:28)
+
+(Filename: Assets/Editor/Combat/CombatChecks.cs Line: 44)
+
+COMBATCHECK PASS [E2] Menzil disinda hedef cani degismez - ISKA
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+RobotSavaslari.Combat.EditorChecks.CombatChecks:Run () (at Assets/Editor/Combat/CombatChecks.cs:44)
+RobotSavaslari.Combat.EditorChecks.CombatChecks:RunBatch () (at Assets/Editor/Combat/CombatChecks.cs:28)
+
+(Filename: Assets/Editor/Combat/CombatChecks.cs Line: 44)
+
+COMBATCHECK PASS [E2] Pencere kapandiktan sonra yaklasan hedef hasar almaz - gec adim onceki saldiriyi uzatmadi
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+RobotSavaslari.Combat.EditorChecks.CombatChecks:Run () (at Assets/Editor/Combat/CombatChecks.cs:44)
+RobotSavaslari.Combat.EditorChecks.CombatChecks:RunBatch () (at Assets/Editor/Combat/CombatChecks.cs:28)
+
+(Filename: Assets/Editor/Combat/CombatChecks.cs Line: 44)
+
+COMBATCHECK PASS [E2] Kendi robotuna temas hasar vermez - kendi collider'lari alanda, can 100
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+RobotSavaslari.Combat.EditorChecks.CombatChecks:Run () (at Assets/Editor/Combat/CombatChecks.cs:44)
+RobotSavaslari.Combat.EditorChecks.CombatChecks:RunBatch () (at Assets/Editor/Combat/CombatChecks.cs:28)
+
+(Filename: Assets/Editor/Combat/CombatChecks.cs Line: 44)
+
+COMBATCHECK PASS [E2] Bekleme surerken tekrarli istek yeni saldiri uretmez - 5 hizli istek reddedildi
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+RobotSavaslari.Combat.EditorChecks.CombatChecks:Run () (at Assets/Editor/Combat/CombatChecks.cs:44)
+RobotSavaslari.Combat.EditorChecks.CombatChecks:RunBatch () (at Assets/Editor/Combat/CombatChecks.cs:28)
+
+(Filename: Assets/Editor/Combat/CombatChecks.cs Line: 44)
+
+COMBATCHECK PASS [E2] Bekleme bittikten sonraki gecerli saldiri cani 50'ye dusurur - 75 -> 50; onceki temas kaydi yeni saldiriyi engellemedi
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+RobotSavaslari.Combat.EditorChecks.CombatChecks:Run () (at Assets/Editor/Combat/CombatChecks.cs:44)
+RobotSavaslari.Combat.EditorChecks.CombatChecks:RunBatch () (at Assets/Editor/Combat/CombatChecks.cs:28)
+
+(Filename: Assets/Editor/Combat/CombatChecks.cs Line: 44)
+
+COMBATCHECK PASS [E2] Klavyesiz deneme bileseni saldiri istegi gonderir - AttackTestTrigger.Fire() -> ISABET
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+RobotSavaslari.Combat.EditorChecks.CombatChecks:Run () (at Assets/Editor/Combat/CombatChecks.cs:44)
+RobotSavaslari.Combat.EditorChecks.CombatChecks:RunBatch () (at Assets/Editor/Combat/CombatChecks.cs:28)
+
+(Filename: Assets/Editor/Combat/CombatChecks.cs Line: 44)
+
+COMBATCHECK PASS [E3] Mac kapatildiktan sonra yeni hasar cikmaz - MAC KAPALI, can 100
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+RobotSavaslari.Combat.EditorChecks.CombatChecks:Run () (at Assets/Editor/Combat/CombatChecks.cs:44)
+RobotSavaslari.Combat.EditorChecks.CombatChecks:RunBatch () (at Assets/Editor/Combat/CombatChecks.cs:28)
+
+(Filename: Assets/Editor/Combat/CombatChecks.cs Line: 44)
+
+COMBATCHECK PASS [E3] Saldiri surerken mac kapanirsa hasar yazilmaz - saldiri kesildi
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+RobotSavaslari.Combat.EditorChecks.CombatChecks:Run () (at Assets/Editor/Combat/CombatChecks.cs:44)
+RobotSavaslari.Combat.EditorChecks.CombatChecks:RunBatch () (at Assets/Editor/Combat/CombatChecks.cs:28)
+
+(Filename: Assets/Editor/Combat/CombatChecks.cs Line: 44)
+
+COMBATCHECK PASS [E3] Yenilen robot yeni saldiri baslatamaz - SALDIRAN YENIK
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+RobotSavaslari.Combat.EditorChecks.CombatChecks:Run () (at Assets/Editor/Combat/CombatChecks.cs:44)
+RobotSavaslari.Combat.EditorChecks.CombatChecks:RunBatch () (at Assets/Editor/Combat/CombatChecks.cs:28)
+
+(Filename: Assets/Editor/Combat/CombatChecks.cs Line: 44)
+
+COMBATCHECK PASS [E3] Bir robot beklerken digerinin saldirisi kendi suresine gore calisir - beklemeler bagimsiz
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+RobotSavaslari.Combat.EditorChecks.CombatChecks:Run () (at Assets/Editor/Combat/CombatChecks.cs:44)
+RobotSavaslari.Combat.EditorChecks.CombatChecks:RunBatch () (at Assets/Editor/Combat/CombatChecks.cs:28)
+
+(Filename: Assets/Editor/Combat/CombatChecks.cs Line: 44)
+
+COMBATCHECK PASS [E3] 100 can 25 hasarla 4 gecerli vurusta sifira iner - 4 vurus, 1 bildirim
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+RobotSavaslari.Combat.EditorChecks.CombatChecks:Run () (at Assets/Editor/Combat/CombatChecks.cs:44)
+RobotSavaslari.Combat.EditorChecks.CombatChecks:RunBatch () (at Assets/Editor/Combat/CombatChecks.cs:28)
+
+(Filename: Assets/Editor/Combat/CombatChecks.cs Line: 44)
+
+COMBATCHECK PASS [E3] 100 can 40 hasarla 3 gecerli vurusta sifira iner - 3 vurus, 1 bildirim
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+RobotSavaslari.Combat.EditorChecks.CombatChecks:Run () (at Assets/Editor/Combat/CombatChecks.cs:44)
+RobotSavaslari.Combat.EditorChecks.CombatChecks:RunBatch () (at Assets/Editor/Combat/CombatChecks.cs:28)
+
+(Filename: Assets/Editor/Combat/CombatChecks.cs Line: 44)
+
+COMBATCHECK PASS [E3] Yeni macta can, bekleme ve hedef kayitlari baslangic durumunda - temiz baslangic
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+RobotSavaslari.Combat.EditorChecks.CombatChecks:Run () (at Assets/Editor/Combat/CombatChecks.cs:44)
+RobotSavaslari.Combat.EditorChecks.CombatChecks:RunBatch () (at Assets/Editor/Combat/CombatChecks.cs:28)
+
+(Filename: Assets/Editor/Combat/CombatChecks.cs Line: 44)
+
+COMBATCHECK PASS [E4] Menzil sinirinin hemen ici isabet, hemen disi iska - sinir 2.15 m: -0.02 isabet, +0.02 iska
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+RobotSavaslari.Combat.EditorChecks.CombatChecks:Run () (at Assets/Editor/Combat/CombatChecks.cs:44)
+RobotSavaslari.Combat.EditorChecks.CombatChecks:RunBatch () (at Assets/Editor/Combat/CombatChecks.cs:28)
+
+(Filename: Assets/Editor/Combat/CombatChecks.cs Line: 44)
+
+COMBATCHECK PASS [E4] Farkli yaklasma acilari (yay 120 derece) - 0:I 30:I 45:I -45:I 90:- 135:- 180:-
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+RobotSavaslari.Combat.EditorChecks.CombatChecks:Run () (at Assets/Editor/Combat/CombatChecks.cs:44)
+RobotSavaslari.Combat.EditorChecks.CombatChecks:RunBatch () (at Assets/Editor/Combat/CombatChecks.cs:28)
+
+(Filename: Assets/Editor/Combat/CombatChecks.cs Line: 44)
+
+COMBATCHECK PASS [E4] Art arda yeni maclar ayni sonucu verir - 3 macta da 4 vurus, 1 bildirim
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+RobotSavaslari.Combat.EditorChecks.CombatChecks:Run () (at Assets/Editor/Combat/CombatChecks.cs:44)
+RobotSavaslari.Combat.EditorChecks.CombatChecks:RunBatch () (at Assets/Editor/Combat/CombatChecks.cs:28)
+
+(Filename: Assets/Editor/Combat/CombatChecks.cs Line: 44)
+
+COMBATCHECK SUMMARY 23/23 PASS
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+RobotSavaslari.Combat.EditorChecks.CombatChecks:Run () (at Assets/Editor/Combat/CombatChecks.cs:50)
+RobotSavaslari.Combat.EditorChecks.CombatChecks:RunBatch () (at Assets/Editor/Combat/CombatChecks.cs:28)
+
+(Filename: Assets/Editor/Combat/CombatChecks.cs Line: 50)
+
+Request timed out while processing request "https://public-cdn.cloud.unity3d.com/config/production", HTTP error code 0
+.[UnityConnect] Request timed out.
+Pipeline Server stopped
+[Physics::Module] Cleanup current backend.
+[Physics::Module] Id: 0xf2b8ea05
+Input System module state changed to: ShutdownInProgress.
+Input Polling Thread exited.
+Input System module state changed to: Shutdown.
+[Licensing::IpcConnector] LicenseClient-emins-notifications channel disconnected successfully.
+[Licensing::IpcConnector] LicenseClient-emins channel disconnected successfully.
+AcceleratorClientConnectionCallback - disconnected - :0
+Cleanup mono
+CodeReloadManager destroyed
+Checking for leaked weakptr:
+  Found no leaked weakptrs.
+[Package Manager] Server process was shutdown
+##utp:{"type":"MemoryLeaks","version":2,"phase":"Immediate","time":1794898747550,"processId":57280,"allocatedMemory":15296402,"memoryLabels":[{"Default":211604},{"Permanent":15276},{"NewDelete":65121},{"Thread":4230384},{"Manager":40237},{"VertexData":8},{"Geometry":816},{"Texture":24},{"Shader":851230},{"Material":24},{"GfxDevice":55313},{"Animation":392},{"Audio":3008},{"FreeType":8},{"FontEngine":736},{"Physics":2090},{"Physics2D":16},{"Serialization":1016},{"Input":9880},{"JobScheduler":33024},{"TextLib":216},{"Mono":32},{"MonoCode":64},{"ScriptingNativeRuntime":155052},{"BaseObject":1620304},{"Resource":1184},{"Renderer":3008},{"Transform":4685},{"File":1088},{"WebCam":616},{"Culling":32},{"Terrain":11394},{"Wind":24},{"STL":40},{"String":11194},{"StaticString":6718},{"Utility":2675494},{"Curl":1712},{"PoolAlloc":2312},{"AI":80},{"TypeTree":11341},{"ScriptManager":448},{"RuntimeInitializeOnLoadManager":64},{"SpriteAtlas":120},{"GI":7792},{"Director":8320},{"CloudService":7376},{"WebRequest":845},{"VR":48050},{"SceneManager":504},{"Video":64},{"LazyScriptCache":32},{"Camera":17},{"Secure":2113},{"SerializationCache":1576},{"APIUpdating":10320},{"Subsystems":336},{"VirtualTexturing":57888},{"StaticSafetyDebugInfo":278528},{"Analytics":464},{"Hierarchy":608},{"CoreStats":13032},{"Identifiers":12960},{"Gui":128},{"EditorUtility":109004},{"VersionControl":4},{"Undo":931},{"AssetDatabase":4653500},{"EditorGi":328},{"UnityConnect":37716},{"Upm":1912},{"UpmDiagnostics":8},{"AssetCompliance":64},{"DrivenProperties":72},{"LocalIPC":211},{"ProfilerEditor":9746},{"CoreBusinessMetrics":2876},{"Windowing":456},{"Licensing":1232},{"AssetReference":32},{"IPCStream":32}]}

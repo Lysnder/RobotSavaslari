@@ -1,0 +1,23 @@
+{
+  "base_test_sha": "3a7c500db7a9495bda036bac74ea2719a2c09856",
+  "unity": "6000.4.4f1",
+  "date": "2026-11-17",
+  "owner": "Emin (Lysnder)",
+  "editmode": {
+    "passed": 195,
+    "total": 195
+  },
+  "match_playmode": {
+    "passed": 9,
+    "total": 9
+  },
+  "combat_scenarios": {
+    "passed": 23,
+    "total": 23
+  },
+  "windows_build": "passed",
+  "windows_rules_write_process": "passed",
+  "windows_history_read_process": "passed",
+  "windows_real_matches": 2,
+  "rules_acceptance": "Controlled health events; physical combat checked separately by arena-smoke."
+}

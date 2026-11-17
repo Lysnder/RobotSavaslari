@@ -1,0 +1,89 @@
+{
+    "version": 1,
+    "records": [
+        {
+            "id": "2bfc99db6df846b6a8ae7838457dcaa5",
+            "endedAtUtc": "2026-11-17T06:56:21.3366559+00:00",
+            "rules": {
+                "mode": 0,
+                "timeLimitSeconds": 1.0
+            },
+            "outcome": 3,
+            "playerWins": 0,
+            "opponentWins": 0,
+            "drawnRounds": 1,
+            "roundsPlayed": 1,
+            "durationSeconds": 1.0,
+            "player": {
+                "remainingHealth": 100.0,
+                "maximumHealth": 100.0,
+                "dealtDamage": 0.0,
+                "receivedDamage": 0.0,
+                "detachedParts": 0
+            },
+            "opponent": {
+                "remainingHealth": 100.0,
+                "maximumHealth": 100.0,
+                "dealtDamage": 0.0,
+                "receivedDamage": 0.0,
+                "detachedParts": 0
+            }
+        },
+        {
+            "id": "4539efa92e654522a59b2bc9df4778bb",
+            "endedAtUtc": "2026-11-17T06:56:19.9250018+00:00",
+            "rules": {
+                "mode": 1,
+                "timeLimitSeconds": 60.0
+            },
+            "outcome": 1,
+            "playerWins": 2,
+            "opponentWins": 1,
+            "drawnRounds": 0,
+            "roundsPlayed": 3,
+            "durationSeconds": 0.0002072987554129213,
+            "player": {
+                "remainingHealth": 100.0,
+                "maximumHealth": 100.0,
+                "dealtDamage": 200.0,
+                "receivedDamage": 100.0,
+                "detachedParts": 0
+            },
+            "opponent": {
+                "remainingHealth": 0.0,
+                "maximumHealth": 100.0,
+                "dealtDamage": 100.0,
+                "receivedDamage": 200.0,
+                "detachedParts": 2
+            }
+        },
+        {
+            "id": "1fd378bc152d4e0a99d1b4319be95948",
+            "endedAtUtc": "2026-11-17T06:56:19.7557524+00:00",
+            "rules": {
+                "mode": 1,
+                "timeLimitSeconds": 60.0
+            },
+            "outcome": 1,
+            "playerWins": 2,
+            "opponentWins": 0,
+            "drawnRounds": 0,
+            "roundsPlayed": 2,
+            "durationSeconds": 0.0003976048610638827,
+            "player": {
+                "remainingHealth": 100.0,
+                "maximumHealth": 100.0,
+                "dealtDamage": 200.0,
+                "receivedDamage": 0.0,
+                "detachedParts": 0
+            },
+            "opponent": {
+                "remainingHealth": 0.0,
+                "maximumHealth": 100.0,
+                "dealtDamage": 0.0,
+                "receivedDamage": 200.0,
+                "detachedParts": 2
+            }
+        }
+    ]
+}

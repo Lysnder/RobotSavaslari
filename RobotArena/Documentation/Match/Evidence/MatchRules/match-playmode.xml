@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="9" result="Passed" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-17 06:52:56Z" end-time="2026-11-17 06:53:02Z" duration="5,9741909">
+  <test-suite type="TestSuite" id="1257" name="RobotArena" fullname="RobotArena" runstate="Runnable" testcasecount="199" result="Passed" start-time="2026-11-17 06:52:56Z" end-time="2026-11-17 06:53:02Z" duration="5.974191" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1167" name="RobotSavaslari.Match.PlayModeTests.dll" fullname="C:/Users/emins/Documents/Codex/robot-match-rules-20261117/RobotArena/Library/ScriptAssemblies/RobotSavaslari.Match.PlayModeTests.dll" runstate="Runnable" testcasecount="9" result="Passed" start-time="2026-11-17 06:52:56Z" end-time="2026-11-17 06:53:02Z" duration="5.969587" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="33236" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1168" name="RobotSavaslari" fullname="RobotSavaslari" runstate="Runnable" testcasecount="9" result="Passed" start-time="2026-11-17 06:52:56Z" end-time="2026-11-17 06:53:02Z" duration="5.969351" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1169" name="Match" fullname="RobotSavaslari.Match" runstate="Runnable" testcasecount="9" result="Passed" start-time="2026-11-17 06:52:56Z" end-time="2026-11-17 06:53:02Z" duration="5.969262" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1170" name="Tests" fullname="RobotSavaslari.Match.Tests" runstate="Runnable" testcasecount="9" result="Passed" start-time="2026-11-17 06:52:56Z" end-time="2026-11-17 06:53:02Z" duration="5.969179" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1157" name="MatchRulesPlayModeTests" fullname="RobotSavaslari.Match.Tests.MatchRulesPlayModeTests" classname="RobotSavaslari.Match.Tests.MatchRulesPlayModeTests" runstate="Runnable" testcasecount="9" result="Passed" start-time="2026-11-17 06:52:56Z" end-time="2026-11-17 06:53:02Z" duration="5.968564" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1162" name="ActualDamageIncludesFatalHitButNeverAttributesUnknownSource" fullname="RobotSavaslari.Match.Tests.MatchRulesPlayModeTests.ActualDamageIncludesFatalHitButNeverAttributesUnknownSource" methodname="ActualDamageIncludesFatalHitButNeverAttributesUnknownSource" classname="RobotSavaslari.Match.Tests.MatchRulesPlayModeTests" runstate="Runnable" seed="547523098" result="Passed" start-time="2026-11-17 06:52:56Z" end-time="2026-11-17 06:52:57Z" duration="0.627185" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1166" name="DisabledMatchRejectsTransitionsAndDoesNotAdvanceTimer" fullname="RobotSavaslari.Match.Tests.MatchRulesPlayModeTests.DisabledMatchRejectsTransitionsAndDoesNotAdvanceTimer" methodname="DisabledMatchRejectsTransitionsAndDoesNotAdvanceTimer" classname="RobotSavaslari.Match.Tests.MatchRulesPlayModeTests" runstate="Runnable" seed="649225931" result="Passed" start-time="2026-11-17 06:52:57Z" end-time="2026-11-17 06:52:58Z" duration="0.526509" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1164" name="HistoryRematchRestoresRulesButNotOldHealthOrScore" fullname="RobotSavaslari.Match.Tests.MatchRulesPlayModeTests.HistoryRematchRestoresRulesButNotOldHealthOrScore" methodname="HistoryRematchRestoresRulesButNotOldHealthOrScore" classname="RobotSavaslari.Match.Tests.MatchRulesPlayModeTests" runstate="Runnable" seed="618651366" result="Passed" start-time="2026-11-17 06:52:58Z" end-time="2026-11-17 06:52:58Z" duration="0.347792" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1163" name="PauseFreezesTimerAndCombatAndRequiresFreshInput" fullname="RobotSavaslari.Match.Tests.MatchRulesPlayModeTests.PauseFreezesTimerAndCombatAndRequiresFreshInput" methodname="PauseFreezesTimerAndCombatAndRequiresFreshInput" classname="RobotSavaslari.Match.Tests.MatchRulesPlayModeTests" runstate="Runnable" seed="1834910858" result="Passed" start-time="2026-11-17 06:52:58Z" end-time="2026-11-17 06:52:59Z" duration="0.644008" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1159" name="SeriesEndsTwoOneAndNewSeriesStartsClean" fullname="RobotSavaslari.Match.Tests.MatchRulesPlayModeTests.SeriesEndsTwoOneAndNewSeriesStartsClean" methodname="SeriesEndsTwoOneAndNewSeriesStartsClean" classname="RobotSavaslari.Match.Tests.MatchRulesPlayModeTests" runstate="Runnable" seed="523298195" result="Passed" start-time="2026-11-17 06:52:59Z" end-time="2026-11-17 06:52:59Z" duration="0.329706" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1158" name="SeriesEndsTwoZeroAndCannotContinueACompletedSeries" fullname="RobotSavaslari.Match.Tests.MatchRulesPlayModeTests.SeriesEndsTwoZeroAndCannotContinueACompletedSeries" methodname="SeriesEndsTwoZeroAndCannotContinueACompletedSeries" classname="RobotSavaslari.Match.Tests.MatchRulesPlayModeTests" runstate="Runnable" seed="1330553467" result="Passed" start-time="2026-11-17 06:52:59Z" end-time="2026-11-17 06:52:59Z" duration="0.295268" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1165" name="SharedMeleeAttributesClampedFatalDamageBeforeResult" fullname="RobotSavaslari.Match.Tests.MatchRulesPlayModeTests.SharedMeleeAttributesClampedFatalDamageBeforeResult" methodname="SharedMeleeAttributesClampedFatalDamageBeforeResult" classname="RobotSavaslari.Match.Tests.MatchRulesPlayModeTests" runstate="Runnable" seed="476474706" result="Passed" start-time="2026-11-17 06:52:59Z" end-time="2026-11-17 06:52:59Z" duration="0.295033" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1161" name="TiedTimedRoundRepeatsWithoutConsumingAWinningRound" fullname="RobotSavaslari.Match.Tests.MatchRulesPlayModeTests.TiedTimedRoundRepeatsWithoutConsumingAWinningRound" methodname="TiedTimedRoundRepeatsWithoutConsumingAWinningRound" classname="RobotSavaslari.Match.Tests.MatchRulesPlayModeTests" runstate="Runnable" seed="305672959" result="Passed" start-time="2026-11-17 06:52:59Z" end-time="2026-11-17 06:53:01Z" duration="1.451465" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1160" name="TimeOverUsesRatiosAndPublishesOneResult" fullname="RobotSavaslari.Match.Tests.MatchRulesPlayModeTests.TimeOverUsesRatiosAndPublishesOneResult" methodname="TimeOverUsesRatiosAndPublishesOneResult" classname="RobotSavaslari.Match.Tests.MatchRulesPlayModeTests" runstate="Runnable" seed="76318043" result="Passed" start-time="2026-11-17 06:53:01Z" end-time="2026-11-17 06:53:02Z" duration="1.443555" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Saving results to: C:/Users/emins/AppData/LocalLow/DefaultCompany/RobotArena\TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
