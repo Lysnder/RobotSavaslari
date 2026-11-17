@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="1" result="Failed(Child)" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-17 07:17:31Z" end-time="2026-11-17 07:17:32Z" duration="0,7969232">
+  <test-suite type="TestSuite" id="1257" name="RobotArena" fullname="RobotArena" runstate="Runnable" testcasecount="199" result="Failed" site="Child" start-time="2026-11-17 07:17:31Z" end-time="2026-11-17 07:17:32Z" duration="0.796923" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1153" name="RobotSavaslari.Gameplay.PlayModeTests.dll" fullname="C:/Users/emins/Documents/Codex/robot-match-rules-20261117/RobotArena/Library/ScriptAssemblies/RobotSavaslari.Gameplay.PlayModeTests.dll" runstate="Runnable" testcasecount="61" result="Failed" site="Child" start-time="2026-11-17 07:17:31Z" end-time="2026-11-17 07:17:32Z" duration="0.790913" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="54704" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="1154" name="RobotSavaslari" fullname="RobotSavaslari" runstate="Runnable" testcasecount="61" result="Failed" site="Child" start-time="2026-11-17 07:17:31Z" end-time="2026-11-17 07:17:32Z" duration="0.790492" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1155" name="Gameplay" fullname="RobotSavaslari.Gameplay" runstate="Runnable" testcasecount="61" result="Failed" site="Child" start-time="2026-11-17 07:17:31Z" end-time="2026-11-17 07:17:32Z" duration="0.790236" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestSuite" id="1156" name="Tests" fullname="RobotSavaslari.Gameplay.Tests" runstate="Runnable" testcasecount="61" result="Failed" site="Child" start-time="2026-11-17 07:17:31Z" end-time="2026-11-17 07:17:32Z" duration="0.789968" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-suite type="TestFixture" id="1117" name="MenuAndSettingsPlayModeTests" fullname="RobotSavaslari.Gameplay.Tests.MenuAndSettingsPlayModeTests" classname="RobotSavaslari.Gameplay.Tests.MenuAndSettingsPlayModeTests" runstate="Runnable" testcasecount="5" result="Failed" site="Child" start-time="2026-11-17 07:17:31Z" end-time="2026-11-17 07:17:32Z" duration="0.788905" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="1120" name="MenuButtonsStartAndOpenSettings" fullname="RobotSavaslari.Gameplay.Tests.MenuAndSettingsPlayModeTests.MenuButtonsStartAndOpenSettings" methodname="MenuButtonsStartAndOpenSettings" classname="RobotSavaslari.Gameplay.Tests.MenuAndSettingsPlayModeTests" runstate="Runnable" seed="180079691" result="Failed" start-time="2026-11-17 07:17:31Z" end-time="2026-11-17 07:17:32Z" duration="0.781369" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Ayarlar button
+  Expected: True
+  But was:  False
+]]></message>
+                  <stack-trace><![CDATA[at RobotSavaslari.Gameplay.Tests.MenuAndSettingsPlayModeTests+<MenuButtonsStartAndOpenSettings>d__15.MoveNext () [0x00098] in C:\Users\emins\Documents\Codex\robot-match-rules-20261117\RobotArena\Assets\Tests\Gameplay\PlayMode\MenuAndSettingsPlayModeTests.cs:85
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@76560ee600cb\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+                </failure>
+                <output><![CDATA[Saving results to: C:/Users/emins/AppData/LocalLow/DefaultCompany/RobotArena\TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

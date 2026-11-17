@@ -16,6 +16,8 @@ namespace RobotSavaslari.UI
         private GUIStyle _buttonStyle;
         private GUIStyle _resultStyle;
         private GUIStyle _countdownStyle;
+        private bool _showHistory;
+        private Vector2 _historyScroll;
 
         private void Awake()
         {
@@ -26,7 +28,7 @@ namespace RobotSavaslari.UI
         private void Update()
         {
             var keyboard = Keyboard.current;
-            if (!_match.IsInitialized || _settings.IsOpen || keyboard == null ||
+            if (!_match.isActiveAndEnabled || !_match.IsInitialized || _showHistory || _settings.IsOpen || keyboard == null ||
                 keyboard.escapeKey.wasPressedThisFrame) return;
 
             bool enter = keyboard.enterKey.wasPressedThisFrame || keyboard.numpadEnterKey.wasPressedThisFrame;
@@ -37,7 +39,7 @@ namespace RobotSavaslari.UI
 
         private void OnGUI()
         {
-            if (!_match.IsInitialized || _settings.IsOpen) return;
+            if (!_match.isActiveAndEnabled || !_match.IsInitialized || _settings.IsOpen) return;
             EnsureStyles();
             Matrix4x4 previous = GUI.matrix;
             try
@@ -46,13 +48,19 @@ namespace RobotSavaslari.UI
                 float width = Screen.width / scale;
                 float height = Screen.height / scale;
                 GUI.matrix = Matrix4x4.Scale(new Vector3(scale, scale, 1f));
+                if (_showHistory && _match.State == MatchController.MatchState.Ready)
+                {
+                    DrawHistory(width, height);
+                    return;
+                }
                 if (_match.State == MatchController.MatchState.Ready)
                 {
+                    DrawRules(width);
                     DrawMenu(width, height);
                     return;
                 }
 
-                if (GUI.Button(new Rect(width - 174f, 16f, 158f, 36f), "Ayarlar (Esc)"))
+                if (GUI.Button(new Rect(width - 174f, 16f, 158f, 36f), "Duraklat (Esc)"))
                     _settings.ToggleSettings();
                 if (_settings.IsOpen) return;
 
@@ -86,8 +94,13 @@ namespace RobotSavaslari.UI
 
         private void DrawMatchHud()
         {
-            GUILayout.BeginArea(new Rect(16, 16, 430, 135), GUI.skin.box);
-            GUILayout.Label("Maç " + _match.MatchCount);
+            GUILayout.BeginArea(new Rect(16, 16, 430, 150), GUI.skin.box);
+            string mode = _match.Rules.mode == MatchMode.Single ? "Tek maç" : $"Seri {_match.PlayerWins}-{_match.OpponentWins} | Raund {_match.RoundNumber}";
+            GUILayout.Label(mode + " | Maç " + _match.MatchCount);
+            Color previousColor = GUI.color;
+            if (_match.IsTimeWarning) GUI.color = new Color(1f, .75f, .2f);
+            GUILayout.Label(_match.IsTimed ? $"Kalan: {Mathf.CeilToInt(_match.RemainingSeconds)} sn" : $"Süre: {_match.ElapsedSeconds:0.0} sn");
+            GUI.color = previousColor;
             GUILayout.Label("Oyuncu: " + Mathf.CeilToInt(_match.Player.GetComponent<RobotHealth>().CurrentHealth) +
                             "   Rakip: " + Mathf.CeilToInt(_match.Opponent.GetComponent<RobotHealth>().CurrentHealth));
             GUILayout.Label("W/S veya ↑/↓: sürüş    A/D veya ←/→: dönüş    Space: saldırı");
@@ -108,13 +121,81 @@ namespace RobotSavaslari.UI
 
         private void DrawResult(float width, float height)
         {
-            var panel = new Rect((width - 420f) * .5f, (height - 218f) * .5f, 420f, 218f);
+            // Keep the height used by the existing replay/inspection controls.
+            var panel = new Rect((width - 560f) * .5f, (height - 218f) * .5f, 560f, 218f);
             GUI.Box(panel, string.Empty);
-            GUI.Label(new Rect(panel.x, panel.y + 10f, panel.width, 54f), _match.ResultText, _resultStyle);
-            if (GUI.Button(new Rect(panel.x + 85f, panel.y + 74f, 250f, 50f), "Yeni maç (R)", _buttonStyle))
-                _match.RequestCountdown();
-            if (GUI.Button(new Rect(panel.x + 85f, panel.y + 142f, 250f, 50f), "Ana menü", _buttonStyle))
-                _match.Prepare();
+            string title = _match.IsSeriesComplete ? "Seri bitti - " + _match.ResultText : _match.ResultText;
+            _resultStyle.fontSize = _match.IsSeriesComplete ? 22 : 24;
+            GUI.Label(new Rect(panel.x, panel.y + 4f, panel.width, 40f), title, _resultStyle);
+            var result = _match.LastRound;
+            if (result != null)
+            {
+                GUI.Label(new Rect(panel.x + 12, panel.y + 44, 536, 22),
+                    $"Raund {result.roundNumber} | {result.durationSeconds:0.0} sn | Skor {_match.PlayerWins}-{_match.OpponentWins} | Berabere: {_match.DrawnRounds}");
+                DrawStatistics(new Rect(panel.x + 12, panel.y + 68, 536, 22), "Oyuncu", result.player);
+                DrawStatistics(new Rect(panel.x + 12, panel.y + 92, 536, 22), "Rakip", result.opponent);
+                string summary = _match.LastMatch != null
+                    ? $"Toplam {_match.LastMatch.durationSeconds:0.0} sn | Verilen hasar {_match.LastMatch.player.dealtDamage:0.#} / {_match.LastMatch.opponent.dealtDamage:0.#}"
+                    : "Seri sürüyor; beraberlikte aynı raund tekrar edilir.";
+                GUI.Label(new Rect(panel.x + 12, panel.y + 116, 536, 22), summary);
+            }
+            string next = !_match.EncounterComplete ? (_match.Outcome == MatchController.MatchOutcome.Draw ? "Raundu tekrarla (R)" : "Sonraki raund (R)")
+                : _match.Rules.mode == MatchMode.FirstToTwo ? "Yeni seri (R)" : "Yeni maç (R)";
+            if (GUI.Button(new Rect(panel.x + 12, panel.y + 154, 262, 44), next, _buttonStyle)) _match.RequestCountdown();
+            if (GUI.Button(new Rect(panel.x + 286, panel.y + 154, 262, 44), "Ana menü", _buttonStyle)) _match.Prepare();
+            if (!string.IsNullOrEmpty(_match.HistoryNotice)) GUI.Label(new Rect(16, 175, 600, 42), _match.HistoryNotice);
+        }
+
+        private static void DrawStatistics(Rect rect, string name, RobotMatchStatistics value)
+        {
+            GUI.Label(rect, $"{name}: Can {value.remainingHealth:0.#}/{value.maximumHealth:0.#} | Verilen {value.dealtDamage:0.#} | Alınan {value.receivedDamage:0.#} | Kopan parça {value.detachedParts}");
+        }
+
+        private void DrawRules(float width)
+        {
+            var rules = _match.Rules;
+            GUI.Box(new Rect(16, 16, 430, 130), "Karşılaşma kuralları");
+            bool single = rules.mode == MatchMode.Single;
+            if (GUI.Toggle(new Rect(30, 46, 180, 26), single, "Tek maç") && !single)
+            { rules.mode = MatchMode.Single; _match.ConfigureRules(rules); }
+            if (GUI.Toggle(new Rect(220, 46, 210, 26), !single, "İlk 2 galibiyet") && single)
+            { rules.mode = MatchMode.FirstToTwo; _match.ConfigureRules(rules); }
+            GUI.Label(new Rect(30, 78, 110, 26), "Raund süresi:");
+            float[] limits = { 0, 60, 120, 180 };
+            for (int i = 0; i < limits.Length; i++)
+            {
+                float limit = limits[i];
+                bool selected = rules.timeLimitSeconds == limit;
+                if (GUI.Toggle(new Rect(140 + i * 72, 78, 72, 26), selected, limit == 0 ? "Süresiz" : limit + " sn") && !selected)
+                { rules.timeLimitSeconds = limit; _match.ConfigureRules(rules); }
+            }
+            GUI.Label(new Rect(30, 108, 400, 24), "Süre dolunca can oranı; eşitse beraberlik.");
+            if (GUI.Button(new Rect(width - 174, 16, 158, 36), "Maç geçmişi")) _showHistory = true;
+        }
+
+        private void DrawHistory(float width, float height)
+        {
+            var panel = new Rect((width - 560) * .5f, 70, 560, Mathf.Min(480, height - 220));
+            GUI.Box(panel, "Yerel maç geçmişi");
+            var records = _match.HistoryStore.Load();
+            GUI.Label(new Rect(panel.x + 16, panel.y + 28, 528, 42),
+                "Rövanş temel maç kurallarını kullanır. Mevcut arena ve rakip seçimi korunur.");
+            if (records.Count == 0) GUI.Label(new Rect(panel.x + 16, panel.y + 76, 520, 44),
+                _match.HistoryStore.LastError ?? "Henüz tamamlanmış karşılaşma yok.");
+            _historyScroll = GUI.BeginScrollView(new Rect(panel.x + 12, panel.y + 78, 536, panel.height - 142),
+                _historyScroll, new Rect(0, 0, 510, Mathf.Max(1, records.Count) * 90));
+            for (int i = 0; i < records.Count; i++)
+            {
+                var record = records[i]; float y = i * 90;
+                string mode = record.rules.mode == MatchMode.Single ? "Tek maç" : "Seri";
+                string outcome = record.outcome == MatchController.MatchOutcome.PlayerVictory ? "Galibiyet"
+                    : record.outcome == MatchController.MatchOutcome.OpponentVictory ? "Mağlubiyet" : "Berabere";
+                GUI.Label(new Rect(6, y, 360, 24), $"{mode}: {outcome} | {record.playerWins}-{record.opponentWins} | {record.durationSeconds:0.0} sn");
+                GUI.Label(new Rect(6, y + 26, 360, 24), record.endedAtUtc + (record.rules.timeLimitSeconds == 0 ? " | Süresiz" : $" | {record.rules.timeLimitSeconds:0} sn"));
+                if (GUI.Button(new Rect(380, y + 8, 116, 38), "Rövanş") && _match.Rematch(record)) _showHistory = false;
+            }
+            GUI.EndScrollView();
+            if (GUI.Button(new Rect(panel.x + 180, panel.yMax - 52, 200, 36), "Kapat")) _showHistory = false;
         }
 
         private static void QuitGame()

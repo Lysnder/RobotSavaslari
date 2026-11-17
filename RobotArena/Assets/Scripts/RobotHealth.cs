@@ -26,7 +26,7 @@ namespace RobotSavaslari
             TakeDamage(amount, transform.position + Vector3.up * 0.4f, Vector3.up, Vector3.zero, false);
         }
 
-        public void TakeDamage(float amount, Vector3 point, Vector3 normal, Vector3 impulse, bool weapon)
+        public void TakeDamage(float amount, Vector3 point, Vector3 normal, Vector3 impulse, bool weapon, RobotHealth source = null)
         {
             if (IsDefeated || amount <= 0f || float.IsNaN(amount) || float.IsInfinity(amount))
             {
@@ -35,7 +35,7 @@ namespace RobotSavaslari
 
             float applied = Mathf.Min(CurrentHealth, amount);
             CurrentHealth -= applied;
-            Damaged?.Invoke(new RobotHit(applied, point, normal, impulse, weapon));
+            Damaged?.Invoke(new RobotHit(applied, point, normal, impulse, weapon, source));
             HealthChanged?.Invoke(this);
 
             if (IsDefeated)

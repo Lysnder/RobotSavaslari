@@ -267,7 +267,7 @@ namespace RobotSavaslari
             _nextHitTime = Time.time + hitCooldown;
             ContactPoint contact = collision.GetContact(0);
             Vector3 impulse = direction * Mathf.Clamp(impactSpeed * 0.5f + 1f, 1f, 7f);
-            opponent._health.TakeDamage(damage, contact.point, contact.normal, impulse, false);
+            opponent._health.TakeDamage(damage, contact.point, contact.normal, impulse, false, _health);
             float pushed = KnockbackCalculator.Calculate(impactSpeed, opponent._body.mass, _body.mass, knockbackRatio, maxKnockbackSpeed);
             float recoil = KnockbackCalculator.Calculate(impactSpeed, _body.mass, opponent._body.mass, recoilRatio, maxKnockbackSpeed);
             opponent.ApplyKnockback(direction, pushed);
