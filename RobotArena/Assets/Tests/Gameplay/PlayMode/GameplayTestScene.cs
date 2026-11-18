@@ -15,12 +15,14 @@ namespace RobotSavaslari.Gameplay.Tests
         public const float Floor = 0.82f;
 
         public static MatchController Match { get; private set; }
+        private static Scene ownedScene;
 
         /// <summary>Loads the production arena and waits until its match has prepared the robots.</summary>
         public static IEnumerator LoadMainArena()
         {
             Time.timeScale = 1f;
             yield return SceneManager.LoadSceneAsync(MainArena, LoadSceneMode.Single);
+            ownedScene = SceneManager.GetActiveScene();
             yield return null;
             yield return null;
             Match = Object.FindAnyObjectByType<MatchController>();
@@ -52,19 +54,15 @@ namespace RobotSavaslari.Gameplay.Tests
         }
 
         /// <summary>
-        /// Replaces every loaded scene with an empty one, so later tests that build their own objects
-        /// never end up inside another test's arena.
+        /// Replaces this helper's scene while leaving NUnit's bootstrap and unrelated scenes alive.
         /// </summary>
         public static IEnumerator Unload()
         {
             Time.timeScale = 1f;
-            Scene empty = SceneManager.CreateScene("Gameplay Test " + System.Guid.NewGuid().ToString("N"));
-            SceneManager.SetActiveScene(empty);
-            for (int i = SceneManager.sceneCount - 1; i >= 0; i--)
-            {
-                Scene scene = SceneManager.GetSceneAt(i);
-                if (scene != empty && scene.isLoaded) yield return SceneManager.UnloadSceneAsync(scene);
-            }
+            Scene previous = ownedScene;
+            ownedScene = SceneManager.CreateScene("Gameplay Test " + System.Guid.NewGuid().ToString("N"));
+            SceneManager.SetActiveScene(ownedScene);
+            if (previous.IsValid() && previous.isLoaded) yield return SceneManager.UnloadSceneAsync(previous);
             Match = null;
         }
 
