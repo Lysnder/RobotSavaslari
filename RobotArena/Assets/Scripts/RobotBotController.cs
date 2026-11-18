@@ -139,6 +139,7 @@ namespace RobotSavaslari
             if (enableCombatTactics)
             {
                 ObserveOpponent(dt, delta);
+                ResumeForCounterattackIfReady();
                 bool recovering = State == Decision.BackingOut || State == Decision.EscapeTurn || State == Decision.EscapeDrive;
                 if (!recovering && TickOpponentDecisions(dt)) return;
             }
@@ -191,6 +192,25 @@ namespace RobotSavaslari
             else { _stuckTime = 0; _anchor = _motor.Body.position; }
             Send(drive, steer);
         }
+        private void ResumeForCounterattackIfReady()
+        {
+            bool defending = State == Decision.Disengaging || State == Decision.Repositioning ||
+                State == Decision.Waiting || State == Decision.Evading;
+            if (personality != BotPersonality.Counter || !defending || !OwnCondition.WeaponOperational ||
+                Distance > attackEnterDistance || Mathf.Abs(TargetAngle) > attackAngle) return;
+            var weapon = GetComponent<Combat.MeleeAttack>();
+            if (weapon == null || weapon.IsAttacking || weapon.CooldownRemaining > 0) return;
+
+            // A ready strike is the opening Counter was seeking; shared melee still owns the attack.
+            State = Decision.Following;
+            _tacticTime = _evasionTime = _graceTime = _stuckTime = 0;
+            _pressureTime = _circleTime = _spinTime = _noDamageTime = 0;
+            _engaged = _tacticsObserved = _attackHold = false;
+            _anchor = _motor.Body.position;
+            _evasionCooldown = Mathf.Max(_evasionCooldown, EffectiveReactionSeconds);
+            _profileCooldown = Mathf.Max(_profileCooldown, EffectiveReactionSeconds);
+        }
+
         private bool TickCombatTactics(float dt, RobotHealth targetHealth)
         {
             // Lost wheels favor holding an angle over repeatedly attempting wide flank arcs.
