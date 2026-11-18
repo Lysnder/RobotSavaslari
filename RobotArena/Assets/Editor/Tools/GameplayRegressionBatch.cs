@@ -68,7 +68,8 @@ namespace RobotSavaslari.Editor
             SessionState.SetString(RunKey, mode);
             Register();
             EditorSceneManager.OpenScene(scene);
-            EditorApplication.isPlaying = true;
+            // Let Editor startup callbacks create the Search database before entering Play mode.
+            EditorApplication.delayCall += () => EditorApplication.isPlaying = true;
         }
 
         private static void Register()
