@@ -1,0 +1,46 @@
+FILE gui-original-coordinates.log
+MENU_POINT type=Layout point=(0.00, 0.00) rect=(x:340.00, y:346.00, width:280.00, height:52.00) contains=False
+MENU_POINT type=repaint point=(0.00, 0.00) rect=(x:340.00, y:346.00, width:280.00, height:52.00) contains=False
+MENU_POINT type=Layout point=(0.00, 0.00) rect=(x:340.00, y:346.00, width:280.00, height:52.00) contains=False
+MENU_POINT type=mouseDown point=(0.00, 0.00) rect=(x:340.00, y:346.00, width:280.00, height:52.00) contains=False
+MENU_POINT type=Layout point=(0.00, 0.00) rect=(x:340.00, y:346.00, width:280.00, height:52.00) contains=False
+MENU_POINT type=mouseUp point=(0.00, 0.00) rect=(x:340.00, y:346.00, width:280.00, height:52.00) contains=False
+FILE gui-controls.log
+RIG_GUI type=Layout pos=(0.00, 0.00) enabled=True rect=(x:768.00, y:52.00, width:170.00, height:26.00) hot=0 matrix=1.00000	0.00000	0.00000	0.00000
+RIG_GUI type=Layout pos=(-1085.33, 570.67) enabled=True rect=(x:768.00, y:52.00, width:170.00, height:26.00) hot=0 matrix=1.00000	0.00000	0.00000	0.00000
+RIG_GUI type=repaint pos=(-1085.33, 570.67) enabled=True rect=(x:768.00, y:52.00, width:170.00, height:26.00) hot=0 matrix=1.00000	0.00000	0.00000	0.00000
+RIG_GUI type=Layout pos=(533.00, 65.00) enabled=True rect=(x:768.00, y:52.00, width:170.00, height:26.00) hot=0 matrix=1.00000	0.00000	0.00000	0.00000
+RIG_GUI type=Layout pos=(533.00, 65.00) enabled=True rect=(x:768.00, y:52.00, width:170.00, height:26.00) hot=0 matrix=1.00000	0.00000	0.00000	0.00000
+RIG_GUI type=mouseDown pos=(533.00, 65.00) enabled=True rect=(x:768.00, y:52.00, width:170.00, height:26.00) hot=0 matrix=1.00000	0.00000	0.00000	0.00000
+RIG_GUI type=Layout pos=(533.00, 65.00) enabled=True rect=(x:768.00, y:52.00, width:170.00, height:26.00) hot=0 matrix=1.00000	0.00000	0.00000	0.00000
+RIG_GUI type=Layout pos=(533.00, 65.00) enabled=True rect=(x:768.00, y:52.00, width:170.00, height:26.00) hot=0 matrix=1.00000	0.00000	0.00000	0.00000
+RIG_GUI type=mouseUp pos=(533.00, 65.00) enabled=True rect=(x:768.00, y:52.00, width:170.00, height:26.00) hot=0 matrix=1.00000	0.00000	0.00000	0.00000
+MENU_POINT type=Layout point=(0.00, 0.00) rect=(x:340.00, y:346.00, width:280.00, height:52.00) contains=False
+MENU_POINT type=Layout point=(-1085.33, 570.67) rect=(x:340.00, y:346.00, width:280.00, height:52.00) contains=False
+MENU_POINT type=repaint point=(-1085.33, 570.67) rect=(x:340.00, y:346.00, width:280.00, height:52.00) contains=False
+MENU_POINT type=Layout point=(480.00, 372.00) rect=(x:340.00, y:346.00, width:280.00, height:52.00) contains=True
+MENU_POINT type=Layout point=(480.00, 372.00) rect=(x:340.00, y:346.00, width:280.00, height:52.00) contains=True
+MENU_POINT type=mouseDown point=(480.00, 372.00) rect=(x:340.00, y:346.00, width:280.00, height:52.00) contains=True
+MENU_POINT type=Layout point=(480.00, 372.00) rect=(x:340.00, y:346.00, width:280.00, height:52.00) contains=True
+MENU_POINT type=Layout point=(480.00, 372.00) rect=(x:340.00, y:346.00, width:280.00, height:52.00) contains=True
+MENU_POINT type=mouseUp point=(480.00, 372.00) rect=(x:340.00, y:346.00, width:280.00, height:52.00) contains=True
+MENU_POINT type=Layout point=(0.00, 0.00) rect=(x:340.00, y:346.00, width:280.00, height:52.00) contains=False
+MENU_POINT type=Layout point=(-1085.33, 570.67) rect=(x:340.00, y:346.00, width:280.00, height:52.00) contains=False
+MENU_POINT type=repaint point=(-1085.33, 570.67) rect=(x:340.00, y:346.00, width:280.00, height:52.00) contains=False
+MENU_POINT type=Layout point=(480.00, 302.00) rect=(x:340.00, y:346.00, width:280.00, height:52.00) contains=False
+MENU_POINT type=Layout point=(480.00, 302.00) rect=(x:340.00, y:346.00, width:280.00, height:52.00) contains=False
+MENU_POINT type=mouseDown point=(480.00, 302.00) rect=(x:340.00, y:346.00, width:280.00, height:52.00) contains=False
+MENU_POINT type=Layout point=(480.00, 302.00) rect=(x:340.00, y:346.00, width:280.00, height:52.00) contains=False
+MENU_POINT type=Layout point=(480.00, 302.00) rect=(x:340.00, y:346.00, width:280.00, height:52.00) contains=False
+MENU_POINT type=mouseUp point=(480.00, 302.00) rect=(x:340.00, y:346.00, width:280.00, height:52.00) contains=False
+FILE timing-before-repeat.log
+DEBRIS_STABILITY before=6,923954 after=6,923715 pivotDelta=1,79997253E-10 dt=0,0002167021
+DEBRIS_STABILITY before=6,923693 after=6,923678 pivotDelta=0 dt=0,00023270266
+DEBRIS_STABILITY before=6,924061 after=6,92368746 pivotDelta=8,79036843E-10 dt=0,000248200115
+DEBRIS_STABILITY before=6,925311 after=6,923759 pivotDelta=5,99990835E-10 dt=0,000284297043
+INSPECT_INITIAL transform=(-4.500000, 0.820000, -3.500000) body=(-4.500000, 0.820000, -3.500000) interpolation=Interpolate
+INSPECT_FINAL initial=(-4.500000, 0.820000, -3.500000) transform=(-4.500000, 0.820000, -3.500000) body=(-4.500000, 0.820000, -3.500000) dt=0,00105429417
+INSPECT_INITIAL transform=(-4.500000, 0.820000, -3.500000) body=(-4.500000, 0.820000, -3.500000) interpolation=Interpolate
+INSPECT_FINAL initial=(-4.500000, 0.820000, -3.500000) transform=(-4.500000, 0.820000, -3.500000) body=(-4.500000, 0.820000, -3.500000) dt=0,000396400224
+INSPECT_INITIAL transform=(-4.500000, 0.820000, -3.500000) body=(-4.500000, 0.820000, -3.500000) interpolation=Interpolate
+INSPECT_FINAL initial=(-4.500000, 0.820000, -3.500000) transform=(-4.672885, 0.820000, -2.635575) body=(-4.500000, 0.820000, -3.500000) dt=0,000393998023

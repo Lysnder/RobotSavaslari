@@ -1,0 +1,32 @@
+{
+  "date": "2026-11-18",
+  "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+  "tool": "mcp__node_repl__js + @oai/sky",
+  "failed_before_javascript": true,
+  "error": "codex/sandbox-state-meta: sandboxCwd is not a local file URI: file:///mnt/c/users/emins/documents/codex/2026-11-11/files-pasted-by-the-user-robotsava",
+  "attempts": [
+    "Fresh native-runtime probe",
+    "Attempted native Windows checkout path attach: tool requires POSIX absolute path",
+    "Attempted regular QA checkout attach: requires registered linked worktree",
+    "Created Windows Git linked checkout robot-windows-acceptance; attach still rejected registration",
+    "Created managed linked worktree via app, registration completed at /home/lysander/.codex/worktrees/robot-native-validation/robot-verify-93b4ded; current request metadata still old WSL cwd",
+    "Reset native JS kernel and retried official @oai/sky initialization; same error before code executed"
+  ],
+  "executable": "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena\\Builds\\Windows\\RobotSavaslari.exe",
+  "verified_alternative": "Windows processes launch via PowerShell Start-Process with explicit native project/exe/log paths and waited process handles. Unity native GUIView button tests and InputSystem keyboard smoke are runnable.",
+  "manual_input_completed": false,
+  "remaining": [
+    "menu/settings real mouse clicks",
+    "WASD/arrows through OS keyboard",
+    "drive mappings/reserved C through OS keyboard",
+    "camera mouse orbit/zoom/floor clearance",
+    "start/attack/pause/settings/resume through OS input",
+    "two physical matches driven through OS input",
+    "series/result/history/rematch through OS input",
+    "Counter/Easy attack observation through OS input"
+  ],
+  "not_used": [
+    "No untrusted helper executable or custom Computer Use protocol",
+    "No PowerShell UI Automation/SendInput bypass"
+  ]
+}

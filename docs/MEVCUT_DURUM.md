@@ -1,5 +1,7 @@
 # Robot Savaşları mevcut durumu
 
+18 Kasım 2026 doğrulaması: [güncel düzeltme ve test raporu](validation-20261118.md). `5de6813` kaynağında 410/410 test ve 48/48 bot maçı geçti. Gerçek Windows OS fare/klavye kabulü araçtaki WSL URI hatası nedeniyle eksik; ayrıntı ve kanıtlar rapordadır.
+
 ## PR #28 sonrasında
 
 PR #28 ile gelen menü, geri sayım ve yakın dövüşü kullanan sürümün tek oyun sahnesi `Assets/Scenes/Gameplay/MainArena.unity`. Ayarlar ve başlangıç menüsü bu sahnededir. Test sahneleri ve modüler robot önizlemesi ayrı kalır. Yakın dövüş profilleri `Assets/Settings/Combat/` altında; [dövüş ve kontrol açıklaması](../RobotArena/Assets/Scripts/Combat/README.md) güncel yolları listeler.

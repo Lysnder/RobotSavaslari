@@ -1,0 +1,688 @@
+[
+  {
+    "name": "RobotSavaslari.Gameplay.Tests.ArenaMatchControllerPlayModeTests.DefeatEndsTheMatchAndRestartRestoresBothRobots",
+    "source": "RobotArena/Assets/Tests/Gameplay/PlayMode/ArenaMatchControllerPlayModeTests.cs",
+    "line": 52,
+    "previous_error": "  restart button\n  Expected: False\n  But was:  True\n",
+    "previous_stack": "at RobotSavaslari.Gameplay.Tests.ArenaMatchControllerPlayModeTests+<DefeatEndsTheMatchAndRestartRestoresBothRobots>d__6.MoveNext () [0x0015b] in C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena\\Assets\\Tests\\Gameplay\\PlayMode\\ArenaMatchControllerPlayModeTests.cs:66\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\\Library\\PackageCache\\com.unity.test-framework@76560ee600cb\\UnityEngine.TestRunner\\NUnitExtensions\\Attributes\\TestEnumerator.cs:44\n",
+    "category": "gui_test_harness",
+    "diagnosis": "Native IMGUI mouse state was not initialized by the reflection container. Each event also received a new ObjectGUIState, losing gesture state. The native Editor view uses Windows display points (DPI 1.5), whereas the arena uses game pixels.",
+    "fix": "ImmediateGui sends Layout/Repaint/MouseDown/MouseUp through one disposable native GUIView per gesture; preserves the native control state, converts game pixels to Editor display points and uses a matching parent clip; restores DPI/matrix. GUI tests require graphics, so final PlayMode omits -nographics. No button action is called directly.",
+    "group_before": "gameplay-preserved-runner",
+    "final": {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "result": "Passed",
+      "duration": "0.103431",
+      "package": "playmode",
+      "xml": "final-playmode.xml"
+    },
+    "before_single": {
+      "result": "Failed",
+      "message": "  restart button\n  Expected: False\n  But was:  True\n",
+      "stack": "at RobotSavaslari.Gameplay.Tests.ArenaMatchControllerPlayModeTests+<DefeatEndsTheMatchAndRestartRestoresBothRobots>d__6.MoveNext () [0x0015b] in C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena\\Assets\\Tests\\Gameplay\\PlayMode\\ArenaMatchControllerPlayModeTests.cs:66\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\\Library\\PackageCache\\com.unity.test-framework@76560ee600cb\\UnityEngine.TestRunner\\NUnitExtensions\\Attributes\\TestEnumerator.cs:44\n",
+      "xml": "verification-20261118/before-single-01.xml"
+    },
+    "conditions": {
+      "scene": "MainArena, except DrivingRig and modular preview use existing isolated helper",
+      "unity": "6000.4.4f1",
+      "windows_display_dpi": 1.5,
+      "baseline_batch": "-batchmode -nographics",
+      "final_batch": "-batchmode (graphics enabled for native GUIView)",
+      "personal_data": "fresh Nov18 backup; restored after final checks",
+      "randomness": "UI/geometry deterministic; bot seeds740/741/123 separate suite"
+    },
+    "after_focused": {
+      "result": "Passed",
+      "xml": "verification-20261118/focused-final.xml"
+    },
+    "preliminary_full_playmode": {
+      "source": "f9713e0 with production-scene reserialization (diagnostic only)",
+      "result": "Passed",
+      "xml": "pre-isolation-f9713e0/final-playmode.xml"
+    },
+    "current_line": 52,
+    "after_single": {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "result": "Passed",
+      "xml": "final-single-01.xml"
+    },
+    "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364"
+  },
+  {
+    "name": "RobotSavaslari.Gameplay.Tests.ArenaRobotPlayModeTests.KeyboardDrivesTheRobotAndSpaceSwingsTheWeapon",
+    "source": "RobotArena/Assets/Tests/Gameplay/PlayMode/ArenaRobotPlayModeTests.cs",
+    "line": 59,
+    "previous_error": "  W drives forward\n  Expected: greater than 0.200000003f\n  But was:  2.17606242E-07f\n",
+    "previous_stack": "at RobotSavaslari.Gameplay.Tests.ArenaRobotPlayModeTests+<KeyboardDrivesTheRobotAndSpaceSwingsTheWeapon>d__9.MoveNext () [0x00192] in C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena\\Assets\\Tests\\Gameplay\\PlayMode\\ArenaRobotPlayModeTests.cs:79\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\\Library\\PackageCache\\com.unity.test-framework@76560ee600cb\\UnityEngine.TestRunner\\NUnitExtensions\\Attributes\\TestEnumerator.cs:44\n",
+    "category": "incorrect_test_observation",
+    "diagnosis": "The drive-and-attack loop exited at first damage although the weapon already reached at 2.2m centre separation. It measured displacement before a driving interval, sampled WeaponActive before FixedUpdate and spinner rotation before LateUpdate. Ram damage could end the loop too.",
+    "fix": "Measure W motion over25 actual physics steps at6m separation; then exercise Space alone, observe Started and TargetHit independently and wait within3s for weapon hit and actual spinner rotation. Original0.2m and0.1degree assertions retained; real weapon-hit assertion added.",
+    "group_before": "gameplay-preserved-runner",
+    "final": {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "result": "Passed",
+      "duration": "4.014544",
+      "package": "playmode",
+      "xml": "final-playmode.xml"
+    },
+    "before_single": {
+      "result": "Failed",
+      "message": "  W drives forward\n  Expected: greater than 0.200000003f\n  But was:  2.17606242E-07f\n",
+      "stack": "at RobotSavaslari.Gameplay.Tests.ArenaRobotPlayModeTests+<KeyboardDrivesTheRobotAndSpaceSwingsTheWeapon>d__9.MoveNext () [0x00192] in C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena\\Assets\\Tests\\Gameplay\\PlayMode\\ArenaRobotPlayModeTests.cs:79\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\\Library\\PackageCache\\com.unity.test-framework@76560ee600cb\\UnityEngine.TestRunner\\NUnitExtensions\\Attributes\\TestEnumerator.cs:44\n",
+      "xml": "verification-20261118/before-single-02.xml"
+    },
+    "conditions": {
+      "scene": "MainArena, except DrivingRig and modular preview use existing isolated helper",
+      "unity": "6000.4.4f1",
+      "windows_display_dpi": 1.5,
+      "baseline_batch": "-batchmode -nographics",
+      "final_batch": "-batchmode (graphics enabled for native GUIView)",
+      "personal_data": "fresh Nov18 backup; restored after final checks",
+      "randomness": "UI/geometry deterministic; bot seeds740/741/123 separate suite"
+    },
+    "after_focused": {
+      "result": "Passed",
+      "xml": "verification-20261118/focused-final.xml"
+    },
+    "preliminary_full_playmode": {
+      "source": "f9713e0 with production-scene reserialization (diagnostic only)",
+      "result": "Passed",
+      "xml": "pre-isolation-f9713e0/final-playmode.xml"
+    },
+    "current_line": 60,
+    "after_single": {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "result": "Passed",
+      "xml": "final-single-02.xml"
+    },
+    "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364"
+  },
+  {
+    "name": "RobotSavaslari.Gameplay.Tests.ArenaRobotPlayModeTests.RobotsAreKeptInsideTheArenaWalls",
+    "source": "RobotArena/Assets/Tests/Gameplay/PlayMode/ArenaRobotPlayModeTests.cs",
+    "line": 113,
+    "previous_error": "  Expected: less than 5.88999987f\n  But was:  6.74808407f\n",
+    "previous_stack": "at RobotSavaslari.Gameplay.Tests.ArenaRobotPlayModeTests+<RobotsAreKeptInsideTheArenaWalls>d__11.MoveNext () [0x000d0] in C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena\\Assets\\Tests\\Gameplay\\PlayMode\\ArenaRobotPlayModeTests.cs:121\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\\Library\\PackageCache\\com.unity.test-framework@76560ee600cb\\UnityEngine.TestRunner\\NUnitExtensions\\Attributes\\TestEnumerator.cs:44\n",
+    "category": "obsolete_contract",
+    "diagnosis": "Assertions used obsolete inner half extents 5.91/4.91 (old 12x10 m arena). MainArena now has 8x8 visible cells, cell size 2m, half extents8m and inner half extents7.81m.",
+    "fix": "Assert GridSize 8x8 and CellSize2m, then robot centre clamp from ArenaBounds.CenterLimits(actual footprint); camera safety from ArenaBounds.InnerHalfExtents plus real collider overlap/linecast checks.",
+    "group_before": "gameplay-preserved-runner",
+    "final": {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "result": "Passed",
+      "duration": "3.294080",
+      "package": "playmode",
+      "xml": "final-playmode.xml"
+    },
+    "before_single": {
+      "result": "Failed",
+      "message": "  Expected: less than 5.88999987f\n  But was:  6.74808407f\n",
+      "stack": "at RobotSavaslari.Gameplay.Tests.ArenaRobotPlayModeTests+<RobotsAreKeptInsideTheArenaWalls>d__11.MoveNext () [0x000d0] in C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena\\Assets\\Tests\\Gameplay\\PlayMode\\ArenaRobotPlayModeTests.cs:121\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\\Library\\PackageCache\\com.unity.test-framework@76560ee600cb\\UnityEngine.TestRunner\\NUnitExtensions\\Attributes\\TestEnumerator.cs:44\n",
+      "xml": "verification-20261118/before-single-03.xml"
+    },
+    "conditions": {
+      "scene": "MainArena, except DrivingRig and modular preview use existing isolated helper",
+      "unity": "6000.4.4f1",
+      "windows_display_dpi": 1.5,
+      "baseline_batch": "-batchmode -nographics",
+      "final_batch": "-batchmode (graphics enabled for native GUIView)",
+      "personal_data": "fresh Nov18 backup; restored after final checks",
+      "randomness": "UI/geometry deterministic; bot seeds740/741/123 separate suite"
+    },
+    "after_focused": {
+      "result": "Passed",
+      "xml": "verification-20261118/focused-final.xml"
+    },
+    "preliminary_full_playmode": {
+      "source": "f9713e0 with production-scene reserialization (diagnostic only)",
+      "result": "Passed",
+      "xml": "pre-isolation-f9713e0/final-playmode.xml"
+    },
+    "current_line": 137,
+    "after_single": {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "result": "Passed",
+      "xml": "final-single-03.xml"
+    },
+    "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364"
+  },
+  {
+    "name": "RobotSavaslari.Gameplay.Tests.DrivingRigPlayModeTests.ButtonsResetAndAdvanceAndToggleControl",
+    "source": "RobotArena/Assets/Tests/Gameplay/PlayMode/DrivingRigPlayModeTests.cs",
+    "line": 143,
+    "previous_error": "  next route button\n  Expected: <Viraj (RobotSavaslari.Driving.RouteCourse)>\n  But was:  <Duz (RobotSavaslari.Driving.RouteCourse)>\n",
+    "previous_stack": "at RobotSavaslari.Gameplay.Tests.DrivingRigPlayModeTests+<ButtonsResetAndAdvanceAndToggleControl>d__15.MoveNext () [0x0007b] in C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena\\Assets\\Tests\\Gameplay\\PlayMode\\DrivingRigPlayModeTests.cs:149\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\\Library\\PackageCache\\com.unity.test-framework@76560ee600cb\\UnityEngine.TestRunner\\NUnitExtensions\\Attributes\\TestEnumerator.cs:44\n",
+    "category": "gui_test_harness",
+    "diagnosis": "Native IMGUI mouse state was not initialized by the reflection container. Each event also received a new ObjectGUIState, losing gesture state. The native Editor view uses Windows display points (DPI 1.5), whereas the arena uses game pixels.",
+    "fix": "ImmediateGui sends Layout/Repaint/MouseDown/MouseUp through one disposable native GUIView per gesture; preserves the native control state, converts game pixels to Editor display points and uses a matching parent clip; restores DPI/matrix. GUI tests require graphics, so final PlayMode omits -nographics. No button action is called directly.",
+    "group_before": "gameplay-preserved-runner",
+    "final": {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "result": "Passed",
+      "duration": "0.053380",
+      "package": "playmode",
+      "xml": "final-playmode.xml"
+    },
+    "before_single": {
+      "result": "Failed",
+      "message": "  next route button\n  Expected: <Viraj (RobotSavaslari.Driving.RouteCourse)>\n  But was:  <Duz (RobotSavaslari.Driving.RouteCourse)>\n",
+      "stack": "at RobotSavaslari.Gameplay.Tests.DrivingRigPlayModeTests+<ButtonsResetAndAdvanceAndToggleControl>d__15.MoveNext () [0x0007b] in C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena\\Assets\\Tests\\Gameplay\\PlayMode\\DrivingRigPlayModeTests.cs:149\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\\Library\\PackageCache\\com.unity.test-framework@76560ee600cb\\UnityEngine.TestRunner\\NUnitExtensions\\Attributes\\TestEnumerator.cs:44\n",
+      "xml": "verification-20261118/before-single-04.xml"
+    },
+    "conditions": {
+      "scene": "MainArena, except DrivingRig and modular preview use existing isolated helper",
+      "unity": "6000.4.4f1",
+      "windows_display_dpi": 1.5,
+      "baseline_batch": "-batchmode -nographics",
+      "final_batch": "-batchmode (graphics enabled for native GUIView)",
+      "personal_data": "fresh Nov18 backup; restored after final checks",
+      "randomness": "UI/geometry deterministic; bot seeds740/741/123 separate suite"
+    },
+    "after_focused": {
+      "result": "Passed",
+      "xml": "verification-20261118/focused-final.xml"
+    },
+    "preliminary_full_playmode": {
+      "source": "f9713e0 with production-scene reserialization (diagnostic only)",
+      "result": "Passed",
+      "xml": "pre-isolation-f9713e0/final-playmode.xml"
+    },
+    "current_line": 143,
+    "after_single": {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "result": "Passed",
+      "xml": "final-single-04.xml"
+    },
+    "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364"
+  },
+  {
+    "name": "RobotSavaslari.Gameplay.Tests.DrivingRigPlayModeTests.CollisionIsReportedWithSpeedAngleAndResidual",
+    "source": "RobotArena/Assets/Tests/Gameplay/PlayMode/DrivingRigPlayModeTests.cs",
+    "line": 198,
+    "previous_error": "  String lengths are both 5. Strings differ at index 0.\n  Expected: \"Duvar\"\n  But was:  \"Floor\"\n  -----------^\n",
+    "previous_stack": "at RobotSavaslari.Gameplay.Tests.DrivingRigPlayModeTests+<CollisionIsReportedWithSpeedAngleAndResidual>d__18.MoveNext () [0x001bb] in C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena\\Assets\\Tests\\Gameplay\\PlayMode\\DrivingRigPlayModeTests.cs:214\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\\Library\\PackageCache\\com.unity.test-framework@76560ee600cb\\UnityEngine.TestRunner\\NUnitExtensions\\Attributes\\TestEnumerator.cs:44\n",
+    "category": "production_collision_report",
+    "diagnosis": "CollisionReporter used horizontal relative speed even for floor contacts, projected the vertical floor normal to zero and still accepted it as a head-on obstacle impact.",
+    "fix": "Require a lateral contact normal before recording an obstacle impact; clear pending residual sampling on Clear. Existing real-wall speed/angle test retained; new landing-at-speed regression asserts floor never becomes a wall report.",
+    "group_before": "gameplay-preserved-runner",
+    "final": {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "result": "Passed",
+      "duration": "0.809235",
+      "package": "playmode",
+      "xml": "final-playmode.xml"
+    },
+    "before_single": {
+      "result": "Failed",
+      "message": "  String lengths are both 5. Strings differ at index 0.\n  Expected: \"Duvar\"\n  But was:  \"Floor\"\n  -----------^\n",
+      "stack": "at RobotSavaslari.Gameplay.Tests.DrivingRigPlayModeTests+<CollisionIsReportedWithSpeedAngleAndResidual>d__18.MoveNext () [0x001bb] in C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena\\Assets\\Tests\\Gameplay\\PlayMode\\DrivingRigPlayModeTests.cs:214\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\\Library\\PackageCache\\com.unity.test-framework@76560ee600cb\\UnityEngine.TestRunner\\NUnitExtensions\\Attributes\\TestEnumerator.cs:44\n",
+      "xml": "verification-20261118/before-single-05.xml"
+    },
+    "conditions": {
+      "scene": "MainArena, except DrivingRig and modular preview use existing isolated helper",
+      "unity": "6000.4.4f1",
+      "windows_display_dpi": 1.5,
+      "baseline_batch": "-batchmode -nographics",
+      "final_batch": "-batchmode (graphics enabled for native GUIView)",
+      "personal_data": "fresh Nov18 backup; restored after final checks",
+      "randomness": "UI/geometry deterministic; bot seeds740/741/123 separate suite"
+    },
+    "after_focused": {
+      "result": "Passed",
+      "xml": "verification-20261118/focused-final.xml"
+    },
+    "preliminary_full_playmode": {
+      "source": "f9713e0 with production-scene reserialization (diagnostic only)",
+      "result": "Passed",
+      "xml": "pre-isolation-f9713e0/final-playmode.xml"
+    },
+    "current_line": 198,
+    "after_single": {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "result": "Passed",
+      "xml": "final-single-05.xml"
+    },
+    "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364"
+  },
+  {
+    "name": "RobotSavaslari.Gameplay.Tests.MenuAndSettingsPlayModeTests.MenuButtonsStartAndOpenSettings",
+    "source": "RobotArena/Assets/Tests/Gameplay/PlayMode/MenuAndSettingsPlayModeTests.cs",
+    "line": 79,
+    "previous_error": "  Ayarlar button\n  Expected: True\n  But was:  False\n",
+    "previous_stack": "at RobotSavaslari.Gameplay.Tests.MenuAndSettingsPlayModeTests+<MenuButtonsStartAndOpenSettings>d__15.MoveNext () [0x00098] in C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena\\Assets\\Tests\\Gameplay\\PlayMode\\MenuAndSettingsPlayModeTests.cs:85\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\\Library\\PackageCache\\com.unity.test-framework@76560ee600cb\\UnityEngine.TestRunner\\NUnitExtensions\\Attributes\\TestEnumerator.cs:44\n",
+    "category": "gui_test_harness",
+    "diagnosis": "Native IMGUI mouse state was not initialized by the reflection container. Each event also received a new ObjectGUIState, losing gesture state. The native Editor view uses Windows display points (DPI 1.5), whereas the arena uses game pixels.",
+    "fix": "ImmediateGui sends Layout/Repaint/MouseDown/MouseUp through one disposable native GUIView per gesture; preserves the native control state, converts game pixels to Editor display points and uses a matching parent clip; restores DPI/matrix. GUI tests require graphics, so final PlayMode omits -nographics. No button action is called directly.",
+    "group_before": "gameplay-preserved-runner",
+    "final": {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "result": "Passed",
+      "duration": "9.337627",
+      "package": "playmode",
+      "xml": "final-playmode.xml"
+    },
+    "before_single": {
+      "result": "Failed",
+      "message": "  Ayarlar button\n  Expected: True\n  But was:  False\n",
+      "stack": "at RobotSavaslari.Gameplay.Tests.MenuAndSettingsPlayModeTests+<MenuButtonsStartAndOpenSettings>d__15.MoveNext () [0x00098] in C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena\\Assets\\Tests\\Gameplay\\PlayMode\\MenuAndSettingsPlayModeTests.cs:85\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\\Library\\PackageCache\\com.unity.test-framework@76560ee600cb\\UnityEngine.TestRunner\\NUnitExtensions\\Attributes\\TestEnumerator.cs:44\n",
+      "xml": "verification-20261118/before-single-06.xml"
+    },
+    "conditions": {
+      "scene": "MainArena, except DrivingRig and modular preview use existing isolated helper",
+      "unity": "6000.4.4f1",
+      "windows_display_dpi": 1.5,
+      "baseline_batch": "-batchmode -nographics",
+      "final_batch": "-batchmode (graphics enabled for native GUIView)",
+      "personal_data": "fresh Nov18 backup; restored after final checks",
+      "randomness": "UI/geometry deterministic; bot seeds740/741/123 separate suite"
+    },
+    "after_focused": {
+      "result": "Passed",
+      "xml": "verification-20261118/focused-final.xml"
+    },
+    "preliminary_full_playmode": {
+      "source": "f9713e0 with production-scene reserialization (diagnostic only)",
+      "result": "Passed",
+      "xml": "pre-isolation-f9713e0/final-playmode.xml"
+    },
+    "current_line": 79,
+    "after_single": {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "result": "Passed",
+      "xml": "final-single-06.xml"
+    },
+    "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364"
+  },
+  {
+    "name": "RobotSavaslari.Gameplay.Tests.MenuAndSettingsPlayModeTests.SettingsPanelControlsChangeAndSaveValues",
+    "source": "RobotArena/Assets/Tests/Gameplay/PlayMode/MenuAndSettingsPlayModeTests.cs",
+    "line": 118,
+    "previous_error": "  fullscreen toggle\n  Expected: not equal to False\n  But was:  False\n",
+    "previous_stack": "at RobotSavaslari.Gameplay.Tests.MenuAndSettingsPlayModeTests+<SettingsPanelControlsChangeAndSaveValues>d__16.MoveNext () [0x000a9] in C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena\\Assets\\Tests\\Gameplay\\PlayMode\\MenuAndSettingsPlayModeTests.cs:131\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\\Library\\PackageCache\\com.unity.test-framework@76560ee600cb\\UnityEngine.TestRunner\\NUnitExtensions\\Attributes\\TestEnumerator.cs:44\n",
+    "category": "gui_test_harness",
+    "diagnosis": "Native IMGUI mouse state was not initialized by the reflection container. Each event also received a new ObjectGUIState, losing gesture state. The native Editor view uses Windows display points (DPI 1.5), whereas the arena uses game pixels.",
+    "fix": "ImmediateGui sends Layout/Repaint/MouseDown/MouseUp through one disposable native GUIView per gesture; preserves the native control state, converts game pixels to Editor display points and uses a matching parent clip; restores DPI/matrix. GUI tests require graphics, so final PlayMode omits -nographics. No button action is called directly.",
+    "group_before": "gameplay-preserved-runner",
+    "final": {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "result": "Passed",
+      "duration": "0.509762",
+      "package": "playmode",
+      "xml": "final-playmode.xml"
+    },
+    "before_single": {
+      "result": "Failed",
+      "message": "  fullscreen toggle\n  Expected: not equal to False\n  But was:  False\n",
+      "stack": "at RobotSavaslari.Gameplay.Tests.MenuAndSettingsPlayModeTests+<SettingsPanelControlsChangeAndSaveValues>d__16.MoveNext () [0x000a9] in C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena\\Assets\\Tests\\Gameplay\\PlayMode\\MenuAndSettingsPlayModeTests.cs:131\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\\Library\\PackageCache\\com.unity.test-framework@76560ee600cb\\UnityEngine.TestRunner\\NUnitExtensions\\Attributes\\TestEnumerator.cs:44\n",
+      "xml": "verification-20261118/before-single-07.xml"
+    },
+    "conditions": {
+      "scene": "MainArena, except DrivingRig and modular preview use existing isolated helper",
+      "unity": "6000.4.4f1",
+      "windows_display_dpi": 1.5,
+      "baseline_batch": "-batchmode -nographics",
+      "final_batch": "-batchmode (graphics enabled for native GUIView)",
+      "personal_data": "fresh Nov18 backup; restored after final checks",
+      "randomness": "UI/geometry deterministic; bot seeds740/741/123 separate suite"
+    },
+    "after_focused": {
+      "result": "Passed",
+      "xml": "verification-20261118/focused-final.xml"
+    },
+    "preliminary_full_playmode": {
+      "source": "f9713e0 with production-scene reserialization (diagnostic only)",
+      "result": "Passed",
+      "xml": "pre-isolation-f9713e0/final-playmode.xml"
+    },
+    "current_line": 118,
+    "after_single": {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "result": "Passed",
+      "xml": "final-single-07.xml"
+    },
+    "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364"
+  },
+  {
+    "name": "RobotSavaslari.Gameplay.Tests.PresentationScreensPlayModeTests.CameraButtonsToggleModeAndResetTheView",
+    "source": "RobotArena/Assets/Tests/Gameplay/PlayMode/PresentationScreensPlayModeTests.cs",
+    "line": 50,
+    "previous_error": "  mode button\n  Expected: Duel\n  But was:  Follow\n",
+    "previous_stack": "at RobotSavaslari.Gameplay.Tests.PresentationScreensPlayModeTests+<CameraButtonsToggleModeAndResetTheView>d__13.MoveNext () [0x0009b] in C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena\\Assets\\Tests\\Gameplay\\PlayMode\\PresentationScreensPlayModeTests.cs:56\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\\Library\\PackageCache\\com.unity.test-framework@76560ee600cb\\UnityEngine.TestRunner\\NUnitExtensions\\Attributes\\TestEnumerator.cs:44\n",
+    "category": "gui_test_harness",
+    "diagnosis": "Native IMGUI mouse state was not initialized by the reflection container. Each event also received a new ObjectGUIState, losing gesture state. The native Editor view uses Windows display points (DPI 1.5), whereas the arena uses game pixels.",
+    "fix": "ImmediateGui sends Layout/Repaint/MouseDown/MouseUp through one disposable native GUIView per gesture; preserves the native control state, converts game pixels to Editor display points and uses a matching parent clip; restores DPI/matrix. GUI tests require graphics, so final PlayMode omits -nographics. No button action is called directly.",
+    "group_before": "gameplay-preserved-runner",
+    "final": {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "result": "Passed",
+      "duration": "3.365081",
+      "package": "playmode",
+      "xml": "final-playmode.xml"
+    },
+    "before_single": {
+      "result": "Failed",
+      "message": "  mode button\n  Expected: Duel\n  But was:  Follow\n",
+      "stack": "at RobotSavaslari.Gameplay.Tests.PresentationScreensPlayModeTests+<CameraButtonsToggleModeAndResetTheView>d__13.MoveNext () [0x0009b] in C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena\\Assets\\Tests\\Gameplay\\PlayMode\\PresentationScreensPlayModeTests.cs:56\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\\Library\\PackageCache\\com.unity.test-framework@76560ee600cb\\UnityEngine.TestRunner\\NUnitExtensions\\Attributes\\TestEnumerator.cs:44\n",
+      "xml": "verification-20261118/before-single-08.xml"
+    },
+    "conditions": {
+      "scene": "MainArena, except DrivingRig and modular preview use existing isolated helper",
+      "unity": "6000.4.4f1",
+      "windows_display_dpi": 1.5,
+      "baseline_batch": "-batchmode -nographics",
+      "final_batch": "-batchmode (graphics enabled for native GUIView)",
+      "personal_data": "fresh Nov18 backup; restored after final checks",
+      "randomness": "UI/geometry deterministic; bot seeds740/741/123 separate suite"
+    },
+    "after_focused": {
+      "result": "Passed",
+      "xml": "verification-20261118/focused-final.xml"
+    },
+    "preliminary_full_playmode": {
+      "source": "f9713e0 with production-scene reserialization (diagnostic only)",
+      "result": "Passed",
+      "xml": "pre-isolation-f9713e0/final-playmode.xml"
+    },
+    "current_line": 50,
+    "after_single": {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "result": "Passed",
+      "xml": "final-single-08.xml"
+    },
+    "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364"
+  },
+  {
+    "name": "RobotSavaslari.Gameplay.Tests.PresentationScreensPlayModeTests.InspectionPanelButtonsHideTheInterfaceAndExit",
+    "source": "RobotArena/Assets/Tests/Gameplay/PlayMode/PresentationScreensPlayModeTests.cs",
+    "line": 109,
+    "previous_error": "  hide interface button\n  Expected: True\n  But was:  False\n",
+    "previous_stack": "at RobotSavaslari.Gameplay.Tests.PresentationScreensPlayModeTests+<InspectionPanelButtonsHideTheInterfaceAndExit>d__15.MoveNext () [0x0012b] in C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena\\Assets\\Tests\\Gameplay\\PlayMode\\PresentationScreensPlayModeTests.cs:121\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\\Library\\PackageCache\\com.unity.test-framework@76560ee600cb\\UnityEngine.TestRunner\\NUnitExtensions\\Attributes\\TestEnumerator.cs:44\n",
+    "category": "gui_test_harness",
+    "diagnosis": "Native IMGUI mouse state was not initialized by the reflection container. Each event also received a new ObjectGUIState, losing gesture state. The native Editor view uses Windows display points (DPI 1.5), whereas the arena uses game pixels.",
+    "fix": "ImmediateGui sends Layout/Repaint/MouseDown/MouseUp through one disposable native GUIView per gesture; preserves the native control state, converts game pixels to Editor display points and uses a matching parent clip; restores DPI/matrix. GUI tests require graphics, so final PlayMode omits -nographics. No button action is called directly.",
+    "group_before": "gameplay-preserved-runner",
+    "final": {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "result": "Passed",
+      "duration": "3.876544",
+      "package": "playmode",
+      "xml": "final-playmode.xml"
+    },
+    "before_single": {
+      "result": "Failed",
+      "message": "  hide interface button\n  Expected: True\n  But was:  False\n",
+      "stack": "at RobotSavaslari.Gameplay.Tests.PresentationScreensPlayModeTests+<InspectionPanelButtonsHideTheInterfaceAndExit>d__15.MoveNext () [0x0012b] in C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena\\Assets\\Tests\\Gameplay\\PlayMode\\PresentationScreensPlayModeTests.cs:121\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\\Library\\PackageCache\\com.unity.test-framework@76560ee600cb\\UnityEngine.TestRunner\\NUnitExtensions\\Attributes\\TestEnumerator.cs:44\n",
+      "xml": "verification-20261118/before-single-09.xml"
+    },
+    "conditions": {
+      "scene": "MainArena, except DrivingRig and modular preview use existing isolated helper",
+      "unity": "6000.4.4f1",
+      "windows_display_dpi": 1.5,
+      "baseline_batch": "-batchmode -nographics",
+      "final_batch": "-batchmode (graphics enabled for native GUIView)",
+      "personal_data": "fresh Nov18 backup; restored after final checks",
+      "randomness": "UI/geometry deterministic; bot seeds740/741/123 separate suite"
+    },
+    "after_focused": {
+      "result": "Passed",
+      "xml": "verification-20261118/focused-final.xml"
+    },
+    "preliminary_full_playmode": {
+      "source": "f9713e0 with production-scene reserialization (diagnostic only)",
+      "result": "Passed",
+      "xml": "pre-isolation-f9713e0/final-playmode.xml"
+    },
+    "current_line": 109,
+    "after_single": {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "result": "Passed",
+      "xml": "final-single-09.xml"
+    },
+    "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364"
+  },
+  {
+    "name": "RobotSavaslari.Gameplay.Tests.PresentationScreensPlayModeTests.ResultButtonsOpenReplayAndInspection",
+    "source": "RobotArena/Assets/Tests/Gameplay/PlayMode/PresentationScreensPlayModeTests.cs",
+    "line": 68,
+    "previous_error": "  Son vurusu izle\n  Expected: True\n  But was:  False\n",
+    "previous_stack": "at RobotSavaslari.Gameplay.Tests.PresentationScreensPlayModeTests+<ResultButtonsOpenReplayAndInspection>d__14.MoveNext () [0x000b2] in C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena\\Assets\\Tests\\Gameplay\\PlayMode\\PresentationScreensPlayModeTests.cs:77\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\\Library\\PackageCache\\com.unity.test-framework@76560ee600cb\\UnityEngine.TestRunner\\NUnitExtensions\\Attributes\\TestEnumerator.cs:44\n",
+    "category": "gui_test_harness",
+    "diagnosis": "Native IMGUI mouse state was not initialized by the reflection container. Each event also received a new ObjectGUIState, losing gesture state. The native Editor view uses Windows display points (DPI 1.5), whereas the arena uses game pixels.",
+    "fix": "ImmediateGui sends Layout/Repaint/MouseDown/MouseUp through one disposable native GUIView per gesture; preserves the native control state, converts game pixels to Editor display points and uses a matching parent clip; restores DPI/matrix. GUI tests require graphics, so final PlayMode omits -nographics. No button action is called directly.",
+    "group_before": "gameplay-preserved-runner",
+    "final": {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "result": "Passed",
+      "duration": "4.001784",
+      "package": "playmode",
+      "xml": "final-playmode.xml"
+    },
+    "before_single": {
+      "result": "Failed",
+      "message": "  Son vurusu izle\n  Expected: True\n  But was:  False\n",
+      "stack": "at RobotSavaslari.Gameplay.Tests.PresentationScreensPlayModeTests+<ResultButtonsOpenReplayAndInspection>d__14.MoveNext () [0x000b2] in C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena\\Assets\\Tests\\Gameplay\\PlayMode\\PresentationScreensPlayModeTests.cs:77\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\\Library\\PackageCache\\com.unity.test-framework@76560ee600cb\\UnityEngine.TestRunner\\NUnitExtensions\\Attributes\\TestEnumerator.cs:44\n",
+      "xml": "verification-20261118/before-single-10.xml"
+    },
+    "conditions": {
+      "scene": "MainArena, except DrivingRig and modular preview use existing isolated helper",
+      "unity": "6000.4.4f1",
+      "windows_display_dpi": 1.5,
+      "baseline_batch": "-batchmode -nographics",
+      "final_batch": "-batchmode (graphics enabled for native GUIView)",
+      "personal_data": "fresh Nov18 backup; restored after final checks",
+      "randomness": "UI/geometry deterministic; bot seeds740/741/123 separate suite"
+    },
+    "after_focused": {
+      "result": "Passed",
+      "xml": "verification-20261118/focused-final.xml"
+    },
+    "preliminary_full_playmode": {
+      "source": "f9713e0 with production-scene reserialization (diagnostic only)",
+      "result": "Passed",
+      "xml": "pre-isolation-f9713e0/final-playmode.xml"
+    },
+    "current_line": 68,
+    "after_single": {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "result": "Passed",
+      "xml": "final-single-10.xml"
+    },
+    "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364"
+  },
+  {
+    "name": "RobotSavaslari.Gameplay.Tests.TestHarnessPlayModeTests.ModularPreviewEquipsWeaponsAndArmour",
+    "source": "RobotArena/Assets/Tests/Gameplay/PlayMode/TestHarnessPlayModeTests.cs",
+    "line": 174,
+    "previous_error": "  rotor spins\n  Expected: greater than 0.0f\n  But was:  0.0f\n",
+    "previous_stack": "at RobotSavaslari.Gameplay.Tests.TestHarnessPlayModeTests+<ModularPreviewEquipsWeaponsAndArmour>d__6.MoveNext () [0x002f1] in C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena\\Assets\\Tests\\Gameplay\\PlayMode\\TestHarnessPlayModeTests.cs:199\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\\Library\\PackageCache\\com.unity.test-framework@76560ee600cb\\UnityEngine.TestRunner\\NUnitExtensions\\Attributes\\TestEnumerator.cs:44\n",
+    "category": "frame_count_timing",
+    "diagnosis": "Two render frames can have too little elapsed time for Quaternion.Angle to differ from zero; Update rotates160 degrees/sec and angle comparison is quantized.",
+    "fix": "Bound observation by1s and wait for a measured rotation >=1degree rather than two frames; real Update still drives the rotor. Repeat10 preserves state/fixture coverage.",
+    "group_before": "gameplay-preserved-runner",
+    "final": {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "result": "Passed",
+      "duration": "0.452343",
+      "package": "playmode",
+      "xml": "final-playmode.xml"
+    },
+    "before_single": {
+      "result": "Passed",
+      "message": null,
+      "stack": null,
+      "xml": "verification-20261118/before-single-11.xml"
+    },
+    "conditions": {
+      "scene": "MainArena, except DrivingRig and modular preview use existing isolated helper",
+      "unity": "6000.4.4f1",
+      "windows_display_dpi": 1.5,
+      "baseline_batch": "-batchmode -nographics",
+      "final_batch": "-batchmode (graphics enabled for native GUIView)",
+      "personal_data": "fresh Nov18 backup; restored after final checks",
+      "randomness": "UI/geometry deterministic; bot seeds740/741/123 separate suite"
+    },
+    "after_focused": {
+      "result": "Passed",
+      "xml": "verification-20261118/focused-final.xml"
+    },
+    "preliminary_full_playmode": {
+      "source": "f9713e0 with production-scene reserialization (diagnostic only)",
+      "result": "Passed",
+      "xml": "pre-isolation-f9713e0/final-playmode.xml"
+    },
+    "current_line": 198,
+    "after_single": {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "result": "Passed",
+      "xml": "final-single-11.xml"
+    },
+    "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364"
+  },
+  {
+    "name": "RobotSavaslari.Presentation.Tests.CombatCameraPlayModeTests.StaysAboveFloorAndInsideWallsAtEveryCorner",
+    "source": "RobotArena/Assets/Tests/Presentation/PlayMode/CombatCameraPlayModeTests.cs",
+    "line": 115,
+    "previous_error": "  corner (4.80, 3.80) distance 16: behind east/west wall\n  Expected: less than 5.90999985f\n  But was:  7.48456478f\n",
+    "previous_stack": "at RobotSavaslari.Presentation.Tests.MainArenaTestScene.AssertCameraClear (System.String label) [0x00136] in C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena\\Assets\\Tests\\Presentation\\PlayMode\\MainArenaTestScene.cs:105\nat RobotSavaslari.Presentation.Tests.CombatCameraPlayModeTests+<StaysAboveFloorAndInsideWallsAtEveryCorner>d__11.MoveNext () [0x001a8] in C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena\\Assets\\Tests\\Presentation\\PlayMode\\CombatCameraPlayModeTests.cs:128\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\\Library\\PackageCache\\com.unity.test-framework@76560ee600cb\\UnityEngine.TestRunner\\NUnitExtensions\\Attributes\\TestEnumerator.cs:44\n",
+    "category": "obsolete_contract",
+    "diagnosis": "Assertions used obsolete inner half extents 5.91/4.91 (old 12x10 m arena). MainArena now has 8x8 visible cells, cell size 2m, half extents8m and inner half extents7.81m.",
+    "fix": "Assert GridSize 8x8 and CellSize2m, then robot centre clamp from ArenaBounds.CenterLimits(actual footprint); camera safety from ArenaBounds.InnerHalfExtents plus real collider overlap/linecast checks.",
+    "group_before": "RobotSavaslari.Presentation.PlayModeTests",
+    "final": {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "result": "Passed",
+      "duration": "9.908293",
+      "package": "playmode",
+      "xml": "final-playmode.xml"
+    },
+    "before_single": {
+      "result": "Failed",
+      "message": "  corner (4.80, 3.80) distance 16: behind east/west wall\n  Expected: less than 5.90999985f\n  But was:  7.48456478f\n",
+      "stack": "at RobotSavaslari.Presentation.Tests.MainArenaTestScene.AssertCameraClear (System.String label) [0x00136] in C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena\\Assets\\Tests\\Presentation\\PlayMode\\MainArenaTestScene.cs:105\nat RobotSavaslari.Presentation.Tests.CombatCameraPlayModeTests+<StaysAboveFloorAndInsideWallsAtEveryCorner>d__11.MoveNext () [0x001a8] in C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena\\Assets\\Tests\\Presentation\\PlayMode\\CombatCameraPlayModeTests.cs:128\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\\Library\\PackageCache\\com.unity.test-framework@76560ee600cb\\UnityEngine.TestRunner\\NUnitExtensions\\Attributes\\TestEnumerator.cs:44\n",
+      "xml": "verification-20261118/before-single-12.xml"
+    },
+    "conditions": {
+      "scene": "MainArena, except DrivingRig and modular preview use existing isolated helper",
+      "unity": "6000.4.4f1",
+      "windows_display_dpi": 1.5,
+      "baseline_batch": "-batchmode -nographics",
+      "final_batch": "-batchmode (graphics enabled for native GUIView)",
+      "personal_data": "fresh Nov18 backup; restored after final checks",
+      "randomness": "UI/geometry deterministic; bot seeds740/741/123 separate suite"
+    },
+    "after_focused": {
+      "result": "Passed",
+      "xml": "verification-20261118/focused-final.xml"
+    },
+    "preliminary_full_playmode": {
+      "source": "f9713e0 with production-scene reserialization (diagnostic only)",
+      "result": "Passed",
+      "xml": "pre-isolation-f9713e0/final-playmode.xml"
+    },
+    "current_line": 115,
+    "after_single": {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "result": "Passed",
+      "xml": "final-single-12.xml"
+    },
+    "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364"
+  },
+  {
+    "name": "RobotSavaslari.Presentation.Tests.DuelCameraPlayModeTests.FramesOnlyTheMatchRobotsNotDebris",
+    "source": "RobotArena/Assets/Tests/Presentation/PlayMode/DuelCameraPlayModeTests.cs",
+    "line": 137,
+    "previous_error": "  Expected: 7.06084633f +/- 0.0500000007f\n  But was:  6.94207764f\n",
+    "previous_stack": "at RobotSavaslari.Presentation.Tests.DuelCameraPlayModeTests+<FramesOnlyTheMatchRobotsNotDebris>d__13.MoveNext () [0x001a3] in C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena\\Assets\\Tests\\Presentation\\PlayMode\\DuelCameraPlayModeTests.cs:155\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\\Library\\PackageCache\\com.unity.test-framework@76560ee600cb\\UnityEngine.TestRunner\\NUnitExtensions\\Attributes\\TestEnumerator.cs:44\n",
+    "category": "unsettled_camera_baseline",
+    "diagnosis": "A fixed1s real-time delay does not prove camera smoothing has settled. Repeated original code failed on iteration5:7.04979181 ->6.94058752 (same failure pattern as original7.060846 ->6.942077). Camera caps each smoothing timestep so startup/frame hitches can leave residual movement.",
+    "fix": "Wait for observed pivot and distance stability (.005m over.2s, bounded by4s) before adding unrelated debris. Keep original.05m no-debris-effect tolerance. Repeat10.",
+    "group_before": "RobotSavaslari.Presentation.PlayModeTests",
+    "final": {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "result": "Passed",
+      "duration": "10.025818",
+      "package": "playmode",
+      "xml": "final-playmode.xml"
+    },
+    "before_single": {
+      "result": "Passed",
+      "message": null,
+      "stack": null,
+      "xml": "verification-20261118/before-single-13.xml"
+    },
+    "conditions": {
+      "scene": "MainArena, except DrivingRig and modular preview use existing isolated helper",
+      "unity": "6000.4.4f1",
+      "windows_display_dpi": 1.5,
+      "baseline_batch": "-batchmode -nographics",
+      "final_batch": "-batchmode (graphics enabled for native GUIView)",
+      "personal_data": "fresh Nov18 backup; restored after final checks",
+      "randomness": "UI/geometry deterministic; bot seeds740/741/123 separate suite"
+    },
+    "after_focused": {
+      "result": "Passed",
+      "xml": "verification-20261118/focused-final.xml"
+    },
+    "preliminary_full_playmode": {
+      "source": "f9713e0 with production-scene reserialization (diagnostic only)",
+      "result": "Passed",
+      "xml": "pre-isolation-f9713e0/final-playmode.xml"
+    },
+    "current_line": 155,
+    "after_single": {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "result": "Passed",
+      "xml": "final-single-13.xml"
+    },
+    "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364"
+  },
+  {
+    "name": "RobotSavaslari.Presentation.Tests.PostMatchInspectionPlayModeTests.InspectionShowsTheFinalDamageWithoutSideEffects",
+    "source": "RobotArena/Assets/Tests/Presentation/PlayMode/PostMatchInspectionPlayModeTests.cs",
+    "line": 69,
+    "previous_error": "  player not moved\n  Expected: less than 9.99999975E-05f\n  But was:  0.327646941f\n",
+    "previous_stack": "at RobotSavaslari.Presentation.Tests.PostMatchInspectionPlayModeTests+<InspectionShowsTheFinalDamageWithoutSideEffects>d__13.MoveNext () [0x00990] in C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena\\Assets\\Tests\\Presentation\\PlayMode\\PostMatchInspectionPlayModeTests.cs:173\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\\Library\\PackageCache\\com.unity.test-framework@76560ee600cb\\UnityEngine.TestRunner\\NUnitExtensions\\Attributes\\TestEnumerator.cs:44\n",
+    "category": "fixture_interpolation_history",
+    "diagnosis": "The scripted fixture teleported a kinematic Rigidbody while retaining Interpolate history. Original repeated code failed on iteration3:body remained(-4.5,.82,-3.5), but rendered transform became(-4.672885,.82,-2.635575), drift.881544m. Inspection did not move the physical body.",
+    "fix": "Disable physics interpolation for explicitly frozen/scripted fixture bodies before teleporting. Production physics/inspection unchanged; strict1e-4m no-side-effect assertions retained. Repeat10.",
+    "group_before": "RobotSavaslari.Presentation.PlayModeTests",
+    "final": {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "result": "Passed",
+      "duration": "33.090475",
+      "package": "playmode",
+      "xml": "final-playmode.xml"
+    },
+    "before_single": {
+      "result": "Passed",
+      "message": null,
+      "stack": null,
+      "xml": "verification-20261118/before-single-14.xml"
+    },
+    "conditions": {
+      "scene": "MainArena, except DrivingRig and modular preview use existing isolated helper",
+      "unity": "6000.4.4f1",
+      "windows_display_dpi": 1.5,
+      "baseline_batch": "-batchmode -nographics",
+      "final_batch": "-batchmode (graphics enabled for native GUIView)",
+      "personal_data": "fresh Nov18 backup; restored after final checks",
+      "randomness": "UI/geometry deterministic; bot seeds740/741/123 separate suite"
+    },
+    "after_focused": {
+      "result": "Passed",
+      "xml": "verification-20261118/focused-final.xml"
+    },
+    "preliminary_full_playmode": {
+      "source": "f9713e0 with production-scene reserialization (diagnostic only)",
+      "result": "Passed",
+      "xml": "pre-isolation-f9713e0/final-playmode.xml"
+    },
+    "current_line": 69,
+    "after_single": {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "result": "Passed",
+      "xml": "final-single-14.xml"
+    },
+    "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364"
+  }
+]

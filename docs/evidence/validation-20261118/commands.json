@@ -1,0 +1,536 @@
+{
+  "test_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+  "unity": "6000.4.4f1",
+  "evidence": "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118",
+  "steps": [
+    {
+      "name": "final-editmode",
+      "executable": "C:\\Program Files\\Unity\\Hub\\Editor\\6000.4.4f1\\Editor\\Unity.exe",
+      "arguments": [
+        "-batchmode",
+        "-nographics",
+        "-projectPath",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena",
+        "-runTests",
+        "-testPlatform",
+        "EditMode",
+        "-testResults",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-editmode.xml",
+        "-logFile",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-editmode.log"
+      ],
+      "timeout_seconds": 1200,
+      "test_results": "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-editmode.xml"
+    },
+    {
+      "name": "final-playmode",
+      "executable": "C:\\Program Files\\Unity\\Hub\\Editor\\6000.4.4f1\\Editor\\Unity.exe",
+      "arguments": [
+        "-batchmode",
+        "-projectPath",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena",
+        "-runTests",
+        "-testPlatform",
+        "PlayMode",
+        "-testResults",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-playmode.xml",
+        "-logFile",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-playmode.log"
+      ],
+      "timeout_seconds": 1200,
+      "test_results": "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-playmode.xml"
+    },
+    {
+      "name": "final-build",
+      "executable": "C:\\Program Files\\Unity\\Hub\\Editor\\6000.4.4f1\\Editor\\Unity.exe",
+      "arguments": [
+        "-batchmode",
+        "-quit",
+        "-projectPath",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena",
+        "-executeMethod",
+        "RobotSavaslari.Editor.BuildWindowsPlayer.Build",
+        "-logFile",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-build.log"
+      ],
+      "timeout_seconds": 300
+    },
+    {
+      "name": "final-bot-scenarios",
+      "executable": "C:\\Program Files\\Unity\\Hub\\Editor\\6000.4.4f1\\Editor\\Unity.exe",
+      "arguments": [
+        "-batchmode",
+        "-projectPath",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena",
+        "-executeMethod",
+        "RobotSavaslari.Editor.GameplayRegressionBatch.RunBotScenarios",
+        "-logFile",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-bot-scenarios.log"
+      ],
+      "timeout_seconds": 300
+    },
+    {
+      "name": "final-bot-combat",
+      "executable": "C:\\Program Files\\Unity\\Hub\\Editor\\6000.4.4f1\\Editor\\Unity.exe",
+      "arguments": [
+        "-batchmode",
+        "-projectPath",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena",
+        "-executeMethod",
+        "RobotSavaslari.Editor.GameplayRegressionBatch.RunCombatRegressions",
+        "-logFile",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-bot-combat.log"
+      ],
+      "timeout_seconds": 300
+    },
+    {
+      "name": "final-bot-original",
+      "executable": "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena\\Builds\\Windows\\RobotSavaslari.exe",
+      "arguments": [
+        "-batchmode",
+        "-screen-width",
+        "1280",
+        "-screen-height",
+        "720",
+        "-screen-fullscreen",
+        "0",
+        "-bot-behavior-smoke",
+        "-bot-seeds",
+        "740",
+        "-bot-trace-file",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-bot-original.tsv",
+        "-logFile",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-bot-original.log"
+      ],
+      "timeout_seconds": 650
+    },
+    {
+      "name": "final-bot-seeds",
+      "executable": "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena\\Builds\\Windows\\RobotSavaslari.exe",
+      "arguments": [
+        "-batchmode",
+        "-screen-width",
+        "1280",
+        "-screen-height",
+        "720",
+        "-screen-fullscreen",
+        "0",
+        "-bot-behavior-smoke",
+        "-bot-seeds",
+        "741,123",
+        "-bot-trace-file",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-bot-seeds.tsv",
+        "-logFile",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-bot-seeds.log"
+      ],
+      "timeout_seconds": 650
+    },
+    {
+      "name": "final-arena",
+      "executable": "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena\\Builds\\Windows\\RobotSavaslari.exe",
+      "arguments": [
+        "-batchmode",
+        "-screen-width",
+        "1280",
+        "-screen-height",
+        "720",
+        "-screen-fullscreen",
+        "0",
+        "-arena-smoke",
+        "-logFile",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-arena.log"
+      ],
+      "timeout_seconds": 650
+    },
+    {
+      "name": "final-rules-write",
+      "executable": "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena\\Builds\\Windows\\RobotSavaslari.exe",
+      "arguments": [
+        "-batchmode",
+        "-screen-width",
+        "1280",
+        "-screen-height",
+        "720",
+        "-screen-fullscreen",
+        "0",
+        "-match-rules-smoke",
+        "write",
+        "-match-history-path",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\rules-history-5de6813.json",
+        "-logFile",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-rules-write.log"
+      ],
+      "timeout_seconds": 650
+    },
+    {
+      "name": "final-rules-read",
+      "executable": "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena\\Builds\\Windows\\RobotSavaslari.exe",
+      "arguments": [
+        "-batchmode",
+        "-screen-width",
+        "1280",
+        "-screen-height",
+        "720",
+        "-screen-fullscreen",
+        "0",
+        "-match-rules-smoke",
+        "read",
+        "-match-history-path",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\rules-history-5de6813.json",
+        "-logFile",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-rules-read.log"
+      ],
+      "timeout_seconds": 650
+    },
+    {
+      "name": "final-bot-repeat",
+      "executable": "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena\\Builds\\Windows\\RobotSavaslari.exe",
+      "arguments": [
+        "-batchmode",
+        "-screen-width",
+        "1280",
+        "-screen-height",
+        "720",
+        "-screen-fullscreen",
+        "0",
+        "-bot-behavior-smoke",
+        "-bot-seeds",
+        "740",
+        "-bot-trace-file",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-bot-repeat.tsv",
+        "-logFile",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-bot-repeat.log"
+      ],
+      "timeout_seconds": 650
+    },
+    {
+      "name": "final-single-01",
+      "executable": "C:\\Program Files\\Unity\\Hub\\Editor\\6000.4.4f1\\Editor\\Unity.exe",
+      "arguments": [
+        "-batchmode",
+        "-projectPath",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena",
+        "-runTests",
+        "-testPlatform",
+        "PlayMode",
+        "-assemblyNames",
+        "RobotSavaslari.Gameplay.PlayModeTests",
+        "-testFilter",
+        "^RobotSavaslari\\.Gameplay\\.Tests\\.ArenaMatchControllerPlayModeTests\\.DefeatEndsTheMatchAndRestartRestoresBothRobots$",
+        "-testResults",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-01.xml",
+        "-logFile",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-01.log"
+      ],
+      "timeout_seconds": 150,
+      "test_results": "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-01.xml"
+    },
+    {
+      "name": "final-single-02",
+      "executable": "C:\\Program Files\\Unity\\Hub\\Editor\\6000.4.4f1\\Editor\\Unity.exe",
+      "arguments": [
+        "-batchmode",
+        "-projectPath",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena",
+        "-runTests",
+        "-testPlatform",
+        "PlayMode",
+        "-assemblyNames",
+        "RobotSavaslari.Gameplay.PlayModeTests",
+        "-testFilter",
+        "^RobotSavaslari\\.Gameplay\\.Tests\\.ArenaRobotPlayModeTests\\.KeyboardDrivesTheRobotAndSpaceSwingsTheWeapon$",
+        "-testResults",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-02.xml",
+        "-logFile",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-02.log"
+      ],
+      "timeout_seconds": 150,
+      "test_results": "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-02.xml"
+    },
+    {
+      "name": "final-single-03",
+      "executable": "C:\\Program Files\\Unity\\Hub\\Editor\\6000.4.4f1\\Editor\\Unity.exe",
+      "arguments": [
+        "-batchmode",
+        "-projectPath",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena",
+        "-runTests",
+        "-testPlatform",
+        "PlayMode",
+        "-assemblyNames",
+        "RobotSavaslari.Gameplay.PlayModeTests",
+        "-testFilter",
+        "^RobotSavaslari\\.Gameplay\\.Tests\\.ArenaRobotPlayModeTests\\.RobotsAreKeptInsideTheArenaWalls$",
+        "-testResults",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-03.xml",
+        "-logFile",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-03.log"
+      ],
+      "timeout_seconds": 150,
+      "test_results": "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-03.xml"
+    },
+    {
+      "name": "final-single-04",
+      "executable": "C:\\Program Files\\Unity\\Hub\\Editor\\6000.4.4f1\\Editor\\Unity.exe",
+      "arguments": [
+        "-batchmode",
+        "-projectPath",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena",
+        "-runTests",
+        "-testPlatform",
+        "PlayMode",
+        "-assemblyNames",
+        "RobotSavaslari.Gameplay.PlayModeTests",
+        "-testFilter",
+        "^RobotSavaslari\\.Gameplay\\.Tests\\.DrivingRigPlayModeTests\\.ButtonsResetAndAdvanceAndToggleControl$",
+        "-testResults",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-04.xml",
+        "-logFile",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-04.log"
+      ],
+      "timeout_seconds": 150,
+      "test_results": "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-04.xml"
+    },
+    {
+      "name": "final-single-05",
+      "executable": "C:\\Program Files\\Unity\\Hub\\Editor\\6000.4.4f1\\Editor\\Unity.exe",
+      "arguments": [
+        "-batchmode",
+        "-projectPath",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena",
+        "-runTests",
+        "-testPlatform",
+        "PlayMode",
+        "-assemblyNames",
+        "RobotSavaslari.Gameplay.PlayModeTests",
+        "-testFilter",
+        "^RobotSavaslari\\.Gameplay\\.Tests\\.DrivingRigPlayModeTests\\.CollisionIsReportedWithSpeedAngleAndResidual$",
+        "-testResults",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-05.xml",
+        "-logFile",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-05.log"
+      ],
+      "timeout_seconds": 150,
+      "test_results": "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-05.xml"
+    },
+    {
+      "name": "final-single-06",
+      "executable": "C:\\Program Files\\Unity\\Hub\\Editor\\6000.4.4f1\\Editor\\Unity.exe",
+      "arguments": [
+        "-batchmode",
+        "-projectPath",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena",
+        "-runTests",
+        "-testPlatform",
+        "PlayMode",
+        "-assemblyNames",
+        "RobotSavaslari.Gameplay.PlayModeTests",
+        "-testFilter",
+        "^RobotSavaslari\\.Gameplay\\.Tests\\.MenuAndSettingsPlayModeTests\\.MenuButtonsStartAndOpenSettings$",
+        "-testResults",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-06.xml",
+        "-logFile",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-06.log"
+      ],
+      "timeout_seconds": 150,
+      "test_results": "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-06.xml"
+    },
+    {
+      "name": "final-single-07",
+      "executable": "C:\\Program Files\\Unity\\Hub\\Editor\\6000.4.4f1\\Editor\\Unity.exe",
+      "arguments": [
+        "-batchmode",
+        "-projectPath",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena",
+        "-runTests",
+        "-testPlatform",
+        "PlayMode",
+        "-assemblyNames",
+        "RobotSavaslari.Gameplay.PlayModeTests",
+        "-testFilter",
+        "^RobotSavaslari\\.Gameplay\\.Tests\\.MenuAndSettingsPlayModeTests\\.SettingsPanelControlsChangeAndSaveValues$",
+        "-testResults",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-07.xml",
+        "-logFile",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-07.log"
+      ],
+      "timeout_seconds": 150,
+      "test_results": "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-07.xml"
+    },
+    {
+      "name": "final-single-08",
+      "executable": "C:\\Program Files\\Unity\\Hub\\Editor\\6000.4.4f1\\Editor\\Unity.exe",
+      "arguments": [
+        "-batchmode",
+        "-projectPath",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena",
+        "-runTests",
+        "-testPlatform",
+        "PlayMode",
+        "-assemblyNames",
+        "RobotSavaslari.Gameplay.PlayModeTests",
+        "-testFilter",
+        "^RobotSavaslari\\.Gameplay\\.Tests\\.PresentationScreensPlayModeTests\\.CameraButtonsToggleModeAndResetTheView$",
+        "-testResults",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-08.xml",
+        "-logFile",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-08.log"
+      ],
+      "timeout_seconds": 150,
+      "test_results": "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-08.xml"
+    },
+    {
+      "name": "final-single-09",
+      "executable": "C:\\Program Files\\Unity\\Hub\\Editor\\6000.4.4f1\\Editor\\Unity.exe",
+      "arguments": [
+        "-batchmode",
+        "-projectPath",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena",
+        "-runTests",
+        "-testPlatform",
+        "PlayMode",
+        "-assemblyNames",
+        "RobotSavaslari.Gameplay.PlayModeTests",
+        "-testFilter",
+        "^RobotSavaslari\\.Gameplay\\.Tests\\.PresentationScreensPlayModeTests\\.InspectionPanelButtonsHideTheInterfaceAndExit$",
+        "-testResults",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-09.xml",
+        "-logFile",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-09.log"
+      ],
+      "timeout_seconds": 150,
+      "test_results": "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-09.xml"
+    },
+    {
+      "name": "final-single-10",
+      "executable": "C:\\Program Files\\Unity\\Hub\\Editor\\6000.4.4f1\\Editor\\Unity.exe",
+      "arguments": [
+        "-batchmode",
+        "-projectPath",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena",
+        "-runTests",
+        "-testPlatform",
+        "PlayMode",
+        "-assemblyNames",
+        "RobotSavaslari.Gameplay.PlayModeTests",
+        "-testFilter",
+        "^RobotSavaslari\\.Gameplay\\.Tests\\.PresentationScreensPlayModeTests\\.ResultButtonsOpenReplayAndInspection$",
+        "-testResults",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-10.xml",
+        "-logFile",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-10.log"
+      ],
+      "timeout_seconds": 150,
+      "test_results": "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-10.xml"
+    },
+    {
+      "name": "final-single-11",
+      "executable": "C:\\Program Files\\Unity\\Hub\\Editor\\6000.4.4f1\\Editor\\Unity.exe",
+      "arguments": [
+        "-batchmode",
+        "-projectPath",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena",
+        "-runTests",
+        "-testPlatform",
+        "PlayMode",
+        "-assemblyNames",
+        "RobotSavaslari.Gameplay.PlayModeTests",
+        "-testFilter",
+        "^RobotSavaslari\\.Gameplay\\.Tests\\.TestHarnessPlayModeTests\\.ModularPreviewEquipsWeaponsAndArmour$",
+        "-testResults",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-11.xml",
+        "-logFile",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-11.log"
+      ],
+      "timeout_seconds": 150,
+      "test_results": "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-11.xml"
+    },
+    {
+      "name": "final-single-12",
+      "executable": "C:\\Program Files\\Unity\\Hub\\Editor\\6000.4.4f1\\Editor\\Unity.exe",
+      "arguments": [
+        "-batchmode",
+        "-projectPath",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena",
+        "-runTests",
+        "-testPlatform",
+        "PlayMode",
+        "-assemblyNames",
+        "RobotSavaslari.Presentation.PlayModeTests",
+        "-testFilter",
+        "^RobotSavaslari\\.Presentation\\.Tests\\.CombatCameraPlayModeTests\\.StaysAboveFloorAndInsideWallsAtEveryCorner$",
+        "-testResults",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-12.xml",
+        "-logFile",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-12.log"
+      ],
+      "timeout_seconds": 150,
+      "test_results": "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-12.xml"
+    },
+    {
+      "name": "final-single-13",
+      "executable": "C:\\Program Files\\Unity\\Hub\\Editor\\6000.4.4f1\\Editor\\Unity.exe",
+      "arguments": [
+        "-batchmode",
+        "-projectPath",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena",
+        "-runTests",
+        "-testPlatform",
+        "PlayMode",
+        "-assemblyNames",
+        "RobotSavaslari.Presentation.PlayModeTests",
+        "-testFilter",
+        "^RobotSavaslari\\.Presentation\\.Tests\\.DuelCameraPlayModeTests\\.FramesOnlyTheMatchRobotsNotDebris$",
+        "-testResults",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-13.xml",
+        "-logFile",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-13.log"
+      ],
+      "timeout_seconds": 150,
+      "test_results": "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-13.xml"
+    },
+    {
+      "name": "final-single-14",
+      "executable": "C:\\Program Files\\Unity\\Hub\\Editor\\6000.4.4f1\\Editor\\Unity.exe",
+      "arguments": [
+        "-batchmode",
+        "-projectPath",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena",
+        "-runTests",
+        "-testPlatform",
+        "PlayMode",
+        "-assemblyNames",
+        "RobotSavaslari.Presentation.PlayModeTests",
+        "-testFilter",
+        "^RobotSavaslari\\.Presentation\\.Tests\\.PostMatchInspectionPlayModeTests\\.InspectionShowsTheFinalDamageWithoutSideEffects$",
+        "-testResults",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-14.xml",
+        "-logFile",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-14.log"
+      ],
+      "timeout_seconds": 150,
+      "test_results": "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-14.xml"
+    },
+    {
+      "name": "final-bot-seeds-repeat",
+      "executable": "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena\\Builds\\Windows\\RobotSavaslari.exe",
+      "arguments": [
+        "-batchmode",
+        "-screen-width",
+        "1280",
+        "-screen-height",
+        "720",
+        "-screen-fullscreen",
+        "0",
+        "-bot-behavior-smoke",
+        "-bot-seeds",
+        "741,123",
+        "-bot-trace-file",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-bot-seeds-repeat.tsv",
+        "-logFile",
+        "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-bot-seeds-repeat.log"
+      ],
+      "timeout_seconds": 650
+    }
+  ]
+}
