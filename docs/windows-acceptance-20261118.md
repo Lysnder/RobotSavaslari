@@ -1,6 +1,8 @@
 # Windows OS giriş kabulü — 18 Kasım 2026 devam raporu
 
-**Durum: otomatik masaüstü erişimi engelli; Emin'in elle uygulayacağı A–H kabulü bekliyor. Main'e aktarım hazır değil.** Emin uygun olduğunu bildirdi, fakat henüz hiçbir insan koşusunun sonucu gelmedi. Bu kayıt bir kabul başarısı değildir.
+**Güncel karar: Emin, A–H akışlarını uygulamadan kabul etmek istediğini bildirdi. Test sonucu: sekiz akış çalıştırılmadı; kullanıcı kabul kararı: uygulama yapılmadan kabul edildi.** Masaüstü erişimi engeli sürüyor. Bu karar başarılı test veya geri yükleme kanıtı değildir; main'e merge talimatı verilmedi.
+
+18 Kasım açıklaması: Emin, testlerin uygulanıp uygulanmadığı sorusuna “Uygulamadım; geçmiş kabul edelim demek istedim”, geri yükleme sorusuna “Henüz geri yükleme/doğrulama yapılmadı” yanıtını verdi. [Karar kaydı](evidence/windows-acceptance-20261118/user-acceptance-decision.json). Önceki bekleyen insan kabulü planının yerini bu kullanıcı kararı aldı.
 
 ## Doğrulanan sürüm
 
@@ -43,22 +45,22 @@ Hazırlık öz denetimi 09:17 UTC'de tamamlandı: yeni snapshot alındı; aynı 
 
 ## Akış sonuçları
 
-Ortak kaynak/build yukarıdaki kimliklerdir. Planlanan uygulayan Emin; gerçekleşen uygulama tarihi/gözlemi/kanıtı henüz yoktur. Otomasyonun teknik engeli ile insan koşularının beklemesi ayrı kaydedilir.
+Ortak kaynak/build yukarıdaki kimliklerdir. Emin hiçbir akışı uygulamadığını açıkça bildirdi; uygulayan kişi, test tarihi, gözlem veya ekran/log kanıtı yoktur. Aşağıdaki sekiz akışın her biri test edilmeden kullanıcı tarafından kabul edilmiştir; test sonucu “çalıştırılmadı” olarak kalır.
 
-| Akış | İnsan kabulü | Gerçekleşen gözlem / kanıt |
+| Akış | Gerçek test sonucu | Kullanıcı kabul kararı |
 |---|---|---|
-| A — menü ve ayarlar | Bekliyor | Henüz bildirilmedi |
-| B — WASD ve oklar | Bekliyor | Henüz bildirilmedi |
-| C — eşleme, Enter/C, kalıcılık | Bekliyor | Henüz bildirilmedi |
-| D — mouse orbit/zoom, zemin/duvar | Bekliyor | Henüz bildirilmedi |
-| E — başlat/saldır/pause/ayar/devam | Bekliyor | Henüz bildirilmedi |
-| F — iki ardışık fiziksel maç | Bekliyor | Henüz bildirilmedi |
-| G — seri/sonuç/geçmiş/yeni süreç/rövanş | Bekliyor | Henüz bildirilmedi |
-| H — Counter/Easy fırsat/dönüş/saldırı | Bekliyor | Henüz bildirilmedi |
+| A — menü ve ayarlar | Çalıştırılmadı | Emin tarafından uygulanmadan kabul edildi |
+| B — WASD ve oklar | Çalıştırılmadı | Emin tarafından uygulanmadan kabul edildi |
+| C — eşleme, Enter/C, kalıcılık | Çalıştırılmadı | Emin tarafından uygulanmadan kabul edildi |
+| D — mouse orbit/zoom, zemin/duvar | Çalıştırılmadı | Emin tarafından uygulanmadan kabul edildi |
+| E — başlat/saldır/pause/ayar/devam | Çalıştırılmadı | Emin tarafından uygulanmadan kabul edildi |
+| F — iki ardışık fiziksel maç | Çalıştırılmadı | Emin tarafından uygulanmadan kabul edildi |
+| G — seri/sonuç/geçmiş/yeni süreç/rövanş | Çalıştırılmadı | Emin tarafından uygulanmadan kabul edildi |
+| H — Counter/Easy fırsat/dönüş/saldırı | Çalıştırılmadı | Emin tarafından uygulanmadan kabul edildi |
 
 Normal Player UI/logu saldırı isteği, kabul edilmiş başlangıç ve isabet event sayaçlarını otomatik sunmaz. H formu erişilemeyen sayaçları “ölçülemedi” olarak bırakır; önceki otomatik koşuların sayıları bu insan koşusuna taşınmaz. Video animasyonu ve can kaybı iç event sayısı olarak yorumlanmaz.
 
-Yeni doğrulanmış oyun hatası yok; üretim düzeltmesi yapılmadı. İnsan kabulü başlamadan hemen önceki yeni snapshot ve kabul sonundaki Restore/Verify sonuçları **bekliyor**. Emin'den A–H sonuçları, gözlemler, log/video konumları ve geri yükleme özeti istendi.
+Yeni doğrulanmış oyun hatası yok; üretim düzeltmesi yapılmadı. İnsan kabulü uygulanmadı; bu kabul için yeni snapshot alındığı doğrulanmadı ve Restore/Verify yapılmadı. Önceki hazırlık öz denetiminin 47 değer/2 dosya eşleşmesi geçerlidir; kullanıcı kararından sonra kişisel verilere dokunulmadı veya eski yedekten geri yükleme yapılmadı. İleride form uygulanırsa o anki veriler yeniden yedeklenmeli ve koşu sonunda geri yüklenip doğrulanmalıdır.
 
 ## PR ve aktarım koşulları
 
@@ -66,8 +68,8 @@ Uzak dallar fetch edildi: `test = 93b4ded847fba8b7893291bd5ac45fd03a67944c`, `ma
 
 [Etkin test kuralı](https://github.com/Lysnder/RobotSavaslari/rules/26480038): en az bir uygun onay; code-owner incelemesi; yeni push'ta eski onayları düşürme; son push onayı; konuşmaları çözme. Son gönderimi yapan kişiden farklı uygun bir inceleyenin son kanıt commit'ini de kapsayan onayı gerekir. Bypass yok. Son gönderimden sonraki güncel HEAD/inceleme durumu PR açıklamasına ve teslim yanıtına kaydedilir; bu rapordaki başlangıç anlık görüntüsü son onay kanıtı değildir.
 
-Kalanlar: A–H'nin insan sonuçları ve kanıtları, o kabulün geri yükleme doğrulaması, son kanıtı kapsayan uygun ekip incelemesi. **Main'e aktarım onayı verilmez.** Hiçbir dala merge yapılmadı.
+Emin bu sürüm için gerçek Windows kabulü yapılmadan ilerlemeyi kabul etti; bu karar eksik A–H kanıtlarının yerine başarılı test sonucu yazılmasına yol açmaz. Son belge commit'ini kapsayan uygun ekip incelemesi hâlâ gerekir. Gerçek OS-input ve insan koşusunun geri yükleme kanıtları yoktur. **Teknik doğrulamanın tümü tamamlandı denemez; main'e merge talimatı yoktur.** Hiçbir dala merge yapılmadı.
 
 ## Yeni kanıtlar
 
-[Kanıt dizini](evidence/windows-acceptance-20261118/): `build-verification.json`, `native-path.json`, `desktop-blocker.json`, `data-protection-selfcheck.json`, `build-helper-selfcheck.json`, `acceptance-status.json`, `test-ruleset.json`. Son dosya ve bu rapor hazırlık durumunu kaydeder; bekleyen akışları geçmiş gibi işaretlemez.
+[Kanıt dizini](evidence/windows-acceptance-20261118/): `build-verification.json`, `native-path.json`, `desktop-blocker.json`, `data-protection-selfcheck.json`, `build-helper-selfcheck.json`, `acceptance-status.json`, `test-ruleset.json`, `user-acceptance-decision.json`. Güncel durum ve karar kayıtları uygulanmayan testleri geçmiş gibi işaretlemez.

@@ -1,6 +1,6 @@
 # Windows kabul formu — Emin
 
-Durum: **A–H bekliyor**. Emin elle uygulayabileceğini bildirdi; henüz test sonucu bildirilmedi. Bu formdaki beklenen sonuçlar gözlem değildir. Önceki InputSystem/GUIView testleri gerçek OS giriş kabulü yerine sayılmaz.
+Güncel durum: **A–H uygulanmadı; Emin uygulanmadan kabul etmeyi seçti.** [Karar kaydı](../evidence/windows-acceptance-20261118/user-acceptance-decision.json). Aşağıdaki adımlar ileride kullanılabilir bir formdur; boş alanlar test kanıtı değildir. Bu formdaki beklenen sonuçlar gözlem değildir. Önceki InputSystem/GUIView testleri gerçek OS giriş kabulü yerine sayılmaz.
 
 ## Sürüm ve oturum
 
@@ -63,7 +63,7 @@ Beklenen: Her düğme görünen işlemi yapar, değerler uygulanır/kaydedilir; 
 - Kaynak / build: yukarıdaki sabit kimlikler.
 - Gözlenen (düğme ve eski→yeni değerler): **doldur**.
 - Kanıt (dosya / zaman, `player-01.log`): **doldur**.
-- Sonuç: **bekliyor** — geçti / kaldı / teknik engel seçeneklerinden uygulama sonrası birini yaz.
+- Gerçek test sonucu: **çalıştırılmadı**; kullanıcı kararı: **uygulanmadan kabul edildi** — geçti / kaldı / teknik engel seçeneklerinden uygulama sonrası birini yaz.
 
 ## B. WASD ve ok tuşları
 
@@ -79,7 +79,7 @@ Beklenen: WASD ve oklar aynı eylemlere gider. Bırakılan tuş yeni sürüş ko
 - Kaynak / build: yukarıdaki sabit kimlikler.
 - Gözlenen (W/S/A/D ve ↑/↓/←/→ ayrı, bırakma): **doldur**.
 - Kanıt (dosya / zaman / log): **doldur**.
-- Sonuç: **bekliyor**.
+- Gerçek test sonucu: **çalıştırılmadı**; kullanıcı kararı: **uygulanmadan kabul edildi**.
 
 ## C. Tuş eşleme, Enter/C ve kalıcılık
 
@@ -98,7 +98,7 @@ Beklenen: Enter/C ayrılmıştır; yakalamada oyun/menü/kamera komutu oluşmaz.
 - Yeni eşleme / yeniden açılış sonucu: **doldur**.
 - Gözlenen (Enter, NumPad Enter, C, kamera, W/yeni tuş/↑): **doldur**.
 - Kanıt (dosya / zaman / `player-01.log`, `player-02.log`): **doldur**.
-- Sonuç: **bekliyor**.
+- Gerçek test sonucu: **çalıştırılmadı**; kullanıcı kararı: **uygulanmadan kabul edildi**.
 
 ## D. Gerçek fareyle kamera
 
@@ -113,7 +113,7 @@ Beklenen: Hareket/yakınlaşma doğru yönde ve sınırlarda çalışır, kamera
 - Kaynak / build: yukarıdaki sabit kimlikler.
 - Gözlenen (iki mod, iki scroll yönü, alçak açı, duvar/köşe): **doldur**.
 - Kanıt (dosya / zaman / log): **doldur**.
-- Sonuç: **bekliyor**.
+- Gerçek test sonucu: **çalıştırılmadı**; kullanıcı kararı: **uygulanmadan kabul edildi**.
 
 ## E. Başlat, saldır, duraklat, ayarlar, devam
 
@@ -129,7 +129,7 @@ Beklenen: Geri sayım bir kez başlar. Oyun duraklamada ilerlemez, ayar girdiler
 - Kaynak / build: yukarıdaki sabit kimlikler.
 - Gözlenen (başlatma, silah/hasar, pause süresindeki can/süre, devam): **doldur**.
 - Kanıt (dosya / zaman / log): **doldur**.
-- Sonuç: **bekliyor**.
+- Gerçek test sonucu: **çalıştırılmadı**; kullanıcı kararı: **uygulanmadan kabul edildi**.
 
 ## F. İki ardışık fiziksel maç
 
@@ -144,7 +144,7 @@ Beklenen: İki maçta da fizik ve oyuncu kontrolü çalışır, her biri tek son
 - Maç 1 (sonuç / neden / başlangıç-son can / süre): **doldur**.
 - Maç 2 (sonuç / neden / başlangıç-son can / süre / reset gözlemi): **doldur**.
 - Kanıt (iki maç için dosya / zaman / log): **doldur**.
-- Sonuç: **bekliyor**.
+- Gerçek test sonucu: **çalıştırılmadı**; kullanıcı kararı: **uygulanmadan kabul edildi**.
 
 ## G. Seri, sonuç, geçmiş, yeni süreç ve rövanş
 
@@ -161,7 +161,7 @@ Beklenen: Seri iki galibiyette tamamlanır, sonuç/geçmiş tutarlıdır ve yeni
 - Raund sonuçları / seri skoru / beraberlik gözlemi: **doldur**.
 - Geçmiş ilk süreç / yeni süreç / rövanş gözlemi: **doldur**.
 - Kanıt (dosya / zaman / `player-02.log`, `player-03.log`): **doldur**.
-- Sonuç: **bekliyor**.
+- Gerçek test sonucu: **çalıştırılmadı**; kullanıcı kararı: **uygulanmadan kabul edildi**.
 
 ## H. Counter / Easy
 
@@ -179,7 +179,7 @@ Normal build'in mevcut UI'si istek/başlangıç/isabet sayaçlarını sunmaz; `A
 - Gözlenen fırsatlar (zaman / silah durumu / dönme / saldırı / isabet): **doldur**.
 - Bu koşuya ait istek / kabul edilmiş başlangıç / isabet (kaynakla): **ölçülemedi veya doğrulanmış ayrı değerler**.
 - Kanıt (Counter/Easy seçimi + fırsatlar, dosya / zaman / log): **doldur**.
-- Sonuç: **bekliyor**.
+- Gerçek test sonucu: **çalıştırılmadı**; kullanıcı kararı: **uygulanmadan kabul edildi**.
 
 ## 3. Sonunda geri yükle ve doğrula
 
@@ -203,4 +203,4 @@ PowerShell kapanmışsa `$acceptanceHelper`ı yukarıdaki sabit yola, `$acceptan
 
 A–H için sonucu ve gözlemi doldur; hata varsa tam yeniden üretim adımlarını, video zamanını ve ilgili player logunu ekle. Test anında oluşan Error/Exception satırlarını ayrıca işaretle. Henüz uygulanmayan alt adımları bekliyor bırak. Doldurulmuş form ve kişisel içeriklerden arındırılmış kanıtlar PR #43'ün devam kanıtına işlenecek.
 
-Kabulün tamamlanması için sekiz akışın sonuçları ve kabul sonrası veri geri yükleme doğrulaması gerekir. Son kanıt gönderiminden sonra `test` kuralına uygun en az bir bağımsız onay gerekir; bu formun hazırlanması main'e aktarım onayı değildir.
+Form ileride gerçekten uygulanırsa sekiz akışın sonuçları ve kabul sonrası veri geri yükleme doğrulaması kaydedilmelidir. Emin'in mevcut kabul kararı bu uygulamanın yapıldığı anlamına gelmez. Son kanıt gönderiminden sonra `test` kuralına uygun en az bir bağımsız onay gerekir; bu formun hazırlanması main'e aktarım onayı değildir.
