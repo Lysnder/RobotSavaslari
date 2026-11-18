@@ -214,7 +214,14 @@ namespace RobotSavaslari
                     if (_tacticTime < repositionSeconds) { DriveToPoint(_flankPoint, false); return true; }
                     State = Decision.Waiting; _tacticTime = 0;
                 }
-                if (_tacticTime < openingSeconds) { Send(0, 0); return true; }
+                if (_tacticTime < openingSeconds)
+                {
+                    // Hold the opening position while reacquiring the opponent after the flank.
+                    Vector3 aim = _aimPosition - _motor.Body.position; aim.y = 0;
+                    float angle = Vector3.SignedAngle(_motor.Body.rotation * Vector3.forward, aim, Vector3.up);
+                    Send(0, Mathf.Clamp(angle / Mathf.Max(1, fullSteerAngle), -maximumSteer, maximumSteer));
+                    return true;
+                }
                 State = Decision.Following; _tacticTime = 0; _graceTime = 0.75f;
                 _pressureTime = _circleTime = _spinTime = _noDamageTime = 0;
                 _engaged = false; _bestDistance = Distance; _reactionTime = 0;

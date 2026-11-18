@@ -2,6 +2,7 @@ using System.Collections;
 using System.Linq;
 using NUnit.Framework;
 using RobotSavaslari.Match;
+using RobotSavaslari.Arena;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -13,26 +14,23 @@ namespace RobotSavaslari.Presentation.Tests
         public const float Floor = 0.82f;
         // Top of the arena's safety barriers; below it the camera must stay inside the inner faces.
         public const float BarrierTop = 3.69f;
-        public const float InnerHalfWidth = 5.91f;
-        public const float InnerHalfDepth = 4.91f;
+        public static float InnerHalfWidth => Object.FindFirstObjectByType<ArenaBounds>().InnerHalfExtents.x;
+        public static float InnerHalfDepth => Object.FindFirstObjectByType<ArenaBounds>().InnerHalfExtents.y;
+        private static Scene ownedScene;
 
         public static MatchController Match { get; private set; }
         public static CombatCameraController Camera { get; private set; }
 
         /// <summary>
-        /// Replaces every loaded scene with an empty one, so tests that build their own objects later
-        /// do not end up inside the arena's colliders.
+        /// Replaces this helper's owned scene, preserving the runner and unrelated scenes.
         /// </summary>
         public static IEnumerator Unload()
         {
             Time.timeScale = 1f;
-            Scene empty = SceneManager.CreateScene("Presentation Test Cleanup " + System.Guid.NewGuid().ToString("N"));
-            SceneManager.SetActiveScene(empty);
-            for (int i = SceneManager.sceneCount - 1; i >= 0; i--)
-            {
-                Scene scene = SceneManager.GetSceneAt(i);
-                if (scene != empty && scene.isLoaded) yield return SceneManager.UnloadSceneAsync(scene);
-            }
+            Scene previous = ownedScene;
+            ownedScene = SceneManager.CreateScene("Presentation Test Cleanup " + System.Guid.NewGuid().ToString("N"));
+            SceneManager.SetActiveScene(ownedScene);
+            if (previous.IsValid() && previous.isLoaded) yield return SceneManager.UnloadSceneAsync(previous);
             Match = null;
             Camera = null;
         }
@@ -40,6 +38,10 @@ namespace RobotSavaslari.Presentation.Tests
         public static IEnumerator Load()
         {
             yield return SceneManager.LoadSceneAsync(MainArenaPresentationInstaller.SceneName, LoadSceneMode.Single);
+            ownedScene = SceneManager.GetActiveScene();
+            var bounds = Object.FindFirstObjectByType<ArenaBounds>();
+            Assert.That(bounds.GridSize, Is.EqualTo(new Vector2Int(8, 8)), "visible 8 by 8 grid");
+            Assert.That(bounds.CellSize, Is.EqualTo(2f), "two metre cells");
             yield return null; // MatchController.Start prepares the robots.
             yield return null; // First camera pose.
             Match = Object.FindAnyObjectByType<MatchController>();
@@ -67,7 +69,12 @@ namespace RobotSavaslari.Presentation.Tests
         public static void PlaceRobot(RobotPrototypeController robot, Vector3 position, bool freeze = false)
         {
             var body = robot.GetComponent<Rigidbody>();
-            if (freeze) body.isKinematic = true;
+            if (freeze)
+            {
+                body.isKinematic = true;
+                // Scripted camera paths need the placed pose, not the previous physics interpolation pose.
+                body.interpolation = RigidbodyInterpolation.None;
+            }
             if (!body.isKinematic)
             {
                 body.linearVelocity = Vector3.zero;

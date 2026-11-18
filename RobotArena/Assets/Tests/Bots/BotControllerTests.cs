@@ -155,6 +155,19 @@ namespace RobotSavaslari.Tests
             Assert.That(_bot.EvasionCount, Is.Zero);
         }
         [Test]
+        public void CounterOpeningTurnsBackTowardTheOpponent()
+        {
+            _bot.ConfigureDecisions(BotPersonality.Counter, BotDifficulty.Easy, 740);
+            _bot.Tick(.02f);
+            Assert.That(_bot.State, Is.EqualTo(RobotBotController.Decision.Disengaging));
+            _owner.GetComponent<Rigidbody>().rotation = Quaternion.Euler(0, 90, 0);
+            for (int i = 0; i < 110 && _bot.State != RobotBotController.Decision.Waiting; i++) _bot.Tick(.02f);
+            Assert.That(_bot.State, Is.EqualTo(RobotBotController.Decision.Waiting), "bounded flank reaches its opening stance");
+            Assert.That(_bot.Command.x, Is.Zero, "Counter holds its opening position");
+            Assert.That(_bot.Command.y, Is.LessThan(-.1f), "opening must turn back toward the observed opponent after the flank");
+        }
+
+        [Test]
         public void ExistingStuckRecoveryStillHasPriority()
         {
             _target.transform.position = new Vector3(0, 50, 4);

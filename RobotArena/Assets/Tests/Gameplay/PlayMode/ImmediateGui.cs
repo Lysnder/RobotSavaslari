@@ -3,90 +3,107 @@ using System.Reflection;
 using System.Runtime.ExceptionServices;
 using NUnit.Framework;
 using UnityEngine;
-using Object = UnityEngine.Object;
+#if UNITY_EDITOR
+using UnityEditor;
+using UnityEngine.Rendering;
+#endif
 
 namespace RobotSavaslari.Gameplay.Tests
 {
     /// <summary>
-    /// Runs a component's OnGUI from a test. Batch-mode test runs have no Game view, so Unity never
-    /// sends GUI events; this opens the same IMGUI container scope an IMGUIContainer uses and sends
-    /// a layout pass followed by the requested event. Clicks are a mouse down and up at a point in
-    /// unscaled screen GUI coordinates (origin top left).
+    /// Sends layout and mouse events through a native GUIView to the component's real OnGUI.
+    /// Requires Editor graphics: batch mode is supported without -nographics.
+    /// Input points use game pixels, independent of Windows display DPI.
     /// </summary>
     internal static class ImmediateGui
     {
-        private const BindingFlags Internal = BindingFlags.NonPublic | BindingFlags.Static;
-        private static readonly Type StateType = typeof(GUIUtility).Assembly.GetType("UnityEngine.ObjectGUIState");
-        private static readonly MethodInfo BeginContainer = StateType == null ? null
-            : typeof(GUIUtility).GetMethod("BeginContainer", Internal, null, new[] { StateType }, null);
-        private static readonly MethodInfo EndContainer = typeof(GUIUtility).GetMethod("EndContainer", Internal, null, Type.EmptyTypes, null);
-        private static readonly MethodInfo BeginGui = typeof(GUIUtility).GetMethod("BeginGUI", Internal);
-        private static readonly MethodInfo EndGui = typeof(GUIUtility).GetMethod("EndGUI", Internal);
-
         public static void Draw(MonoBehaviour target)
         {
-            Send(target, new Event { type = EventType.Repaint });
+            using (var window = new GuiWindowScope(target)) window.Send(new Event { type = EventType.Repaint });
         }
 
         public static void Click(MonoBehaviour target, Vector2 point)
         {
-            Draw(target);
-            Send(target, new Event { type = EventType.MouseDown, mousePosition = point, button = 0, clickCount = 1 });
-            Send(target, new Event { type = EventType.MouseUp, mousePosition = point, button = 0, clickCount = 1 });
-            GUIUtility.hotControl = 0;
-            GUIUtility.keyboardControl = 0;
+            // One native state must own the complete gesture, including its hot control.
+            using (var window = new GuiWindowScope(target))
+            {
+                window.Send(new Event { type = EventType.Repaint });
+                window.Send(new Event { type = EventType.MouseDown, mousePosition = point, button = 0, clickCount = 1 });
+                window.Send(new Event { type = EventType.MouseUp, mousePosition = point, button = 0, clickCount = 1 });
+            }
         }
 
-        /// <summary>Clicks a rect given in the component's reference layout, scaled the way the arena UI scales.</summary>
-        public static void ClickScaled(MonoBehaviour target, Rect rect)
-        {
-            float scale = ArenaScale;
-            Click(target, rect.center * scale);
-        }
-
-        /// <summary>The scale MainMenuScreen, settings and presentation screens apply to their 720p layout.</summary>
+        public static void ClickScaled(MonoBehaviour target, Rect rect) => Click(target, rect.center * ArenaScale);
         public static float ArenaScale => Mathf.Max(0.01f, Mathf.Min(Screen.height / 720f, Screen.width / 600f));
         public static float ScaledWidth => Screen.width / ArenaScale;
         public static float ScaledHeight => Screen.height / ArenaScale;
 
-        private static void Send(MonoBehaviour target, Event evt)
+        private sealed class GuiWindowScope : IDisposable
         {
-            Assert.That(StateType != null && BeginContainer != null && EndContainer != null && BeginGui != null && EndGui != null,
-                Is.True, "IMGUI internals available in this Unity version");
-            MethodInfo onGui = target.GetType().GetMethod("OnGUI", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-            Assert.That(onGui, Is.Not.Null, target.GetType().Name + " has OnGUI");
-            Run(target, onGui, new Event { type = EventType.Layout, mousePosition = evt.mousePosition });
-            Run(target, onGui, evt);
-        }
-
-        /// <summary>The owner id BeginGUI expects: an int in older Unity versions, an EntityId in newer ones.</summary>
-        private static object OwnerId(Object target)
-        {
-            Type idType = BeginGui.GetParameters()[1].ParameterType;
-            if (idType == typeof(int)) return target.GetInstanceID();
-            MethodInfo getEntityId = typeof(Object).GetMethod("GetEntityId", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, Type.EmptyTypes, null);
-            if (getEntityId != null && getEntityId.ReturnType == idType) return getEntityId.Invoke(target, null);
-            return Activator.CreateInstance(idType);
-        }
-
-        private static void Run(MonoBehaviour target, MethodInfo onGui, Event evt)
-        {
-            object state = Activator.CreateInstance(StateType, true);
-            Event.current = evt;
-            BeginContainer.Invoke(null, new[] { state });
-            try
+#if UNITY_EDITOR
+            private readonly TestGuiWindow window;
+            public GuiWindowScope(MonoBehaviour target)
             {
-                BeginGui.Invoke(null, new object[] { 0, OwnerId(target), 1 });
-                try { onGui.Invoke(target, null); }
+                Assert.That(SystemInfo.graphicsDeviceType, Is.Not.EqualTo(GraphicsDeviceType.Null),
+                    "IMGUI interaction tests need a native GUIView; run Unity without -nographics.");
+                window = ScriptableObject.CreateInstance<TestGuiWindow>();
+                window.Target = target;
+                window.Dpi = EditorGUIUtility.pixelsPerPoint;
+                window.position = new Rect(0, 0, Screen.width / window.Dpi, Screen.height / window.Dpi);
+                window.ShowPopup();
+            }
+            public void Send(Event evt)
+            {
+                evt.mousePosition /= window.Dpi;
+                window.SendEvent(new Event { type = EventType.Layout, mousePosition = evt.mousePosition });
+                window.SendEvent(evt);
+            }
+            public void Dispose() => window.Close();
+#else
+            public GuiWindowScope(MonoBehaviour target) => throw new PlatformNotSupportedException("IMGUI interaction tests run in the Editor.");
+            public void Send(Event evt) => throw new PlatformNotSupportedException();
+            public void Dispose() { }
+#endif
+        }
+
+#if UNITY_EDITOR
+        private sealed class TestGuiWindow : EditorWindow
+        {
+            private const BindingFlags Internal = BindingFlags.NonPublic | BindingFlags.Static;
+            private static readonly PropertyInfo PixelsPerPoint = typeof(GUIUtility).GetProperty("pixelsPerPoint", Internal);
+            private static readonly Type ClipType = typeof(GUIUtility).Assembly.GetType("UnityEngine.GUIClip");
+            private static readonly MethodInfo PushClip = ClipType.GetMethod("Internal_PushParentClip", Internal, null,
+                new[] { typeof(Matrix4x4), typeof(Rect) }, null);
+            private static readonly MethodInfo PopClip = ClipType.GetMethod("Internal_PopParentClip", Internal);
+            public MonoBehaviour Target;
+            public float Dpi;
+
+            private void OnGUI()
+            {
+                if (Target == null) return;
+                float previousDpi = (float)PixelsPerPoint.GetValue(null);
+                Matrix4x4 previousMatrix = GUI.matrix;
+                PixelsPerPoint.SetValue(null, 1f);
+                GUI.matrix = Matrix4x4.identity;
+                // Game OnGUI uses pixels; Editor GUIView input and clipping use display points.
+                PushClip.Invoke(null, new object[] { Matrix4x4.Scale(new Vector3(1f / Dpi, 1f / Dpi, 1)),
+                    new Rect(0, 0, position.width, position.height) });
+                try
+                {
+                    MethodInfo onGui = Target.GetType().GetMethod("OnGUI", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                    Assert.That(onGui, Is.Not.Null, Target.GetType().Name + " has OnGUI");
+                    onGui.Invoke(Target, null);
+                }
                 catch (TargetInvocationException error) when (error.InnerException is ExitGUIException) { }
                 catch (TargetInvocationException error) { ExceptionDispatchInfo.Capture(error.InnerException).Throw(); }
-                finally { EndGui.Invoke(null, new object[] { 1 }); }
-            }
-            finally
-            {
-                EndContainer.Invoke(null, null);
-                (state as IDisposable)?.Dispose();
+                finally
+                {
+                    PopClip.Invoke(null, null);
+                    GUI.matrix = previousMatrix;
+                    PixelsPerPoint.SetValue(null, previousDpi);
+                }
             }
         }
+#endif
     }
 }

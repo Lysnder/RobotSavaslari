@@ -133,13 +133,31 @@ namespace RobotSavaslari.Presentation.Tests
             }
         }
 
-        [UnityTest]
+        private static IEnumerator WaitForStableFraming()
+        {
+            float deadline = Time.realtimeSinceStartup + 4f;
+            Vector3 pivot = CameraRig.Pivot;
+            float distance = CameraRig.ViewDistance, stableSince = Time.realtimeSinceStartup;
+            while (Time.realtimeSinceStartup < deadline)
+            {
+                yield return null;
+                if (Vector3.Distance(pivot, CameraRig.Pivot) > .005f || Mathf.Abs(distance - CameraRig.ViewDistance) > .005f)
+                {
+                    pivot = CameraRig.Pivot; distance = CameraRig.ViewDistance;
+                    stableSince = Time.realtimeSinceStartup;
+                }
+                if (Time.realtimeSinceStartup - stableSince >= .2f) yield break;
+            }
+            Assert.Fail("Duel framing did not settle within four seconds before the debris comparison.");
+        }
+
+        [UnityTest, Repeat(10)]
         public IEnumerator FramesOnlyTheMatchRobotsNotDebris()
         {
             yield return MainArenaTestScene.Load();
             CameraRig.SetMode(CombatCameraController.CameraMode.Duel);
             PlacePair(new Vector2(-1.5f, 0f), new Vector2(1.5f, 0f));
-            yield return new WaitForSecondsRealtime(1f);
+            yield return WaitForStableFraming();
             Assert.That(CameraRig.Target, Is.EqualTo(Match.Player.transform));
             Assert.That(CameraRig.DuelOpponent, Is.EqualTo(Match.Opponent.transform));
             Vector3 pivot = CameraRig.Pivot;

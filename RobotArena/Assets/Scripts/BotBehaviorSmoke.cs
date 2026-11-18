@@ -25,6 +25,11 @@ namespace RobotSavaslari
         private float _nextCapture;
         private int _captureFrame;
         private RobotBotController _observedBot;
+        private int _failedMatches;
+        private int[] _seeds = { 740 };
+        private StreamWriter _trace;
+        private RoundMetrics _metrics;
+        private int _roundNumber;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         private static void Launch()
@@ -42,6 +47,16 @@ namespace RobotSavaslari
         }
         private IEnumerator Start()
         {
+            string[] args = Environment.GetCommandLineArgs();
+            int seeds = Array.IndexOf(args, "-bot-seeds");
+            if (seeds >= 0 && seeds + 1 < args.Length)
+                _seeds = args[seeds + 1].Split(',').Select(int.Parse).ToArray();
+            int trace = Array.IndexOf(args, "-bot-trace-file");
+            if (trace >= 0 && trace + 1 < args.Length)
+            {
+                _trace = new StreamWriter(Path.GetFullPath(args[trace + 1]), false);
+                _trace.WriteLine("seed\tpersonality\tdifficulty\tround\ttime\tstate\tdistance\tangle\tweapon\tcooldown\tsamples\taimError\trequests\tstarts\thits\tdamage\teligible");
+            }
             Application.runInBackground = true;
             _previousKeyboard = Keyboard.current;
             _previousSettings = InputSystem.settings;
@@ -58,7 +73,7 @@ namespace RobotSavaslari
                 catch (Exception error) { Finish(false, error.ToString()); yield break; }
                 yield return wait;
             }
-            Finish(true, "Four combinations, two matches each, real damage/restore, selection and pause checks.");
+            Finish(_failedMatches == 0, $"seeds={string.Join(",", _seeds)} matches={8 * _seeds.Length} failed={_failedMatches}; real damage/restore, selection and pause checks.");
         }
         private IEnumerator Verify()
         {
@@ -83,6 +98,7 @@ namespace RobotSavaslari
             float maxHealth = health.MaxHealth, maxSpeed = motor.maxSpeed, acceleration = motor.acceleration;
             var weapon = opponent.GetComponent<Combat.MeleeAttack>();
             float weaponDamage = weapon.Damage;
+            foreach (int seed in _seeds)
             foreach (BotPersonality personality in Enum.GetValues(typeof(BotPersonality)))
             foreach (BotDifficulty difficulty in Enum.GetValues(typeof(BotDifficulty)))
             {
@@ -100,7 +116,10 @@ namespace RobotSavaslari
                     Require(bot.Memory.Count == 0 && bot.DecisionSamples == 0 && damage.WeaponOperational && damage.LostWheels == 0, "Clean next match");
                     Require(health.MaxHealth == maxHealth && motor.maxSpeed == maxSpeed && motor.acceleration == acceleration && weapon.Damage == weaponDamage,
                         "No profile stat bonuses");
+                    bot.ConfigureDecisions(personality, difficulty, seed);
                     if (round == 0) CheckRealDamage(bot, damage, health);
+                    _roundNumber = round + 1;
+                    _metrics = new RoundMetrics(bot, weapon, player.GetComponent<RobotHealth>());
                     Vector3 start = opponent.transform.position;
                     Vector3 playerStart = player.transform.position;
                     bool moved = false, attacked = false, playerMoved = false, playerDamagedBot = false;
@@ -133,12 +152,56 @@ namespace RobotSavaslari
                         yield return null;
                     }
                     InputSystem.QueueStateEvent(_keyboard, new KeyboardState());
-                    Require(moved && attacked, "Bot moves and uses shared melee intent");
-                    Require(playerMoved && playerDamagedBot, "Real keyboard driver moves the player and player combat damages the bot");
-                    Require(match.State == MatchController.MatchState.Result && match.ResultCount == 1, "Physical combat reaches one result within 75 seconds");
-                    Add($"{personality}/{difficulty} round={round + 1} PASS result={match.Outcome} playerHP={player.GetComponent<RobotHealth>().CurrentHealth:F1} botHP={health.CurrentHealth:F1} reaction={bot.EffectiveReactionSeconds:F2}");
+                    _metrics.Sample(_trace, seed, personality, difficulty, round + 1, true);
+                    bool success = moved && _metrics.Requests > 0 && _metrics.Starts > 0 && playerMoved && playerDamagedBot &&
+                        match.State == MatchController.MatchState.Result && match.ResultCount == 1;
+                    if (!success) _failedMatches++;
+                    Add($"{personality}/{difficulty} seed={seed} round={round + 1} {(success ? "PASS" : "FAIL")} " +
+                        $"result={match.Outcome} moved={moved} sampledIntent={attacked} requests={_metrics.Requests} starts={_metrics.Starts} hits={_metrics.Hits} damage={_metrics.Damage:F1} " +
+                        $"eligibleSteps={_metrics.EligibleSamples} playerMoved={playerMoved} playerDamagedBot={playerDamagedBot} weaponWorking={damage.WeaponOperational} " +
+                        $"playerHP={player.GetComponent<RobotHealth>().CurrentHealth:F1} botHP={health.CurrentHealth:F1} reaction={bot.EffectiveReactionSeconds:F2}");
+                    _metrics.Dispose(); _metrics = null;
                     yield return null;
                 }
+            }
+        }
+        private void FixedUpdate()
+        {
+            if (_metrics != null && _observedBot != null)
+                _metrics.Sample(_trace, _observedBot.decisionSeed, _observedBot.personality, _observedBot.difficulty, _roundNumber);
+        }
+        private sealed class RoundMetrics : IDisposable
+        {
+            private readonly RobotBotController bot;
+            private readonly Combat.MeleeAttack weapon;
+            private readonly RobotHealth target;
+            private float nextSample;
+            private RobotBotController.Decision previousState;
+            public int Requests, Starts, Hits, EligibleSamples;
+            public float Damage;
+            public RoundMetrics(RobotBotController bot, Combat.MeleeAttack weapon, RobotHealth target)
+            {
+                this.bot = bot; this.weapon = weapon; this.target = target;
+                bot.AttackRequest += OnRequest; weapon.Started += OnStart;
+                weapon.TargetHit += OnHit; target.Damaged += OnDamage;
+            }
+            private void OnRequest(RobotBotController _, Transform __) => Requests++;
+            private void OnStart(Combat.MeleeAttack _) => Starts++;
+            private void OnHit(Combat.MeleeAttack _, RobotHealth __, float ___) => Hits++;
+            private void OnDamage(RobotHit hit) { if (hit.Weapon && hit.Source == bot.GetComponent<RobotHealth>()) Damage += hit.Amount; }
+            public void Sample(StreamWriter trace, int seed, BotPersonality personality, BotDifficulty difficulty, int round, bool force = false)
+            {
+                bool eligible = bot.MatchRunning && bot.Target != null && bot.OwnCondition.WeaponOperational &&
+                    bot.Distance <= bot.attackEnterDistance && Mathf.Abs(bot.TargetAngle) <= bot.attackAngle && weapon.CooldownRemaining <= 0;
+                if (eligible) EligibleSamples++;
+                if (!force && Time.time < nextSample && previousState == bot.State) return;
+                nextSample = Time.time + .1f; previousState = bot.State;
+                trace?.WriteLine(FormattableString.Invariant($"{seed}\t{personality}\t{difficulty}\t{round}\t{Time.time:F3}\t{bot.State}\t{bot.Distance:F3}\t{bot.TargetAngle:F3}\t{bot.OwnCondition.WeaponOperational}\t{weapon.CooldownRemaining:F3}\t{bot.DecisionSamples}\t{bot.AimError:F3}\t{Requests}\t{Starts}\t{Hits}\t{Damage:F3}\t{eligible}"));
+            }
+            public void Dispose()
+            {
+                bot.AttackRequest -= OnRequest; weapon.Started -= OnStart;
+                weapon.TargetHit -= OnHit; target.Damaged -= OnDamage;
             }
         }
         private void CheckRealDamage(RobotBotController bot, RobotDamageVisuals damage, RobotHealth health)
@@ -241,6 +304,8 @@ namespace RobotSavaslari
         }
         private void Cleanup()
         {
+            _metrics?.Dispose(); _metrics = null;
+            _trace?.Dispose(); _trace = null;
             if (_keyboard != null && _keyboard.added) InputSystem.RemoveDevice(_keyboard);
             if (_previousSettings != null) InputSystem.settings = _previousSettings;
             if (_settings != null) { Destroy(_settings); _settings = null; }

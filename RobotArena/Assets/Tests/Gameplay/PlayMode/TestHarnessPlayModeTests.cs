@@ -194,7 +194,7 @@ namespace RobotSavaslari.Gameplay.Tests
             finally { rig.Dispose(); }
         }
 
-        [UnityTest]
+        [UnityTest, Repeat(10)]
         public IEnumerator ModularPreviewEquipsWeaponsAndArmour()
         {
             yield return GameplayTestScene.LoadEmptyScene(false);
@@ -218,9 +218,10 @@ namespace RobotSavaslari.Gameplay.Tests
             GameplayTestScene.SetField(preview, "spinning", true);
             Transform rotor = host.GetComponentsInChildren<Transform>().First(t => t.name == "Rotor" && t.parent.name.StartsWith("Bar"));
             Quaternion before = rotor.localRotation;
-            yield return null;
-            yield return null;
-            Assert.That(Quaternion.Angle(rotor.localRotation, before), Is.GreaterThan(0f), "rotor spins");
+            float spinDeadline = Time.realtimeSinceStartup + 1f;
+            while (Quaternion.Angle(rotor.localRotation, before) < 1f && Time.realtimeSinceStartup < spinDeadline)
+                yield return null;
+            Assert.That(Quaternion.Angle(rotor.localRotation, before), Is.GreaterThanOrEqualTo(1f), "rotor spins through Update");
             preview.EquipWeapon(1);
             yield return null;
             preview.EquipWeapon(-1);

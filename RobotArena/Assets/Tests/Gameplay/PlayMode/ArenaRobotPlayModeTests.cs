@@ -2,6 +2,7 @@ using System.Collections;
 using System.Linq;
 using NUnit.Framework;
 using RobotSavaslari.Combat;
+using RobotSavaslari.Arena;
 using RobotSavaslari.Driving;
 using RobotSavaslari.Match;
 using UnityEngine;
@@ -61,23 +62,46 @@ namespace RobotSavaslari.Gameplay.Tests
             yield return GameplayTestScene.LoadMainArena();
             yield return GameplayTestScene.StartPlaying();
             FocusPlayer();
+            // Measure driving before the first hit: these weapons already reach across FaceOff's 2.2 m gap.
+            GameplayTestScene.Place(Match.Player, new Vector3(-3f, GameplayTestScene.Floor, 0f), false, Quaternion.Euler(0f, 90f, 0f));
+            GameplayTestScene.Place(Match.Opponent, new Vector3(3f, GameplayTestScene.Floor, 0f), true, Quaternion.Euler(0f, -90f, 0f));
+            Vector3 driveStart = Match.Player.GetComponent<Rigidbody>().position;
+            for (int i = 0; i < 25; i++)
+            {
+                Hold(Key.W);
+                yield return new WaitForFixedUpdate();
+            }
+            Assert.That(Vector3.Distance(Match.Player.GetComponent<Rigidbody>().position, driveStart), Is.GreaterThan(0.2f), "W drives forward without waiting for melee damage");
+            Hold();
             FaceOff();
             var opponentHealth = Match.Opponent.GetComponent<RobotHealth>();
             Transform spinner = Match.Player.GetComponentsInChildren<Transform>(true).FirstOrDefault(t => t.name == "Spinner");
             Quaternion spinnerRest = spinner != null ? spinner.localRotation : Quaternion.identity;
-            Vector3 start = Match.Player.transform.position;
 
             bool sawWeapon = false;
-            float deadline = Time.time + 3f;
-            while (Time.time < deadline && opponentHealth.CurrentHealth >= opponentHealth.MaxHealth)
+            int attackStarts = 0, weaponHits = 0;
+            var melee = Match.Player.GetComponent<MeleeAttack>();
+            System.Action<MeleeAttack> onStart = _ => attackStarts++;
+            System.Action<MeleeAttack, RobotHealth, float> onHit = (_, target, __) => { if (target == opponentHealth) weaponHits++; };
+            melee.Started += onStart; melee.TargetHit += onHit;
+            try
             {
-                Hold(Key.W, Key.Space);
-                sawWeapon |= Match.Player.WeaponActive;
-                yield return new WaitForFixedUpdate();
+                float deadline = Time.time + 3f;
+                while (Time.time < deadline && (weaponHits == 0 || spinner != null && Quaternion.Angle(spinner.localRotation, spinnerRest) <= .1f))
+                {
+                    Hold(Key.Space);
+                    yield return new WaitForFixedUpdate();
+                    sawWeapon |= Match.Player.WeaponActive;
+                }
             }
-            Hold();
-            Assert.That(Vector3.Distance(Match.Player.transform.position, start), Is.GreaterThan(0.2f), "W drives forward");
-            Assert.That(opponentHealth.CurrentHealth, Is.LessThan(opponentHealth.MaxHealth), "contact damaged the opponent");
+            finally
+            {
+                Hold();
+                melee.Started -= onStart; melee.TargetHit -= onHit;
+            }
+            Assert.That(attackStarts, Is.GreaterThan(0), "Space starts a real attack");
+            Assert.That(weaponHits, Is.GreaterThan(0), "weapon damage is distinct from ram damage");
+            Assert.That(opponentHealth.CurrentHealth, Is.LessThan(opponentHealth.MaxHealth), "weapon damaged the opponent");
             Assert.That(sawWeapon, Is.True, "Space activates the weapon");
             if (spinner != null)
                 Assert.That(Quaternion.Angle(spinner.localRotation, spinnerRest), Is.GreaterThan(0.1f), "spinner animated");
@@ -118,8 +142,12 @@ namespace RobotSavaslari.Gameplay.Tests
             Match.Player.GetComponent<Rigidbody>().linearVelocity = new Vector3(3f, 0f, -3f);
             Match.Player.ConstrainToArena();
             Vector3 position = Match.Player.GetComponent<Rigidbody>().position;
-            Assert.That(position.x, Is.LessThan(5.89f));
-            Assert.That(position.z, Is.GreaterThan(-4.89f));
+            var bounds = Object.FindFirstObjectByType<ArenaBounds>();
+            Assert.That(bounds.GridSize, Is.EqualTo(new Vector2Int(8, 8)), "visible 8 by 8 grid");
+            Assert.That(bounds.CellSize, Is.EqualTo(2f), "two metre cells");
+            Vector2 limits = bounds.CenterLimits(Match.Player.ArenaFootprintRadius);
+            Assert.That(position.x, Is.EqualTo(bounds.Center.x + limits.x).Within(0.001f));
+            Assert.That(position.z, Is.EqualTo(bounds.Center.y - limits.y).Within(0.001f));
             Vector3 velocity = Match.Player.GetComponent<Rigidbody>().linearVelocity;
             Assert.That(velocity.x, Is.Zero, "no velocity into the east wall");
             Assert.That(velocity.z, Is.Zero, "no velocity into the south wall");

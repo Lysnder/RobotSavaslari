@@ -222,6 +222,21 @@ namespace RobotSavaslari.Gameplay.Tests
         }
 
         [UnityTest]
+        public IEnumerator LandingWhileDrivingDoesNotReportAWallImpact()
+        {
+            yield return CreateRig();
+            _rig.Probe.StartDriving();
+            GameplayTestScene.SetField(_rig.Probe, "probeTurn", 0f);
+            var body = _rig.Motor.GetComponent<Rigidbody>();
+            body.position += Vector3.up;
+            Physics.SyncTransforms();
+            float deadline = Time.time + 2f;
+            while (Time.time < deadline) yield return new WaitForFixedUpdate();
+            Assert.That(_rig.Motor.ForwardSpeed, Is.GreaterThan(0.4f), "landing happened at reporting speed");
+            Assert.That(_rig.Reporter.HasReport, Is.False, "the horizontal floor is not a wall");
+        }
+
+        [UnityTest]
         public IEnumerator FollowCameraTracksPositionNotRotation()
         {
             yield return CreateRig();

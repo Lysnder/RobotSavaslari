@@ -59,6 +59,9 @@ namespace RobotSavaslari.Combat
         /// <summary>Istek reddedildiginde veya saldiri bittiginde cagrilir.</summary>
         public event Action<MeleeAttack, AttackReport> Resolved;
 
+        /// <summary>An accepted attack, before its first hit scan. Cooldown rejections do not fire it.</summary>
+        public event Action<MeleeAttack> Started;
+
         /// <summary>Saldiri bir hedefe hasar yazdiginda cagrilir.</summary>
         public event Action<MeleeAttack, RobotHealth, float> TargetHit;
 
@@ -110,6 +113,7 @@ namespace RobotSavaslari.Combat
             _active = true;
             _activeUntil = now + activeDuration;
             LastReport = new AttackReport(AttackOutcome.Started, 0, now);
+            Started?.Invoke(this);
             Tick();
             return AttackOutcome.Started;
         }
