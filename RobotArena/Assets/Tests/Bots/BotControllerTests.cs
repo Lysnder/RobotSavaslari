@@ -208,6 +208,41 @@ namespace RobotSavaslari.Tests
         }
 
         [Test]
+        public void CloseCounterOpponentIsReacquiredBeforeContinuingAFlank()
+        {
+            var weapon = _owner.AddComponent<RobotSavaslari.Combat.MeleeAttack>();
+            _target.AddComponent<BoxCollider>();
+            _bot.ConfigureDecisions(BotPersonality.Counter, BotDifficulty.Easy, 123);
+            _bot.Tick(.02f);
+            Assert.That(_bot.State, Is.EqualTo(RobotBotController.Decision.Disengaging));
+            _owner.GetComponent<Rigidbody>().rotation = Quaternion.Euler(0, 90, 0);
+            _targetBody.position = new Vector3(0, 50, 1.9f);
+            _target.transform.position = _targetBody.position;
+            Physics.SyncTransforms();
+            _bot.Tick(.02f);
+            Assert.That(_bot.State, Is.EqualTo(RobotBotController.Decision.Turning), "close pursuit has priority over continuing a flank");
+            Assert.That(_bot.Command.x, Is.Zero);
+            Assert.That(_bot.Command.y, Is.LessThan(-.1f), "reacquire the opponent before trying to strike");
+            Assert.That(_bot.AttackRequested, Is.False, "range and angle gates still apply");
+            _targetBody.position = new Vector3(0, 50, 1.6f);
+            _target.transform.position = _targetBody.position;
+            Physics.SyncTransforms(); _bot.Tick(.02f);
+            Assert.That(_bot.AttackRequested, Is.False, "inside range, but still outside attack angle");
+            _owner.GetComponent<Rigidbody>().rotation = Quaternion.identity;
+            _targetBody.position = new Vector3(0, 50, 1.9f);
+            _target.transform.position = _targetBody.position;
+            Physics.SyncTransforms(); _bot.Tick(.02f);
+            Assert.That(_bot.AttackRequested, Is.False, "facing the opponent does not extend attack range");
+            _targetBody.position = new Vector3(0, 50, 1.6f);
+            _target.transform.position = _targetBody.position;
+            Physics.SyncTransforms();
+            _bot.Tick(.02f);
+            Assert.That(_bot.AttackRequested, Is.True);
+            Assert.That(weapon.RequestAttack(), Is.EqualTo(RobotSavaslari.Combat.AttackOutcome.Started));
+            Assert.That(_target.GetComponent<RobotHealth>().CurrentHealth, Is.EqualTo(75f));
+        }
+
+        [Test]
         public void ExistingStuckRecoveryStillHasPriority()
         {
             _target.transform.position = new Vector3(0, 50, 4);

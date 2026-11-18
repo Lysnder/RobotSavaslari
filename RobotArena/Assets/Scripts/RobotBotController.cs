@@ -136,14 +136,15 @@ namespace RobotSavaslari
             AttackRequested = false;
             OwnCondition = new BotDamageState(ownHealth, _ownDamage);
             TargetCondition = new BotDamageState(targetHealth, target.GetComponentInParent<RobotDamageVisuals>());
+            bool closeCounterPursuit = false;
             if (enableCombatTactics)
             {
                 ObserveOpponent(dt, delta);
-                ResumeForCounterattackIfReady();
                 bool recovering = State == Decision.BackingOut || State == Decision.EscapeTurn || State == Decision.EscapeDrive;
-                if (!recovering && TickOpponentDecisions(dt)) return;
+                closeCounterPursuit = !recovering && ResumeCloseCounterPursuitIfReady();
+                if (!recovering && !closeCounterPursuit && TickOpponentDecisions(dt)) return;
             }
-            if (enableCombatTactics && TickCombatTactics(dt, targetHealth)) return;
+            if (enableCombatTactics && !closeCounterPursuit && TickCombatTactics(dt, targetHealth)) return;
             if (State == Decision.BackingOut || State == Decision.EscapeTurn || State == Decision.EscapeDrive)
             {
                 _maneuverTime += dt;
@@ -192,23 +193,28 @@ namespace RobotSavaslari
             else { _stuckTime = 0; _anchor = _motor.Body.position; }
             Send(drive, steer);
         }
-        private void ResumeForCounterattackIfReady()
+        private bool ResumeCloseCounterPursuitIfReady()
         {
+            if (personality != BotPersonality.Counter || !OwnCondition.WeaponOperational ||
+                Distance > Mathf.Max(attackEnterDistance + .1f, followResumeDistance)) return false;
+            var weapon = GetComponent<Combat.MeleeAttack>();
+            if (weapon == null || weapon.IsAttacking || weapon.CooldownRemaining > 0) return false;
+
             bool defending = State == Decision.Disengaging || State == Decision.Repositioning ||
                 State == Decision.Waiting || State == Decision.Evading;
-            if (personality != BotPersonality.Counter || !defending || !OwnCondition.WeaponOperational ||
-                Distance > attackEnterDistance || Mathf.Abs(TargetAngle) > attackAngle) return;
-            var weapon = GetComponent<Combat.MeleeAttack>();
-            if (weapon == null || weapon.IsAttacking || weapon.CooldownRemaining > 0) return;
-
-            // A ready strike is the opening Counter was seeking; shared melee still owns the attack.
-            State = Decision.Following;
-            _tacticTime = _evasionTime = _graceTime = _stuckTime = 0;
-            _pressureTime = _circleTime = _spinTime = _noDamageTime = 0;
-            _engaged = _tacticsObserved = _attackHold = false;
-            _anchor = _motor.Body.position;
-            _evasionCooldown = Mathf.Max(_evasionCooldown, EffectiveReactionSeconds);
-            _profileCooldown = Mathf.Max(_profileCooldown, EffectiveReactionSeconds);
+            if (defending)
+            {
+                // Once caught in the existing pursuit band, reacquire aim instead of finishing a flank.
+                State = Decision.Following;
+                _tacticTime = _evasionTime = _graceTime = _stuckTime = 0;
+                _pressureTime = _circleTime = _spinTime = _noDamageTime = 0;
+                _engaged = _tacticsObserved = _attackHold = false;
+                _anchor = _motor.Body.position;
+                _evasionCooldown = Mathf.Max(_evasionCooldown, EffectiveReactionSeconds);
+                _profileCooldown = Mathf.Max(_profileCooldown, EffectiveReactionSeconds);
+            }
+            // Normal pursuit still owns steering, attack range and attack angle; melee owns cooldown.
+            return true;
         }
 
         private bool TickCombatTactics(float dt, RobotHealth targetHealth)
