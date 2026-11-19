@@ -25,6 +25,14 @@ namespace RobotSavaslari.Arena
             match.GetComponent<MainMenuScreen>()!=null && match.GetComponent<MainMenuScreen>().isActiveAndEnabled &&
             match.GetComponent<SettingsPanelController>()!=null && !match.GetComponent<SettingsPanelController>().IsOpen;
 
+        public void RegisterLayout(ArenaLayout layout)
+        {
+            if (layout == null || (layouts != null && System.Array.IndexOf(layouts, layout) >= 0)) return;
+            int count = layouts?.Length ?? 0;
+            System.Array.Resize(ref layouts, count + 1);
+            layouts[count] = layout;
+        }
+
         public void Configure(ArenaLayout[] choices,MatchController controller,Transform playerStart,Transform opponentStart,Material material)
         {
             var selected=Layout;
