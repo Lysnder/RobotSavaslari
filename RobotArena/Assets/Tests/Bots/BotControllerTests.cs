@@ -155,6 +155,94 @@ namespace RobotSavaslari.Tests
             Assert.That(_bot.EvasionCount, Is.Zero);
         }
         [Test]
+        public void CounterOpeningTurnsBackTowardTheOpponent()
+        {
+            _bot.ConfigureDecisions(BotPersonality.Counter, BotDifficulty.Easy, 740);
+            _bot.Tick(.02f);
+            Assert.That(_bot.State, Is.EqualTo(RobotBotController.Decision.Disengaging));
+            _owner.GetComponent<Rigidbody>().rotation = Quaternion.Euler(0, 90, 0);
+            for (int i = 0; i < 110 && _bot.State != RobotBotController.Decision.Waiting; i++) _bot.Tick(.02f);
+            Assert.That(_bot.State, Is.EqualTo(RobotBotController.Decision.Waiting), "bounded flank reaches its opening stance");
+            Assert.That(_bot.Command.x, Is.Zero, "Counter holds its opening position");
+            Assert.That(_bot.Command.y, Is.LessThan(-.1f), "opening must turn back toward the observed opponent after the flank");
+        }
+
+        [TestCase(BotDifficulty.Easy, false)]
+        [TestCase(BotDifficulty.Hard, false)]
+        [TestCase(BotDifficulty.Easy, true)]
+        [TestCase(BotDifficulty.Hard, true)]
+        public void CounterUsesAReadyStrikeInsteadOfDiscardingItDuringDefence(BotDifficulty difficulty, bool evading)
+        {
+            var weapon = _owner.AddComponent<RobotSavaslari.Combat.MeleeAttack>();
+            _target.AddComponent<BoxCollider>();
+            Physics.SyncTransforms();
+            float now = 100f;
+            weapon.Clock = () => now;
+            Assert.That(weapon.RequestAttack(), Is.EqualTo(RobotSavaslari.Combat.AttackOutcome.Started));
+            now += .2f; weapon.Tick(); // still cooling down, with no target in reach
+            _bot.ConfigureDecisions(BotPersonality.Counter, difficulty, difficulty == BotDifficulty.Easy ? 741 : 123);
+            _targetBody.linearVelocity = evading ? Vector3.back * 4 : Vector3.zero;
+            _bot.Tick(.02f);
+            if (!evading)
+                for (int i = 0; i < 110 && _bot.State != RobotBotController.Decision.Waiting; i++) _bot.Tick(.02f);
+            var defending = evading ? RobotBotController.Decision.Evading : RobotBotController.Decision.Waiting;
+            Assert.That(_bot.State, Is.EqualTo(defending));
+            _targetBody.linearVelocity = Vector3.zero;
+            _targetBody.position = new Vector3(0, 50, 1.6f);
+            _target.transform.position = _targetBody.position;
+            Physics.SyncTransforms();
+            _bot.Tick(.02f);
+            Assert.That(_bot.State, Is.EqualTo(defending), "cooldown does not cancel the defence");
+            Assert.That(_bot.AttackRequested, Is.False);
+
+            now = 101.1f; weapon.Tick();
+            _bot.Tick(.02f);
+            Assert.That(_bot.AttackRequested, Is.True, "ready weapon, valid range and angle form a counterattack opening");
+            Assert.That(_bot.State, Is.Not.EqualTo(defending));
+            int starts = 0;
+            weapon.Started += _ => starts++;
+            Assert.That(weapon.RequestAttack(), Is.EqualTo(RobotSavaslari.Combat.AttackOutcome.Started));
+            Assert.That(_target.GetComponent<RobotHealth>().CurrentHealth, Is.EqualTo(75f), "the opportunity reaches shared melee damage");
+            Assert.That(weapon.RequestAttack(), Is.EqualTo(RobotSavaslari.Combat.AttackOutcome.Cooldown));
+            Assert.That(starts, Is.EqualTo(1), "rejected retries do not count as actual starts");
+        }
+
+        [Test]
+        public void CloseCounterOpponentIsReacquiredBeforeContinuingAFlank()
+        {
+            var weapon = _owner.AddComponent<RobotSavaslari.Combat.MeleeAttack>();
+            _target.AddComponent<BoxCollider>();
+            _bot.ConfigureDecisions(BotPersonality.Counter, BotDifficulty.Easy, 123);
+            _bot.Tick(.02f);
+            Assert.That(_bot.State, Is.EqualTo(RobotBotController.Decision.Disengaging));
+            _owner.GetComponent<Rigidbody>().rotation = Quaternion.Euler(0, 90, 0);
+            _targetBody.position = new Vector3(0, 50, 1.9f);
+            _target.transform.position = _targetBody.position;
+            Physics.SyncTransforms();
+            _bot.Tick(.02f);
+            Assert.That(_bot.State, Is.EqualTo(RobotBotController.Decision.Turning), "close pursuit has priority over continuing a flank");
+            Assert.That(_bot.Command.x, Is.Zero);
+            Assert.That(_bot.Command.y, Is.LessThan(-.1f), "reacquire the opponent before trying to strike");
+            Assert.That(_bot.AttackRequested, Is.False, "range and angle gates still apply");
+            _targetBody.position = new Vector3(0, 50, 1.6f);
+            _target.transform.position = _targetBody.position;
+            Physics.SyncTransforms(); _bot.Tick(.02f);
+            Assert.That(_bot.AttackRequested, Is.False, "inside range, but still outside attack angle");
+            _owner.GetComponent<Rigidbody>().rotation = Quaternion.identity;
+            _targetBody.position = new Vector3(0, 50, 1.9f);
+            _target.transform.position = _targetBody.position;
+            Physics.SyncTransforms(); _bot.Tick(.02f);
+            Assert.That(_bot.AttackRequested, Is.False, "facing the opponent does not extend attack range");
+            _targetBody.position = new Vector3(0, 50, 1.6f);
+            _target.transform.position = _targetBody.position;
+            Physics.SyncTransforms();
+            _bot.Tick(.02f);
+            Assert.That(_bot.AttackRequested, Is.True);
+            Assert.That(weapon.RequestAttack(), Is.EqualTo(RobotSavaslari.Combat.AttackOutcome.Started));
+            Assert.That(_target.GetComponent<RobotHealth>().CurrentHealth, Is.EqualTo(75f));
+        }
+
+        [Test]
         public void ExistingStuckRecoveryStillHasPriority()
         {
             _target.transform.position = new Vector3(0, 50, 4);

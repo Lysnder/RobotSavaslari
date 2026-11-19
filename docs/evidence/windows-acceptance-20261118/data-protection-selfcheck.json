@@ -1,0 +1,15 @@
+﻿{
+    "temporary_registry_drift_detected":  true,
+    "purpose":  "Data-protection preparation self-check only; no game or manual acceptance was run.",
+    "private_snapshot_outside_git":  true,
+    "duplicate_snapshot_rejected":  true,
+    "restoration":  {
+                        "action":  "Restore",
+                        "registry_matches_snapshot":  true,
+                        "files_checked":  2,
+                        "personal_records_match_snapshot":  true,
+                        "checked_at_utc":  "2026-11-18T09:17:12.2878807Z",
+                        "registry_entries_checked":  47
+                    },
+    "checked_at_utc":  "2026-11-18T09:17:12.3136196Z"
+}

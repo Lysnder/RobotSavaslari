@@ -1,4 +1,5 @@
 using System.Linq;
+using System.IO;
 using NUnit.Framework;
 using RobotSavaslari.Arena;
 using RobotSavaslari.Match;
@@ -10,7 +11,30 @@ namespace RobotSavaslari.Tests
 {
     public sealed class ArenaAuthoringTests
     {
-        private const string ScenePath="Assets/Scenes/Gameplay/MainArena.unity";
+        private const string SourceScenePath = "Assets/Scenes/Gameplay/MainArena.unity";
+        private string ScenePath, temporaryFolder;
+        private byte[] sourceBytes;
+
+        [SetUp]
+        public void CreateOwnedSceneCopy()
+        {
+            sourceBytes = File.ReadAllBytes(SourceScenePath);
+            string parent = "Assets/Tests/Arena/Editor";
+            string name = "ArenaAuthoringTemp-" + System.Guid.NewGuid().ToString("N");
+            temporaryFolder = parent + "/" + name;
+            AssetDatabase.CreateFolder(parent, name);
+            ScenePath = temporaryFolder + "/MainArena.unity";
+            Assert.That(AssetDatabase.CopyAsset(SourceScenePath, ScenePath), Is.True);
+        }
+
+        [TearDown]
+        public void RemoveOwnedSceneCopy()
+        {
+            EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+            if (!string.IsNullOrEmpty(temporaryFolder)) AssetDatabase.DeleteAsset(temporaryFolder);
+            Assert.That(File.ReadAllBytes(SourceScenePath), Is.EqualTo(sourceBytes),
+                "Arena authoring tests must never save or regenerate the production scene.");
+        }
         [Test] public void SixRolesGenerateIdempotentlyAndPreserveExternalReferencesAfterReopen()
         {
             EditorSceneManager.OpenScene(ScenePath);

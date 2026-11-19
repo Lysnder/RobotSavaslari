@@ -1,0 +1,593 @@
+{
+  "base_sha": "93b4ded847fba8b7893291bd5ac45fd03a67944c",
+  "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+  "unity": "6000.4.4f1",
+  "test_results": [
+    {
+      "mode": "editmode",
+      "total": 197,
+      "passed": 197,
+      "failed": 0,
+      "skipped": 0,
+      "inconclusive": 0
+    },
+    {
+      "mode": "playmode",
+      "total": 213,
+      "passed": 213,
+      "failed": 0,
+      "skipped": 0,
+      "inconclusive": 0
+    }
+  ],
+  "coverage": {
+    "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+    "original_unique": 402,
+    "final_unique": 410,
+    "missing_original": [],
+    "added": [
+      "RobotSavaslari.Gameplay.Tests.DrivingRigPlayModeTests.LandingWhileDrivingDoesNotReportAWallImpact",
+      "RobotSavaslari.Gameplay.Tests.TestHarnessPlayModeTests.CleanupUnloadsOwnedObjectsAndPreservesUnrelatedScene",
+      "RobotSavaslari.Tests.BotControllerTests.CloseCounterOpponentIsReacquiredBeforeContinuingAFlank",
+      "RobotSavaslari.Tests.BotControllerTests.CounterOpeningTurnsBackTowardTheOpponent",
+      "RobotSavaslari.Tests.BotControllerTests.CounterUsesAReadyStrikeInsteadOfDiscardingItDuringDefence(Easy,False)",
+      "RobotSavaslari.Tests.BotControllerTests.CounterUsesAReadyStrikeInsteadOfDiscardingItDuringDefence(Easy,True)",
+      "RobotSavaslari.Tests.BotControllerTests.CounterUsesAReadyStrikeInsteadOfDiscardingItDuringDefence(Hard,False)",
+      "RobotSavaslari.Tests.BotControllerTests.CounterUsesAReadyStrikeInsteadOfDiscardingItDuringDefence(Hard,True)"
+    ],
+    "repeat_cases": 3,
+    "iterations_per_repeated_case": 10,
+    "additional_repeat_iterations": 27
+  },
+  "bot_final_matches": 48,
+  "bot_final_passed": 48,
+  "steps": [
+    {
+      "name": "final-arena",
+      "test_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "started_utc": "2026-11-18T07:42:29.9602823+00:00",
+      "ended_utc": "2026-11-18T07:42:49.2605438+00:00",
+      "exit_code": 0,
+      "timeout": false,
+      "status": "passed",
+      "xml": null,
+      "manual_acceptance": "not_run"
+    },
+    {
+      "name": "final-bot-combat",
+      "test_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "started_utc": "2026-11-18T07:43:24.5566737+00:00",
+      "ended_utc": "2026-11-18T07:43:38.5556922+00:00",
+      "exit_code": 0,
+      "timeout": false,
+      "status": "passed",
+      "xml": null,
+      "manual_acceptance": "not_run"
+    },
+    {
+      "name": "final-bot-original",
+      "test_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "started_utc": "2026-11-18T07:30:45.6494824+00:00",
+      "ended_utc": "2026-11-18T07:31:34.4596352+00:00",
+      "exit_code": 0,
+      "timeout": false,
+      "status": "passed",
+      "xml": null,
+      "manual_acceptance": "not_run"
+    },
+    {
+      "name": "final-bot-repeat",
+      "test_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "started_utc": "2026-11-18T07:31:36.2075418+00:00",
+      "ended_utc": "2026-11-18T07:32:25.0072436+00:00",
+      "exit_code": 0,
+      "timeout": false,
+      "status": "passed",
+      "xml": null,
+      "manual_acceptance": "not_run"
+    },
+    {
+      "name": "final-bot-scenarios",
+      "test_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "started_utc": "2026-11-18T07:43:07.9319791+00:00",
+      "ended_utc": "2026-11-18T07:43:22.7480291+00:00",
+      "exit_code": 0,
+      "timeout": false,
+      "status": "passed",
+      "xml": null,
+      "manual_acceptance": "not_run"
+    },
+    {
+      "name": "final-bot-seeds-repeat",
+      "test_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "started_utc": "2026-11-18T07:33:57.2819841+00:00",
+      "ended_utc": "2026-11-18T07:35:25.9528754+00:00",
+      "exit_code": 0,
+      "timeout": false,
+      "status": "passed",
+      "xml": null,
+      "manual_acceptance": "not_run"
+    },
+    {
+      "name": "final-bot-seeds",
+      "test_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "started_utc": "2026-11-18T07:32:26.7729144+00:00",
+      "ended_utc": "2026-11-18T07:33:55.4581297+00:00",
+      "exit_code": 0,
+      "timeout": false,
+      "status": "passed",
+      "xml": null,
+      "manual_acceptance": "not_run"
+    },
+    {
+      "name": "final-build",
+      "test_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "started_utc": "2026-11-18T07:30:21.1258238+00:00",
+      "ended_utc": "2026-11-18T07:30:42.8668214+00:00",
+      "exit_code": 0,
+      "timeout": false,
+      "status": "passed",
+      "xml": null,
+      "manual_acceptance": "not_run"
+    },
+    {
+      "name": "final-editmode",
+      "test_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "started_utc": "2026-11-18T07:35:27.8821593+00:00",
+      "ended_utc": "2026-11-18T07:35:41.8115051+00:00",
+      "exit_code": 0,
+      "timeout": false,
+      "status": "passed",
+      "xml": "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-editmode.xml",
+      "manual_acceptance": "not_run",
+      "total": 197,
+      "passed": 197,
+      "failed": 0,
+      "skipped": 0,
+      "inconclusive": 0,
+      "test_failures": []
+    },
+    {
+      "name": "final-playmode",
+      "test_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "started_utc": "2026-11-18T07:35:43.6619275+00:00",
+      "ended_utc": "2026-11-18T07:42:28.0918281+00:00",
+      "exit_code": 0,
+      "timeout": false,
+      "status": "passed",
+      "xml": "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-playmode.xml",
+      "manual_acceptance": "not_run",
+      "total": 213,
+      "passed": 213,
+      "failed": 0,
+      "skipped": 0,
+      "inconclusive": 0,
+      "test_failures": []
+    },
+    {
+      "name": "final-rules-read",
+      "test_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "started_utc": "2026-11-18T07:42:58.7538915+00:00",
+      "ended_utc": "2026-11-18T07:43:06.1222640+00:00",
+      "exit_code": 0,
+      "timeout": false,
+      "status": "passed",
+      "xml": null,
+      "manual_acceptance": "not_run"
+    },
+    {
+      "name": "final-rules-write",
+      "test_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "started_utc": "2026-11-18T07:42:50.9932843+00:00",
+      "ended_utc": "2026-11-18T07:42:57.0565368+00:00",
+      "exit_code": 0,
+      "timeout": false,
+      "status": "passed",
+      "xml": null,
+      "manual_acceptance": "not_run"
+    },
+    {
+      "name": "final-single-01",
+      "test_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "started_utc": "2026-11-18T07:44:47.8544739+00:00",
+      "ended_utc": "2026-11-18T07:45:02.2131154+00:00",
+      "exit_code": 0,
+      "timeout": false,
+      "status": "passed",
+      "xml": "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-01.xml",
+      "manual_acceptance": "not_run",
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "inconclusive": 0,
+      "test_failures": []
+    },
+    {
+      "name": "final-single-02",
+      "test_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "started_utc": "2026-11-18T07:45:03.5087342+00:00",
+      "ended_utc": "2026-11-18T07:45:21.4452267+00:00",
+      "exit_code": 0,
+      "timeout": false,
+      "status": "passed",
+      "xml": "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-02.xml",
+      "manual_acceptance": "not_run",
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "inconclusive": 0,
+      "test_failures": []
+    },
+    {
+      "name": "final-single-03",
+      "test_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "started_utc": "2026-11-18T07:45:22.5728645+00:00",
+      "ended_utc": "2026-11-18T07:45:39.8818693+00:00",
+      "exit_code": 0,
+      "timeout": false,
+      "status": "passed",
+      "xml": "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-03.xml",
+      "manual_acceptance": "not_run",
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "inconclusive": 0,
+      "test_failures": []
+    },
+    {
+      "name": "final-single-04",
+      "test_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "started_utc": "2026-11-18T07:45:41.0468966+00:00",
+      "ended_utc": "2026-11-18T07:45:55.8035680+00:00",
+      "exit_code": 0,
+      "timeout": false,
+      "status": "passed",
+      "xml": "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-04.xml",
+      "manual_acceptance": "not_run",
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "inconclusive": 0,
+      "test_failures": []
+    },
+    {
+      "name": "final-single-05",
+      "test_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "started_utc": "2026-11-18T07:45:56.9341593+00:00",
+      "ended_utc": "2026-11-18T07:46:12.7026586+00:00",
+      "exit_code": 0,
+      "timeout": false,
+      "status": "passed",
+      "xml": "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-05.xml",
+      "manual_acceptance": "not_run",
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "inconclusive": 0,
+      "test_failures": []
+    },
+    {
+      "name": "final-single-06",
+      "test_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "started_utc": "2026-11-18T07:46:13.9129556+00:00",
+      "ended_utc": "2026-11-18T07:46:37.6361853+00:00",
+      "exit_code": 0,
+      "timeout": false,
+      "status": "passed",
+      "xml": "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-06.xml",
+      "manual_acceptance": "not_run",
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "inconclusive": 0,
+      "test_failures": []
+    },
+    {
+      "name": "final-single-07",
+      "test_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "started_utc": "2026-11-18T07:46:38.7992662+00:00",
+      "ended_utc": "2026-11-18T07:46:53.9242626+00:00",
+      "exit_code": 0,
+      "timeout": false,
+      "status": "passed",
+      "xml": "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-07.xml",
+      "manual_acceptance": "not_run",
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "inconclusive": 0,
+      "test_failures": []
+    },
+    {
+      "name": "final-single-08",
+      "test_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "started_utc": "2026-11-18T07:46:55.0585797+00:00",
+      "ended_utc": "2026-11-18T07:47:12.7927138+00:00",
+      "exit_code": 0,
+      "timeout": false,
+      "status": "passed",
+      "xml": "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-08.xml",
+      "manual_acceptance": "not_run",
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "inconclusive": 0,
+      "test_failures": []
+    },
+    {
+      "name": "final-single-09",
+      "test_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "started_utc": "2026-11-18T07:47:14.0524906+00:00",
+      "ended_utc": "2026-11-18T07:47:32.5278328+00:00",
+      "exit_code": 0,
+      "timeout": false,
+      "status": "passed",
+      "xml": "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-09.xml",
+      "manual_acceptance": "not_run",
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "inconclusive": 0,
+      "test_failures": []
+    },
+    {
+      "name": "final-single-10",
+      "test_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "started_utc": "2026-11-18T07:47:33.9234358+00:00",
+      "ended_utc": "2026-11-18T07:47:52.1845878+00:00",
+      "exit_code": 0,
+      "timeout": false,
+      "status": "passed",
+      "xml": "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-10.xml",
+      "manual_acceptance": "not_run",
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "inconclusive": 0,
+      "test_failures": []
+    },
+    {
+      "name": "final-single-11",
+      "test_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "started_utc": "2026-11-18T07:47:53.3720192+00:00",
+      "ended_utc": "2026-11-18T07:48:07.6741998+00:00",
+      "exit_code": 0,
+      "timeout": false,
+      "status": "passed",
+      "xml": "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-11.xml",
+      "manual_acceptance": "not_run",
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "inconclusive": 0,
+      "test_failures": []
+    },
+    {
+      "name": "final-single-12",
+      "test_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "started_utc": "2026-11-18T07:48:08.7800369+00:00",
+      "ended_utc": "2026-11-18T07:48:33.6026951+00:00",
+      "exit_code": 0,
+      "timeout": false,
+      "status": "passed",
+      "xml": "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-12.xml",
+      "manual_acceptance": "not_run",
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "inconclusive": 0,
+      "test_failures": []
+    },
+    {
+      "name": "final-single-13",
+      "test_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "started_utc": "2026-11-18T07:48:34.7731677+00:00",
+      "ended_utc": "2026-11-18T07:49:00.2654766+00:00",
+      "exit_code": 0,
+      "timeout": false,
+      "status": "passed",
+      "xml": "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-13.xml",
+      "manual_acceptance": "not_run",
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "inconclusive": 0,
+      "test_failures": []
+    },
+    {
+      "name": "final-single-14",
+      "test_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "started_utc": "2026-11-18T07:49:01.5261322+00:00",
+      "ended_utc": "2026-11-18T07:49:49.2643089+00:00",
+      "exit_code": 0,
+      "timeout": false,
+      "status": "passed",
+      "xml": "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\verification-20261118\\final-single-14.xml",
+      "manual_acceptance": "not_run",
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "inconclusive": 0,
+      "test_failures": []
+    }
+  ],
+  "source_checks": [
+    {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "step": "final-arena-after",
+      "clean": true
+    },
+    {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "step": "final-arena-before",
+      "clean": true
+    },
+    {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "step": "final-bot-combat-after",
+      "clean": true
+    },
+    {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "step": "final-bot-combat-before",
+      "clean": true
+    },
+    {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "step": "final-bot-original-after",
+      "clean": true
+    },
+    {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "step": "final-bot-original-before",
+      "clean": true
+    },
+    {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "step": "final-bot-repeat-after",
+      "clean": true
+    },
+    {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "step": "final-bot-repeat-before",
+      "clean": true
+    },
+    {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "step": "final-bot-scenarios-after",
+      "clean": true
+    },
+    {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "step": "final-bot-scenarios-before",
+      "clean": true
+    },
+    {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "step": "final-bot-seeds-after",
+      "clean": true
+    },
+    {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "step": "final-bot-seeds-before",
+      "clean": true
+    },
+    {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "step": "final-bot-seeds-repeat-after",
+      "clean": true
+    },
+    {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "step": "final-bot-seeds-repeat-before",
+      "clean": true
+    },
+    {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "step": "final-build-after",
+      "clean": true
+    },
+    {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "step": "final-build-before",
+      "clean": true
+    },
+    {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "step": "final-editmode-after",
+      "clean": true
+    },
+    {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "step": "final-editmode-before",
+      "clean": true
+    },
+    {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "step": "final-playmode-after",
+      "clean": true
+    },
+    {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "step": "final-playmode-before",
+      "clean": true
+    },
+    {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "step": "final-rules-read-after",
+      "clean": true
+    },
+    {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "step": "final-rules-read-before",
+      "clean": true
+    },
+    {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "step": "final-rules-write-after",
+      "clean": true
+    },
+    {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "step": "final-rules-write-before",
+      "clean": true
+    },
+    {
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "step": "after all14 single processes",
+      "clean": true
+    }
+  ],
+  "restoration": {
+    "registry_restored": true,
+    "personal_records_restored": true,
+    "registry_entries_checked": 47,
+    "files_checked": 2
+  },
+  "windows_manual_input": {
+    "date": "2026-11-18",
+    "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+    "tool": "mcp__node_repl__js + @oai/sky",
+    "failed_before_javascript": true,
+    "error": "codex/sandbox-state-meta: sandboxCwd is not a local file URI: file:///mnt/c/users/emins/documents/codex/2026-11-11/files-pasted-by-the-user-robotsava",
+    "attempts": [
+      "Fresh native-runtime probe",
+      "Attempted native Windows checkout path attach: tool requires POSIX absolute path",
+      "Attempted regular QA checkout attach: requires registered linked worktree",
+      "Created Windows Git linked checkout robot-windows-acceptance; attach still rejected registration",
+      "Created managed linked worktree via app, registration completed at /home/lysander/.codex/worktrees/robot-native-validation/robot-verify-93b4ded; current request metadata still old WSL cwd",
+      "Reset native JS kernel and retried official @oai/sky initialization; same error before code executed"
+    ],
+    "executable": "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena\\Builds\\Windows\\RobotSavaslari.exe",
+    "verified_alternative": "Windows processes launch via PowerShell Start-Process with explicit native project/exe/log paths and waited process handles. Unity native GUIView button tests and InputSystem keyboard smoke are runnable.",
+    "manual_input_completed": false,
+    "remaining": [
+      "menu/settings real mouse clicks",
+      "WASD/arrows through OS keyboard",
+      "drive mappings/reserved C through OS keyboard",
+      "camera mouse orbit/zoom/floor clearance",
+      "start/attack/pause/settings/resume through OS input",
+      "two physical matches driven through OS input",
+      "series/result/history/rematch through OS input",
+      "Counter/Easy attack observation through OS input"
+    ],
+    "not_used": [
+      "No untrusted helper executable or custom Computer Use protocol",
+      "No PowerShell UI Automation/SendInput bypass"
+    ]
+  }
+}

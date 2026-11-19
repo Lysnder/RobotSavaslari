@@ -1,0 +1,133 @@
+{
+  "checked_at_utc": "2026-11-18T09:28:21.044510+00:00",
+  "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+  "game_tree_sha": "f0be42bc323521f557fbc6992205b1bda1c75b86",
+  "build_id": "sha256:bd78388612c8197b5439e91fcb0a1851c75a49f4115034af10bf97429e4a6960",
+  "automated_os_input_status": "blocked_before_javascript",
+  "manual_tester_available": "Emin",
+  "manual_acceptance_started_confirmed": false,
+  "manual_acceptance_completed": false,
+  "form": "docs/windows-acceptance/Acceptance-Form.md",
+  "flows": [
+    {
+      "id": "A",
+      "name": "Menü ve ayarlar",
+      "status": "not_run",
+      "tester": null,
+      "date": null,
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "build_id": "sha256:bd78388612c8197b5439e91fcb0a1851c75a49f4115034af10bf97429e4a6960",
+      "steps_and_expected_result": "See section A of form",
+      "observed_result": null,
+      "evidence": [],
+      "acceptance_disposition": "accepted_without_execution_by_user"
+    },
+    {
+      "id": "B",
+      "name": "WASD ve ok tuşları",
+      "status": "not_run",
+      "tester": null,
+      "date": null,
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "build_id": "sha256:bd78388612c8197b5439e91fcb0a1851c75a49f4115034af10bf97429e4a6960",
+      "steps_and_expected_result": "See section B of form",
+      "observed_result": null,
+      "evidence": [],
+      "acceptance_disposition": "accepted_without_execution_by_user"
+    },
+    {
+      "id": "C",
+      "name": "Tuş eşlemeleri ve kalıcılık",
+      "status": "not_run",
+      "tester": null,
+      "date": null,
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "build_id": "sha256:bd78388612c8197b5439e91fcb0a1851c75a49f4115034af10bf97429e4a6960",
+      "steps_and_expected_result": "See section C of form",
+      "observed_result": null,
+      "evidence": [],
+      "acceptance_disposition": "accepted_without_execution_by_user"
+    },
+    {
+      "id": "D",
+      "name": "Gerçek fareyle kamera",
+      "status": "not_run",
+      "tester": null,
+      "date": null,
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "build_id": "sha256:bd78388612c8197b5439e91fcb0a1851c75a49f4115034af10bf97429e4a6960",
+      "steps_and_expected_result": "See section D of form",
+      "observed_result": null,
+      "evidence": [],
+      "acceptance_disposition": "accepted_without_execution_by_user"
+    },
+    {
+      "id": "E",
+      "name": "Başlat/saldır/duraklat/devam",
+      "status": "not_run",
+      "tester": null,
+      "date": null,
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "build_id": "sha256:bd78388612c8197b5439e91fcb0a1851c75a49f4115034af10bf97429e4a6960",
+      "steps_and_expected_result": "See section E of form",
+      "observed_result": null,
+      "evidence": [],
+      "acceptance_disposition": "accepted_without_execution_by_user"
+    },
+    {
+      "id": "F",
+      "name": "İki ardışık fiziksel maç",
+      "status": "not_run",
+      "tester": null,
+      "date": null,
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "build_id": "sha256:bd78388612c8197b5439e91fcb0a1851c75a49f4115034af10bf97429e4a6960",
+      "steps_and_expected_result": "See section F of form",
+      "observed_result": null,
+      "evidence": [],
+      "acceptance_disposition": "accepted_without_execution_by_user"
+    },
+    {
+      "id": "G",
+      "name": "Seri/sonuç/geçmiş/yeni süreç/rövanş",
+      "status": "not_run",
+      "tester": null,
+      "date": null,
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "build_id": "sha256:bd78388612c8197b5439e91fcb0a1851c75a49f4115034af10bf97429e4a6960",
+      "steps_and_expected_result": "See section G of form",
+      "observed_result": null,
+      "evidence": [],
+      "acceptance_disposition": "accepted_without_execution_by_user"
+    },
+    {
+      "id": "H",
+      "name": "Counter/Easy",
+      "status": "not_run",
+      "tester": null,
+      "date": null,
+      "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+      "build_id": "sha256:bd78388612c8197b5439e91fcb0a1851c75a49f4115034af10bf97429e4a6960",
+      "steps_and_expected_result": "See section H of form",
+      "observed_result": null,
+      "evidence": [],
+      "acceptance_disposition": "accepted_without_execution_by_user"
+    }
+  ],
+  "new_game_bug_verified": false,
+  "game_source_changed": false,
+  "data_protection": {
+    "preparation_roundtrip": "passed; 47 registry values and 2 files match; see data-protection-selfcheck.json",
+    "manual_start_snapshot": "not confirmed; manual acceptance was not executed",
+    "manual_end_restore": "not performed/verified per user; no manual acceptance was executed; previous preparation restore is separate"
+  },
+  "main_promotion_ready": false,
+  "remaining": [
+    "Actual A-H OS-input evidence is absent; Emin accepted without execution",
+    "Manual session restore is not performed/verified; no manual acceptance run reported",
+    "Eligible approval including last pushed documentation commit; no merge authorized"
+  ],
+  "acceptance_disposition": "accepted_without_execution_by_user",
+  "user_decision_record": "docs/evidence/windows-acceptance-20261118/user-acceptance-decision.json",
+  "manual_execution_confirmed": false
+}

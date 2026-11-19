@@ -1,0 +1,27 @@
+{
+  "checked_at_utc": "2026-11-18T09:18:12.367981+00:00",
+  "tool": "mcp__node_repl__js + official @oai/sky",
+  "sandbox_cwd": "/home/lysander/.codex/worktrees/robot-native-validation/robot-verify-93b4ded",
+  "error": "Mcp error: -32602: js: codex/sandbox-state-meta: sandboxCwd is not a local file URI: file:///home/lysander/.codex/worktrees/robot-native-validation/robot-verify-93b4ded",
+  "javascript_started": false,
+  "windows_read_succeeded": false,
+  "os_input_sent": false,
+  "difference_from_previous_probe": "Old stale cwd is no longer passed. Provider now rejects the correct current POSIX cwd before JavaScript; moving checkout alone did not solve native Windows compatibility.",
+  "alternative_desktop_tool_available": false,
+  "manual_tester": "Emin (user confirmed availability; no execution results yet)",
+  "manual_status": "pending",
+  "native_session_requirements": [
+    "Windows native execution host using C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded, not WSL/POSIX cwd metadata.",
+    "Unlocked interactive Windows desktop with the same Windows user/profile.",
+    "Official @oai/sky.list_windows must succeed, followed by observing the actual game window and a harmless OS mouse click before declaring automation available."
+  ],
+  "not_repeated": [
+    "Old worktree attach/churn",
+    "Kernel reset without environment change",
+    "Repeated identical desktop probes"
+  ],
+  "not_used": [
+    "Custom helper/desktop protocol",
+    "PowerShell UI Automation/SendInput bypass"
+  ]
+}

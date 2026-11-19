@@ -44,6 +44,7 @@ namespace RobotSavaslari.Driving
             ImpactAngle = 0f;
             ResidualSpeed = 0f;
             ImpactTarget = string.Empty;
+            residualPending = false;
         }
 
         private void Awake()
@@ -64,8 +65,15 @@ namespace RobotSavaslari.Driving
                 return;
             }
 
-            Vector3 normal = collision.GetContact(0).normal;
+            // Landing on the floor while driving is not an impact into an obstacle.
+            Vector3 normal = Vector3.zero;
+            for (int i = 0; i < collision.contactCount; i++)
+            {
+                Vector3 candidate = collision.GetContact(i).normal;
+                if (Mathf.Abs(candidate.y) < 0.5f) { normal = candidate; break; }
+            }
             normal.y = 0f;
+            if (normal.sqrMagnitude < 1e-6f) return;
 
             HasReport = true;
             impactTime = Time.time;

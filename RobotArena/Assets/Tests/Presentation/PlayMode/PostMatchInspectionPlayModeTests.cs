@@ -65,7 +65,7 @@ namespace RobotSavaslari.Presentation.Tests
                 Assert.That(allowed.Contains(component.GetType()), Is.True, component.GetType().Name + " on snapshot " + component.name);
         }
 
-        [UnityTest]
+        [UnityTest, Repeat(10)]
         public IEnumerator InspectionShowsTheFinalDamageWithoutSideEffects()
         {
             yield return Load();

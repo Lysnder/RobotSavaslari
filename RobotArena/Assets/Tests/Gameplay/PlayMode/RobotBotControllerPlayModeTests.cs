@@ -142,7 +142,8 @@ namespace RobotSavaslari.Gameplay.Tests
             Assert.That(_bot.State, Is.EqualTo(Decision.Repositioning));
             Tick(Mathf.CeilToInt(_bot.repositionSeconds / Step) + 1);
             Assert.That(_bot.State, Is.EqualTo(Decision.Waiting));
-            Assert.That(_bot.Command, Is.EqualTo(Vector2.zero));
+            Assert.That(_bot.Command.x, Is.Zero, "opening holds position while reacquiring aim");
+            Assert.That(Mathf.Abs(_bot.Command.y), Is.LessThanOrEqualTo(_bot.maximumSteer), "opening uses the normal turn limit");
             Tick(Mathf.CeilToInt(_bot.openingSeconds / Step) + 1);
             Assert.That(_bot.State, Is.Not.EqualTo(Decision.Waiting), "back to the fight");
         }

@@ -1,0 +1,21 @@
+﻿{
+    "native_working_directory":  "C:\\users\\emins\\documents\\codex\\2026-11-11\\files-pasted-by-the-user-robotsava",
+    "note":  "Space and Turkish filename paths resolve through LiteralPath. Computer Use fails earlier while validating a POSIX sandbox cwd URI.",
+    "items":  [
+                  {
+                      "path":  "C:\\Program Files\\Unity\\Hub\\Editor\\6000.4.4f1\\Editor\\Unity.exe",
+                      "length":  282536,
+                      "exists":  true
+                  },
+                  {
+                      "path":  "C:\\Users\\emins\\Documents\\Codex\\robot-verify-93b4ded\\RobotArena\\Builds\\Windows\\RobotSavaslari.exe",
+                      "length":  667648,
+                      "exists":  true
+                  },
+                  {
+                      "path":  "C:\\Users\\emins\\.codex\\attachments\\c433726f-bd50-4fb8-b6e3-f42d6a506e54\\Yapıştırılan metin.txt",
+                      "length":  15473,
+                      "exists":  true
+                  }
+              ]
+}

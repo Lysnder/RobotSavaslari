@@ -136,13 +136,15 @@ namespace RobotSavaslari
             AttackRequested = false;
             OwnCondition = new BotDamageState(ownHealth, _ownDamage);
             TargetCondition = new BotDamageState(targetHealth, target.GetComponentInParent<RobotDamageVisuals>());
+            bool closeCounterPursuit = false;
             if (enableCombatTactics)
             {
                 ObserveOpponent(dt, delta);
                 bool recovering = State == Decision.BackingOut || State == Decision.EscapeTurn || State == Decision.EscapeDrive;
-                if (!recovering && TickOpponentDecisions(dt)) return;
+                closeCounterPursuit = !recovering && ResumeCloseCounterPursuitIfReady();
+                if (!recovering && !closeCounterPursuit && TickOpponentDecisions(dt)) return;
             }
-            if (enableCombatTactics && TickCombatTactics(dt, targetHealth)) return;
+            if (enableCombatTactics && !closeCounterPursuit && TickCombatTactics(dt, targetHealth)) return;
             if (State == Decision.BackingOut || State == Decision.EscapeTurn || State == Decision.EscapeDrive)
             {
                 _maneuverTime += dt;
@@ -191,6 +193,30 @@ namespace RobotSavaslari
             else { _stuckTime = 0; _anchor = _motor.Body.position; }
             Send(drive, steer);
         }
+        private bool ResumeCloseCounterPursuitIfReady()
+        {
+            if (personality != BotPersonality.Counter || !OwnCondition.WeaponOperational ||
+                Distance > Mathf.Max(attackEnterDistance + .1f, followResumeDistance)) return false;
+            var weapon = GetComponent<Combat.MeleeAttack>();
+            if (weapon == null || weapon.IsAttacking || weapon.CooldownRemaining > 0) return false;
+
+            bool defending = State == Decision.Disengaging || State == Decision.Repositioning ||
+                State == Decision.Waiting || State == Decision.Evading;
+            if (defending)
+            {
+                // Once caught in the existing pursuit band, reacquire aim instead of finishing a flank.
+                State = Decision.Following;
+                _tacticTime = _evasionTime = _graceTime = _stuckTime = 0;
+                _pressureTime = _circleTime = _spinTime = _noDamageTime = 0;
+                _engaged = _tacticsObserved = _attackHold = false;
+                _anchor = _motor.Body.position;
+                _evasionCooldown = Mathf.Max(_evasionCooldown, EffectiveReactionSeconds);
+                _profileCooldown = Mathf.Max(_profileCooldown, EffectiveReactionSeconds);
+            }
+            // Normal pursuit still owns steering, attack range and attack angle; melee owns cooldown.
+            return true;
+        }
+
         private bool TickCombatTactics(float dt, RobotHealth targetHealth)
         {
             // Lost wheels favor holding an angle over repeatedly attempting wide flank arcs.
@@ -214,7 +240,14 @@ namespace RobotSavaslari
                     if (_tacticTime < repositionSeconds) { DriveToPoint(_flankPoint, false); return true; }
                     State = Decision.Waiting; _tacticTime = 0;
                 }
-                if (_tacticTime < openingSeconds) { Send(0, 0); return true; }
+                if (_tacticTime < openingSeconds)
+                {
+                    // Hold the opening position while reacquiring the opponent after the flank.
+                    Vector3 aim = _aimPosition - _motor.Body.position; aim.y = 0;
+                    float angle = Vector3.SignedAngle(_motor.Body.rotation * Vector3.forward, aim, Vector3.up);
+                    Send(0, Mathf.Clamp(angle / Mathf.Max(1, fullSteerAngle), -maximumSteer, maximumSteer));
+                    return true;
+                }
                 State = Decision.Following; _tacticTime = 0; _graceTime = 0.75f;
                 _pressureTime = _circleTime = _spinTime = _noDamageTime = 0;
                 _engaged = false; _bestDistance = Distance; _reactionTime = 0;

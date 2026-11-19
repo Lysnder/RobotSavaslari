@@ -1,0 +1,26 @@
+{
+  "recorded_at_utc": "2026-11-18T09:28:21.044510+00:00",
+  "decision_date_local": "2026-11-18",
+  "timezone": "Europe/Istanbul",
+  "decision_by": "Emin (user)",
+  "scope": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H"
+  ],
+  "disposition": "accepted_without_execution_by_user",
+  "clarification_about_execution": "Uygulamadım; geçmiş kabul edelim demek istedim",
+  "clarification_about_restore": "Henüz geri yükleme/doğrulama yapılmadı",
+  "manual_tests_executed": false,
+  "manual_test_pass_claimed": false,
+  "manual_restore_verified": false,
+  "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+  "build_id": "sha256:bd78388612c8197b5439e91fcb0a1851c75a49f4115034af10bf97429e4a6960",
+  "merge_authorized": false,
+  "note": "User acceptance decision only; no actual OS-input test or restoration evidence. Previous preparation restore result remains separate."
+}

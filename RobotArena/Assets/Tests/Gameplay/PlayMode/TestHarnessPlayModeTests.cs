@@ -10,6 +10,7 @@ using RobotSavaslari.Match.Art;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
+using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 using Object = UnityEngine.Object;
 
@@ -22,9 +23,32 @@ namespace RobotSavaslari.Gameplay.Tests
     public sealed class TestHarnessPlayModeTests : InputTestFixture
     {
         private Keyboard _keyboard;
+        private Scene _unrelatedScene;
 
         [UnityTearDown]
-        public IEnumerator Cleanup() => GameplayTestScene.Unload();
+        public IEnumerator Cleanup()
+        {
+            if (_unrelatedScene.IsValid() && _unrelatedScene.isLoaded)
+                yield return SceneManager.UnloadSceneAsync(_unrelatedScene);
+            yield return GameplayTestScene.Unload();
+        }
+
+        [UnityTest]
+        public IEnumerator CleanupUnloadsOwnedObjectsAndPreservesUnrelatedScene()
+        {
+            yield return GameplayTestScene.LoadEmptyScene(false);
+            var owned = new GameObject("Owned test object");
+            _unrelatedScene = SceneManager.CreateScene("Unrelated test scene");
+            var foreign = new GameObject("Unrelated object");
+            SceneManager.MoveGameObjectToScene(foreign, _unrelatedScene);
+            Time.timeScale = 0.25f;
+            yield return GameplayTestScene.Unload();
+            Assert.That(owned == null, Is.True, "Owned scene objects are removed.");
+            Assert.That(Time.timeScale, Is.EqualTo(1f));
+            Assert.That(_unrelatedScene.isLoaded && foreign != null, Is.True, "Other scene owners retain their objects.");
+            yield return GameplayTestScene.Unload();
+            Assert.That(_unrelatedScene.isLoaded, Is.True, "Repeated cleanup preserves unrelated scenes and test execution.");
+        }
 
         private IEnumerator Tap(Key key)
         {
@@ -170,7 +194,7 @@ namespace RobotSavaslari.Gameplay.Tests
             finally { rig.Dispose(); }
         }
 
-        [UnityTest]
+        [UnityTest, Repeat(10)]
         public IEnumerator ModularPreviewEquipsWeaponsAndArmour()
         {
             yield return GameplayTestScene.LoadEmptyScene(false);
@@ -194,9 +218,10 @@ namespace RobotSavaslari.Gameplay.Tests
             GameplayTestScene.SetField(preview, "spinning", true);
             Transform rotor = host.GetComponentsInChildren<Transform>().First(t => t.name == "Rotor" && t.parent.name.StartsWith("Bar"));
             Quaternion before = rotor.localRotation;
-            yield return null;
-            yield return null;
-            Assert.That(Quaternion.Angle(rotor.localRotation, before), Is.GreaterThan(0f), "rotor spins");
+            float spinDeadline = Time.realtimeSinceStartup + 1f;
+            while (Quaternion.Angle(rotor.localRotation, before) < 1f && Time.realtimeSinceStartup < spinDeadline)
+                yield return null;
+            Assert.That(Quaternion.Angle(rotor.localRotation, before), Is.GreaterThanOrEqualTo(1f), "rotor spins through Update");
             preview.EquipWeapon(1);
             yield return null;
             preview.EquipWeapon(-1);

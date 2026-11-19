@@ -1,0 +1,19 @@
+{
+  "source_sha": "5de681341b31ffb81866adec3a2e2790b8abf364",
+  "original_unique": 402,
+  "final_unique": 410,
+  "missing_original": [],
+  "added": [
+    "RobotSavaslari.Gameplay.Tests.DrivingRigPlayModeTests.LandingWhileDrivingDoesNotReportAWallImpact",
+    "RobotSavaslari.Gameplay.Tests.TestHarnessPlayModeTests.CleanupUnloadsOwnedObjectsAndPreservesUnrelatedScene",
+    "RobotSavaslari.Tests.BotControllerTests.CloseCounterOpponentIsReacquiredBeforeContinuingAFlank",
+    "RobotSavaslari.Tests.BotControllerTests.CounterOpeningTurnsBackTowardTheOpponent",
+    "RobotSavaslari.Tests.BotControllerTests.CounterUsesAReadyStrikeInsteadOfDiscardingItDuringDefence(Easy,False)",
+    "RobotSavaslari.Tests.BotControllerTests.CounterUsesAReadyStrikeInsteadOfDiscardingItDuringDefence(Easy,True)",
+    "RobotSavaslari.Tests.BotControllerTests.CounterUsesAReadyStrikeInsteadOfDiscardingItDuringDefence(Hard,False)",
+    "RobotSavaslari.Tests.BotControllerTests.CounterUsesAReadyStrikeInsteadOfDiscardingItDuringDefence(Hard,True)"
+  ],
+  "repeat_cases": 3,
+  "iterations_per_repeated_case": 10,
+  "additional_repeat_iterations": 27
+}
