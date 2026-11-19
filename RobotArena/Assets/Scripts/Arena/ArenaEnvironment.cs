@@ -63,6 +63,7 @@ namespace RobotSavaslari.Arena
         {
             ConveyorSurface.RemovePreviousMotion();
             if(Contents==null)return;
+            foreach(var hazard in Contents.GetComponentsInChildren<ArenaHazard>()) hazard.ResetCycle();
             foreach(var barrier in Contents.GetComponentsInChildren<WarningBarrier>())barrier.ResetCycle();
         }
         public bool Select(int index)
@@ -107,6 +108,13 @@ namespace RobotSavaslari.Arena
                     obstacle.GetComponent<Renderer>().sharedMaterial=obstacleMaterial;
                 }
                 if(c.spawn==ArenaSpawn.Player) SetSpawn(playerSpawn,center,90);
+                if (c.IsDamaging)
+                {
+                    var hazard = new GameObject(c.content + " " + c.coordinate);
+                    hazard.transform.SetParent(owned.transform, false);
+                    hazard.transform.position = center;
+                    hazard.AddComponent<ArenaHazard>().Configure(match, c, obstacleMaterial);
+                }
                 if(c.content==ArenaContent.Hazard)
                 {
                     var hazard=new GameObject("Arena Warning Barrier "+c.coordinate);

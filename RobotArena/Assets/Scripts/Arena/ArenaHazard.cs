@@ -3,6 +3,8 @@ using UnityEngine;
 
 namespace RobotSavaslari.Arena
 {
+    public enum HazardPhase { Idle, Warning, Active, Recovery }
+
     public sealed class ArenaHazard : MonoBehaviour
     {
         private readonly Collider[] overlaps = new Collider[64];
@@ -11,7 +13,11 @@ namespace RobotSavaslari.Arena
         private ArenaCellData cell;
         private MatchController match;
 
-        public void Configure(MatchController controller, ArenaCellData data)
+        private Transform marker;
+        private float elapsed;
+        public HazardPhase Phase { get; private set; }
+
+        public void Configure(MatchController controller, ArenaCellData data, Material material)
         {
             match = controller;
             cell = data;
@@ -19,6 +25,70 @@ namespace RobotSavaslari.Arena
             targets[1] = match.Opponent.GetComponent<RobotHealth>();
             Vector2 axis = data.direction.normalized;
             transform.rotation = Quaternion.Euler(0f, -Mathf.Atan2(axis.y, axis.x) * Mathf.Rad2Deg, 0f);
+            var indicator = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            indicator.name = data.content + " floor marker";
+            indicator.transform.SetParent(transform, false);
+            indicator.GetComponent<Collider>().enabled = false;
+            indicator.GetComponent<Renderer>().sharedMaterial = material;
+            marker = indicator.transform;
+            ResetCycle();
+        }
+
+        public void ResetCycle()
+        {
+            Phase = HazardPhase.Idle;
+            elapsed = 0f;
+            nextHit[0] = nextHit[1] = 0f;
+            if (marker != null) DrawMarker();
+        }
+
+        private void OnDisable() => ResetCycle();
+
+        private void FixedUpdate()
+        {
+            if (!CanDamage || cell == null) return;
+            elapsed += Time.fixedDeltaTime;
+            switch (Phase)
+            {
+                case HazardPhase.Idle:
+                    if (elapsed >= 1f) Enter(HazardPhase.Warning);
+                    break;
+                case HazardPhase.Warning:
+                    if (elapsed >= cell.warningSeconds)
+                    {
+                        Enter(HazardPhase.Active);
+                        ApplyHits(0f);
+                    }
+                    break;
+                case HazardPhase.Active:
+                    ApplyHits(elapsed);
+                    if (elapsed >= cell.activeSeconds) Enter(HazardPhase.Recovery);
+                    break;
+                case HazardPhase.Recovery:
+                    if (elapsed >= cell.recoverySeconds) ResetCycle();
+                    break;
+            }
+            DrawMarker();
+        }
+
+        private void Enter(HazardPhase phase)
+        {
+            Phase = phase;
+            elapsed = 0f;
+        }
+
+        private void DrawMarker()
+        {
+            bool active = Phase == HazardPhase.Active;
+            bool warning = Phase == HazardPhase.Warning;
+            float progress = warning ? elapsed / cell.warningSeconds : elapsed / cell.activeSeconds;
+            Vector3 size = cell.HitSize;
+            float height = active ? .24f : warning ? .04f + .08f * Mathf.PingPong(progress * 4, 1) : .015f;
+            Vector3 offset = cell.HitOffset(active || warning ? progress : 0);
+            if (warning && cell.content == ArenaContent.Pulse)
+                size *= Mathf.Lerp(.4f, 1f, progress);
+            marker.localScale = new Vector3(size.x, height, size.z);
+            marker.localPosition = new Vector3(offset.x, .01f + height * .5f, offset.z);
         }
 
         private bool CanDamage => match != null && match.isActiveAndEnabled && !match.IsPaused &&
