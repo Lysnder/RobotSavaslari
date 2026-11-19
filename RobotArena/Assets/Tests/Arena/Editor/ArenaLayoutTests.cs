@@ -16,6 +16,18 @@ namespace RobotSavaslari.Tests
             Assert.That(ArenaLayoutValidator.Validate(layout,1.6f),Is.Empty);
             Assert.That(ArenaLayoutValidator.FindRoute(layout,1.6f).Count,Is.GreaterThan(1));
         }
+        [Test] public void SweepTravelsWhilePulseCoversAStationaryArea()
+        {
+            var cell = new ArenaCellData { content = ArenaContent.Hazard };
+            Assert.IsFalse(cell.IsDamaging);
+            cell.content = ArenaContent.Pulse;
+            Assert.AreEqual(cell.HitOffset(0), cell.HitOffset(1));
+            Assert.AreEqual(10f, cell.Damage);
+            cell.content = ArenaContent.Sweep;
+            Assert.Greater(cell.HitOffset(1).x, cell.HitOffset(0).x);
+            Assert.Less(cell.HitSize.z, 1);
+            Assert.AreEqual(15f, cell.Damage);
+        }
         [Test] public void TacticalRequiresADetour()
         {
             int open=ArenaLayoutValidator.FindRoute(layout,1.6f).Count;

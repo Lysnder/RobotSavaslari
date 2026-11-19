@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace RobotSavaslari.Arena
 {
-    public enum ArenaContent { Floor, Obstacle, Hazard, Conveyor }
+    public enum ArenaContent { Floor, Obstacle, Hazard, Conveyor, Pulse, Sweep }
     public enum ArenaSpawn { None, Player, Opponent }
     public enum ArenaWall { Standard, Reinforced }
 
@@ -15,6 +15,19 @@ namespace RobotSavaslari.Arena
         public ArenaContent content;
         public ArenaSpawn spawn;
         public ArenaWall wall;
+        public float warningSeconds = 1.25f;
+        public float activeSeconds = 1.5f;
+        public float recoverySeconds = 1f;
+        public float repeatSeconds = .5f;
+        public float damageOverride;
+        public float Damage => damageOverride == 0 ? (content == ArenaContent.Sweep ? 15f : 10f) : damageOverride;
+        public bool IsDamaging => content == ArenaContent.Pulse || content == ArenaContent.Sweep;
+        public Vector3 HitSize => content == ArenaContent.Sweep ? new Vector3(.32f, 1.2f, .68f) : new Vector3(1.8f, 1.2f, 1.8f);
+        public Vector3 HitOffset(float progress)
+        {
+            float travel = content == ArenaContent.Sweep ? Mathf.Lerp(-.8f, .8f, progress) : 0f;
+            return new Vector3(travel, .6f, 0);
+        }
         public Vector2 direction = Vector2.right;
     }
 
