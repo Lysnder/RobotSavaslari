@@ -37,6 +37,13 @@ namespace RobotSavaslari.Tests
             layout.cells[0].warningSeconds = seconds;
             Assert.That(ArenaLayoutValidator.Validate(layout, 1f), Is.Not.Empty);
         }
+        [TestCase(ArenaContent.Pulse)]
+        [TestCase(ArenaContent.Sweep)]
+        public void MovingHazardsCannotEnterSpawnTurningBuffer(ArenaContent content)
+        {
+            layout.cells.Find(c => c.coordinate == new Vector2Int(2,3)).content = content;
+            Assert.That(ArenaLayoutValidator.Validate(layout, 1.6f), Is.Not.Empty);
+        }
         [Test] public void TacticalRequiresADetour()
         {
             int open=ArenaLayoutValidator.FindRoute(layout,1.6f).Count;

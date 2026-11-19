@@ -133,7 +133,17 @@ namespace RobotSavaslari.Arena
             if(Mathf.Abs(point.x)>limit||Mathf.Abs(point.y)>limit) return false;
             float extent=ArenaLayout.ObstacleWidth*.5f+radius+.05f;
             foreach(var c in layout.cells)
-                if(IsBlocking(c.content))
+                if (c.IsDamaging)
+                {
+                    Vector2 delta = point - ArenaLayout.Position(c.coordinate);
+                    Vector2 axis = c.direction.normalized;
+                    float along = Mathf.Abs(Vector2.Dot(delta, axis));
+                    float across = Mathf.Abs(axis.x * delta.y - axis.y * delta.x);
+                    float halfLength = c.HitSize.x * .5f + Mathf.Abs(c.HitOffset(1).x);
+                    float clearance = radius + .05f;
+                    if (along <= halfLength + clearance && across <= c.HitSize.z * .5f + clearance) return false;
+                }
+                else if(IsBlocking(c.content))
                 {
                     Vector2 d=point-ArenaLayout.Position(c.coordinate);
                     if(Mathf.Abs(d.x)<=extent&&Mathf.Abs(d.y)<=extent) return false;
