@@ -15,14 +15,16 @@ namespace RobotSavaslari.Arena
         [SerializeField] private MatchController match;
         [SerializeField] private Transform playerSpawn,opponentSpawn;
         [SerializeField] private Material obstacleMaterial;
+        private Vector2 layoutScroll;
+        private string selectionError;
         private RobotHealth playerHealth,opponentHealth;
-        public ArenaLayout Layout => layouts!=null && layouts.Length>selectedLayout ? layouts[selectedLayout] : null;
+        public ArenaLayout Layout => layouts!=null && selectedLayout>=0 && layouts.Length>selectedLayout ? layouts[selectedLayout] : null;
         public IReadOnlyList<ArenaLayout> Layouts => layouts;
         public MatchController Match => match;
         public Transform Contents => transform.Find("Layout Contents");
         public float ClearanceRadius => Mathf.Max(ArenaLayoutValidator.MeasureRadius(match.Player),ArenaLayoutValidator.MeasureRadius(match.Opponent));
         public bool CanSelect => match!=null && match.IsInitialized && match.State==MatchController.MatchState.Ready &&
-            match.GetComponent<MainMenuScreen>()!=null && match.GetComponent<MainMenuScreen>().isActiveAndEnabled &&
+            match.GetComponent<MainMenuScreen>()!=null && match.GetComponent<MainMenuScreen>().IsShowingReadyMenu && isActiveAndEnabled &&
             match.GetComponent<SettingsPanelController>()!=null && !match.GetComponent<SettingsPanelController>().IsOpen;
 
         public void RegisterLayout(ArenaLayout layout)
@@ -76,9 +78,10 @@ namespace RobotSavaslari.Arena
         }
         public bool Select(int index)
         {
-            if(!CanSelect || index<0 || index>=layouts.Length) return false;
+            if(!CanSelect || layouts==null || index<0 || index>=layouts.Length) return false;
             var errors=ArenaLayoutValidator.Validate(layouts[index],ClearanceRadius);
-            if(errors.Count>0) {Debug.LogWarning(string.Join("\n",errors));return false;}
+            if(errors.Count>0) {selectionError = string.Join("\n", errors); Debug.LogWarning(selectionError); return false;}
+            selectionError = null;
             selectedLayout=index;Rebuild();return true;
         }
 
@@ -91,6 +94,7 @@ namespace RobotSavaslari.Arena
             Transform old=Contents;
             if(old!=null)
             {
+                foreach (var collider in old.GetComponentsInChildren<Collider>(true)) collider.enabled = false;
                 old.gameObject.SetActive(false);
                 old.name="Retired Layout Contents";
                 if(Application.isPlaying) Destroy(old.gameObject);else DestroyImmediate(old.gameObject);
@@ -155,15 +159,18 @@ namespace RobotSavaslari.Arena
 
         private void OnGUI()
         {
-            if(!CanSelect) return;
+            if(!CanSelect || Layout == null) return;
             var previous=GUI.matrix;
             float scale=Mathf.Max(.01f,Mathf.Min(Screen.height/720f,Screen.width/600f));
             GUI.matrix=Matrix4x4.Scale(new Vector3(scale,scale,1));
-            GUILayout.BeginArea(new Rect(16,Screen.height/scale-105,290,90),GUI.skin.box);
+            GUILayout.BeginArea(new Rect(16,Screen.height/scale-124,Mathf.Min(255, Screen.width/scale*.32f),108),GUI.skin.box);
             GUILayout.Label("Arena: "+Layout.displayName);
-            GUILayout.BeginHorizontal();
-            for(int i=0;i<layouts.Length;i++) if(GUILayout.Button(layouts[i].displayName)) Select(i);
-            GUILayout.EndHorizontal();GUILayout.EndArea();GUI.matrix=previous;
+            layoutScroll = GUILayout.BeginScrollView(layoutScroll);
+            if (!string.IsNullOrEmpty(selectionError)) GUILayout.Label(selectionError);
+            for (int i = 0; i < layouts.Length; i++)
+                if (layouts[i] != null && GUILayout.Button(layouts[i].displayName)) Select(i);
+            GUILayout.EndScrollView();
+            GUILayout.EndArea();GUI.matrix=previous;
         }
     }
 }
