@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace RobotSavaslari.Arena
 {
-    public enum ArenaContent { Floor, Obstacle, Hazard, Conveyor }
+    public enum ArenaContent { Floor, Obstacle, Hazard, Conveyor, Pulse, Sweep }
     public enum ArenaSpawn { None, Player, Opponent }
     public enum ArenaWall { Standard, Reinforced }
 
@@ -15,6 +15,19 @@ namespace RobotSavaslari.Arena
         public ArenaContent content;
         public ArenaSpawn spawn;
         public ArenaWall wall;
+        public float warningSeconds = 1.25f;
+        public float activeSeconds = 1.5f;
+        public float recoverySeconds = 1f;
+        public float repeatSeconds = .5f;
+        public float damageOverride;
+        public float Damage => damageOverride == 0 ? (content == ArenaContent.Sweep ? 15f : 10f) : damageOverride;
+        public bool IsDamaging => content == ArenaContent.Pulse || content == ArenaContent.Sweep;
+        public Vector3 HitSize => content == ArenaContent.Sweep ? new Vector3(.32f, 1.2f, .68f) : new Vector3(1.8f, 1.2f, 1.8f);
+        public Vector3 HitOffset(float progress)
+        {
+            float travel = content == ArenaContent.Sweep ? Mathf.Lerp(-.8f, .8f, progress) : 0f;
+            return new Vector3(travel, .6f, 0);
+        }
         public Vector2 direction = Vector2.right;
     }
 
@@ -65,6 +78,10 @@ namespace RobotSavaslari.Arena
                 if(c.spawn==ArenaSpawn.Opponent) opponent++;
                 if(c.spawn!=ArenaSpawn.None && c.content!=ArenaContent.Floor) errors.Add("Spawn requires unobstructed normal floor: "+c.coordinate);
                 if(c.content==ArenaContent.Conveyor && (float.IsNaN(c.direction.x)||float.IsNaN(c.direction.y)||float.IsInfinity(c.direction.x)||float.IsInfinity(c.direction.y)||c.direction.sqrMagnitude<.01f)) errors.Add("Conveyor requires a finite nonzero XZ direction: "+c.coordinate);
+                if (c.IsDamaging && (!Within(c.warningSeconds, 1, 120) || !Within(c.activeSeconds, .02f, 120) ||
+                    !Within(c.recoverySeconds, .02f, 120) || !Within(c.repeatSeconds, .02f, 120) ||
+                    !Within(c.Damage, .01f, 10000) || !Within(c.direction.sqrMagnitude, .01f, 10000)))
+                    errors.Add("Invalid hazard at " + c.coordinate + ": warning 1-120 s, other times .02-120 s, damage .01-10000 and nonzero direction required.");
                 if(c.wall!=ArenaWall.Standard && c.coordinate.x!=0 && c.coordinate.x!=7 && c.coordinate.y!=0 && c.coordinate.y!=7) errors.Add("Wall variation must be on the perimeter: "+c.coordinate);
             }
             if(player!=1||opponent!=1) errors.Add("Exactly one distinct Player and Opponent spawn is required.");
@@ -73,6 +90,8 @@ namespace RobotSavaslari.Arena
             if(route.Count==0) errors.Add("Spawns are disconnected or the corridor is too narrow for the robot and turning clearance.");
             return errors;
         }
+
+        private static bool Within(float value, float min, float max) => value >= min && value <= max;
 
         // .5 m samples in configuration space, with obstacles expanded by the full turn radius.
         public static List<Vector2> FindRoute(ArenaLayout layout,float radius)
@@ -114,7 +133,17 @@ namespace RobotSavaslari.Arena
             if(Mathf.Abs(point.x)>limit||Mathf.Abs(point.y)>limit) return false;
             float extent=ArenaLayout.ObstacleWidth*.5f+radius+.05f;
             foreach(var c in layout.cells)
-                if(IsBlocking(c.content))
+                if (c.IsDamaging)
+                {
+                    Vector2 delta = point - ArenaLayout.Position(c.coordinate);
+                    Vector2 axis = c.direction.normalized;
+                    float along = Mathf.Abs(Vector2.Dot(delta, axis));
+                    float across = Mathf.Abs(axis.x * delta.y - axis.y * delta.x);
+                    float halfLength = c.HitSize.x * .5f + Mathf.Abs(c.HitOffset(1).x);
+                    float clearance = radius + .05f;
+                    if (along <= halfLength + clearance && across <= c.HitSize.z * .5f + clearance) return false;
+                }
+                else if(IsBlocking(c.content))
                 {
                     Vector2 d=point-ArenaLayout.Position(c.coordinate);
                     if(Mathf.Abs(d.x)<=extent&&Mathf.Abs(d.y)<=extent) return false;

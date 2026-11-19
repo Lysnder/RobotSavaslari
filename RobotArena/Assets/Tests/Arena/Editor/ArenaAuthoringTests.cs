@@ -70,6 +70,22 @@ namespace RobotSavaslari.Tests
                 arena=Object.FindFirstObjectByType<ArenaEnvironment>();arena.GenerateLayout(open);EditorSceneManager.SaveScene(arena.gameObject.scene);
             }
         }
+        [TestCase("PulseArena")]
+        [TestCase("SweepArena")]
+        public void AuthoredHazardsSurviveSaveAndReopen(string name)
+        {
+            EditorSceneManager.OpenScene(ScenePath);
+            var arena = Object.FindFirstObjectByType<ArenaEnvironment>();
+            var layout = AssetDatabase.LoadAssetAtPath<ArenaLayout>("Assets/Settings/Arena/" + name + ".asset");
+            arena.GenerateLayout(layout);
+            EditorSceneManager.SaveScene(arena.gameObject.scene);
+            EditorSceneManager.OpenScene(ScenePath);
+            arena = Object.FindFirstObjectByType<ArenaEnvironment>();
+            Assert.That(arena.Layout, Is.SameAs(layout));
+            Assert.That(arena.Contents.GetComponentsInChildren<ArenaHazard>().Length, Is.EqualTo(2));
+            Assert.That(arena.Match.Player, Is.Not.Null);
+            Assert.That(arena.Match.Opponent, Is.Not.Null);
+        }
         [Test] public void InvalidGenerationDoesNotTouchCurrentScene()
         {
             EditorSceneManager.OpenScene(ScenePath);var arena=Object.FindFirstObjectByType<ArenaEnvironment>();

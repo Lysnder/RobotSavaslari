@@ -13,6 +13,9 @@ namespace RobotSavaslari.UI
         private bool BindingsOpen => _match.Player != null &&
             _match.Player.TryGetComponent<DriveBindingsScreen>(out var bindings) && bindings.IsOpen;
 
+        public bool IsShowingReadyMenu => isActiveAndEnabled && _match != null && _match.isActiveAndEnabled &&
+            _match.State == MatchController.MatchState.Ready && !_match.IsPaused && !_showHistory && !BindingsOpen;
+
         private const float ReferenceHeight = 720f;
         private MatchController _match;
         private SettingsPanelController _settings;

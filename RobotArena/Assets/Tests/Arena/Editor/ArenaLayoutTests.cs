@@ -16,6 +16,34 @@ namespace RobotSavaslari.Tests
             Assert.That(ArenaLayoutValidator.Validate(layout,1.6f),Is.Empty);
             Assert.That(ArenaLayoutValidator.FindRoute(layout,1.6f).Count,Is.GreaterThan(1));
         }
+        [Test] public void SweepTravelsWhilePulseCoversAStationaryArea()
+        {
+            var cell = new ArenaCellData { content = ArenaContent.Hazard };
+            Assert.IsFalse(cell.IsDamaging);
+            cell.content = ArenaContent.Pulse;
+            Assert.AreEqual(cell.HitOffset(0), cell.HitOffset(1));
+            Assert.AreEqual(10f, cell.Damage);
+            cell.content = ArenaContent.Sweep;
+            Assert.Greater(cell.HitOffset(1).x, cell.HitOffset(0).x);
+            Assert.Less(cell.HitSize.z, 1);
+            Assert.AreEqual(15f, cell.Damage);
+        }
+        [TestCase(.99f)]
+        [TestCase(float.NaN)]
+        [TestCase(float.PositiveInfinity)]
+        public void InvalidWarningPreventsGeneration(float seconds)
+        {
+            layout.cells[0].content = ArenaContent.Pulse;
+            layout.cells[0].warningSeconds = seconds;
+            Assert.That(ArenaLayoutValidator.Validate(layout, 1f), Is.Not.Empty);
+        }
+        [TestCase(ArenaContent.Pulse)]
+        [TestCase(ArenaContent.Sweep)]
+        public void MovingHazardsCannotEnterSpawnTurningBuffer(ArenaContent content)
+        {
+            layout.cells.Find(c => c.coordinate == new Vector2Int(2,3)).content = content;
+            Assert.That(ArenaLayoutValidator.Validate(layout, 1.6f), Is.Not.Empty);
+        }
         [Test] public void TacticalRequiresADetour()
         {
             int open=ArenaLayoutValidator.FindRoute(layout,1.6f).Count;
