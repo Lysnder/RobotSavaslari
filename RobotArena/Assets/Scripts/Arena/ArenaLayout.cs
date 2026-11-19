@@ -78,6 +78,10 @@ namespace RobotSavaslari.Arena
                 if(c.spawn==ArenaSpawn.Opponent) opponent++;
                 if(c.spawn!=ArenaSpawn.None && c.content!=ArenaContent.Floor) errors.Add("Spawn requires unobstructed normal floor: "+c.coordinate);
                 if(c.content==ArenaContent.Conveyor && (float.IsNaN(c.direction.x)||float.IsNaN(c.direction.y)||float.IsInfinity(c.direction.x)||float.IsInfinity(c.direction.y)||c.direction.sqrMagnitude<.01f)) errors.Add("Conveyor requires a finite nonzero XZ direction: "+c.coordinate);
+                if (c.IsDamaging && (!Within(c.warningSeconds, 1, 120) || !Within(c.activeSeconds, .02f, 120) ||
+                    !Within(c.recoverySeconds, .02f, 120) || !Within(c.repeatSeconds, .02f, 120) ||
+                    !Within(c.Damage, .01f, 10000) || !Within(c.direction.sqrMagnitude, .01f, 10000)))
+                    errors.Add("Invalid hazard at " + c.coordinate + ": warning 1-120 s, other times .02-120 s, damage .01-10000 and nonzero direction required.");
                 if(c.wall!=ArenaWall.Standard && c.coordinate.x!=0 && c.coordinate.x!=7 && c.coordinate.y!=0 && c.coordinate.y!=7) errors.Add("Wall variation must be on the perimeter: "+c.coordinate);
             }
             if(player!=1||opponent!=1) errors.Add("Exactly one distinct Player and Opponent spawn is required.");
@@ -86,6 +90,8 @@ namespace RobotSavaslari.Arena
             if(route.Count==0) errors.Add("Spawns are disconnected or the corridor is too narrow for the robot and turning clearance.");
             return errors;
         }
+
+        private static bool Within(float value, float min, float max) => value >= min && value <= max;
 
         // .5 m samples in configuration space, with obstacles expanded by the full turn radius.
         public static List<Vector2> FindRoute(ArenaLayout layout,float radius)

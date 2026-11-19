@@ -28,6 +28,15 @@ namespace RobotSavaslari.Tests
             Assert.Less(cell.HitSize.z, 1);
             Assert.AreEqual(15f, cell.Damage);
         }
+        [TestCase(.99f)]
+        [TestCase(float.NaN)]
+        [TestCase(float.PositiveInfinity)]
+        public void InvalidWarningPreventsGeneration(float seconds)
+        {
+            layout.cells[0].content = ArenaContent.Pulse;
+            layout.cells[0].warningSeconds = seconds;
+            Assert.That(ArenaLayoutValidator.Validate(layout, 1f), Is.Not.Empty);
+        }
         [Test] public void TacticalRequiresADetour()
         {
             int open=ArenaLayoutValidator.FindRoute(layout,1.6f).Count;
