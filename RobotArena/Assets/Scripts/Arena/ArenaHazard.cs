@@ -91,6 +91,16 @@ namespace RobotSavaslari.Arena
             marker.localPosition = new Vector3(offset.x, .01f + height * .5f, offset.z);
         }
 
+        private void OnDrawGizmosSelected()
+        {
+            if (cell == null) return;
+            var previous = Gizmos.matrix;
+            Gizmos.matrix = transform.localToWorldMatrix;
+            Gizmos.color = Phase == HazardPhase.Active ? Color.red : Phase == HazardPhase.Warning ? Color.yellow : Color.gray;
+            Gizmos.DrawWireCube(cell.HitOffset(elapsed / cell.activeSeconds), cell.HitSize);
+            Gizmos.matrix = previous;
+        }
+
         private bool CanDamage => match != null && match.isActiveAndEnabled && !match.IsPaused &&
             match.State == MatchController.MatchState.Playing;
 
