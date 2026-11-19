@@ -6,6 +6,7 @@ using System.Reflection;
 using NUnit.Framework;
 using RobotSavaslari.Match;
 using RobotSavaslari.UI;
+using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
@@ -138,13 +139,16 @@ namespace RobotSavaslari.Arena.Tests
         {
             var match = arena.Match;
             Assert.IsTrue(match.StartMatch());
-            var ticks = new Action[8];
+            var hazards = new ArenaHazard[8];
             Vector3 center = match.Player.transform.position;
             AddCompoundCollider(match.Player.transform);
             AddCompoundCollider(match.Opponent.transform);
+            match.Player.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+            match.Opponent.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+            match.Opponent.GetComponent<RobotBotController>().enabled = false;
             match.Opponent.transform.position = center;
             Physics.SyncTransforms();
-            for (int i = 0; i < ticks.Length; i++)
+            for (int i = 0; i < hazards.Length; i++)
             {
                 var host = new GameObject("Measured hazard");
                 host.transform.SetParent(arena.Contents);
@@ -152,28 +156,68 @@ namespace RobotSavaslari.Arena.Tests
                 var hazard = host.AddComponent<ArenaHazard>();
                 hazard.Configure(match, new ArenaCellData { content = i % 2 == 0 ? ArenaContent.Pulse : ArenaContent.Sweep,
                     activeSeconds = 120, repeatSeconds = .5f, damageOverride = .01f }, null);
-                ticks[i] = Step(hazard);
+                hazards[i] = hazard;
             }
-            const int warmup = 250, count = 1500;
-            for (int i = 0; i < warmup; i++) foreach (var tick in ticks) tick();
-            var samples = new double[count];
+            const int warmup = 250, count = 300;
             int playerColliders = match.Player.GetComponentsInChildren<Collider>().Length;
             int rivalColliders = match.Opponent.GetComponentsInChildren<Collider>().Length;
-            long allocated = GC.GetAllocatedBytesForCurrentThread();
-            for (int i = 0; i < count; i++)
+            Assert.That(playerColliders, Is.GreaterThanOrEqualTo(2));
+            Assert.That(rivalColliders, Is.GreaterThanOrEqualTo(2));
+            var allocationHook = typeof(ArenaHazard).GetProperty("AllocationSample", BindingFlags.Static | BindingFlags.NonPublic);
+            Assert.That(allocationHook, Is.Not.Null, "Use the Editor or a development player.");
+            var samples = new double[count];
+            var hazardBytes = new long[count];
+            var mainThreadBytes = new long[count];
+            int updates = 0;
+            long allocated = 0;
+            Action<long> observe = bytes => { updates++; allocated += bytes; };
+            float oldCaptureDeltaTime = Time.captureDeltaTime;
+            try
             {
-                long start = System.Diagnostics.Stopwatch.GetTimestamp();
-                foreach (var tick in ticks) tick();
-                samples[i] = (System.Diagnostics.Stopwatch.GetTimestamp() - start) * 1000d / System.Diagnostics.Stopwatch.Frequency;
+                Time.captureDeltaTime = Time.fixedDeltaTime;
+                for (int i = 0; i < warmup; i++) yield return null;
+                Assert.That(hazards.All(hazard => hazard.Phase == HazardPhase.Active), Is.True);
+                Assert.That(match.Player.GetComponent<RobotHealth>().CurrentHealth, Is.LessThan(100f));
+                Assert.That(match.Opponent.GetComponent<RobotHealth>().CurrentHealth, Is.LessThan(100f));
+                using var timing = ProfilerRecorder.StartNew(ProfilerCategory.Scripts, "ArenaHazard.FixedUpdate", 1);
+                using var gc = ProfilerRecorder.StartNew(ProfilerCategory.Internal, "GC.Alloc", 1,
+                    ProfilerRecorderOptions.Default | ProfilerRecorderOptions.CollectOnlyOnCurrentThread);
+                Assert.That(timing.Valid && gc.Valid, Is.True, "Profiler recorders must be available.");
+                allocationHook.SetValue(null, observe);
+                yield return null;
+                allocated = 0;
+                updates = 0;
+                yield return null;
+                for (int i = 0; i < count; i++)
+                {
+                    if (updates != hazards.Length || timing.GetSample(0).Count != hazards.Length)
+                        Assert.Fail($"Frame {i}: expected {hazards.Length} physics calls, saw {updates}.");
+                    samples[i] = timing.LastValue / 1_000_000d;
+                    hazardBytes[i] = allocated;
+                    mainThreadBytes[i] = gc.LastValue;
+                    allocated = 0;
+                    updates = 0;
+                    if (i + 1 < count) yield return null;
+                }
+                Assert.That(hazards.All(hazard => hazard.Phase == HazardPhase.Active), Is.True);
             }
-            allocated = GC.GetAllocatedBytesForCurrentThread() - allocated;
+            finally
+            {
+                allocationHook.SetValue(null, null);
+                Time.captureDeltaTime = oldCaptureDeltaTime;
+            }
+            var frameLog = new System.Text.StringBuilder("Arena profiler frames: frame,physics_ms,hazard_bytes,main_thread_bytes");
+            for (int i = 0; i < count; i++)
+                frameLog.Append(FormattableString.Invariant($"\n{i + 1},{samples[i]:F6},{hazardBytes[i]},{mainThreadBytes[i]}"));
+            Debug.Log(frameLog.ToString());
             Array.Sort(samples);
+            double p95 = samples[(int)Math.Ceiling(count * .95) - 1];
             Debug.Log($"Arena performance {Application.platform} {Application.unityVersion}, {SystemInfo.processorType}, " +
                 $"{SystemInfo.systemMemorySize} MB, {Screen.width}x{Screen.height}, 8 hazards, 2 robots ({playerColliders}/{rivalColliders} colliders), " +
-                $"{warmup} warmup, {count} samples, p50={samples[count/2]:F4} p95={samples[count*95/100]:F4} max={samples[count-1]:F4} ms, {allocated} managed bytes");
-            Assert.That(allocated, Is.Zero);
-            Assert.That(samples[count*95/100], Is.LessThanOrEqualTo(1d));
-            yield return null;
+                $"{warmup} warmup frames, {count} sampled frames, p50={samples[count / 2]:F4} p95={p95:F4} max={samples[count - 1]:F4} ms, " +
+                $"hazard max {hazardBytes.Max()} B/frame; main thread max {mainThreadBytes.Max()} B/frame");
+            Assert.That(hazardBytes.Max(), Is.Zero);
+            Assert.That(p95, Is.LessThanOrEqualTo(1d));
         }
 
         [UnityTest]

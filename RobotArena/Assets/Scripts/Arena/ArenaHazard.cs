@@ -1,4 +1,5 @@
 using RobotSavaslari.Match;
+using Unity.Profiling;
 using UnityEngine;
 
 namespace RobotSavaslari.Arena
@@ -7,6 +8,10 @@ namespace RobotSavaslari.Arena
 
     public sealed class ArenaHazard : MonoBehaviour
     {
+        private static readonly ProfilerMarker FixedUpdateMarker = new ProfilerMarker("ArenaHazard.FixedUpdate");
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        internal static System.Action<long> AllocationSample { get; set; }
+#endif
         private readonly Collider[] overlaps = new Collider[64];
         private readonly RobotHealth[] targets = new RobotHealth[2];
         private readonly float[] nextHit = new float[2];
@@ -47,6 +52,21 @@ namespace RobotSavaslari.Arena
         private void FixedUpdate()
         {
             if (!CanDamage || cell == null) return;
+            using (FixedUpdateMarker.Auto())
+            {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+                var sample = AllocationSample;
+                long before = sample == null ? 0 : System.GC.GetAllocatedBytesForCurrentThread();
+#endif
+                AdvanceCycle();
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+                if (sample != null) sample(System.GC.GetAllocatedBytesForCurrentThread() - before);
+#endif
+            }
+        }
+
+        private void AdvanceCycle()
+        {
             elapsed += Time.fixedDeltaTime;
             switch (Phase)
             {
