@@ -1,5 +1,7 @@
 # ARENA-02 doğrulama — 19 Kasım 2026
 
+Sonraki doğrulamada Windows test build'inde 300 oyun karesi ölçüldü ve Enter regresyonu geçti. [Güncel Profiler sonuçları](arena-hazards-profiler-20261119.md)
+
 Issue [#44](https://github.com/Lysnder/RobotSavaslari/issues/44), taslak [PR #49](https://github.com/Lysnder/RobotSavaslari/pull/49), hedef `test`, dal `feature/arena-hazards`.
 
 Test edilen kaynak: `4f8fa7c212c58d0d0750fa2e77a542f25bccf494`. Doğrulama belgeleri bundan sonra ayrı commit ile eklenir. 19 Kasım son fetch sonucunda `origin/test=6b2d41ac2ff4944d29a2ede5c58facf4c6fd4be7`; başlangıç tabanı ilerlememiştir. PR #43 birleşmesi önceki oturumda doğrulandı.
