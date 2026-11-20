@@ -144,6 +144,7 @@ namespace RobotSavaslari.Match
             var next = restart ? null : _save.Active;
             int index = next?.nextStageIndex ?? 0;
             if (!ResolveStage(index, out _)) return false;
+            ChallengeSave initial = null;
             if (next == null)
             {
                 next = new ChallengeSession
@@ -152,7 +153,7 @@ namespace RobotSavaslari.Match
                     definitionRevision = _definition.revision,
                     sessionId = Guid.NewGuid().ToString("N")
                 };
-                if (!Commit(_save.ChangeActive(next, restart))) return false;
+                initial = _save.ChangeActive(next, restart);
             }
 
             _normalRules = _match.Rules;
@@ -160,7 +161,9 @@ namespace RobotSavaslari.Match
             _normalPersonality = OpponentPanel.Personality;
             _normalDifficulty = OpponentPanel.Difficulty;
             Close();
-            return StartStage();
+            if (StartStage(initial)) return true;
+            Open();
+            return false;
         }
 
         public bool Continue()
@@ -192,17 +195,28 @@ namespace RobotSavaslari.Match
             return false;
         }
 
-        private bool StartStage()
+        private bool StartStage(ChallengeSave initial = null)
         {
-            int index = _save.Active.nextStageIndex;
+            int index = (initial ?? _save).Active.nextStageIndex;
             if (!ResolveStage(index, out int arenaIndex)) return false;
             var stage = _definition.stages[index];
             _match.Prepare();
             if (!_arena.CanSelect || (_arena.Layout != stage.arena && !_arena.Select(arenaIndex)) ||
                 !OpponentPanel.Select(stage.Personality, stage.Difficulty) ||
-                !_match.ConfigureRules(stage.rules) || !_match.RequestCountdown())
+                !_match.ConfigureRules(stage.rules))
             {
                 Notice = "Aşama hazırlanamadı. Ana menüden kayıtlı aşamayı yeniden aç.";
+                RestoreNormal();
+                return false;
+            }
+            if (initial != null && !Commit(initial))
+            {
+                RestoreNormal();
+                return false;
+            }
+            if (!_match.RequestCountdown())
+            {
+                Notice = "Aşama başlatılamadı. Kayıtlı aşamayı yeniden aç.";
                 RestoreNormal();
                 return false;
             }

@@ -234,6 +234,26 @@ namespace RobotSavaslari.Match.Tests
             Assert.That(panel.enabled, Is.False);
         }
 
+        [UnityTest]
+        public IEnumerator UnavailableOpponentSelectionDoesNotReplaceCheckpoint()
+        {
+            Begin();
+            yield return BeginPlaying();
+            FinishRound(true);
+            Assert.That(_session.Open(), Is.True);
+            Assert.That(_session.Leave(false), Is.True);
+            byte[] before = File.ReadAllBytes(_path);
+            var panel = _match.GetComponent<OpponentSelectionPanel>();
+            panel.enabled = false;
+            Assert.That(_session.Open(), Is.True);
+            Assert.That(_session.Begin(true), Is.False);
+            Assert.That(_session.DialogOpen, Is.True);
+            Assert.That(_match.State, Is.EqualTo(MatchController.MatchState.Ready));
+            CollectionAssert.AreEqual(before, File.ReadAllBytes(_path));
+            _session.Close();
+            Assert.That(panel.enabled, Is.False);
+        }
+
         [TestCase("{")]
         [TestCase("{\"version\":2,\"checkpoint\":[],\"archive\":[]}")]
         [TestCase("{\"version\":1,\"checkpoint\":[{\"definitionRevision\":99,\"definitionId\":\"local-circuit\"}],\"archive\":[]}")]

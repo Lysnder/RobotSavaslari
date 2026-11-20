@@ -173,7 +173,7 @@ namespace RobotSavaslari.UI
             var right = new Rect(panel.x + 286, panel.y + 154, 262, 44);
             if (challenge != null && challenge.InChallenge)
             {
-                ChallengeScreen.DrawResultButtons(challenge, _match, left, right, _buttonStyle);
+                _challengeScreen.DrawResultButtons(challenge, _match, left, right, _buttonStyle);
                 if (!string.IsNullOrEmpty(challenge.Notice)) GUI.Label(new Rect(16, 224, width - 32, 24), challenge.Notice);
                 if (!string.IsNullOrEmpty(_match.HistoryNotice)) GUI.Label(new Rect(16, 250, width - 32, 24), _match.HistoryNotice);
                 return;

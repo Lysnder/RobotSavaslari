@@ -1,10 +1,10 @@
-param(
+﻿param(
  [Parameter(Mandatory=$true)][ValidateSet('Save','Restore','Verify')][string]$Action,
  [Parameter(Mandatory=$true)][string]$SnapshotDirectory
 )
 $ErrorActionPreference='Stop'
 if (Get-Process RobotSavaslari -ErrorAction SilentlyContinue) { throw 'Close RobotSavaslari before saving/restoring data.' }
-if (Get-CimInstance Win32_Process -Filter "Name='Unity.exe'" | Where-Object { $_.CommandLine -match '(?i)robot-verify-93b4ded[\\/]RobotArena' }) { throw 'Close this project in Unity first.' }
+if (Get-CimInstance Win32_Process -Filter "Name='Unity.exe'" | Where-Object { $_.CommandLine -match '(?i)(?:robot-verify-93b4ded|robot-session-02)[\\/]RobotArena' }) { throw 'Close this project in Unity first.' }
 if (-not ('RawPlayerPrefs' -as [type])) { Add-Type -TypeDefinition @'
 using System.Runtime.InteropServices;
 using Microsoft.Win32.SafeHandles;

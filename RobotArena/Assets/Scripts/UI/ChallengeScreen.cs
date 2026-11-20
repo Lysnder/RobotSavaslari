@@ -10,11 +10,15 @@ namespace RobotSavaslari.UI
 
         public void DrawEntry(ChallengeSessionController session, float width)
         {
-            if (GUI.Button(new Rect(16, 156, Mathf.Min(290, (width - 280) / 2 - 24), 36), "Yerel mücadele") && session.Open())
-            {
-                _archiveIndex = -1;
-                _scroll = Vector2.zero;
-            }
+            if (GUI.Button(new Rect(16, 156, Mathf.Min(290, (width - 280) / 2 - 24), 36), "Yerel mücadele"))
+                Open(session);
+        }
+
+        private void Open(ChallengeSessionController session)
+        {
+            if (!session.Open()) return;
+            _archiveIndex = -1;
+            _scroll = Vector2.zero;
         }
 
         public void DrawDialog(ChallengeSessionController session, float width, float height)
@@ -80,7 +84,7 @@ namespace RobotSavaslari.UI
                 GUI.Label(new Rect(24, 194, 405, 22), $"Son biten aşama: {Outcome(last.encounter.outcome)} | {last.encounter.playerWins}-{last.encounter.opponentWins} | {last.encounter.durationSeconds:0.0} sn");
         }
 
-        public static void DrawResultButtons(ChallengeSessionController session, MatchController match, Rect left, Rect right, GUIStyle style)
+        public void DrawResultButtons(ChallengeSessionController session, MatchController match, Rect left, Rect right, GUIStyle style)
         {
             if (session.PendingSave)
             {
@@ -97,7 +101,7 @@ namespace RobotSavaslari.UI
             }
             else if (GUI.Button(left, "Devam", style)) session.Continue();
 
-            if (GUI.Button(right, "Özet / Bırak", style)) session.Open();
+            if (GUI.Button(right, "Özet / Bırak", style)) Open(session);
         }
 
         private static void DrawSummary(ChallengeSession run)
