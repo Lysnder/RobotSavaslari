@@ -8,6 +8,7 @@ using RobotSavaslari.Arena;
 using RobotSavaslari.Driving;
 using RobotSavaslari.Presentation;
 using RobotSavaslari.UI;
+using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -331,6 +332,48 @@ namespace RobotSavaslari.Match.Tests
             }
             Array.Sort(timings);
             TestContext.Out.WriteLine($"50 samples after 5 warmups, p50={timings[24]:0.000}, p95={timings[47]:0.000}, max={timings[49]:0.000} ms; {save.archive.Count} archives");
+        }
+
+        [UnityTest]
+        public IEnumerator MeasureOpenToTacticalTransition()
+        {
+            const int warmup = 4, samples = 20;
+            var timings = new double[samples];
+            var allocations = new long[samples];
+            using var gc = ProfilerRecorder.StartNew(ProfilerCategory.Internal, "GC.Alloc", 1,
+                ProfilerRecorderOptions.Default | ProfilerRecorderOptions.CollectOnlyOnCurrentThread);
+            Assert.That(gc.Valid, Is.True);
+
+            for (int i = -warmup; i < samples; i++)
+            {
+                Begin();
+                yield return BeginPlaying();
+                FinishRound(true);
+                yield return null;
+                long start = Stopwatch.GetTimestamp();
+                bool continued = _session.Continue();
+                double milliseconds = (Stopwatch.GetTimestamp() - start) * 1000d / Stopwatch.Frequency;
+                yield return null;
+                long bytes = gc.LastValue;
+                Assert.That(continued, Is.True, _session.Notice);
+                if (i >= 0)
+                {
+                    timings[i] = milliseconds;
+                    allocations[i] = bytes;
+                    TestContext.Out.WriteLine(FormattableString.Invariant($"Transition {i}: {milliseconds:F3} ms, {bytes} B/frame"));
+                }
+                yield return BeginPlaying();
+                FinishRound(true);
+                Assert.That(_session.Open(), Is.True);
+                Assert.That(_session.Leave(true), Is.True);
+                yield return null;
+            }
+
+            Array.Sort(timings);
+            Array.Sort(allocations);
+            TestContext.Out.WriteLine(FormattableString.Invariant(
+                $"Open to Tactical: {Application.platform} {Application.unityVersion}, {SystemInfo.processorType}, {SystemInfo.systemMemorySize} MB, {Screen.width}x{Screen.height}, 2 robots, {warmup} warmups, {samples} samples, p50={timings[9]:F3}, p95={timings[18]:F3}, max={timings[19]:F3} ms, main thread GC peak {allocations[19]} B/frame"));
+            Assert.That(timings[18], Is.LessThanOrEqualTo(100d));
         }
 
         private void Begin()
