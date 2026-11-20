@@ -1,4 +1,4 @@
-﻿param(
+param(
  [Parameter(Mandatory=$true)][ValidateSet('Save','Restore','Verify')][string]$Action,
  [Parameter(Mandatory=$true)][string]$SnapshotDirectory
 )
@@ -21,7 +21,7 @@ if($Action -eq 'Save') {
  New-Item $backup -ItemType Directory -Force | Out-Null
  if(Test-Path (Join-Path $backup 'state.clixml')) {throw 'Backup already exists.'}
  $state=@{created_at_utc=[DateTime]::UtcNow.ToString('o');user=$env:USERNAME;files=@();registry=@()}
- foreach($name in @('driving-personal-best.json','match-history.json')) {
+ foreach($name in @('driving-personal-best.json','match-history.json','challenge-session.json','challenge-session.json.lock')) {
   $file=Join-Path $data $name;$exists=Test-Path $file
   $state.files+=@{name=$name;existed=$exists;hash=$(if($exists){(Get-FileHash -LiteralPath $file).Hash}else{$null})}
   if($exists){Copy-Item $file (Join-Path $backup $name)}
