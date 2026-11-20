@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ecdbfbf018c7a44d8b992fdc99bc2f8, type: 3}
+  m_Name: LocalCircuit
+  m_EditorClassIdentifier:
+  definitionId: local-circuit
+  revision: 1
+  title: Yerel mücadele
+  stages:
+  - stageId: open-duel
+    arenaId: open
+    profileId: aggressive-easy
+    arena: {fileID: 11400000, guid: 8d2181f08fc038249bf3df1905f051f5, type: 2}
+    rules:
+      mode: 0
+      timeLimitSeconds: 60
+  - stageId: tactical-series
+    arenaId: tactical
+    profileId: counter-hard
+    arena: {fileID: 11400000, guid: 73e162a436395174a932b4844977c58b, type: 2}
+    rules:
+      mode: 1
+      timeLimitSeconds: 60
+  - stageId: open-final
+    arenaId: open
+    profileId: aggressive-hard
+    arena: {fileID: 11400000, guid: 8d2181f08fc038249bf3df1905f051f5, type: 2}
+    rules:
+      mode: 0
+      timeLimitSeconds: 60

@@ -14,7 +14,7 @@ namespace RobotSavaslari.UI
             _match.Player.TryGetComponent<DriveBindingsScreen>(out var bindings) && bindings.IsOpen;
 
         public bool IsShowingReadyMenu => isActiveAndEnabled && _match != null && _match.isActiveAndEnabled &&
-            _match.State == MatchController.MatchState.Ready && !_match.IsPaused && !_showHistory && !BindingsOpen;
+            _match.State == MatchController.MatchState.Ready && !_match.IsPaused && !_showHistory && !BindingsOpen && !ChallengeDialogOpen;
 
         private const float ReferenceHeight = 720f;
         private MatchController _match;
@@ -23,6 +23,9 @@ namespace RobotSavaslari.UI
         private GUIStyle _buttonStyle;
         private GUIStyle _resultStyle;
         private GUIStyle _countdownStyle;
+        private ChallengeSessionController Challenge => GetComponent<ChallengeSessionController>();
+        private bool ChallengeDialogOpen => Challenge != null && Challenge.DialogOpen;
+        private readonly ChallengeScreen _challengeScreen = new ChallengeScreen();
         private bool _showHistory;
         private Vector2 _historyScroll;
 
@@ -32,14 +35,21 @@ namespace RobotSavaslari.UI
             _settings = GetComponent<SettingsPanelController>();
         }
 
+        private void OnDisable() => Challenge?.Close();
+
         private void Update()
         {
-            if (BindingsOpen) return;
+            if (BindingsOpen || ChallengeDialogOpen) return;
             var keyboard = Keyboard.current;
             if (!_match.isActiveAndEnabled || !_match.IsInitialized || _showHistory || _settings.IsOpen || keyboard == null ||
                 keyboard.escapeKey.wasPressedThisFrame) return;
 
             bool enter = keyboard.enterKey.wasPressedThisFrame || keyboard.numpadEnterKey.wasPressedThisFrame;
+            if (Challenge != null && Challenge.InChallenge)
+            {
+                if (keyboard.rKey.wasPressedThisFrame && !_match.EncounterComplete) _match.ContinueSeries();
+                return;
+            }
             if ((_match.State == MatchController.MatchState.Ready && enter) ||
                 (_match.State == MatchController.MatchState.Result && keyboard.rKey.wasPressedThisFrame))
                 _match.RequestCountdown();
@@ -57,6 +67,12 @@ namespace RobotSavaslari.UI
                 float width = Screen.width / scale;
                 float height = Screen.height / scale;
                 GUI.matrix = Matrix4x4.Scale(new Vector3(scale, scale, 1f));
+                var challenge = Challenge;
+                if (challenge != null && challenge.DialogOpen)
+                {
+                    _challengeScreen.DrawDialog(challenge, width, height);
+                    return;
+                }
                 if (_showHistory && _match.State == MatchController.MatchState.Ready)
                 {
                     DrawHistory(width, height);
@@ -66,12 +82,16 @@ namespace RobotSavaslari.UI
                 {
                     DrawRules(width);
                     DrawMenu(width, height);
+                    if (challenge != null && IsShowingReadyMenu) _challengeScreen.DrawEntry(challenge, width);
                     return;
                 }
 
                 if (GUI.Button(new Rect(width - 174f, 16f, 158f, 36f), "Duraklat (Esc)"))
                     _settings.ToggleSettings();
                 if (_settings.IsOpen) return;
+
+                if (challenge != null && challenge.InChallenge)
+                    ChallengeScreen.DrawProgress(challenge, width);
 
                 if (_match.State == MatchController.MatchState.Countdown)
                 {
@@ -148,10 +168,20 @@ namespace RobotSavaslari.UI
                     : "Seri sürüyor; beraberlikte aynı raund tekrar edilir.";
                 GUI.Label(new Rect(panel.x + 12, panel.y + 116, 536, 22), summary);
             }
+            var challenge = Challenge;
+            var left = new Rect(panel.x + 12, panel.y + 154, 262, 44);
+            var right = new Rect(panel.x + 286, panel.y + 154, 262, 44);
+            if (challenge != null && challenge.InChallenge)
+            {
+                _challengeScreen.DrawResultButtons(challenge, _match, left, right, _buttonStyle);
+                if (!string.IsNullOrEmpty(challenge.Notice)) GUI.Label(new Rect(16, 224, width - 32, 24), challenge.Notice);
+                if (!string.IsNullOrEmpty(_match.HistoryNotice)) GUI.Label(new Rect(16, 250, width - 32, 24), _match.HistoryNotice);
+                return;
+            }
             string next = !_match.EncounterComplete ? (_match.Outcome == MatchController.MatchOutcome.Draw ? "Raundu tekrarla (R)" : "Sonraki raund (R)")
                 : _match.Rules.mode == MatchMode.FirstToTwo ? "Yeni seri (R)" : "Yeni maç (R)";
-            if (GUI.Button(new Rect(panel.x + 12, panel.y + 154, 262, 44), next, _buttonStyle)) _match.RequestCountdown();
-            if (GUI.Button(new Rect(panel.x + 286, panel.y + 154, 262, 44), "Ana menü", _buttonStyle)) _match.Prepare();
+            if (GUI.Button(left, next, _buttonStyle)) _match.RequestCountdown();
+            if (GUI.Button(right, "Ana menü", _buttonStyle)) _match.Prepare();
             if (!string.IsNullOrEmpty(_match.HistoryNotice)) GUI.Label(new Rect(16, 175, 600, 42), _match.HistoryNotice);
         }
 
