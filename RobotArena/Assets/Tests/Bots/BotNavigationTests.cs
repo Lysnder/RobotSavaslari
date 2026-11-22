@@ -109,6 +109,19 @@ namespace RobotSavaslari.Tests
         }
 
         [Test]
+        public void MovingTargetDoesNotDiscardAnUnobstructedDetourSegment()
+        {
+            for (int i = 0; i < 24 && Mathf.Abs(bot.Command.y) < .12f; i++) StepWithinBudget();
+            Assert.That(Mathf.Abs(bot.Command.y), Is.GreaterThan(.12f));
+            Assert.That(bot.NavigationPlans, Is.EqualTo(1));
+            opponent.transform.position += Vector3.right * 1.3f;
+            Physics.SyncTransforms();
+            for (int i = 0; i < 30; i++) StepWithinBudget();
+            Assert.That(bot.NavigationPlans, Is.EqualTo(1), "Keep the safe opening instead of stopping on every target movement.");
+            Assert.That(Mathf.Abs(bot.Command.y), Is.GreaterThan(.12f));
+        }
+
+        [Test]
         public void SaturatedQueriesStopTheBotWithoutStartingASearch()
         {
             for (int i = 0; i < 64; i++)

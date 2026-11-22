@@ -150,7 +150,9 @@ namespace RobotSavaslari
             if (!MatchRunning || target == null || !target.gameObject.activeInHierarchy ||
                 (ownHealth != null && ownHealth.IsDefeated) || (targetHealth != null && targetHealth.IsDefeated))
             { ResetDecision(); return; }
-            _navigationTick = enableCombatTactics;
+            // A physical footprint is required for runtime routing. Decision-only fixtures
+            // and legacy rigs without colliders still use the original pursuit and recovery.
+            _navigationTick = enableCombatTactics && _ownColliders.Length > 0;
             if (_navigationTick)
                 using (NavigationSample.Auto()) BeginNavigation(dt);
             Vector3 delta = target.position - _motor.Body.position; delta.y = 0;

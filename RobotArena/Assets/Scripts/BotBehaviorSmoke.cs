@@ -164,6 +164,7 @@ namespace RobotSavaslari
                     Vector3 playerStart = player.transform.position;
                     bool moved = false, attacked = false, playerMoved = false, playerDamagedBot = false;
                     float deadline = Time.time + 75;
+                    float openingDeadline = Time.time + 8;
                     var driver = player.GetComponent<Driving.PlayerKeyboardDriver>();
                     while (match.State == MatchController.MatchState.Playing && Time.time < deadline)
                     {
@@ -174,10 +175,16 @@ namespace RobotSavaslari
                         _keyboard.MakeCurrent();
                         Vector3 offset = opponent.transform.position - player.transform.position; offset.y = 0;
                         float angle = Vector3.SignedAngle(player.transform.forward, offset, Vector3.up);
-                        var keys = new List<Key> { Key.Space };
-                        if (angle > 8) keys.Add(Key.D);
-                        if (angle < -8) keys.Add(Key.A);
-                        if (Mathf.Abs(angle) < 55) keys.Add(Time.time % 5 < .8f ? Key.S : Key.W);
+                        var keys = new List<Key>();
+                        // Give the bot a fixed opening target so the matrix exercises the route
+                        // before the two robots start pursuing each other.
+                        if (!_navigationMatrix || _metrics.Starts > 0 || Time.time >= openingDeadline)
+                        {
+                            keys.Add(Key.Space);
+                            if (angle > 8) keys.Add(Key.D);
+                            if (angle < -8) keys.Add(Key.A);
+                            if (Mathf.Abs(angle) < 55) keys.Add(Time.time % 5 < .8f ? Key.S : Key.W);
+                        }
                         InputSystem.QueueStateEvent(_keyboard, new KeyboardState(keys.ToArray()));
                         moved |= Vector3.Distance(start, opponent.transform.position) > .5f;
                         playerMoved |= Vector3.Distance(playerStart, player.transform.position) > .5f &&

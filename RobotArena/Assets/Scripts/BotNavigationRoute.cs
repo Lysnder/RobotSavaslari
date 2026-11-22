@@ -50,20 +50,22 @@ namespace RobotSavaslari
         {
             steering = position;
             if (wait > 0) return false;
-            var direct = space.Probe(position, aim);
+            var direct = space.Probe(position, target);
             if (direct == BotNavigationSpace.ProbeResult.Clear)
             {
+                // Keep difficulty's sampled aim when it also fits. An aim offset near a wall
+                // must not start a grid search if the real opponent is directly reachable.
+                bool useAim = (aim - target).sqrMagnitude <= .0001f ||
+                    space.Probe(position, aim) == BotNavigationSpace.ProbeResult.Clear;
+                if (space.Saturated) { Invalidate(aim, BotRouteReason.QuerySaturated); return false; }
                 planner.Clear();
                 failures = 0;
                 Reason = BotRouteReason.None;
-                steering = aim;
+                steering = useAim ? aim : target;
                 return true;
             }
-            if (space.Saturated) { Invalidate(aim, BotRouteReason.QuerySaturated); return false; }
+            if (space.Saturated) { Invalidate(target, BotRouteReason.QuerySaturated); return false; }
             if (direct == BotNavigationSpace.ProbeResult.Budget) return false;
-
-            if (planner.State != BotRoutePlanner.Status.Idle && (planner.Goal - target).sqrMagnitude > 1f && retry <= 0)
-                Invalidate(target, BotRouteReason.TargetMoved);
 
             if (planner.State == BotRoutePlanner.Status.Found)
             {
@@ -96,13 +98,21 @@ namespace RobotSavaslari
                     distance = Vector2.Distance(position, point);
                     if (distance < bestDistance - .07f) { bestDistance = distance; progressTime = 0; }
                     else progressTime += dt;
-                    if (progressTime >= 1.6f || (waypoint == planner.Count - 1 && distance <= tolerance))
+                    if (progressTime >= 1.6f)
                     { Fail(point, BotRouteReason.NoProgress); return false; }
-                    steering = Waypoint = point;
-                    HasWaypoint = true;
-                    return true;
+                    if (waypoint < planner.Count - 1 || distance > tolerance)
+                    {
+                        steering = Waypoint = point;
+                        HasWaypoint = true;
+                        return true;
+                    }
+                    // Target motion can change the end of a detour without making its
+                    // current segment unsafe. Keep crossing the opening before replanning.
+                    if ((target - planner.Goal).sqrMagnitude > .25f)
+                        Invalidate(target, BotRouteReason.TargetMoved);
+                    else { Fail(point, BotRouteReason.NoProgress); return false; }
                 }
-                Invalidate(point, space.Saturated ? BotRouteReason.QuerySaturated : BotRouteReason.SegmentBlocked);
+                else Invalidate(point, space.Saturated ? BotRouteReason.QuerySaturated : BotRouteReason.SegmentBlocked);
                 if (space.Saturated) return false;
             }
 
@@ -114,14 +124,14 @@ namespace RobotSavaslari
                 bestDistance = float.PositiveInfinity;
                 progressTime = 0;
                 Plans++;
-                if (Reason == BotRouteReason.None) { Reason = BotRouteReason.Obstructed; BlockedPoint = aim; }
+                if (Reason == BotRouteReason.None) { Reason = BotRouteReason.Obstructed; BlockedPoint = target; }
             }
             if (planner.State == BotRoutePlanner.Status.Searching)
             {
                 planner.Step(space);
                 Expanded = planner.Expanded;
             }
-            if (space.Saturated) Invalidate(aim, BotRouteReason.QuerySaturated);
+            if (space.Saturated) Invalidate(target, BotRouteReason.QuerySaturated);
             else if (planner.State == BotRoutePlanner.Status.Unreachable) Fail(target, BotRouteReason.Unreachable);
             return false;
         }
