@@ -637,7 +637,7 @@ namespace RobotSavaslari.Presentation.Tests
                 _recorder.CaptureNow();
             }
             int samples = _recorder.GetSampleTimings(out float p50, out float p95, out float max);
-            Debug.Log($"[ReplayArchive] Editor sampling {samples} samples: p50 {p50:0.000} ms, p95 {p95:0.000} ms, max {max:0.000} ms");
+            Debug.Log($"[ReplayArchive] {(Application.isEditor ? "Editor" : "Player")} sampling {samples} samples: p50 {p50:0.000} ms, p95 {p95:0.000} ms, max {max:0.000} ms");
             Assert.That(p95, Is.LessThanOrEqualTo(2f), "sampling p95");
             Match.Defeat(false);
         }
