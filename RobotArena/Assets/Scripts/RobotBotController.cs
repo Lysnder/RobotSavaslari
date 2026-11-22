@@ -1,4 +1,7 @@
 using System;
+using RobotSavaslari.Arena;
+using RobotSavaslari.Match;
+using Unity.Profiling;
 using UnityEngine;
 
 namespace RobotSavaslari
@@ -6,7 +9,7 @@ namespace RobotSavaslari
     [RequireComponent(typeof(RobotDriveMotor))]
     public sealed class RobotBotController : MonoBehaviour
     {
-        public enum Decision { Idle, Turning, Following, Attacking, BackingOut, EscapeTurn, EscapeDrive, Disengaging, Repositioning, Waiting, Evading }
+        public enum Decision { Idle, Turning, Following, Attacking, BackingOut, EscapeTurn, EscapeDrive, Disengaging, Repositioning, Waiting, Evading, Navigating }
         [SerializeField] private Transform target;
         [Header("Opponent decisions")]
         public BotPersonality personality = BotPersonality.Aggressive;
@@ -47,6 +50,12 @@ namespace RobotSavaslari
         [Min(0.1f)] public float openingSeconds = 0.55f;
         [Tooltip("Safe centre limits for Arena robots; waypoint coordinates are in world XZ.")]
         public Vector2 tacticalHalfExtents = new Vector2(4.25f, 3.25f);
+        [SerializeField] private bool drawNavigationGizmos;
+        public int NavigationPlans => _route.Plans;
+        public int NavigationQueries => _space?.Queries ?? 0;
+        public int NavigationExpansions => _route.Expanded;
+        public BotRouteReason NavigationReason => _route.Reason;
+        public Vector3 NavigationWaypoint => AtBodyHeight(_route.Waypoint);
         public bool MatchRunning { get; private set; } = true;
         public Decision State { get; private set; }
         public float Distance { get; private set; } = float.PositiveInfinity;
@@ -75,6 +84,15 @@ namespace RobotSavaslari
         private readonly Collider[] _obstacles = new Collider[64];
         private readonly RaycastHit[] _pathHits = new RaycastHit[64];
         private Collider[] _ownColliders;
+        private readonly BotNavigationRoute _route = new BotNavigationRoute();
+        private static readonly ProfilerMarker NavigationSample = new ProfilerMarker("RobotBot.Navigation");
+        private BotNavigationSpace _space;
+        private ArenaBounds _arenaBounds;
+        private ArenaEnvironment _environment;
+        private ArenaLayout _layout;
+        private MatchController _match;
+        private int _matchId = -1;
+        private bool _navigationTick;
         public Transform Target
         {
             get => target;
@@ -113,6 +131,8 @@ namespace RobotSavaslari
             DecisionSamples = EvasionCount = 0; EvasionPoint = transform.position;
             _previousTarget = target;
             _anchor = transform.position;
+            _route.Reset();
+            _navigationTick = false;
             if (_motor == null) _motor = GetComponent<RobotDriveMotor>();
             _motor.Clear(true);
         }
@@ -130,6 +150,9 @@ namespace RobotSavaslari
             if (!MatchRunning || target == null || !target.gameObject.activeInHierarchy ||
                 (ownHealth != null && ownHealth.IsDefeated) || (targetHealth != null && targetHealth.IsDefeated))
             { ResetDecision(); return; }
+            _navigationTick = enableCombatTactics;
+            if (_navigationTick)
+                using (NavigationSample.Auto()) BeginNavigation(dt);
             Vector3 delta = target.position - _motor.Body.position; delta.y = 0;
             Distance = delta.magnitude;
             TargetAngle = delta.sqrMagnitude < 0.0001f ? 0 : Vector3.SignedAngle(_motor.Body.rotation * Vector3.forward, delta, Vector3.up);
@@ -176,9 +199,25 @@ namespace RobotSavaslari
                 return;
             }
             // An unarmed robot can still make a physical ram through the shared motor.
-            float drive = (!_attackHold || !OwnCondition.WeaponOperational) && Mathf.Abs(steeringAngle) <= driveAngle ? (enableCombatTactics ? pursuitDrive : 0.85f) : 0;
+            bool canAdvance = !_attackHold || !OwnCondition.WeaponOperational;
+            if (_navigationTick && canAdvance)
+            {
+                if (!TryPursuitDirection(dt, out Vector3 direction))
+                { State = Decision.Navigating; _stuckTime = 0; _anchor = _motor.Body.position; Send(0, 0); return; }
+                if (direction.sqrMagnitude <= .0001f) canAdvance = false;
+                else
+                {
+                    steeringAngle = Vector3.SignedAngle(_motor.Body.rotation * Vector3.forward, direction, Vector3.up);
+                    steer = Mathf.Clamp(steeringAngle / Mathf.Max(1, fullSteerAngle), -steerLimit, steerLimit);
+                }
+            }
+            // Detours need tighter turns than open pursuit. Keep the original direct-path profile.
+            float drive = canAdvance && Mathf.Abs(steeringAngle) <= (_route.Detouring ? 28f : driveAngle)
+                ? (enableCombatTactics ? pursuitDrive : 0.85f) : 0;
+            if (_route.HasWaypoint)
+                drive *= Mathf.Clamp(Vector2.Distance(BotNavigationSpace.Planar(_motor.Body.position), _route.Waypoint) * 1.6f, .3f, .8f);
             State = drive > 0 ? Decision.Following : Decision.Turning;
-            if (drive > 0)
+            if (drive > 0 && !_route.Detouring)
             {
                 Vector3 progress = _motor.Body.position - _anchor; progress.y = 0;
                 if (progress.magnitude >= minimumProgress) { _anchor = _motor.Body.position; _stuckTime = 0; }
@@ -304,6 +343,7 @@ namespace RobotSavaslari
         }
         private Vector3 ClampTacticalPoint(Vector3 point)
         {
+            if (_navigationTick) return AtBodyHeight(_space.Clamp(BotNavigationSpace.Planar(point)));
             return new Vector3(Mathf.Clamp(point.x, -tacticalHalfExtents.x, tacticalHalfExtents.x),
                 _motor.Body.position.y, Mathf.Clamp(point.z, -tacticalHalfExtents.y, tacticalHalfExtents.y));
         }
@@ -384,6 +424,16 @@ namespace RobotSavaslari
 
         public bool IsTacticalPathSafe(Vector3 point)
         {
+            if (_navigationTick)
+            {
+                using (NavigationSample.Auto())
+                {
+                    Vector2 startPoint = BotNavigationSpace.Planar(_motor.Body.position);
+                    Vector2 endPoint = BotNavigationSpace.Planar(point);
+                    return (endPoint - startPoint).sqrMagnitude >= .09f &&
+                        _space.Probe(startPoint, endPoint, allowOpponent: false) == BotNavigationSpace.ProbeResult.Clear;
+                }
+            }
             if (Mathf.Abs(point.x) > Mathf.Abs(tacticalHalfExtents.x) || Mathf.Abs(point.z) > Mathf.Abs(tacticalHalfExtents.y)) return false;
             Vector3 start = _motor.Body.position;
             Vector3 travel = point - start; travel.y = 0;
@@ -410,6 +460,85 @@ namespace RobotSavaslari
             return collider != null && collider.attachedRigidbody != _motor.Body &&
                 !collider.transform.IsChildOf(transform) && collider.bounds.max.y > height + 0.02f;
         }
-        private void Send(float drive, float steer) { Command = new Vector2(drive, steer); _motor.Submit(drive, steer); }
+        private void BeginNavigation(float dt)
+        {
+            if (_space == null)
+            {
+                var robot = GetComponent<RobotPrototypeController>();
+                foreach (var arena in FindObjectsByType<ArenaBounds>(FindObjectsSortMode.None))
+                {
+                    if (robot == null || arena.gameObject.scene != gameObject.scene) continue;
+                    _arenaBounds = arena;
+                    _environment = arena.GetComponent<ArenaEnvironment>();
+                    _match = _environment != null ? _environment.Match : null;
+                    break;
+                }
+                _space = new BotNavigationSpace(_motor.Body, _ownColliders, robot != null ? robot.ArenaFootprintRadius : 0);
+            }
+            var layout = _environment != null ? _environment.Layout : null;
+            int id = _match != null ? _match.MatchCount : -1;
+            if (_layout != layout || _matchId != id) { _route.Reset(); _layout = layout; _matchId = id; }
+            _space.BeginTick(_arenaBounds, tacticalHalfExtents, target);
+            _route.BeginTick(dt, _space);
+        }
+
+        private bool TryPursuitDirection(float dt, out Vector3 direction)
+        {
+            using (NavigationSample.Auto())
+            {
+                Vector2 position = BotNavigationSpace.Planar(_motor.Body.position);
+                Vector2 conveyor = BotNavigationSpace.Planar(ConveyorSurface.AppliedVelocity(_motor.Body));
+                Vector2 motorVelocity = BotNavigationSpace.Planar(_motor.Body.linearVelocity) - conveyor;
+                bool safe = _route.TrySteer(_space, position, _space.Clamp(BotNavigationSpace.Planar(_aimPosition)),
+                    _space.Clamp(BotNavigationSpace.Planar(target.position)), motorVelocity, conveyor, dt, out var point);
+                Vector2 offset = point - position;
+                direction = new Vector3(offset.x, 0, offset.y);
+                return safe;
+            }
+        }
+
+        private void Send(float drive, float steer)
+        {
+            if (_navigationTick && drive != 0)
+            {
+                using (NavigationSample.Auto())
+                {
+                    Vector2 position = BotNavigationSpace.Planar(_motor.Body.position);
+                    Vector2 heading = BotNavigationSpace.Planar(_motor.Body.rotation * Vector3.forward).normalized * Mathf.Sign(drive);
+                    float speed = Mathf.Max(0f, Vector2.Dot(BotNavigationSpace.Planar(_motor.Body.linearVelocity), heading));
+                    Vector2 point = position + heading * Mathf.Clamp(.12f + speed * .1f, .12f, .6f);
+                    if (_space.Probe(position, point, reserve: 0) != BotNavigationSpace.ProbeResult.Clear)
+                        drive = 0;
+                }
+            }
+            if (_navigationTick && _space.Saturated)
+            {
+                if (_route.Reason != BotRouteReason.QuerySaturated)
+                    _route.Invalidate(BotNavigationSpace.Planar(_motor.Body.position), BotRouteReason.QuerySaturated);
+                drive = steer = 0;
+            }
+            Command = new Vector2(drive, steer);
+            _motor.Submit(drive, steer);
+        }
+
+        private Vector3 AtBodyHeight(Vector2 point) => new Vector3(point.x, _motor != null && _motor.Body != null ? _motor.Body.position.y : transform.position.y, point.y);
+
+        private void OnDrawGizmosSelected()
+        {
+            if (!drawNavigationGizmos) return;
+            Gizmos.color = Color.yellow;
+            if (target != null) Gizmos.DrawWireSphere(target.position, .16f);
+            Gizmos.color = Color.cyan;
+            for (int i = 1; i < _route.Count; i++) Gizmos.DrawLine(AtBodyHeight(_route.Point(i - 1)), AtBodyHeight(_route.Point(i)));
+            if (_route.HasWaypoint) Gizmos.DrawLine(transform.position, NavigationWaypoint);
+            if (_route.Reason != BotRouteReason.None)
+            {
+                Gizmos.color = Color.red;
+                Gizmos.DrawLine(transform.position, AtBodyHeight(_route.BlockedPoint));
+            }
+#if UNITY_EDITOR
+            UnityEditor.Handles.Label(transform.position + Vector3.up, $"{NavigationReason}  queries {NavigationQueries}  nodes {NavigationExpansions}");
+#endif
+        }
     }
 }

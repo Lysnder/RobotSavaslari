@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
+using RobotSavaslari.Arena;
 using RobotSavaslari.Match;
 using RobotSavaslari.UI;
 using UnityEngine;
@@ -30,14 +31,20 @@ namespace RobotSavaslari
         private StreamWriter _trace;
         private RoundMetrics _metrics;
         private int _roundNumber;
+        private bool _navigationMatrix;
+        private string _layoutName;
+        private int _matchesRun;
+        private float _previousTimeScale;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         private static void Launch()
         {
-            if (Array.IndexOf(Environment.GetCommandLineArgs(), "-bot-behavior-smoke") < 0) return;
+            string[] args = Environment.GetCommandLineArgs();
+            bool matrix = Array.IndexOf(args, "-bot-navigation-matrix") >= 0;
+            if (!matrix && Array.IndexOf(args, "-bot-behavior-smoke") < 0) return;
             var smoke = new GameObject("Opponent Behavior Verification").AddComponent<BotBehaviorSmoke>();
             smoke._exitPlayer = true;
-            string[] args = Environment.GetCommandLineArgs();
+            smoke._navigationMatrix = matrix;
             int capture = Array.IndexOf(args, "-bot-evidence-dir");
             if (capture >= 0 && capture + 1 < args.Length)
             {
@@ -51,11 +58,17 @@ namespace RobotSavaslari
             int seeds = Array.IndexOf(args, "-bot-seeds");
             if (seeds >= 0 && seeds + 1 < args.Length)
                 _seeds = args[seeds + 1].Split(',').Select(int.Parse).ToArray();
+            if (_navigationMatrix)
+            {
+                _seeds = new[] { 740, 741, 123 };
+                _previousTimeScale = Time.timeScale;
+                Time.timeScale = 8;
+            }
             int trace = Array.IndexOf(args, "-bot-trace-file");
             if (trace >= 0 && trace + 1 < args.Length)
             {
                 _trace = new StreamWriter(Path.GetFullPath(args[trace + 1]), false);
-                _trace.WriteLine("seed\tpersonality\tdifficulty\tround\ttime\tstate\tdistance\tangle\tweapon\tcooldown\tsamples\taimError\trequests\tstarts\thits\tdamage\teligible");
+                _trace.WriteLine("seed\tpersonality\tdifficulty\tround\ttime\tstate\tdistance\tangle\tweapon\tcooldown\tsamples\taimError\trequests\tstarts\thits\tdamage\teligible\tlayout\tplans\tqueries\tnodes\treplanReason");
             }
             Application.runInBackground = true;
             _previousKeyboard = Keyboard.current;
@@ -73,7 +86,9 @@ namespace RobotSavaslari
                 catch (Exception error) { Finish(false, error.ToString()); yield break; }
                 yield return wait;
             }
-            Finish(_failedMatches == 0, $"seeds={string.Join(",", _seeds)} matches={8 * _seeds.Length} failed={_failedMatches}; real damage/restore, selection and pause checks.");
+            int expected = _navigationMatrix ? 48 : 8 * _seeds.Length;
+            Finish(_failedMatches == 0 && _matchesRun == expected,
+                $"seeds={string.Join(",", _seeds)} matches={_matchesRun}/{expected} failed={_failedMatches}; real damage/restore, selection and pause checks.");
         }
         private IEnumerator Verify()
         {
@@ -90,6 +105,31 @@ namespace RobotSavaslari
             settings.ToggleSettings(); menu.enabled = false;
             Require(!panel.Select(BotPersonality.Counter, BotDifficulty.Easy), "Hidden menu blocks selection");
             menu.enabled = true;
+            var arena = FindFirstObjectByType<ArenaEnvironment>();
+            if (!_navigationMatrix)
+            {
+                _layoutName = arena?.Layout?.displayName;
+                var current = VerifyLayout(match, panel);
+                while (current.MoveNext()) yield return current.Current;
+                yield break;
+            }
+            Require(arena != null, "Navigation matrix requires MainArena arena layouts");
+            foreach (string layout in new[] { "Open", "Tactical" })
+            {
+                if (match.State == MatchController.MatchState.Result) match.Prepare();
+                int index = -1;
+                for (int i = 0; i < arena.Layouts.Count; i++)
+                    if (arena.Layouts[i].displayName == layout) { index = i; break; }
+                Require(index >= 0 && arena.Select(index), $"Select {layout} while Ready");
+                Require(match.ConfigureRules(new MatchRules { mode = MatchMode.Single, timeLimitSeconds = 35 }), "Timed matrix matches");
+                _layoutName = layout;
+                var run = VerifyLayout(match, panel);
+                while (run.MoveNext()) yield return run.Current;
+            }
+        }
+
+        private IEnumerator VerifyLayout(MatchController match, OpponentSelectionPanel panel)
+        {
             var player = match.Player;
             var opponent = match.Opponent;
             var health = opponent.GetComponent<RobotHealth>();
@@ -152,14 +192,17 @@ namespace RobotSavaslari
                         yield return null;
                     }
                     InputSystem.QueueStateEvent(_keyboard, new KeyboardState());
-                    _metrics.Sample(_trace, seed, personality, difficulty, round + 1, true);
+                    _metrics.Sample(_trace, seed, personality, difficulty, round + 1, _layoutName, true);
                     bool success = moved && _metrics.Requests > 0 && _metrics.Starts > 0 && playerMoved && playerDamagedBot &&
                         match.State == MatchController.MatchState.Result && match.ResultCount == 1;
+                    if (_navigationMatrix) success &= _metrics.Hits > 0 && _metrics.Damage > 0;
                     if (!success) _failedMatches++;
-                    Add($"{personality}/{difficulty} seed={seed} round={round + 1} {(success ? "PASS" : "FAIL")} " +
+                    _matchesRun++;
+                    Add($"{personality}/{difficulty} seed={seed} round={round + 1} {(success ? "PASS" : "FAIL")} layout={_layoutName} " +
                         $"result={match.Outcome} moved={moved} sampledIntent={attacked} requests={_metrics.Requests} starts={_metrics.Starts} hits={_metrics.Hits} damage={_metrics.Damage:F1} " +
                         $"eligibleSteps={_metrics.EligibleSamples} playerMoved={playerMoved} playerDamagedBot={playerDamagedBot} weaponWorking={damage.WeaponOperational} " +
-                        $"playerHP={player.GetComponent<RobotHealth>().CurrentHealth:F1} botHP={health.CurrentHealth:F1} reaction={bot.EffectiveReactionSeconds:F2}");
+                        $"playerHP={player.GetComponent<RobotHealth>().CurrentHealth:F1} botHP={health.CurrentHealth:F1} reaction={bot.EffectiveReactionSeconds:F2} " +
+                        $"plans={_metrics.Plans} maxQueries={_metrics.MaxQueries} maxNodes={_metrics.MaxNodes}");
                     _metrics.Dispose(); _metrics = null;
                     yield return null;
                 }
@@ -168,7 +211,7 @@ namespace RobotSavaslari
         private void FixedUpdate()
         {
             if (_metrics != null && _observedBot != null)
-                _metrics.Sample(_trace, _observedBot.decisionSeed, _observedBot.personality, _observedBot.difficulty, _roundNumber);
+                _metrics.Sample(_trace, _observedBot.decisionSeed, _observedBot.personality, _observedBot.difficulty, _roundNumber, _layoutName);
         }
         private sealed class RoundMetrics : IDisposable
         {
@@ -178,6 +221,7 @@ namespace RobotSavaslari
             private float nextSample;
             private RobotBotController.Decision previousState;
             public int Requests, Starts, Hits, EligibleSamples;
+            public int Plans, MaxQueries, MaxNodes;
             public float Damage;
             public RoundMetrics(RobotBotController bot, Combat.MeleeAttack weapon, RobotHealth target)
             {
@@ -189,14 +233,17 @@ namespace RobotSavaslari
             private void OnStart(Combat.MeleeAttack _) => Starts++;
             private void OnHit(Combat.MeleeAttack _, RobotHealth __, float ___) => Hits++;
             private void OnDamage(RobotHit hit) { if (hit.Weapon && hit.Source == bot.GetComponent<RobotHealth>()) Damage += hit.Amount; }
-            public void Sample(StreamWriter trace, int seed, BotPersonality personality, BotDifficulty difficulty, int round, bool force = false)
+            public void Sample(StreamWriter trace, int seed, BotPersonality personality, BotDifficulty difficulty, int round, string layout, bool force = false)
             {
+                Plans = Mathf.Max(Plans, bot.NavigationPlans);
+                MaxQueries = Mathf.Max(MaxQueries, bot.NavigationQueries);
+                MaxNodes = Mathf.Max(MaxNodes, bot.NavigationExpansions);
                 bool eligible = bot.MatchRunning && bot.Target != null && bot.OwnCondition.WeaponOperational &&
                     bot.Distance <= bot.attackEnterDistance && Mathf.Abs(bot.TargetAngle) <= bot.attackAngle && weapon.CooldownRemaining <= 0;
                 if (eligible) EligibleSamples++;
                 if (!force && Time.time < nextSample && previousState == bot.State) return;
                 nextSample = Time.time + .1f; previousState = bot.State;
-                trace?.WriteLine(FormattableString.Invariant($"{seed}\t{personality}\t{difficulty}\t{round}\t{Time.time:F3}\t{bot.State}\t{bot.Distance:F3}\t{bot.TargetAngle:F3}\t{bot.OwnCondition.WeaponOperational}\t{weapon.CooldownRemaining:F3}\t{bot.DecisionSamples}\t{bot.AimError:F3}\t{Requests}\t{Starts}\t{Hits}\t{Damage:F3}\t{eligible}"));
+                trace?.WriteLine(FormattableString.Invariant($"{seed}\t{personality}\t{difficulty}\t{round}\t{Time.time:F3}\t{bot.State}\t{bot.Distance:F3}\t{bot.TargetAngle:F3}\t{bot.OwnCondition.WeaponOperational}\t{weapon.CooldownRemaining:F3}\t{bot.DecisionSamples}\t{bot.AimError:F3}\t{Requests}\t{Starts}\t{Hits}\t{Damage:F3}\t{eligible}\t{layout}\t{bot.NavigationPlans}\t{bot.NavigationQueries}\t{bot.NavigationExpansions}\t{bot.NavigationReason}"));
             }
             public void Dispose()
             {
@@ -304,6 +351,7 @@ namespace RobotSavaslari
         }
         private void Cleanup()
         {
+            if (_previousTimeScale > 0) { Time.timeScale = _previousTimeScale; _previousTimeScale = 0; }
             _metrics?.Dispose(); _metrics = null;
             _trace?.Dispose(); _trace = null;
             if (_keyboard != null && _keyboard.added) InputSystem.RemoveDevice(_keyboard);
