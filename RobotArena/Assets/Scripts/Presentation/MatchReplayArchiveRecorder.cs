@@ -61,7 +61,9 @@ namespace RobotSavaslari.Presentation
         private int _roundIndex = -1;
         private int _roundsCompleted;
         private bool _roundActive, _breakChunk, _scanDebris;
-        private float _roundOffset, _roundStartClock, _timelineEnd, _nextSampleClock;
+        private float _roundOffset, _timelineEnd;
+        // Clocks in double: a float schedule drifts after many minutes of play (or a long Editor session).
+        private double _roundStartClock, _nextSampleClock;
         private int _timingCount, _timingHead;
 
         public MatchReplayArchiveStore Store { get; set; }
@@ -78,6 +80,8 @@ namespace RobotSavaslari.Presentation
         public int TrackCount => _writer != null ? _writer.Info.Tracks.Count : 0;
         public long BytesWritten => _writer != null ? _writer.BytesWritten : 0;
         public int FramesWritten => _writer != null ? _writer.FramesWritten : 0;
+        /// <summary>Managed memory held for the recording in progress (writer buffers and lists plus sampling arrays).</summary>
+        public long HeldBytes => _writer == null ? 0 : _writer.HeldBytes + _poses.Length * 32L + _columnRenderers.Length * 24L + _wear.Length;
 
         public void Bind(MatchController match, MatchReplayArchiveStore store)
         {
@@ -96,6 +100,8 @@ namespace RobotSavaslari.Presentation
         private void OnDisable()
         {
             if (IsRecording) FinishSession(ReplayCompleteness.Interrupted, "Kayıt yarıda kesildi (oyun kapandı veya kayıt durdu).");
+            // Enabled again during play, a new (incomplete) archive starts with the next playing frame.
+            _roundMatchCount = -1;
             Unsubscribe();
         }
 
@@ -128,8 +134,8 @@ namespace RobotSavaslari.Presentation
                 if (_roundMatchCount != _match.MatchCount) BeginRound();
                 // A fixed schedule keeps the rate at SampleRate whatever the frame rate; after a hitch it
                 // catches up one sample per frame instead of drifting. The tolerance absorbs float rounding.
-                if (_roundActive && Time.time + 1e-4f >= _nextSampleClock && Capture(TimelineNow()) && !float.IsPositiveInfinity(_nextSampleClock))
-                    _nextSampleClock = Mathf.Max(_nextSampleClock + SampleInterval, Time.time);
+                if (_roundActive && Time.timeAsDouble + 1e-6 >= _nextSampleClock && Capture(TimelineNow()) && !double.IsPositiveInfinity(_nextSampleClock))
+                    _nextSampleClock = Math.Max(_nextSampleClock + SampleInterval, Time.timeAsDouble);
             }
             else if (state == MatchController.MatchState.Ready && IsRecording)
             {
@@ -167,7 +173,7 @@ namespace RobotSavaslari.Presentation
 
         public void ResetSampleTimings() => _timingCount = _timingHead = 0;
 
-        private float TimelineNow() => _roundOffset + Mathf.Max(0f, Time.time - _roundStartClock);
+        private float TimelineNow() => _roundOffset + (float)Math.Max(0.0, Time.timeAsDouble - _roundStartClock);
 
         // ---- Rounds and sessions -------------------------------------------------------------------
 
@@ -188,6 +194,8 @@ namespace RobotSavaslari.Presentation
                     return;
                 }
                 if (!StartSession()) return;
+                if (_match.ElapsedSeconds > 0.25f)
+                    _writer.MarkIncomplete(ReplayCompleteness.Interrupted, "Kayıt raundun ortasında başladı; başı eksik.");
             }
             if (_writer.Info.Rounds.Count >= MatchReplayArchive.MaxRounds)
             {
@@ -197,7 +205,7 @@ namespace RobotSavaslari.Presentation
             }
 
             _roundOffset = _writer.Info.Rounds.Count == 0 ? 0f : _timelineEnd + 1f / MatchReplayArchive.SampleRate;
-            _roundStartClock = Time.time;
+            _roundStartClock = Time.timeAsDouble;
             _roundIndex = _writer.Info.Rounds.Count;
             _writer.Info.Rounds.Add(new ReplayRound
             {
@@ -214,10 +222,10 @@ namespace RobotSavaslari.Presentation
             _roundActive = true;
             _breakChunk = true;
             Capture(_roundOffset);
-            _nextSampleClock = Time.time + SampleInterval;
+            _nextSampleClock = Time.timeAsDouble + SampleInterval;
         }
 
-        private static float SampleInterval => 1f / MatchReplayArchive.SampleRate;
+        private static double SampleInterval => 1.0 / MatchReplayArchive.SampleRate;
 
         private bool StartSession()
         {
@@ -613,7 +621,7 @@ namespace RobotSavaslari.Presentation
                 _roundActive = false;
                 SetStatus("Tam kayıt yok: " + error);
             }
-            else if (!written && _writer.IsFull) _nextSampleClock = float.PositiveInfinity;
+            else if (!written && _writer.IsFull) _nextSampleClock = double.PositiveInfinity;
             RecordTiming(start);
             return written;
         }

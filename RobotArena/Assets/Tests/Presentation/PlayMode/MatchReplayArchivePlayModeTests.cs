@@ -367,7 +367,9 @@ namespace RobotSavaslari.Presentation.Tests
             var driver = Match.Player.GetComponent<PlayerKeyboardDriver>();
             // A behaviour that was already off must stay off afterwards.
             driver.enabled = false;
-            Behaviour[] owned = { menu, installer, trialHud, bindings, driver };
+            var gauge = Match.Player.GetComponent<DriveBoostGauge>();
+            Behaviour[] owned = { menu, installer, trialHud, bindings, driver, gauge };
+            Assert.That(owned, Has.None.Null, "every owned component exists on MainArena with driving features");
             bool[] enabled = owned.Select(b => b.enabled).ToArray();
             Renderer[] live = Match.Player.GetComponentsInChildren<Renderer>(true)
                 .Concat(Match.Opponent.GetComponentsInChildren<Renderer>(true))
@@ -606,6 +608,40 @@ namespace RobotSavaslari.Presentation.Tests
         }
 
         /// <summary>
+        /// The Editor's managed heap grows during play whatever the archive does, so the recorder is measured
+        /// against itself: the same number of frames with the recorder off, on, and off again.
+        /// </summary>
+        [UnityTest]
+        [Category("LongRun")]
+        [Timeout(600000)]
+        public IEnumerator RecordingAddsNoManagedHeapGrowth()
+        {
+            yield return Load();
+            yield return MainArenaTestScene.StartPlaying();
+            SeparateRobots();
+            Time.captureDeltaTime = 1f / MatchReplayArchive.SampleRate;
+            var growth = new long[3];
+            for (int phase = 0; phase < 3; phase++)
+            {
+                _recorder.enabled = phase == 1;
+                if (phase == 1)
+                {
+                    // Re-enabling starts a fresh archive on the next playing frame (the previous one was closed as interrupted).
+                    yield return null;
+                    Assert.That(_recorder.IsRecording, Is.True, _recorder.LastStatus);
+                }
+                long before = GC.GetTotalMemory(true);
+                for (int i = 0; i < 2000; i++) yield return null;
+                growth[phase] = GC.GetTotalMemory(true) - before;
+            }
+            Time.captureDeltaTime = 0f;
+            long baseline = (growth[0] + growth[2]) / 2;
+            Debug.Log($"[ReplayArchive] managed heap over 2000 frames (100 s of play): recorder off {growth[0] / 1048576f:0.00} MiB, " +
+                      $"on {growth[1] / 1048576f:0.00} MiB, off {growth[2] / 1048576f:0.00} MiB");
+            Assert.That(growth[1] - baseline, Is.LessThan(4L * 1024 * 1024), "the recorder adds no heap growth beyond measurement noise");
+        }
+
+        /// <summary>
         /// Five and fifteen minutes of game time through the real recorder on MainArena. Each frame is one
         /// archive sample (Time.captureDeltaTime), so the run takes far less wall time than it records.
         /// </summary>
@@ -617,7 +653,6 @@ namespace RobotSavaslari.Presentation.Tests
             yield return Load();
             yield return MainArenaTestScene.StartPlaying();
             SeparateRobots();
-            long heapBefore = GC.GetTotalMemory(true);
             Time.captureDeltaTime = 1f / MatchReplayArchive.SampleRate;
             float end = Time.time + minutes * 60f;
             float started = Time.realtimeSinceStartup;
@@ -633,7 +668,7 @@ namespace RobotSavaslari.Presentation.Tests
                 yield return null;
             }
             float wall = Time.realtimeSinceStartup - started;
-            long heapGrowth = GC.GetTotalMemory(true) - heapBefore;
+            long held = _recorder.HeldBytes;
             int samples = _recorder.GetSampleTimings(out float p50, out float p95, out float max);
             Time.captureDeltaTime = 0f;
             Match.Defeat(false);
@@ -665,8 +700,8 @@ namespace RobotSavaslari.Presentation.Tests
                 Debug.Log($"[ReplayArchive] {minutes} min real recorder: {frames} frames in {wall:0.0} s wall, file {entry.Bytes / 1048576f:0.0} MiB, " +
                           $"{entry.Info.Tracks.Count} tracks, {entry.Info.Chunks.Count} chunks, {recorded} frames recorded; sampling p50 {p50:0.000} p95 {p95:0.000} max {max:0.000} ms ({samples} last samples); " +
                           $"verify {verify.Elapsed.TotalMilliseconds:0} ms; seek p50 {seeks[99]:0.000} p95 {seeks[189]:0.000} max {seeks[199]:0.000} ms; reader memory {reader.DecodedBytes / 1024f:0} KiB; " +
-                          $"managed heap growth while recording {heapGrowth / 1048576f:0.00} MiB");
-                Assert.That(heapGrowth, Is.LessThan(64L * 1024 * 1024), "recording memory budget");
+                          $"recorder holds {held / 1024f:0} KiB");
+                Assert.That(held + reader.DecodedBytes, Is.LessThan(64L * 1024 * 1024), "recording and playback memory budget");
                 Assert.That(seeks[189], Is.LessThanOrEqualTo(200.0));
                 Assert.That(p95, Is.LessThanOrEqualTo(2f));
             }

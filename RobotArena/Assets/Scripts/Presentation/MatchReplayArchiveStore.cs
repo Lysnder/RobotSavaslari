@@ -47,6 +47,12 @@ namespace RobotSavaslari.Presentation
         public long BytesWritten { get; private set; }
         public int FramesWritten { get; private set; }
         public float LastTime => _lastTime;
+        /// <summary>
+        /// Managed memory this writer holds: the chunk buffer, hit marks and the footer lists that grow with
+        /// the recording (chunk index, events, rounds, tracks). Frames themselves are on disk.
+        /// </summary>
+        public long HeldBytes => _chunk.Length + _marks.Length * 16L + Info.Chunks.Capacity * 32L + Info.Events.Capacity * 64L +
+                                 Info.Rounds.Capacity * 24L + Info.Tracks.Count * 256L + 64 * 1024;
         /// <summary>True when the next frame starts a chunk: fill <see cref="Marks"/> before writing it.</summary>
         public bool NeedsMarks => _chunkFrames == 0;
         /// <summary>Hit marks of every wear track (four per track), stored once at the start of each chunk.</summary>

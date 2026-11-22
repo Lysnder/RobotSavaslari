@@ -207,6 +207,8 @@ namespace RobotSavaslari.Presentation
             {
                 _inputScope.Disable(_match.Player.GetComponent<DriveBindingsScreen>());
                 _inputScope.Disable(_match.Player.GetComponent<PlayerKeyboardDriver>());
+                // The live boost gauge would sit under the playback bar showing the idle robot's energy.
+                _inputScope.Disable(_match.Player.GetComponent<DriveBoostGauge>());
             }
             IsArchiveModeOpen = true;
             Store.CleanupTemporaryFiles();
