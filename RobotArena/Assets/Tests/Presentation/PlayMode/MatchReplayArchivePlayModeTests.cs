@@ -449,6 +449,41 @@ namespace RobotSavaslari.Presentation.Tests
             StringAssert.Contains("hazır ekranından çıktı", _player.LastError);
         }
 
+        [UnityTest]
+        public IEnumerator PanelButtonsOpenTheArchiveAndDeleteAfterConfirmation()
+        {
+            yield return Load();
+            yield return PlayRoundWithDetachedWheel(0.4f);
+            yield return BackToReady();
+            yield return PlayRoundWithDetachedWheel(0.4f);
+            yield return BackToReady();
+            Assert.That(_store.List().Count, Is.EqualTo(2));
+
+            float width = ArchiveGui.ScaledWidth, height = ArchiveGui.ScaledHeight;
+            Rect entry = new Rect(width + MatchReplayArchiveScreen.EntryRect.x, MatchReplayArchiveScreen.EntryRect.y,
+                MatchReplayArchiveScreen.EntryRect.width, MatchReplayArchiveScreen.EntryRect.height);
+            Assert.That(entry.yMin, Is.EqualTo(60f));
+            Assert.That(entry.yMax, Is.EqualTo(96f), "top-right second row at the 720p reference");
+            ArchiveGui.ClickScaled(_screen, entry);
+            Assert.That(_player.IsArchiveModeOpen, Is.True, "the Ready-menu button opens the archive");
+
+            // Row layout of MatchReplayArchiveScreen.DrawArchive with two archives and no notice.
+            float panelWidth = Mathf.Min(780f, width - 32f), panelHeight = Mathf.Min(600f, height - 32f);
+            float x = (width - panelWidth) * 0.5f + 14f, w = panelWidth - 28f;
+            float listTop = (height - panelHeight) * 0.5f + 10f + 30f + 22f;
+            var delete = new Rect(x + w - 20f - 120f, listTop + 14f, 112f, 34f);
+            var confirm = new Rect(x + w - 20f - 240f, listTop + 14f, 112f, 34f);
+            string first = _screen.Entries[0].Id;
+            ArchiveGui.ClickScaled(_screen, delete);
+            Assert.That(_store.List().Count, Is.EqualTo(2), "the first click only asks for confirmation");
+            ArchiveGui.ClickScaled(_screen, confirm);
+            Assert.That(_store.List().Select(e => e.Id), Is.EquivalentTo(new[] { _screen.Entries[0].Id }));
+            Assert.That(_store.List().Any(e => e.Id == first), Is.False, "the confirmed archive was deleted");
+            Assert.That(_screen.Notice, Is.EqualTo("Kayıt silindi."));
+            ArchiveGui.Draw(_screen);
+            _screen.CloseArchive();
+        }
+
         // ---- Broken and incompatible archives -------------------------------------------------------
 
         [UnityTest]

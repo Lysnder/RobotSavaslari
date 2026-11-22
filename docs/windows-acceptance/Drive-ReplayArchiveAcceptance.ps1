@@ -24,6 +24,19 @@ public static class AcceptanceInput {
  [StructLayout(LayoutKind.Explicit)] struct INPUT { [FieldOffset(0)] public int type; [FieldOffset(8)] public MOUSEINPUT mi; [FieldOffset(8)] public KEYBDINPUT ki; }
  [DllImport("user32.dll")] public static extern bool SetProcessDPIAware();
  [DllImport("user32.dll")] public static extern bool SetForegroundWindow(IntPtr hWnd);
+ [DllImport("user32.dll")] public static extern IntPtr GetForegroundWindow();
+ [DllImport("user32.dll")] public static extern bool ShowWindow(IntPtr hWnd, int command);
+ [DllImport("user32.dll")] static extern bool PrintWindow(IntPtr hWnd, IntPtr hdc, uint flags);
+ [DllImport("user32.dll")] static extern void keybd_event(byte vk, byte scan, int flags, IntPtr extra);
+ // Windows only lets a process take the foreground after input; a lone Alt tap satisfies that rule.
+ public static bool Focus(IntPtr hWnd) {
+  if (GetForegroundWindow() == hWnd) return true;
+  keybd_event(0x12, 0, 0, IntPtr.Zero); keybd_event(0x12, 0, 2, IntPtr.Zero);
+  ShowWindow(hWnd, 9);
+  SetForegroundWindow(hWnd);
+  System.Threading.Thread.Sleep(250);
+  return GetForegroundWindow() == hWnd;
+ }
  [DllImport("user32.dll")] public static extern bool ClientToScreen(IntPtr hWnd, ref POINT point);
  [DllImport("user32.dll")] public static extern bool GetClientRect(IntPtr hWnd, out RECT rect);
  [DllImport("user32.dll")] public static extern bool SetCursorPos(int x, int y);
@@ -36,19 +49,23 @@ public static class AcceptanceInput {
   System.Threading.Thread.Sleep(60);
   SendInput(1, new[] { inputs[1] }, Marshal.SizeOf(typeof(INPUT)));
  }
+ [DllImport("user32.dll")] static extern uint MapVirtualKey(uint code, uint mapType);
+ // Unity's Input System reads keys by scan code, so the scan code is sent (KEYEVENTF_SCANCODE).
  public static void Key(short vk) {
-  var down = new INPUT(); down.type = 1; down.ki.vk = vk;
-  var up = new INPUT(); up.type = 1; up.ki.vk = vk; up.ki.flags = 0x0002;
+  short scan = (short)MapVirtualKey((uint)vk, 0);
+  var down = new INPUT(); down.type = 1; down.ki.scan = scan; down.ki.flags = 0x0008;
+  var up = new INPUT(); up.type = 1; up.ki.scan = scan; up.ki.flags = 0x0008 | 0x0002;
   SendInput(1, new[] { down }, Marshal.SizeOf(typeof(INPUT)));
   System.Threading.Thread.Sleep(80);
   SendInput(1, new[] { up }, Marshal.SizeOf(typeof(INPUT)));
  }
  public static void Shot(IntPtr hWnd, string path) {
-  POINT origin = new POINT(); ClientToScreen(hWnd, ref origin);
+  // The window's own rendering (PW_RENDERFULLCONTENT), never the screen: other windows cannot appear.
   RECT rect; GetClientRect(hWnd, out rect);
   using (var bitmap = new Bitmap(rect.Right, rect.Bottom))
   using (var graphics = Graphics.FromImage(bitmap)) {
-   graphics.CopyFromScreen(origin.X, origin.Y, 0, 0, bitmap.Size);
+   IntPtr hdc = graphics.GetHdc();
+   try { PrintWindow(hWnd, hdc, 3); } finally { graphics.ReleaseHdc(hdc); }
    bitmap.Save(path, System.Drawing.Imaging.ImageFormat.Png);
   }
  }
@@ -72,11 +89,12 @@ switch ($Step) {
   $process = Start-Process $Executable -ArgumentList @('-screen-fullscreen','0','-screen-width','1280','-screen-height','720','-logFile',"`"$playerLog`"") -PassThru
   for ($i = 0; $i -lt 120 -and $process.MainWindowHandle -eq [IntPtr]::Zero; $i++) { Start-Sleep -Milliseconds 250; $process.Refresh() }
   Start-Sleep -Seconds 6
+  [AcceptanceInput]::Focus($process.MainWindowHandle) | Out-Null
   Write-Step "launch $Name pid=$($process.Id) log=$playerLog"
  }
  'Click' {
   $process = Get-GameWindow
-  [AcceptanceInput]::SetForegroundWindow($process.MainWindowHandle) | Out-Null
+  if (-not [AcceptanceInput]::Focus($process.MainWindowHandle)) { throw 'The game window is not in front; no input was sent.' }
   $point = New-Object AcceptanceInput+POINT
   $point.X = [int][Math]::Round($X); $point.Y = [int][Math]::Round($Y)
   [AcceptanceInput]::ClientToScreen($process.MainWindowHandle, [ref]$point) | Out-Null
@@ -88,7 +106,7 @@ switch ($Step) {
  }
  'Key' {
   $process = Get-GameWindow
-  [AcceptanceInput]::SetForegroundWindow($process.MainWindowHandle) | Out-Null
+  if (-not [AcceptanceInput]::Focus($process.MainWindowHandle)) { throw 'The game window is not in front; no input was sent.' }
   $codes = @{ Escape = 0x1B; Enter = 0x0D; C = 0x43; H = 0x48 }
   [AcceptanceInput]::Key([int16]$codes[$KeyName])
   Start-Sleep -Milliseconds 400

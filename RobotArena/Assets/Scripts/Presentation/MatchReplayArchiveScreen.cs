@@ -264,7 +264,9 @@ namespace RobotSavaslari.Presentation
             const float rowHeight = 66f;
             if (count == 0) GUI.Label(new Rect(x, y + 6f, w, 24f), "Henüz kayıtlı karşılaşma tekrarı yok. Bir maç veya seri bitince burada görünür.");
             _listScroll = GUI.BeginScrollView(view, _listScroll, new Rect(0f, 0f, w - 20f, Mathf.Max(1, count) * rowHeight));
-            for (int i = 0; i < count; i++) DrawRow(_rows[i], i * rowHeight, w - 20f);
+            // A row's button can delete, refresh or start playback, which rebuilds the list: draw from a copy.
+            Row[] rows = _rows.ToArray();
+            for (int i = 0; i < rows.Length; i++) DrawRow(rows[i], i * rowHeight, w - 20f);
             GUI.EndScrollView();
 
             float buttonY = panel.yMax - 46f;
