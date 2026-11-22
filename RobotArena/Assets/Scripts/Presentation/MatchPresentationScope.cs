@@ -21,7 +21,9 @@ namespace RobotSavaslari.Presentation
 
         public bool IsActive { get; private set; }
 
-        public void Enter(MatchController match, CombatCameraController camera, Transform primary, Transform secondary)
+        /// <param name="alsoHide">More live renderers to hide for the presentation (the archive hides the live arena layout).</param>
+        public void Enter(MatchController match, CombatCameraController camera, Transform primary, Transform secondary,
+            IEnumerable<Renderer> alsoHide = null)
         {
             if (IsActive) Exit();
             _menu = match != null ? match.GetComponent<MainMenuScreen>() : null;
@@ -38,6 +40,7 @@ namespace RobotSavaslari.Presentation
                 _scratch.AddRange(robot.GetComponentsInChildren<Renderer>(true));
                 RobotVisualProxyFactory.CollectDebrisRenderers(robot.transform, _scratch);
             }
+            if (alsoHide != null) _scratch.AddRange(alsoHide);
             RobotVisualProxyFactory.Hide(_scratch, _hiddenRenderers);
             _scratch.Clear();
 
@@ -55,6 +58,42 @@ namespace RobotSavaslari.Presentation
             _menu = null;
             _camera = null;
             IsActive = false;
+        }
+    }
+
+    /// <summary>
+    /// Turns behaviours off for as long as a mode owns the screen and gives each its exact previous
+    /// enabled state back on <see cref="Restore"/>, in reverse order. Destroyed behaviours are skipped.
+    /// </summary>
+    public sealed class BehaviourEnableScope
+    {
+        private readonly List<KeyValuePair<Behaviour, bool>> _previous = new List<KeyValuePair<Behaviour, bool>>();
+
+        public bool IsActive => _previous.Count > 0;
+        public int Count => _previous.Count;
+
+        /// <summary>Disables a behaviour once; a behaviour already held keeps its first remembered state.</summary>
+        public void Disable(Behaviour behaviour)
+        {
+            if (behaviour == null) return;
+            foreach (KeyValuePair<Behaviour, bool> item in _previous)
+                if (item.Key == behaviour) return;
+            _previous.Add(new KeyValuePair<Behaviour, bool>(behaviour, behaviour.enabled));
+            behaviour.enabled = false;
+        }
+
+        public bool WasEnabled(Behaviour behaviour)
+        {
+            foreach (KeyValuePair<Behaviour, bool> item in _previous)
+                if (item.Key == behaviour) return item.Value;
+            return behaviour != null && behaviour.enabled;
+        }
+
+        public void Restore()
+        {
+            for (int i = _previous.Count - 1; i >= 0; i--)
+                if (_previous[i].Key != null) _previous[i].Key.enabled = _previous[i].Value;
+            _previous.Clear();
         }
     }
 }
