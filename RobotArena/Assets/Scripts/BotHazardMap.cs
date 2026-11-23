@@ -63,6 +63,36 @@ namespace RobotSavaslari
             return changed || previous != active;
         }
 
+        internal bool TryExit(BotNavigationSpace space, Vector2 position, out Vector2 exit)
+        {
+            exit = position;
+            float best = float.PositiveInfinity;
+            for (int i = 0; i < active; i++)
+            {
+                var zone = zones[observed[i]];
+                Vector2 side = new Vector2(-zone.axis.y, zone.axis.x);
+                Vector2 offset = position - zone.center;
+                Vector2 local = new Vector2(Vector2.Dot(offset, zone.axis), Vector2.Dot(offset, side));
+                Vector2 half = zone.halfSize + Vector2.one * clearance;
+                if (Mathf.Abs(local.x) > half.x || Mathf.Abs(local.y) > half.y) continue;
+                // Four exits from the current strip. End outside every observed zone and inside the perimeter.
+                for (int face = 0; face < 4; face++)
+                {
+                    bool along = face < 2;
+                    float sign = (face & 1) == 0 ? 1f : -1f;
+                    float distance = (along ? half.x : half.y) + .32f - sign * (along ? local.x : local.y);
+                    if (distance >= best) continue;
+                    Vector2 candidate = position + (along ? zone.axis : side) * (sign * distance);
+                    if (Crosses(candidate, candidate) ||
+                        space.Probe(position, candidate, allowOpponent: false) != BotNavigationSpace.ProbeResult.Clear) continue;
+                    exit = candidate;
+                    best = distance;
+                }
+                break;
+            }
+            return best < float.PositiveInfinity;
+        }
+
         internal bool Crosses(Vector2 start, Vector2 end)
         {
             for (int i = 0; i < active; i++)
@@ -79,8 +109,7 @@ namespace RobotSavaslari
                 {
                     // A signal may arrive while the robot is already inside. Permit outward progress.
                     if (step.sqrMagnitude > .000001f &&
-                        ((from.x * step.x >= 0 && half.x - Mathf.Abs(from.x + step.x) < Mathf.Min(dx, dy)) ||
-                         (from.y * step.y >= 0 && half.y - Mathf.Abs(from.y + step.y) < Mathf.Min(dx, dy)))) continue;
+                        (Mathf.Abs(step.x) > Mathf.Abs(step.y) ? from.x * step.x >= 0 : from.y * step.y >= 0)) continue;
                     return true;
                 }
                 float first = 0, last = 1;

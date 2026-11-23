@@ -180,6 +180,14 @@ namespace RobotSavaslari.Tests
             Assert.AreEqual(BotRouteReason.HazardWait, bot.NavigationReason);
             Assert.AreEqual(Vector2.zero, bot.Command);
             Assert.IsFalse(bot.AttackRequested);
+            Place(botBody, center + Vector3.left, -90);
+            Physics.SyncTransforms();
+            bot.Tick(.02f);
+            Assert.AreEqual(BotRouteReason.HazardEscape, bot.NavigationReason, "A bot already in danger must look for an exit.");
+            Place(botBody, center + Vector3.left * 3.5f, 90);
+            Physics.SyncTransforms();
+            bot.Tick(.02f);
+            Assert.AreEqual(BotRouteReason.HazardWait, bot.NavigationReason);
 
             Time.timeScale = 0f;
             yield return null;

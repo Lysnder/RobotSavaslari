@@ -200,6 +200,15 @@ namespace RobotSavaslari
                         _route.RiskChanged();
                 }
                 bool recovering = State == Decision.BackingOut || State == Decision.EscapeTurn || State == Decision.EscapeDrive;
+                if (!recovering && _navigationTick && _space.Hazards.TryExit(_space, BotNavigationSpace.Planar(_motor.Body.position), out var exit))
+                {
+                    _route.SetEscape(exit);
+                    State = Decision.Navigating;
+                    _attackHold = false;
+                    _stuckTime = 0;
+                    DriveToPoint(AtBodyHeight(exit), false);
+                    return;
+                }
                 closeCounterPursuit = !recovering && ResumeCloseCounterPursuitIfReady();
                 if (!recovering && !closeCounterPursuit && TickOpponentDecisions(dt)) return;
             }

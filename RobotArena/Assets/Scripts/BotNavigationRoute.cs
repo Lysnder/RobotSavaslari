@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace RobotSavaslari
 {
-    public enum BotRouteReason { None, Obstructed, SegmentBlocked, TargetMoved, NoProgress, Unreachable, QuerySaturated, HazardDetour, HazardWait }
+    public enum BotRouteReason { None, Obstructed, SegmentBlocked, TargetMoved, NoProgress, Unreachable, QuerySaturated, HazardDetour, HazardWait, HazardEscape }
 
     internal sealed class BotNavigationRoute
     {
@@ -146,10 +146,17 @@ namespace RobotSavaslari
             return false;
         }
 
+        internal void SetEscape(Vector2 exit)
+        {
+            if (Reason != BotRouteReason.HazardEscape) Invalidate(exit, BotRouteReason.HazardEscape);
+            Waypoint = exit;
+            HasWaypoint = true;
+        }
+
         internal void RiskChanged()
         {
             // Resume a blocked crossing as soon as the observed warning clears.
-            if (Reason == BotRouteReason.HazardWait || Reason == BotRouteReason.HazardDetour)
+            if (Reason == BotRouteReason.HazardWait || Reason == BotRouteReason.HazardDetour || Reason == BotRouteReason.HazardEscape)
             {
                 retry = wait = 0;
                 failures = 0;
