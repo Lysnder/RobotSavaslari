@@ -362,6 +362,7 @@ namespace RobotSavaslari.UI
         {
             EnsureLobbySetup();
             if (!StageSetup(selection)) return false;
+            _protectPreference = false;
             SavePreference(selection);
             return true;
         }
@@ -388,7 +389,6 @@ namespace RobotSavaslari.UI
             _opponentPanel.Select(selection.personality, selection.difficulty);
             _pendingArena = layout;
             _setupNotice = null;
-            _protectPreference = false;
             return true;
         }
 
