@@ -52,6 +52,12 @@ namespace RobotSavaslari
             !_opponent.CombatStopped && _health != null && !_health.IsDefeated &&
             _damage != null && _damage.WeaponOperational;
 
+        internal void SelectWeaponProfile(CombatProfile selected)
+        {
+            weaponProfile = selected;
+            _melee.ApplyProfile(selected);
+        }
+
         private void BindWeapon()
         {
             if (_melee == null)
@@ -274,7 +280,7 @@ namespace RobotSavaslari
             ApplyKnockback(-direction, recoil);
         }
 
-        private void ApplyKnockback(Vector3 direction, float speed)
+        internal void ApplyKnockback(Vector3 direction, float speed)
         {
             if (speed <= 0f || _health.IsDefeated || CombatStopped) return;
             Vector3 velocity = _body.linearVelocity;

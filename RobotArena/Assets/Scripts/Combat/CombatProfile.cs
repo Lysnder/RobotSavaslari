@@ -16,6 +16,8 @@ namespace RobotSavaslari.Combat
         [Min(0f)] public float activeDuration = 0.15f;
         [Tooltip("Robotun onunde saldirinin kapsadigi yay acisi (derece).")]
         [Range(1f, 360f)] public float arcDegrees = 120f;
+        [Tooltip("Forward knockback speed after a close-range weapon hit (m/s).")]
+        [Min(0f)] public float pushSpeed;
 
         /// <summary>Verilen candan sifira inmek icin gereken gecerli vurus sayisi.</summary>
         public int HitsToDefeat(float health)
