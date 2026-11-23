@@ -1,7 +1,9 @@
 using System;
+using System.Reflection;
 using RobotSavaslari.Driving;
 using RobotSavaslari.Arena;
 using RobotSavaslari.Match;
+using RobotSavaslari.Presentation;
 using RobotSavaslari.Robots;
 using RobotSavaslari.UI;
 using UnityEngine;
@@ -67,6 +69,33 @@ namespace RobotSavaslari.Training
         private bool savedOpponentEnabled;
         private bool savedDriverEnabled;
         private bool stateSaved;
+
+        // The Ready-menu property arrived after the original driving task base.
+        private static readonly MethodInfo ReadyMenuGetter =
+            typeof(MainMenuScreen).GetProperty("IsShowingReadyMenu")?.GetGetMethod();
+        private static readonly FieldInfo LegacyHistory =
+            typeof(MainMenuScreen).GetField("_showHistory", BindingFlags.Instance | BindingFlags.NonPublic);
+        private Func<bool> menuReady;
+
+        public bool ReadyMenuVisible => menu == null || (menu.isActiveAndEnabled &&
+            (menuReady != null ? menuReady() : LegacyHistory?.GetValue(menu) is false));
+
+        private DrivingExerciseSession exerciseRun;
+        private CollisionReporter collisionReporter;
+        private CombatCameraController cameraController;
+        private bool savedCameraEnabled;
+        private bool savedCamera;
+        private float lastImpactTime;
+        private Vector3 legacyStart;
+        private float legacyYaw;
+        private TimeTrialCheckpoint[] legacyRoute;
+
+        public DrivingExerciseDefinition Exercise { get; private set; }
+        public DrivingExerciseStore ExerciseStore { get; set; }
+        public string ExerciseKey { get; private set; }
+        public DrivingExerciseResult ExerciseResult => exerciseRun?.Result ?? default;
+        public float ExerciseDwell => exerciseRun?.Dwell ?? 0f;
+        public int AttemptRevision { get; private set; }
 
         private bool lapValid;
         private bool finishReported;
@@ -177,15 +206,19 @@ namespace RobotSavaslari.Training
         {
             match = matchController;
             menu = mainMenu;
+            menuReady = menu != null && ReadyMenuGetter != null
+                ? (Func<bool>)Delegate.CreateDelegate(typeof(Func<bool>), menu, ReadyMenuGetter) : null;
             settings = settingsPanel;
             driver = playerDriver;
             arena = match != null ? FindAnyObjectByType<ArenaEnvironment>() : null;
             arenaBounds = arena != null ? arena.GetComponent<ArenaBounds>() : null;
+            cameraController = match != null ? FindAnyObjectByType<CombatCameraController>() : null;
 
             if (driver != null)
             {
                 motor = driver.GetComponent<RobotMotor>();
                 playerPrototype = driver.GetComponent<RobotPrototypeController>();
+                collisionReporter = driver.GetComponent<CollisionReporter>();
             }
 
             if (match != null)
@@ -202,14 +235,48 @@ namespace RobotSavaslari.Training
         /// Eğitime girer. Yalnızca kurulmuş ve hazır bir maçta, ayarlar
         /// kapalıyken girilir.
         /// </summary>
-        public bool Enter()
+        public bool Enter() => Begin(null);
+
+        public bool EnterExercise(DrivingExerciseDefinition definition)
         {
-            if (State != TimeTrialState.Inactive || !CanEnter || driver == null || motor == null)
+            if (!AllowsEntry() || definition == null || !definition.IsValid() ||
+                !TryResolveRoute(definition, out var start, out var route)) return false;
+
+            legacyStart = startPosition;
+            legacyYaw = startYaw;
+            legacyRoute = checkpoints;
+            Exercise = definition;
+            ConfigureRoute(start, definition.startYaw, route);
+            var profile = Hash128.Compute("drive-v1:" + JsonUtility.ToJson(motor) +
+                (driver.Boost != null ? JsonUtility.ToJson(driver.Boost) : "") +
+                (driver.Handbrake != null ? JsonUtility.ToJson(driver.Handbrake) : ""));
+            var rules = Hash128.Compute(JsonUtility.ToJson(definition));
+            ExerciseKey = $"{definition.exerciseId}/{definition.rulesRevision}/{CourseId}/{profile}/{rules}";
+            ExerciseStore?.Load();
+            return Begin(definition);
+        }
+
+        private bool AllowsEntry() => State == TimeTrialState.Inactive && isActiveAndEnabled && CanEnter &&
+            driver != null && motor != null &&
+            (match == null || (match.isActiveAndEnabled && match.IsInitialized && !match.IsPaused &&
+                match.State == MatchController.MatchState.Ready)) &&
+            ReadyMenuVisible && (settings == null || !settings.IsOpen) &&
+            (cameraController == null || !cameraController.HasPresentationTargets);
+
+        private bool Begin(DrivingExerciseDefinition definition)
+        {
+            if (!AllowsEntry())
             {
                 return false;
             }
 
             SaveSceneState();
+            if (definition != null && cameraController != null)
+            {
+                savedCamera = true;
+                savedCameraEnabled = cameraController.enabled;
+                cameraController.enabled = false;
+            }
 
             // Dövüş durur: eğitimde hasar ve sonuç üretilmez.
             if (playerPrototype != null) playerPrototype.StopCombat();
@@ -237,8 +304,22 @@ namespace RobotSavaslari.Training
                 return;
             }
 
+            bool wasExercise = Exercise != null;
             State = TimeTrialState.Inactive;
             Notice = string.Empty;
+
+            if (wasExercise)
+            {
+                ConfigureRoute(legacyStart, legacyYaw, legacyRoute);
+                Exercise = null;
+                ExerciseKey = null;
+                exerciseRun = null;
+                legacyRoute = null;
+            }
+
+            if (savedCamera && cameraController != null)
+                cameraController.enabled = savedCameraEnabled;
+            savedCamera = false;
 
             if (motor != null)
             {
@@ -252,12 +333,15 @@ namespace RobotSavaslari.Training
             {
                 match.Prepare();
             }
+
+            if (wasExercise && driver != null) driver.enabled = savedDriverEnabled;
         }
 
         /// <summary>Denemeyi baştan alır: poz, hareket, kontrol noktaları ve süre sıfırlanır.</summary>
         public void Retry()
         {
-            AttemptNumber++;
+            if (Exercise == null || State != TimeTrialState.Running) AttemptNumber++;
+            AttemptRevision++;
             NextCheckpointIndex = 0;
             ElapsedTime = 0f;
             lapValid = true;
@@ -266,6 +350,17 @@ namespace RobotSavaslari.Training
             Notice = "Kontrol noktalarini sirayla gec.";
 
             PlaceAtStart();
+            if (Exercise != null)
+            {
+                driver.enabled = true;
+                driver.Boost?.ResetState();
+                driver.Handbrake?.ResetState();
+                lastImpactTime = Time.time;
+                exerciseRun = new DrivingExerciseSession(Exercise, checkpoints, startPosition);
+                LastLapTime = 0f;
+                LastLapValid = false;
+                Notice = Exercise.instruction;
+            }
         }
 
         private void PlaceAtStart()
@@ -328,20 +423,107 @@ namespace RobotSavaslari.Training
 
         private void Update()
         {
-            if (State == TimeTrialState.Running && settings != null && settings.IsOpen)
+            if (State != TimeTrialState.Inactive && settings != null && settings.IsOpen)
             {
                 // Ayarlar açılırsa eğitim beklemez, güvenle çıkılır.
                 Exit();
                 return;
             }
 
-            if (State != TimeTrialState.Running || motor == null)
+            if (State != TimeTrialState.Running || motor == null || Exercise != null)
             {
                 return;
             }
 
             ElapsedTime += Time.deltaTime;
             EvaluateCheckpoints();
+        }
+
+        private void FixedUpdate()
+        {
+            if (State != TimeTrialState.Running || exerciseRun == null || motor == null ||
+                (settings != null && settings.IsOpen) || motor.Body == null) return;
+
+            int impacts = 0;
+            if (collisionReporter != null && collisionReporter.HasReport)
+            {
+                float timestamp = Time.time - collisionReporter.TimeSinceImpact;
+                if (timestamp > lastImpactTime)
+                {
+                    lastImpactTime = timestamp;
+                    impacts = 1;
+                }
+            }
+
+            Rigidbody body = motor.Body;
+            exerciseRun.Step(body.position, body.rotation.eulerAngles.y, body.linearVelocity, Time.fixedDeltaTime, impacts);
+            NextCheckpointIndex = exerciseRun.NextGate;
+            ElapsedTime = exerciseRun.Result.seconds;
+            lapValid = exerciseRun.Result.Faults == 0;
+            Notice = exerciseRun.Feedback ?? Exercise.instruction;
+            if (!exerciseRun.Finished) return;
+
+            LastLapTime = ElapsedTime;
+            LastLapValid = exerciseRun.Result.success;
+            State = TimeTrialState.Finished;
+            driver.enabled = false;
+            motor.ResetMotion();
+        }
+
+        private bool TryResolveRoute(DrivingExerciseDefinition definition, out Vector3 start, out TimeTrialCheckpoint[] route)
+        {
+            start = definition.start;
+            route = (TimeTrialCheckpoint[])definition.gates.Clone();
+            if (arenaBounds == null || playerPrototype == null) return true;
+
+            float footprint = ArenaLayoutValidator.MeasureRadius(playerPrototype);
+            float opponentRadius = opponentPrototype != null ? ArenaLayoutValidator.MeasureRadius(opponentPrototype) : 0f;
+            Vector2 center = arenaBounds.Center;
+            int selectedLane = 0;
+            bool found = false;
+            // Try the authored lane first, then translate the whole exercise to adjacent lanes.
+            for (int offset = 0; offset <= 4 && !found; offset++)
+                found = Fits(offset) || (offset != 0 && Fits(-offset));
+            if (!found) return false;
+
+            Vector3 translation = new Vector3(center.x + selectedLane * 1.5f, 0f, center.y);
+            start += translation;
+            for (int index = 0; index < route.Length; index++) route[index].position += translation;
+            return true;
+
+            bool Fits(int lane)
+            {
+                Vector3 shift = new Vector3(center.x + lane * 1.5f, 0f, center.y);
+                Vector3 previous = definition.start + shift;
+                if (!Clear(previous, footprint)) return false;
+                foreach (var gate in definition.gates)
+                {
+                    Vector3 target = gate.position + shift;
+                    if (!Clear(target, footprint + gate.radius)) return false;
+                    int steps = Mathf.CeilToInt(Vector3.Distance(previous, target) * 4f);
+                    for (int step = 1; step < steps; step++)
+                        if (!Clear(Vector3.Lerp(previous, target, (float)step / steps), footprint)) return false;
+                    previous = target;
+                }
+
+                selectedLane = lane;
+                return true;
+            }
+
+            bool Clear(Vector3 point, float radius)
+            {
+                Vector2 local = new Vector2(point.x, point.z) - center;
+                Vector2 limits = arenaBounds.CenterLimits(radius);
+                if (Mathf.Abs(local.x) > limits.x || Mathf.Abs(local.y) > limits.y) return false;
+                if (opponentPrototype != null)
+                {
+                    Vector3 delta = point - opponentPrototype.transform.position;
+                    delta.y = 0f;
+                    if (delta.sqrMagnitude < (radius + opponentRadius) * (radius + opponentRadius)) return false;
+                }
+
+                return arena == null || arena.Layout == null || ArenaLayoutValidator.IsClear(arena.Layout, local, radius);
+            }
         }
 
         private void EvaluateCheckpoints()

@@ -22,6 +22,12 @@ namespace RobotSavaslari.Training
 
         private readonly List<GameObject> markers = new List<GameObject>();
         private GUIStyle panelStyle;
+        private GUIStyle wrapped;
+        private bool showExercises;
+        private Vector2 historyScroll;
+        private string entryNotice;
+
+        public DrivingExerciseCatalog ExerciseCatalog { get; set; }
 
 
         [SerializeField] private GhostRunner ghost;
@@ -49,7 +55,13 @@ namespace RobotSavaslari.Training
             }
         }
 
-        private void OnDisable() => ClearMarkers();
+        private void OnDisable()
+        {
+            showExercises = false;
+            entryNotice = null;
+            ClearMarkers();
+            if (session != null && session.Exercise != null) session.Exit();
+        }
 
         private void OnDestroy()
         {
@@ -90,7 +102,9 @@ namespace RobotSavaslari.Training
                 marker.name = $"Egitim Kontrol Noktasi {index + 1}";
 
                 // Fiziğe karışmasın: yalnızca görsel.
-                Destroy(marker.GetComponent<Collider>());
+                Collider collider = marker.GetComponent<Collider>();
+                collider.enabled = false;
+                Destroy(collider);
 
 
                 markers.Add(marker);
@@ -130,6 +144,7 @@ namespace RobotSavaslari.Training
             {
                 if (marker != null)
                 {
+                    marker.SetActive(false);
                     Destroy(marker);
                 }
             }
@@ -155,13 +170,16 @@ namespace RobotSavaslari.Training
                 return;
             }
 
-            DrawSession();
+            if (session.Exercise == null) DrawSession();
+            else DrawExercise();
         }
 
         private void DrawAccess()
         {
             if (!session.CanEnter)
             {
+                showExercises = false;
+                entryNotice = null;
                 return;
             }
 
@@ -172,6 +190,111 @@ namespace RobotSavaslari.Training
             if (GUI.Button(rect, "Surus egitimi"))
             {
                 session.Enter();
+            }
+
+            DrawExerciseChoices(rect);
+        }
+
+        private void DrawExerciseChoices(Rect access)
+        {
+            var definitions = ExerciseCatalog != null ? ExerciseCatalog.exercises : null;
+            if (definitions == null || definitions.Length == 0) return;
+            float width = Mathf.Min(400f, Screen.width - 18f);
+            Rect button = new Rect((Screen.width - width) * .5f, access.y - 29f, width, 26f);
+            if (GUI.Button(button, showExercises ? "Alıştırmaları kapat" : "Sürüş alıştırmaları"))
+            {
+                showExercises = !showExercises;
+                entryNotice = null;
+            }
+
+            if (!showExercises) return;
+            int rows = (definitions.Length + 1) / 2;
+            float y = button.y - rows * 29f;
+            if (y < 5f) return;
+            float column = width * .5f;
+            GUI.Box(new Rect(button.x - 2f, y - 3f, width + 4f, rows * 29f), GUIContent.none);
+            for (int i = 0; i < definitions.Length; i++)
+            {
+                var exercise = definitions[i];
+                if (exercise == null) continue;
+                if (!GUI.Button(new Rect(button.x + column * (i % 2), y + i / 2 * 29f, column - 2f, 26f), exercise.title)) continue;
+                if (session.EnterExercise(exercise))
+                {
+                    showExercises = false;
+                    historyScroll = Vector2.zero;
+                    entryNotice = null;
+                    return;
+                }
+
+                entryNotice = "Bu arena düzeninde güvenli rota yok.";
+            }
+
+            if (entryNotice != null) GUI.Label(new Rect(button.x, y - 23f, width, 24f), entryNotice, panelStyle);
+        }
+
+        private void DrawExercise()
+        {
+            var exercise = session.Exercise;
+            var result = session.ExerciseResult;
+            bool finished = session.State == TimeTrialState.Finished;
+            float width = Mathf.Min(455f, Screen.width - 16f);
+            if (wrapped == null) wrapped = new GUIStyle(GUI.skin.label) { wordWrap = true };
+            DrawTargetLabels(exercise);
+            float height = Mathf.Min(finished ? 320f : 212f, Screen.height - 20f);
+            GUILayout.BeginArea(new Rect((Screen.width - width) * .5f, 9f, width, height), GUI.skin.box);
+            GUILayout.Label(exercise.title + $"  |  {session.ElapsedTime:0.00} sn", panelStyle);
+            GUILayout.Label(session.Notice, wrapped);
+            if (exercise.kind == DrivingExerciseKind.Slalom)
+                GUILayout.Label($"Kapılar: {session.NextCheckpointIndex}/{session.CheckpointCount}   Kaçırılan: {result.gateErrors}");
+            else
+            {
+                GUILayout.Label($"Merkeze uzaklık: {result.positionError:0.00} m   Hız: {result.finalSpeed:0.00} m/sn");
+                if (exercise.kind == DrivingExerciseKind.ControlledStop)
+                    GUILayout.Label($"Hedef kenarı aşımı (en çok): {result.overshoot:0.00} m");
+                else
+                    GUILayout.Label($"Açı sapması: {result.yawError:0.0}°   Yön hatası: {result.directionErrors}");
+                if (!finished && exercise.kind != DrivingExerciseKind.PrecisionTurn)
+                    GUILayout.Label($"Kesintisiz duruş: {session.ExerciseDwell:0.0}/{exercise.dwellSeconds:0.0} sn");
+            }
+
+            GUILayout.Label($"Sert temas: {result.contacts}");
+            var record = ghost != null ? ghost.ExerciseRecord : null;
+            if (record?.ghost != null)
+                GUILayout.Label($"Rekor: {record.best.seconds:0.00} sn" + (!finished && ghost.HasGhost ? " (hayalet)" : ""));
+            if (session.ExerciseStore?.Warning != null)
+                GUILayout.Label(session.ExerciseStore.Warning, wrapped);
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Yeniden dene")) session.Retry();
+            if (GUILayout.Button("Eğitimden çık")) session.Exit();
+            GUILayout.EndHorizontal();
+            if (finished && record != null)
+            {
+                historyScroll = GUILayout.BeginScrollView(historyScroll);
+                for (int i = 0; i < record.history.Count; i++)
+                {
+                    var attempt = record.history[i];
+                    GUILayout.Label($"{i + 1}. {(attempt.success ? "Başarılı" : "Geçersiz")} · " +
+                        $"{attempt.seconds:0.00} sn · {attempt.Faults} hata");
+                }
+                GUILayout.EndScrollView();
+            }
+
+            GUILayout.EndArea();
+        }
+
+        private void DrawTargetLabels(DrivingExerciseDefinition exercise)
+        {
+            Camera camera = Camera.main;
+            if (camera == null) return;
+            for (int i = 0; i < markers.Count; i++)
+            {
+                if (markers[i] == null) continue;
+                Vector3 point = camera.WorldToScreenPoint(markers[i].transform.position + Vector3.up * .2f);
+                if (point.z <= 0f) continue;
+                string label = exercise.kind == DrivingExerciseKind.Slalom
+                    ? $"{i + 1} {(i == session.NextCheckpointIndex ? "›" : "")}"
+                    : exercise.kind == DrivingExerciseKind.ControlledStop ? "Dur" : $"Hedef {exercise.targetYaw:0}°";
+                GUI.Label(new Rect(point.x - 53f, Screen.height - point.y - 16f, 106f, 24f), label, panelStyle);
             }
         }
 

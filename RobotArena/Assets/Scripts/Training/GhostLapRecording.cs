@@ -80,25 +80,21 @@ namespace RobotSavaslari.Training
                 return;
             }
 
-            for (int index = 1; index < samples.Length; index++)
+            int low = 1;
+            int high = samples.Length - 1;
+            while (low < high)
             {
-                GhostLapSample next = samples[index];
-                if (next.time < time)
-                {
-                    continue;
-                }
-
-                GhostLapSample previous = samples[index - 1];
-                float span = next.time - previous.time;
-                float t = span > 0f ? Mathf.Clamp01((time - previous.time) / span) : 0f;
-
-                position = Vector3.Lerp(previous.position, next.position, t);
-                yaw = Mathf.LerpAngle(previous.yaw, next.yaw, t);
-                return;
+                int middle = low + (high - low) / 2;
+                if (samples[middle].time < time) low = middle + 1;
+                else high = middle;
             }
 
-            position = last.position;
-            yaw = last.yaw;
+            GhostLapSample next = samples[low];
+            GhostLapSample previous = samples[low - 1];
+            float span = next.time - previous.time;
+            float t = span > 0f ? Mathf.Clamp01((time - previous.time) / span) : 0f;
+            position = Vector3.Lerp(previous.position, next.position, t);
+            yaw = Mathf.LerpAngle(previous.yaw, next.yaw, t);
         }
     }
 }
