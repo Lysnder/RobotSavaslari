@@ -106,7 +106,7 @@ namespace RobotSavaslari.Training
 
             TimeTrialState state = session.State;
 
-            if (state == TimeTrialState.Inactive)
+            if (state == TimeTrialState.Inactive || session.PreparationStep != 0)
             {
                 if (previousState != TimeTrialState.Inactive)
                 {
@@ -115,7 +115,7 @@ namespace RobotSavaslari.Training
                     samples.Clear();
                 }
 
-                previousState = state;
+                previousState = TimeTrialState.Inactive;
                 return;
             }
 

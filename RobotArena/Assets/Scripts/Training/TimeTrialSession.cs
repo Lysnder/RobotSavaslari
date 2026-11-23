@@ -101,6 +101,51 @@ namespace RobotSavaslari.Training
         public float ExerciseDwell => exerciseRun?.Dwell ?? 0f;
         public int AttemptRevision { get; private set; }
 
+        private DrivingExerciseDefinition preparationTurn;
+        public int PreparationStep { get; private set; }
+        public string PreparationControls => driver == null ? string.Empty :
+            $"İleri / geri  {driver.GetBinding(DriveAction.Forward)} / {driver.GetBinding(DriveAction.Backward)}     " +
+            $"Sol / sağ  {driver.GetBinding(DriveAction.TurnLeft)} / {driver.GetBinding(DriveAction.TurnRight)}\n" +
+            $"Boost  {driver.GetBinding(DriveAction.Boost)}     El freni  {driver.GetBinding(DriveAction.Handbrake)}";
+
+        public bool StartPreparation(DrivingExerciseCatalog catalog)
+        {
+            if (State == TimeTrialState.Inactive || Exercise != null || catalog?.exercises == null ||
+                driver == null || !driver.HasFocus || (settings != null && settings.IsOpen)) return false;
+            var stop = Array.Find(catalog.exercises, e => e != null && e.kind == DrivingExerciseKind.ControlledStop);
+            var turn = Array.Find(catalog.exercises, e => e != null && e.kind == DrivingExerciseKind.PrecisionTurn);
+            if (stop == null || !stop.IsValid() || turn == null || !turn.IsValid() ||
+                !TryResolveRoute(turn, out _, out _) || !TryResolveRoute(stop, out var start, out var route)) return false;
+
+            legacyStart = startPosition;
+            legacyYaw = startYaw;
+            legacyRoute = checkpoints;
+            preparationTurn = turn;
+            PreparationStep = 1;
+            TakeExerciseCamera();
+            StartPreparationStep(stop, start, route);
+            return true;
+        }
+
+        public bool NextPreparationStep()
+        {
+            if (PreparationStep != 1 || State != TimeTrialState.Finished || !ExerciseResult.success ||
+                !driver.HasFocus || (settings != null && settings.IsOpen) ||
+                !TryResolveRoute(preparationTurn, out var start, out var route)) return false;
+            PreparationStep = 2;
+            StartPreparationStep(preparationTurn, start, route);
+            return true;
+        }
+
+        private void StartPreparationStep(DrivingExerciseDefinition definition, Vector3 start, TimeTrialCheckpoint[] route)
+        {
+            Exercise = definition;
+            ConfigureRoute(start, definition.startYaw, route);
+            // Guided practice uses the same evaluator, with separate ownership of scores and ghosts.
+            ExerciseKey = null;
+            Retry();
+        }
+
         private bool lapValid;
         private bool finishReported;
 
@@ -275,13 +320,7 @@ namespace RobotSavaslari.Training
             }
 
             SaveSceneState();
-            if (definition != null && cameraController != null)
-            {
-                savedCamera = true;
-                savedCameraEnabled = cameraController.enabled;
-                cameraController.enabled = false;
-                FramePracticeArea();
-            }
+            if (definition != null) TakeExerciseCamera();
 
             // Dövüş durur: eğitimde hasar ve sonuç üretilmez.
             if (playerPrototype != null) playerPrototype.StopCombat();
@@ -310,6 +349,9 @@ namespace RobotSavaslari.Training
             }
 
             bool wasExercise = Exercise != null;
+            if (PreparationStep != 0 && driver != null) driver.RequireInputRelease();
+            PreparationStep = 0;
+            preparationTurn = null;
             State = TimeTrialState.Inactive;
             Notice = string.Empty;
 
@@ -343,7 +385,8 @@ namespace RobotSavaslari.Training
         /// <summary>Denemeyi baştan alır: poz, hareket, kontrol noktaları ve süre sıfırlanır.</summary>
         public void Retry()
         {
-            if (Exercise == null || State != TimeTrialState.Running) AttemptNumber++;
+            if (PreparationStep != 0 && (driver == null || !driver.HasFocus)) return;
+            if (PreparationStep != 0 || Exercise == null || State != TimeTrialState.Running) AttemptNumber++;
             AttemptRevision++;
             NextCheckpointIndex = 0;
             ElapsedTime = 0f;
@@ -355,6 +398,7 @@ namespace RobotSavaslari.Training
             PlaceAtStart();
             if (Exercise != null)
             {
+                if (PreparationStep != 0) driver.RequireInputRelease();
                 driver.enabled = true;
                 driver.Boost?.ResetState();
                 driver.Handbrake?.ResetState();
@@ -471,6 +515,15 @@ namespace RobotSavaslari.Training
             State = TimeTrialState.Finished;
             driver.enabled = false;
             motor.ResetMotion();
+        }
+
+        private void TakeExerciseCamera()
+        {
+            if (cameraController == null || savedCamera) return;
+            savedCamera = true;
+            savedCameraEnabled = cameraController.enabled;
+            cameraController.enabled = false;
+            FramePracticeArea();
         }
 
         private void FramePracticeArea()

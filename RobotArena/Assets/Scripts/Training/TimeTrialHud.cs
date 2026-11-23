@@ -33,6 +33,7 @@ namespace RobotSavaslari.Training
         private GUIStyle panelStyle;
         private GUIStyle wrapped;
         private bool showExercises;
+        private bool showControls;
         private Vector2 historyScroll;
         private string entryNotice;
 
@@ -203,7 +204,8 @@ namespace RobotSavaslari.Training
                 return;
             }
 
-            if (session.Exercise == null) DrawSession();
+            if (session.PreparationStep != 0) DrawPreparation();
+            else if (session.Exercise == null) DrawSession();
             else DrawExercise();
         }
 
@@ -331,6 +333,44 @@ namespace RobotSavaslari.Training
             }
         }
 
+        private void DrawPreparation()
+        {
+            var exercise = session.Exercise;
+            var result = session.ExerciseResult;
+            bool finished = session.State == TimeTrialState.Finished;
+            bool stop = session.PreparationStep == 1;
+            float width = Mathf.Min(480f, guiWidth - 20f);
+            if (wrapped == null) wrapped = new GUIStyle(GUI.skin.label) { wordWrap = true };
+            DrawTargetLabels(exercise);
+            GUILayout.BeginArea(new Rect((guiWidth - width) * .5f, 8f, width, 230f), GUI.skin.box);
+            GUILayout.Label($"Maça hazırlık  ·  {session.PreparationStep}/2  ·  {exercise.title}", panelStyle);
+            if (stop)
+            {
+                GUILayout.Label($"Kenar aşımı {result.overshoot:0.00} m   •   Hız {result.finalSpeed:0.00} m/sn   •   Duruş {session.ExerciseDwell:0.0}/{exercise.dwellSeconds:0.0} sn");
+                GUILayout.Label(result.overshoot > .05f ? "Hedefi geçtin. Biraz daha erken frenle." :
+                    $"Halkanın içinde {exercise.stopSpeed:0.00} m/sn altına yavaşla ve duruşu koru.", wrapped);
+            }
+            else
+            {
+                GUILayout.Label($"Hedef {exercise.targetYaw:0}°   •   Açı sapması {result.yawError:0.0}°   •   Merkeze {result.positionError:0.00} m");
+                GUILayout.Label(result.positionError > session.GetCheckpoint(0).radius ? "Önce işaretli alana yaklaş." :
+                    $"Kısa dönüşlerle robotu {exercise.targetYaw:0}° yönüne hizala (±{exercise.yawTolerance:0}°).", wrapped);
+            }
+            if (finished)
+                GUILayout.Label(result.success ? (stop ? "Başarılı · Dönüş adımına geçebilirsin." :
+                    "Başarılı · Hazırlık tamamlandı. Ana menüde Maça başla ile düelloya gir.") :
+                    $"Tekrar dene · {session.Notice} Sert temas: {result.contacts}", wrapped);
+            showControls = GUILayout.Toggle(showControls, "Sürüş tuşları");
+            if (showControls) GUILayout.Label(session.PreparationControls, wrapped);
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Tekrar dene", GUILayout.Height(28f))) session.Retry();
+            if (finished && result.success && stop && GUILayout.Button("Sonraki adım", GUILayout.Height(28f)))
+                session.NextPreparationStep();
+            if (GUILayout.Button("Ana menü", GUILayout.Height(28f))) session.Exit();
+            GUILayout.EndHorizontal();
+            GUILayout.EndArea();
+        }
+
         private void DrawSession()
         {
             const float width = 320f;
@@ -355,6 +395,12 @@ namespace RobotSavaslari.Training
                 GUI.Label(new Rect(x, 64f, width, 20f), record, panelStyle);
             }
 
+            if (GUI.Button(new Rect(x, 126f, width, 32f), "Maça hazırlık  ·  2 adım / yaklaşık 2–3 dk"))
+            {
+                showControls = true;
+                entryNotice = session.StartPreparation(ExerciseCatalog) ? null : "Bu arenada hazırlık rotası bulunamadı.";
+            }
+            if (entryNotice != null) GUI.Label(new Rect(x, 162f, width, 24f), entryNotice, panelStyle);
             float buttonY = 92f;
             if (GUI.Button(new Rect(x + 10f, buttonY, width * 0.45f, 26f), "Yeniden dene"))
             {
