@@ -151,17 +151,21 @@ namespace RobotSavaslari.Tests
             var bot = match.Opponent.GetComponent<RobotBotController>();
             var botBody = bot.GetComponent<Rigidbody>();
             var targetBody = match.Player.GetComponent<Rigidbody>();
-            var hazard = arena.Contents.GetComponentInChildren<ArenaHazard>();
+            var hazards = arena.Contents.GetComponentsInChildren<ArenaHazard>();
+            var hazard = hazards[0];
             var center = hazard.transform.position;
-            var advance = (Action)Delegate.CreateDelegate(typeof(Action), hazard, typeof(ArenaHazard).GetMethod(
-                "FixedUpdate", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic));
+            var fixedUpdate = typeof(ArenaHazard).GetMethod("FixedUpdate",
+                System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+            var steps = hazards.Select(source => (Action)Delegate.CreateDelegate(typeof(Action), source, fixedUpdate)).ToArray();
+            foreach (var source in hazards) source.ResetCycle();
             void Phase(HazardPhase phase)
             {
-                for (int i = 0; i < 225 && hazard.Phase != phase; i++) advance();
-                Assert.AreEqual(phase, hazard.Phase);
+                for (int i = 0; i < 225 && hazard.Phase != phase; i++)
+                    foreach (var advance in steps) advance();
+                Assert.IsTrue(hazards.All(source => source.Phase == phase));
             }
             Place(botBody, center + Vector3.left * 3.5f, 90);
-            Place(targetBody, center + Vector3.right * 3.5f, -90);
+            Place(targetBody, center + Vector3.right * 3.5f + Vector3.back * 1.75f, -90);
             Physics.SyncTransforms();
             Phase(HazardPhase.Warning);
             bot.ConfigureDecisions(BotPersonality.Aggressive, BotDifficulty.Hard);
@@ -200,9 +204,16 @@ namespace RobotSavaslari.Tests
             Phase(HazardPhase.Recovery);
             Vector3 beforeRecovery = botBody.position;
             var nextStep = new WaitForFixedUpdate();
-            for (int i = 0; i < 60 && Vector3.Distance(botBody.position, beforeRecovery) < .15f; i++) yield return nextStep;
+            float travel = 0;
+            for (int i = 0; i < 65; i++)
+            {
+                yield return nextStep;
+                Vector3 offset = botBody.position - beforeRecovery;
+                travel = new Vector2(offset.x, offset.z).magnitude;
+                if (travel >= .15f && bot.NavigationReason != BotRouteReason.HazardWait) break;
+            }
             Assert.AreNotEqual(BotRouteReason.HazardWait, bot.NavigationReason);
-            Assert.Greater(Vector3.Distance(botBody.position, beforeRecovery), .14f,
+            Assert.Greater(travel, .14f,
                 "The bot must advance again, including when detached parts require a physical detour.");
             match.Player.GetComponent<RobotHealth>().TakeDamage(10000);
             Assert.AreEqual(MatchController.MatchState.Result, match.State);
