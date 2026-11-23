@@ -334,15 +334,15 @@ namespace RobotSavaslari.Presentation
             float seek = GUI.HorizontalSlider(slider, time, 0f, duration);
             if (!Mathf.Approximately(seek, time)) _player.Seek(seek);
 
-            // The widest row is 656 px at full size.
-            _buttonScale = Mathf.Clamp01(w / 656f);
+            // Include both frame-step buttons on the same transport bar at smaller resolutions.
+            _buttonScale = Mathf.Clamp01(w / 708f);
             float row = bar.y + 64f;
             float bx = x;
             if (Button(ref bx, row, 104f, _player.IsPaused || _player.IsFinished ? "Oynat" : "Duraklat"))
                 _player.SetPaused(!(_player.IsPaused || _player.IsFinished));
             if (Button(ref bx, row, 76f, SpeedLabel(_player.Speed))) _player.SetSpeed(NextSpeed(_player.Speed));
-            if (Button(ref bx, row, 92f, "◀ Olay")) _player.StepEvent(-1);
-            if (Button(ref bx, row, 92f, "Olay ▶")) _player.StepEvent(1);
+            if (Button(ref bx, row, 92f, "◀ Olay")) StepListedEvent(-1);
+            if (Button(ref bx, row, 92f, "Olay ▶")) StepListedEvent(1);
             bx += 8f;
             GUI.enabled = _player.CurrentView != MatchReplayArchivePlayer.View.Player || _player.InspectedRobot >= 0;
             if (Button(ref bx, row, 84f, "Oyuncu")) { _player.SetView(MatchReplayArchivePlayer.View.Player); }
@@ -361,7 +361,9 @@ namespace RobotSavaslari.Presentation
                 _player.Stop();
                 Refresh();
             }
-            if (Button(ref bx, row, 110f, "Kapat")) CloseArchive();
+            if (Button(ref bx, row, 100f, "Kapat")) CloseArchive();
+            if (Button(ref bx, row, 68f, "−1 kare")) _player.StepFrame(-1);
+            if (Button(ref bx, row, 68f, "+1 kare")) _player.StepFrame(1);
             GUI.Label(new Rect(x, bar.yMax - 22f, w, 20f), "Sağ tık + sürükle: döndür · Tekerlek: yakınlaştır · C: kamera modu" +
                 (info.IsComplete ? "" : " · " + MatchReplayArchive.DescribeCompleteness(info)), _smallStyle);
 
@@ -457,6 +459,22 @@ namespace RobotSavaslari.Presentation
                     filter == 2 && item.Type == ReplayEventType.PartDetached || filter == 3 && item.Type == ReplayEventType.HazardPhaseChanged ||
                     filter == 4 && (item.Type == ReplayEventType.RoundStart || item.Type == ReplayEventType.RoundEnd || item.Type == ReplayEventType.EncounterEnd);
                 if (match) _visibleEvents.Add(i);
+            }
+        }
+
+        private void StepListedEvent(int direction)
+        {
+            float time = _player.Reader.StartTime + _player.PlaybackTime;
+            int row = direction > 0 ? 0 : _visibleEvents.Count - 1;
+            while ((uint)row < (uint)_visibleEvents.Count)
+            {
+                float eventTime = _player.Info.Events[_visibleEvents[row]].Time;
+                if (direction > 0 ? eventTime > time : eventTime < time)
+                {
+                    JumpToListedEvent(row);
+                    return;
+                }
+                row += direction;
             }
         }
 

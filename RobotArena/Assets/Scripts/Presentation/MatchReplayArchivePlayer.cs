@@ -451,6 +451,14 @@ namespace RobotSavaslari.Presentation
             return false;
         }
 
+        public bool StepFrame(int direction)
+        {
+            if (!IsActive || !_reader.AdjacentFrame(_reader.StartTime + PlaybackTime, direction, out float time, out _)) return false;
+            SetPaused(true);
+            Seek(time - _reader.StartTime);
+            return true;
+        }
+
         public void SetView(View view)
         {
             if (!IsActive) return;

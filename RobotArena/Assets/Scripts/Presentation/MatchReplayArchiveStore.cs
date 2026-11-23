@@ -430,6 +430,32 @@ namespace RobotSavaslari.Presentation
             _stream = null;
         }
 
+        public bool AdjacentFrame(float time, int direction, out float next, out string error)
+        {
+            next = time;
+            error = null;
+            if (Info.Chunks.Count == 0 || direction == 0) return false;
+            int index = FindChunk(time);
+            var chunk = Load(index, out error);
+            if (chunk == null) return false;
+            // A chunk holds at most twenty real sample times, including hitches and short result frames.
+            if (direction > 0)
+            {
+                for (int i = 0; i < chunk.FrameCount; i++)
+                    if (chunk.Times[i] > time) { next = chunk.Times[i]; return true; }
+                if (index + 1 >= Info.Chunks.Count) return false;
+                next = Info.Chunks[index + 1].StartTime;
+            }
+            else
+            {
+                for (int i = chunk.FrameCount - 1; i >= 0; i--)
+                    if (chunk.Times[i] < time) { next = chunk.Times[i]; return true; }
+                if (index == 0) return false;
+                next = Info.Chunks[index - 1].EndTime;
+            }
+            return true;
+        }
+
         private int FindChunk(float time)
         {
             int low = 0, high = Info.Chunks.Count - 1;

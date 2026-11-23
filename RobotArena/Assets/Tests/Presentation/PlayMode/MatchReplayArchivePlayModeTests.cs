@@ -664,6 +664,27 @@ namespace RobotSavaslari.Presentation.Tests
 
         // ---- Arena and cost -------------------------------------------------------------------------
 
+        [UnityTest, UnityPlatform(RuntimePlatform.WindowsEditor)]
+        public IEnumerator ReadyMenuPlaysOriginalV1Archive([Values("Open", "Tactical")] string arena)
+        {
+            yield return Load();
+            string fixture = Path.Combine(Application.dataPath, "Tests/Presentation/EditMode/Fixtures", arena + "V1.bytes");
+            var info = MatchReplayArchive.ReadInfo(fixture, out string error);
+            Assert.That(info, Is.Not.Null, error);
+            Directory.CreateDirectory(_store.DirectoryPath);
+            File.Copy(fixture, Path.Combine(_store.DirectoryPath, info.Id + ".rpl"));
+            Assert.That(_screen.OpenArchive(), Is.True, _screen.Notice);
+            Assert.That(_screen.Play(_screen.Entries.Single()), Is.True, _screen.Notice);
+            AssertLookOnly(_player.ProxyRoot);
+            _screen.FilterEvents(4, 0);
+            Assert.That(_screen.JumpToListedEvent(0), Is.True);
+            _player.Seek(_player.Duration);
+            Assert.That(_player.IsFinished, Is.True);
+            _player.Seek(0f);
+            _screen.CloseArchive();
+            Assert.That(Match.GetComponent<MainMenuScreen>().IsShowingReadyMenu, Is.True);
+        }
+
         [UnityTest]
         public IEnumerator FullEncounterReopensWithFilteredEventsAndRecordedHazards(
             [Values("Open", "Tactical", "PulseArena", "SweepArena")] string arena)
@@ -705,8 +726,11 @@ namespace RobotSavaslari.Presentation.Tests
             Assert.That(_player.PlaybackTime, Is.EqualTo(hit.Time).Within(.0001f));
             Assert.That(_player.IsPaused, Is.True);
             Assert.That(info.Events.Exists(item => item.Source == ReplayImpactSource.Weapon), Is.True);
-            _player.Seek(hit.Time - .05f);
-            _player.Seek(hit.Time + .05f);
+            Assert.That(_player.StepFrame(-1), Is.True);
+            Assert.That(_player.PlaybackTime, Is.LessThan(hit.Time));
+            _player.Seek(hit.Time);
+            Assert.That(_player.StepFrame(1), Is.True);
+            Assert.That(_player.PlaybackTime, Is.GreaterThan(hit.Time));
 
             if (arena == "PulseArena" || arena == "SweepArena")
             {
@@ -748,6 +772,7 @@ namespace RobotSavaslari.Presentation.Tests
             _screen.FilterEvents(4, 0);
             Assert.That(_screen.JumpToListedEvent(2), Is.True);
             Assert.That(_player.IsFinished, Is.True);
+            Assert.That(_player.StepFrame(1), Is.False);
             _screen.CloseArchive();
             Assert.That(Match.GetComponent<MainMenuScreen>().IsShowingReadyMenu, Is.True);
         }
