@@ -1,0 +1,17 @@
+arena,personality,difficulty,seed,hazardHits,hazardDamage,firstWeaponHitSeconds,weaponHits,pathMetres,recoveries,plans,maxQueries,maxExpansions,p95Milliseconds,maxAllocatedBytes,outcome,finish
+Open,Aggressive,Easy,740,0,0.0,2.42,4,16.51,0,0,7,0,0.0357,0,OpponentVictory,Defeat
+Open,Aggressive,Hard,740,0,0.0,2.40,4,15.45,0,0,7,0,0.0380,0,OpponentVictory,Defeat
+Open,Counter,Easy,740,0,0.0,2.42,4,12.75,0,0,7,0,0.0393,0,OpponentVictory,Defeat
+Open,Counter,Hard,740,0,0.0,4.72,4,18.45,0,0,7,0,0.0364,0,OpponentVictory,Defeat
+Tactical,Aggressive,Easy,740,0,0.0,4.60,4,17.47,0,1,62,21,0.0364,0,OpponentVictory,Defeat
+Tactical,Aggressive,Hard,740,0,0.0,4.66,4,17.64,0,3,62,45,0.1079,0,OpponentVictory,Defeat
+Tactical,Counter,Easy,740,0,0.0,7.40,2,17.83,0,11,62,49,0.1194,0,OpponentVictory,TimeOver
+Tactical,Counter,Hard,740,0,0.0,7.34,2,19.48,0,11,62,47,0.1155,0,OpponentVictory,TimeOver
+PulseArena,Aggressive,Easy,740,0,0.0,4.48,4,6.95,0,0,7,0,0.0322,0,OpponentVictory,Defeat
+PulseArena,Aggressive,Hard,740,0,0.0,4.40,4,7.01,0,0,10,0,0.0353,0,OpponentVictory,Defeat
+PulseArena,Counter,Easy,740,5,50.0,8.90,4,8.68,0,0,10,0,0.0557,0,OpponentVictory,Defeat
+PulseArena,Counter,Hard,740,3,30.0,8.26,4,10.22,0,1,32,3,0.0464,0,OpponentVictory,Defeat
+SweepArena,Aggressive,Easy,740,0,0.0,4.46,4,11.25,0,3,61,11,0.0359,0,OpponentVictory,Defeat
+SweepArena,Aggressive,Hard,740,0,0.0,4.54,4,11.90,0,3,61,11,0.0388,0,OpponentVictory,Defeat
+SweepArena,Counter,Easy,740,0,0.0,5.38,4,8.84,0,2,62,11,0.0387,0,OpponentVictory,Defeat
+SweepArena,Counter,Hard,740,0,0.0,7.02,1,11.53,0,12,62,47,0.1060,0,OpponentVictory,TimeOver
