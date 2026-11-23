@@ -64,6 +64,7 @@ namespace RobotSavaslari.Gameplay.Tests
 
             var oldRecording = archive.List().Single();
             var playback = match.GetComponent<MatchReplayArchivePlayer>();
+            Assert.That(playback.OpenArchiveMode(), Is.True, playback.LastError);
             Assert.That(playback.Open(oldRecording.Path), Is.True, playback.LastError);
             playback.CloseArchiveMode();
             float scale = MainMenuScreen.ReadyScale(Screen.width, Screen.height);
@@ -78,6 +79,7 @@ namespace RobotSavaslari.Gameplay.Tests
             yield return WinFromMenu(fork);
 
             var forkRecording = archive.List().Single(entry => entry.Info.PlayerName == owner.name);
+            Assert.That(playback.OpenArchiveMode(), Is.True, playback.LastError);
             Assert.That(playback.Open(forkRecording.Path), Is.True, playback.LastError);
             playback.CloseArchiveMode();
             Assert.That(panel.SelectFork(false), Is.True);
@@ -143,7 +145,7 @@ namespace RobotSavaslari.Gameplay.Tests
             Assert.That(attack.LastReport.Outcome, Is.EqualTo(AttackOutcome.Miss));
             var damage = match.Player.GetComponent<RobotDamageVisuals>();
             var weapon = damage.Parts.Single(p => p.Kind == RobotDamageVisuals.PartKind.Weapon);
-            var point = weapon.Transform.TransformPoint(weapon.Mesh.bounds.center);
+            var point = weapon.Transform.position;
             match.Player.GetComponent<RobotHealth>().TakeDamage(weapon.Threshold + 1, point, Vector3.up, Vector3.zero, true);
             Assert.That(weapon.Detached, Is.True);
             Assert.That(attack.RequestAttack(), Is.EqualTo(AttackOutcome.MatchClosed));
