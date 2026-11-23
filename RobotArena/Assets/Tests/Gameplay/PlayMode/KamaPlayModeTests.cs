@@ -74,6 +74,12 @@ namespace RobotSavaslari.Gameplay.Tests
             Assert.That(fork.range, Is.LessThan(spinner.range));
             Assert.That(fork.arcDegrees, Is.LessThan(spinner.arcDegrees));
             Assert.That(weapon.Mesh.triangles.Length / 3, Is.EqualTo(72));
+            Assert.That(visuals.Parts.Sum(part => part.Mesh.triangles.Length / 3), Is.EqualTo(117032));
+            foreach (Vector3 vertex in weapon.Mesh.vertices)
+            {
+                Vector3 local = owner.transform.InverseTransformPoint(weapon.Transform.TransformPoint(vertex));
+                Assert.That(new Bounds(collider.center, collider.size).Contains(local), Is.True, "fork clearance " + local);
+            }
             Assert.That(weapon.Mesh, Is.SameAs(weapon.Wear.GetComponent<MeshFilter>().sharedMesh));
             StringAssert.Contains("Uyumsuz", playback.CheckCompatibility(oldRecording.Info));
             yield return WinFromMenu(fork);
