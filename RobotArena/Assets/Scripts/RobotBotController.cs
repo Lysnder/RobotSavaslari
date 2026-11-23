@@ -137,7 +137,16 @@ namespace RobotSavaslari
             _motor.Clear(true);
         }
         private void OnDisable() { ResetDecision(); }
-        private void FixedUpdate() { Tick(Time.fixedDeltaTime); }
+        // Verification subscribers measure the real decision step without sampling the rest of the frame.
+        public event Action<long, long> TickMeasured;
+        private void FixedUpdate()
+        {
+            if (TickMeasured == null) { Tick(Time.fixedDeltaTime); return; }
+            long before = GC.GetAllocatedBytesForCurrentThread();
+            long start = System.Diagnostics.Stopwatch.GetTimestamp();
+            Tick(Time.fixedDeltaTime);
+            TickMeasured?.Invoke(System.Diagnostics.Stopwatch.GetTimestamp() - start, GC.GetAllocatedBytesForCurrentThread() - before);
+        }
         // Public deterministic decision step for the regression harness; motion stays in the shared motor.
         public void Tick(float dt)
         {
