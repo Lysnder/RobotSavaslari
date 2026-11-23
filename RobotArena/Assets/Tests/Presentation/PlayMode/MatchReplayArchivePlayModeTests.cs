@@ -907,6 +907,7 @@ namespace RobotSavaslari.Presentation.Tests
         public IEnumerator RecordingAddsNoManagedHeapGrowth()
         {
             yield return Load();
+            _recorder.enabled = false;
             yield return MainArenaTestScene.StartPlaying();
             SeparateRobots();
             Time.captureDeltaTime = 1f / MatchReplayArchive.SampleRate;
@@ -916,7 +917,7 @@ namespace RobotSavaslari.Presentation.Tests
                 _recorder.enabled = phase == 1;
                 if (phase == 1)
                 {
-                    // Re-enabling starts a fresh archive on the next playing frame (the previous one was closed as interrupted).
+                    // First enable in this encounter begins its one interrupted archive.
                     yield return null;
                     Assert.That(_recorder.IsRecording, Is.True, _recorder.LastStatus);
                 }

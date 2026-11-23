@@ -288,6 +288,7 @@ namespace RobotSavaslari.Presentation
             float now = TimelineNow();
             if (now <= _writer.LastTime) now = _writer.LastTime + 1e-4f;
             Capture(now);
+            if (_writer == null) return; // A final-frame I/O failure already ended this session.
             _roundActive = false;
             _timelineEnd = Mathf.Max(now, _writer.LastTime);
             _roundsCompleted++;
