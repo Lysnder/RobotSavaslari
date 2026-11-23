@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
+using RobotSavaslari.Arena;
 using RobotSavaslari.Driving;
 using RobotSavaslari.Match;
 using RobotSavaslari.Training;
@@ -450,6 +451,64 @@ namespace RobotSavaslari.Presentation.Tests
         }
 
         [UnityTest]
+        public IEnumerator ReadyMenuSelectsMatchFormatAndOpensSettings()
+        {
+            yield return Load();
+            yield return InstallDrivingFeatures();
+            var menu = Match.GetComponent<MainMenuScreen>();
+            var settings = Match.GetComponent<SettingsPanelController>();
+            float scale = MainMenuScreen.ReadyScale(Screen.width, Screen.height);
+            float width = Screen.width / scale, height = Screen.height / scale;
+            Assert.That(menu.IsShowingReadyMenu, Is.True);
+
+            ArchiveGui.Click(menu, new Vector2(width - 117f, 259f) * scale);
+            Assert.That(Match.Rules.mode, Is.EqualTo(MatchMode.FirstToTwo));
+            ArchiveGui.Click(menu, new Vector2(width - 163f, 331f) * scale);
+            Assert.That(Match.Rules.timeLimitSeconds, Is.EqualTo(120f));
+            var bindings = Match.Player.GetComponent<DriveBindingsScreen>();
+            Assert.That(bindings, Is.Not.Null);
+            ArchiveGui.Click(menu, new Vector2(182f, 489f) * scale);
+            Assert.That(bindings.IsOpen, Is.False, "the lobby no longer opens the bindings screen directly");
+            ArchiveGui.Click(menu, new Vector2(120f, height - 81f) * scale);
+            Assert.That(settings.IsOpen, Is.True);
+            Assert.That(menu.IsShowingReadyMenu, Is.False);
+            Assert.That(Time.timeScale, Is.Zero);
+            yield return null;
+            ArchiveGui.Click(settings, new Vector2(width * .5f + 97f, height * .5f - 140f) * scale);
+            yield return null;
+            Assert.That(bindings.IsOpen, Is.True, "bindings remain open within settings");
+            bindings.Close();
+            Assert.That(settings.IsOpen, Is.True);
+            Assert.That(Time.timeScale, Is.Zero);
+            settings.ToggleSettings();
+            Assert.That(menu.IsShowingReadyMenu, Is.True);
+        }
+        [UnityTest]
+        public IEnumerator ReadyMenuAppliesArenaOnlyWhenStarting()
+        {
+            yield return Load();
+            var arena = Object.FindAnyObjectByType<ArenaEnvironment>();
+            var menu = Match.GetComponent<MainMenuScreen>();
+            Assert.That(Resources.Load<Texture2D>("Menu/RobotGarage"), Is.Not.Null);
+            Assert.That(arena.Layouts.Count, Is.GreaterThanOrEqualTo(2));
+
+            ArenaLayout previous = arena.Layout;
+            Transform previousContents = arena.Contents;
+            int choice = previous == arena.Layouts[0] ? 1 : 0;
+            float scale = MainMenuScreen.ReadyScale(Screen.width, Screen.height);
+            float width = Screen.width / scale;
+            ArchiveGui.Click(menu, new Vector2(width - (choice == 1 ? 122f : 284f), 142f) * scale);
+            Assert.That(arena.Layout, Is.SameAs(previous));
+            Assert.That(arena.Contents, Is.SameAs(previousContents));
+            Assert.That(Match.State, Is.EqualTo(MatchController.MatchState.Ready));
+
+            ArchiveGui.Click(menu, new Vector2(182f, 218f) * scale);
+            Assert.That(Match.State, Is.EqualTo(MatchController.MatchState.Countdown));
+            Assert.That(arena.Layout, Is.SameAs(arena.Layouts[choice]));
+            Assert.That(arena.Contents, Is.Not.SameAs(previousContents));
+        }
+
+        [UnityTest]
         public IEnumerator PanelButtonsOpenTheArchiveAndDeleteAfterConfirmation()
         {
             yield return Load();
@@ -460,11 +519,10 @@ namespace RobotSavaslari.Presentation.Tests
             Assert.That(_store.List().Count, Is.EqualTo(2));
 
             float width = ArchiveGui.ScaledWidth, height = ArchiveGui.ScaledHeight;
-            Rect entry = new Rect(width + MatchReplayArchiveScreen.EntryRect.x, MatchReplayArchiveScreen.EntryRect.y,
-                MatchReplayArchiveScreen.EntryRect.width, MatchReplayArchiveScreen.EntryRect.height);
-            Assert.That(entry.yMin, Is.EqualTo(60f));
-            Assert.That(entry.yMax, Is.EqualTo(96f), "top-right second row at the 720p reference");
-            ArchiveGui.ClickScaled(_screen, entry);
+            var menu = Match.GetComponent<MainMenuScreen>();
+            float menuScale = MainMenuScreen.ReadyScale(Screen.width, Screen.height);
+            Rect entry = MainMenuScreen.ReadyArchiveRect(Screen.width / menuScale, Screen.height / menuScale);
+            ArchiveGui.Click(menu, entry.center * menuScale);
             Assert.That(_player.IsArchiveModeOpen, Is.True, "the Ready-menu button opens the archive");
 
             // Row layout of MatchReplayArchiveScreen.DrawArchive with two archives and no notice.

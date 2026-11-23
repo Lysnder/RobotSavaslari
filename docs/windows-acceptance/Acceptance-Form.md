@@ -52,10 +52,10 @@ $acceptanceProcess = Start-Process -FilePath (Join-Path $acceptanceBuild 'RobotS
 
 ## A. Menü ve ayarlar
 
-1. Ana menüde gerçek fareyle “Ayarlar (Esc)” düğmesine tıkla.
+1. Ana menüde gerçek fareyle “Ayarlar” düğmesine tıkla.
 2. Ses sürgüsünü, tam ekran seçimini ve etkin kalite okunu değiştir. Eski/yeni değerleri yaz. Kamera hassasiyetini de değiştirip etkisini D'de kontrol et.
-3. “Kaydet ve Kapat” ile dön; tekrar açıp değerlerin durduğunu kontrol et.
-4. Menüde “Maç geçmişi”ni açıp “Kapat” ile dön. “Oyna (Enter)” tıklamasını E'de uygula. “Çıkış”ı C/G'deki süreç kapatmada kullan.
+3. “Kaydet ve dön” ile dön; tekrar açıp değerlerin durduğunu kontrol et.
+4. Menüde “Maç geçmişi”ni sağdaki maç kurulumu panelinden açıp “Geri” ile dön. “Maça başla” tıklamasını E'de uygula. “Çıkış”ı C/G'deki süreç kapatmada kullan.
 
 Beklenen: Her düğme görünen işlemi yapar, değerler uygulanır/kaydedilir; ayarlara girip çıkmak maçı kendiliğinden başlatmaz. Menü, pencere/tam ekran geçişinde tıklanabilir kalır.
 
@@ -67,8 +67,8 @@ Beklenen: Her düğme görünen işlemi yapar, değerler uygulanır/kaydedilir; 
 
 ## B. WASD ve ok tuşları
 
-1. Ana menüde “Surus tuslari” → “Varsayilana don” → “Kapat”; böylece mevcut kişisel eşlemenin etkisini kaldır. Kişisel ilk durum sonda geri yüklenecek.
-2. “Tek maç” ve “60 sn” seç; Enter veya Oyna ile geri sayımı başlat, BAŞLA'yı bekle.
+1. Ana menüde “Ayarlar” → “Sürüş tuşları” → “Varsayılanlara dön” → “Geri” → “Kaydet ve dön”; böylece mevcut kişisel eşlemenin etkisini kaldır. Kişisel ilk durum sonda geri yüklenecek.
+2. “Tek maç” ve “60 sn” seç; Enter veya Maça başla ile geri sayımı başlat, BAŞLA'yı bekle.
 3. Boş alanda önce W, S, A, D'yi **tek tek** bas/bırak. İleri, geri, sola ve sağa dönmeyi kaydet.
 4. Ayrı olarak ↑, ↓, ←, → tuşlarını tek tek dene. W+A / ↑+← gibi birer birleşik dönüş dene.
 5. Hareket tuşunu bırak ve birkaç saniye davranışı izle. Shift boost ve sol Ctrl el frenini ayrı dene.
@@ -85,11 +85,11 @@ Beklenen: WASD ve oklar aynı eylemlere gider. Bırakılan tuş yeni sürüş ko
 
 1. Maç sonucundan “Ana menü”ye dön, “Surus tuslari”nı aç.
 2. İleri satırındaki mevcut tuş düğmesine tıkla; yakalama açıkken Enter'a bas. Reddedilmesini ve **maçın başlamamasını** kontrol et. NumPad Enter varsa onu da dene.
-3. Yakalamada C'ye bas. Eşlemenin değişmediğini, ayrılmış tuş mesajını ve kameranın aynı kaldığını kontrol et. Esc ile yakalamayı iptal et; ekranı “Kapat” ile kapat.
+3. Yakalamada C'ye bas. Eşlemenin değişmediğini, ayrılmış tuş mesajını ve kameranın aynı kaldığını kontrol et. Esc ile yakalamayı iptal et; ekranı “Geri” ile kapat.
 4. Eşlemeyi tekrar açıp ileri hareketi boş bir tuşa (ör. I; önceden atanmışsa boş başka tuş seç) ata. Tuşu ve eylemi kaydet.
 5. Ekranı kapat, maç başlat; yeni tuşun ileri gittiğini, eski W'nin artık ileri eylemi vermediğini ve ↑ alternatifinin çalıştığını dene.
 6. Oyunu normal kapatıp 2. bölümdeki komutla yeniden aç. Eşleme arayüzünde yeni tuşun kaldığını ve yeni maçta çalıştığını doğrula.
-7. Bittiğinde sonraki akışlar için “Varsayilana don” → “Kapat”.
+7. Bittiğinde sonraki akışlar için “Varsayılanlara dön” → “Geri”.
 
 Beklenen: Enter/C ayrılmıştır; yakalamada oyun/menü/kamera komutu oluşmaz. Geçerli eşleme hemen uygulanır, yeni süreçte kalır; ok alternatifi korunur. Yakalamadan çıkınca normal girişler geri gelir.
 
@@ -105,7 +105,7 @@ Beklenen: Enter/C ayrılmıştır; yakalamada oyun/menü/kamera komutu oluşmaz.
 1. Normal maçta robotu sürerken **sağ fare tuşunu tutup** yatay/dikey hareket ettir; farklı yönlerden takip et.
 2. Tekerleği iki yönde çevirerek yakınlaştır/uzaklaştır; C ile takip/düello modları arasında geç ve aynı girdileri dene.
 3. Robotu arena sınırına ve köşesine sür. Kamerayı en düşük erişilebilir açıya getir, duvar yakınında orbit/zoom yap.
-4. Ayarlardaki yatay/dikey hassasiyet ve Y ters çevirme etkisini kontrol et; ayarlar açıkken fare/tekerlek/C'nin arka kamerayı değiştirmediğini kontrol et.
+4. Ayarların Kamera sekmesindeki yatay/dikey hassasiyet ve dikey ekseni ters çevirme etkisini kontrol et; ayarlar açıkken fare/tekerlek/C'nin arka kamerayı değiştirmediğini kontrol et.
 
 Beklenen: Hareket/yakınlaşma doğru yönde ve sınırlarda çalışır, kamera zemine/duvara girip görüntüyü bozmaz. Düello modunda iki robotu kadraja alma sınırları nedeniyle orbit/zoom takip moduyla birebir aynı olmayabilir. Ayarlarda girdi kameraya sızmaz.
 
@@ -117,11 +117,11 @@ Beklenen: Hareket/yakınlaşma doğru yönde ve sınırlarda çalışır, kamera
 
 ## E. Başlat, saldır, duraklat, ayarlar, devam
 
-1. Menüde “Oyna (Enter)”a gerçek fareyle bas, geri sayımı izle.
+1. Menüde “Maça başla” düğmesine gerçek fareyle bas, geri sayımı izle.
 2. WASD/oklarla rakibe git, Space ile saldır. Silah hareketi ve uygun temas varsa hasarı gözle.
 3. Sürüşten sonra tüm tuşları bırak, Esc ile duraklat/ayarları aç; bir süre bekle. Ayrı denemede “Duraklat (Esc)” düğmesine tıkla.
 4. Ayarlarda fareyle bir değeri değiştir, Enter/Space/W bas-bırak; arka maçın ilerlemediğini izle.
-5. “Kaydet ve Kapat” ile dön. Tuşları bırakıp yeniden sürüş ve saldırı yap; sonra Esc ile aç/kapatmayı da dene.
+5. “Kaydet ve dön” ile dön. Tuşları bırakıp yeniden sürüş ve saldırı yap; sonra Esc ile aç/kapatmayı da dene.
 
 Beklenen: Geri sayım bir kez başlar. Oyun duraklamada ilerlemez, ayar girdileri oyuna gitmez. Dönüşte odak/input geri gelir; eski basılı hareket/saldırı takılı kalmaz.
 

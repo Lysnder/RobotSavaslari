@@ -36,6 +36,7 @@ namespace RobotSavaslari.Driving
         };
 
         private GUIStyle labelStyle;
+        private GUIStyle titleStyle;
         private bool driverWasEnabled;
         private string message = string.Empty;
 
@@ -54,6 +55,7 @@ namespace RobotSavaslari.Driving
 
         /// <summary>Erişim düğmesi gösterilsin mi? Sahneyi tanıyan taraf belirler.</summary>
         public bool AccessAllowed { get; set; }
+        public bool ShowReadyShortcut { get; set; } = true;
 
         /// <summary>Son reddetme ya da bilgi mesajı.</summary>
         public string Message => message;
@@ -168,7 +170,7 @@ namespace RobotSavaslari.Driving
 
         private void Update()
         {
-            // Maç başladıysa ya da ayarlar açıldıysa ekran kendiliğinden kapanır.
+            // Sahne erişimi kapattığında eşleme ekranı da kapanır.
             if (IsOpen && !AccessAllowed)
             {
                 Close();
@@ -203,7 +205,8 @@ namespace RobotSavaslari.Driving
         {
             if (labelStyle == null)
             {
-                labelStyle = new GUIStyle(GUI.skin.label) { fontSize = 13 };
+                labelStyle = new GUIStyle(GUI.skin.label) { fontSize = 16, wordWrap = true, alignment = TextAnchor.MiddleLeft };
+                titleStyle = new GUIStyle(labelStyle) { fontSize = 29, fontStyle = FontStyle.Bold };
             }
 
             if (!IsOpen)
@@ -217,7 +220,7 @@ namespace RobotSavaslari.Driving
 
         private void DrawAccess()
         {
-            if (!AccessAllowed)
+            if (!ShowReadyShortcut || !AccessAllowed)
             {
                 return;
             }
@@ -235,46 +238,52 @@ namespace RobotSavaslari.Driving
 
         private void DrawPanel()
         {
-            Rect panel = new Rect((Screen.width - panelSize.x) * 0.5f,
-                (Screen.height - panelSize.y) * 0.5f,
-                panelSize.x, panelSize.y);
-
-            GUI.Box(panel, "Surus tuslari");
-
-            float x = panel.x + 16f;
-            float width = panel.width - 32f;
-            float y = panel.y + 32f;
-
-            foreach (DriveAction action in Actions)
+            Matrix4x4 previous = GUI.matrix;
+            Color color = GUI.color;
+            try
             {
-                GUI.Label(new Rect(x, y + 4f, width * 0.5f, 22f), DriveBindings.Describe(action), labelStyle);
-
-                bool capturing = Capturing.HasValue && Capturing.Value == action;
-                string caption = capturing ? "... tusa bas" : BindingLabel(action);
-
-                if (GUI.Button(new Rect(x + width * 0.5f, y, width * 0.5f, 24f), caption) && !capturing)
+                float scale = Mathf.Max(.01f, Mathf.Min(Screen.height / 720f, Screen.width / 840f));
+                GUI.matrix = Matrix4x4.Scale(new Vector3(scale, scale, 1f));
+                float width = Screen.width / scale, height = Screen.height / scale;
+                float w = Mathf.Max(panelSize.x, 482f), h = Mathf.Max(panelSize.y, 422f);
+                var panel = new Rect((width - w) * .5f, (height - h) * .5f, w, h);
+                if (Event.current.type == EventType.Repaint)
                 {
-                    BeginCapture(action);
+                    GUI.color = new Color32(20, 23, 24, 255);
+                    GUI.DrawTexture(new Rect(0, 0, width, height), Texture2D.whiteTexture);
+                    GUI.color = new Color32(21, 29, 38, 255);
+                    GUI.DrawTexture(panel, Texture2D.whiteTexture);
+                    GUI.color = new Color32(255, 183, 85, 255);
+                    GUI.DrawTexture(new Rect(panel.x, panel.y, 4f, 64f), Texture2D.whiteTexture);
+                    GUI.color = color;
                 }
 
-                y += 28f;
+                float x = panel.x + 24f, inner = panel.width - 48f;
+                GUI.Label(new Rect(x, panel.y + 15, inner, 38), "Sürüş tuşları", titleStyle);
+                float y = panel.y + 68f;
+                foreach (DriveAction action in Actions)
+                {
+                    GUI.Label(new Rect(x, y, inner * .51f, 32f), DriveBindings.Describe(action), labelStyle);
+                    bool capturing = Capturing.HasValue && Capturing.Value == action;
+                    string caption = capturing ? "Yeni tuşa bas…" : BindingLabel(action);
+                    if (GUI.Button(new Rect(x + inner * .53f, y, inner * .47f, 30f), caption) && !capturing)
+                        BeginCapture(action);
+                    y += 36f;
+                }
+
+                GUI.Label(new Rect(x, y + 6f, inner, 58f), string.IsNullOrEmpty(message)
+                    ? "Değiştirmek istediğin eylemin tuşuna tıkla." : message, labelStyle);
+
+                float buttonY = panel.yMax - 57f;
+                if (GUI.Button(new Rect(x, buttonY, inner * .56f, 36f), "Varsayılanlara dön")) ResetToDefaults();
+                if (GUI.Button(new Rect(x + inner * .59f, buttonY, inner * .41f, 36f), "Geri")) Close();
             }
-
-            y += 6f;
-            GUI.Label(new Rect(x, y, width, 36f), message, labelStyle);
-
-            float buttonY = panel.yMax - 36f;
-            if (GUI.Button(new Rect(x, buttonY, width * 0.48f, 26f), "Varsayilana don"))
+            finally
             {
-                ResetToDefaults();
-            }
-
-            if (GUI.Button(new Rect(x + width * 0.52f, buttonY, width * 0.48f, 26f), "Kapat"))
-            {
-                Close();
+                GUI.color = color;
+                GUI.matrix = previous;
             }
         }
-
         private string BindingLabel(DriveAction action)
         {
             Key key = driver != null ? driver.GetBinding(action) : DriveBindings.Get(action);

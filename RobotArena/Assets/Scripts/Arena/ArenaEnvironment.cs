@@ -15,8 +15,6 @@ namespace RobotSavaslari.Arena
         [SerializeField] private MatchController match;
         [SerializeField] private Transform playerSpawn,opponentSpawn;
         [SerializeField] private Material obstacleMaterial;
-        private Vector2 layoutScroll;
-        private string selectionError;
         private RobotHealth playerHealth,opponentHealth;
         public ArenaLayout Layout => layouts!=null && selectedLayout>=0 && layouts.Length>selectedLayout ? layouts[selectedLayout] : null;
         public IReadOnlyList<ArenaLayout> Layouts => layouts;
@@ -80,8 +78,7 @@ namespace RobotSavaslari.Arena
         {
             if(!CanSelect || layouts==null || index<0 || index>=layouts.Length) return false;
             var errors=ArenaLayoutValidator.Validate(layouts[index],ClearanceRadius);
-            if(errors.Count>0) {selectionError = string.Join("\n", errors); Debug.LogWarning(selectionError); return false;}
-            selectionError = null;
+            if(errors.Count>0) {Debug.LogWarning(string.Join("\n", errors)); return false;}
             selectedLayout=index;Rebuild();return true;
         }
 
@@ -157,20 +154,5 @@ namespace RobotSavaslari.Arena
             wall.GetComponent<Renderer>().sharedMaterial=obstacleMaterial;
         }
 
-        private void OnGUI()
-        {
-            if(!CanSelect || Layout == null) return;
-            var previous=GUI.matrix;
-            float scale=Mathf.Max(.01f,Mathf.Min(Screen.height/720f,Screen.width/600f));
-            GUI.matrix=Matrix4x4.Scale(new Vector3(scale,scale,1));
-            GUILayout.BeginArea(new Rect(16,Screen.height/scale-124,Mathf.Min(255, Screen.width/scale*.32f),108),GUI.skin.box);
-            GUILayout.Label("Arena: "+Layout.displayName);
-            layoutScroll = GUILayout.BeginScrollView(layoutScroll);
-            if (!string.IsNullOrEmpty(selectionError)) GUILayout.Label(selectionError);
-            for (int i = 0; i < layouts.Length; i++)
-                if (layouts[i] != null && GUILayout.Button(layouts[i].displayName)) Select(i);
-            GUILayout.EndScrollView();
-            GUILayout.EndArea();GUI.matrix=previous;
-        }
     }
 }

@@ -8,13 +8,7 @@ namespace RobotSavaslari.UI
         private int _archiveIndex = -1;
         private Vector2 _scroll;
 
-        public void DrawEntry(ChallengeSessionController session, float width)
-        {
-            if (GUI.Button(new Rect(16, 156, Mathf.Min(290, (width - 280) / 2 - 24), 36), "Yerel mücadele"))
-                Open(session);
-        }
-
-        private void Open(ChallengeSessionController session)
+        public void Open(ChallengeSessionController session)
         {
             if (!session.Open()) return;
             _archiveIndex = -1;
@@ -25,8 +19,15 @@ namespace RobotSavaslari.UI
         {
             float panelWidth = Mathf.Min(560, width - 32);
             float panelHeight = Mathf.Min(450, height - 32);
-            GUILayout.BeginArea(new Rect((width - panelWidth) / 2, (height - panelHeight) / 2, panelWidth, panelHeight), GUI.skin.box);
-            GUILayout.Label(session.Title);
+            var theme = ArenaMenuStyle.Current;
+            var panel = new Rect((width - panelWidth) / 2f, (height - panelHeight) / 2f, panelWidth, panelHeight);
+            if (session.InChallenge)
+                ArenaMenuStyle.Fill(new Rect(0, 0, width, height), ArenaMenuStyle.Canvas);
+            else
+                ArenaMenuStyle.DrawGarage(width, height, ArenaMenuStyle.Canvas);
+            ArenaMenuStyle.Panel(panel);
+            GUILayout.BeginArea(new Rect(panel.x + 18f, panel.y + 14f, panel.width - 36f, panel.height - 28f));
+            GUILayout.Label(session.Title, theme.Title);
             _scroll = GUILayout.BeginScrollView(_scroll);
             if (!string.IsNullOrEmpty(session.Notice)) GUILayout.Label(session.Notice);
             if (_archiveIndex >= session.ArchiveCount) _archiveIndex = -1;
@@ -68,7 +69,7 @@ namespace RobotSavaslari.UI
                     session.Begin(false);
                 if (session.HasCheckpoint && GUILayout.Button("Baştan başlat (özeti sakla)")) session.Begin(true);
             }
-            if (GUILayout.Button("Kapat")) session.Close();
+            if (GUILayout.Button("Geri", theme.Button)) session.Close();
             GUILayout.EndHorizontal();
             GUILayout.EndArea();
         }

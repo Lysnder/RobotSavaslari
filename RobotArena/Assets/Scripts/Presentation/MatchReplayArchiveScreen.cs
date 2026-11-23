@@ -19,7 +19,6 @@ namespace RobotSavaslari.Presentation
         private const float ReferenceHeight = 720f;
         // MainMenuScreen draws its result panel centred at this size; ResultPresentationScreen adds a 44 px button row under it.
         private const float ResultPanelHeight = 218f;
-        public static readonly Rect EntryRect = new Rect(-174f, 60f, 158f, 36f);
 
         private sealed class Row
         {
@@ -187,11 +186,6 @@ namespace RobotSavaslari.Presentation
                     else DrawArchive(width, height);
                 }
                 else if (result) DrawResultStatus(width, height);
-                else if (_player.CanOpenArchiveMode(out _))
-                {
-                    if (GUI.Button(new Rect(width + EntryRect.x, EntryRect.y, EntryRect.width, EntryRect.height), "Tekrar arşivi"))
-                        OpenArchive();
-                }
             }
             finally
             {
@@ -218,8 +212,8 @@ namespace RobotSavaslari.Presentation
             float panelWidth = Mathf.Min(780f, width - 32f);
             float panelHeight = Mathf.Min(600f, height - 32f);
             var panel = new Rect((width - panelWidth) * 0.5f, (height - panelHeight) * 0.5f, panelWidth, panelHeight);
-            GUI.Box(panel, string.Empty);
-            GUI.Box(panel, string.Empty);
+            ArenaMenuStyle.DrawGarage(width, height, ArenaMenuStyle.Canvas);
+            ArenaMenuStyle.Panel(panel);
             float x = panel.x + 14f, w = panel.width - 28f, y = panel.y + 10f;
             GUI.Label(new Rect(x, y, w, 28f), "TEKRAR ARŞİVİ", _titleStyle);
             y += 30f;

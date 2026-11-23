@@ -208,7 +208,7 @@ namespace RobotSavaslari.Training
 
         private void DrawAccess()
         {
-            if (!session.CanEnter)
+            if (!ShowReadyShortcut || !session.CanEnter)
             {
                 showExercises = false;
                 entryNotice = null;

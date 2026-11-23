@@ -1,4 +1,7 @@
+using System.Collections.Generic;
+using RobotSavaslari.Arena;
 using RobotSavaslari.Match;
+using RobotSavaslari.Presentation;
 using RobotSavaslari.Driving;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -28,6 +31,31 @@ namespace RobotSavaslari.UI
         private readonly ChallengeScreen _challengeScreen = new ChallengeScreen();
         private bool _showHistory;
         private Vector2 _historyScroll;
+        private Vector2 _arenaScroll;
+        private ArenaEnvironment _arena;
+        private ArenaLayout _pendingArena;
+        private bool _arenaStartError;
+        private ArenaLayout SelectedArena => _pendingArena != null ? _pendingArena : _arena != null ? _arena.Layout : null;
+        private DrivingFeatureInstaller _driving;
+        private OpponentSelectionPanel _opponentPanel;
+        private MatchReplayArchiveScreen _archive;
+
+        private static readonly float[] RoundLimits = { 0f, 60f, 120f, 180f };
+        private static readonly string[] RoundNames = { "Süresiz", "60 sn", "120 sn", "180 sn" };
+        private const float SetupWidth = 360f;
+        private const float Outer = 24f;
+
+        public static float ReadyScale(float width, float height) => ArenaMenuStyle.Scale(width, height);
+
+        public static Rect ReadyArchiveRect(float width, float height) =>
+            new Rect(width - Outer - SetupWidth * .5f + 4f, height - 85f, SetupWidth * .5f - 24f, 38f);
+
+        public bool TryCloseHistory()
+        {
+            if (!_showHistory) return false;
+            _showHistory = false;
+            return true;
+        }
 
         private void Awake()
         {
@@ -50,8 +78,9 @@ namespace RobotSavaslari.UI
                 if (keyboard.rKey.wasPressedThisFrame && !_match.EncounterComplete) _match.ContinueSeries();
                 return;
             }
-            if ((_match.State == MatchController.MatchState.Ready && enter) ||
-                (_match.State == MatchController.MatchState.Result && keyboard.rKey.wasPressedThisFrame))
+            if (_match.State == MatchController.MatchState.Ready && enter)
+                StartLobbyMatch();
+            else if (_match.State == MatchController.MatchState.Result && keyboard.rKey.wasPressedThisFrame)
                 _match.RequestCountdown();
         }
 
@@ -63,7 +92,9 @@ namespace RobotSavaslari.UI
             Matrix4x4 previous = GUI.matrix;
             try
             {
-                float scale = Mathf.Max(0.01f, Mathf.Min(Screen.height / ReferenceHeight, Screen.width / 600f));
+                float scale = IsShowingReadyMenu
+                    ? ReadyScale(Screen.width, Screen.height)
+                    : Mathf.Max(0.01f, Mathf.Min(Screen.height / ReferenceHeight, Screen.width / 600f));
                 float width = Screen.width / scale;
                 float height = Screen.height / scale;
                 GUI.matrix = Matrix4x4.Scale(new Vector3(scale, scale, 1f));
@@ -80,13 +111,11 @@ namespace RobotSavaslari.UI
                 }
                 if (_match.State == MatchController.MatchState.Ready)
                 {
-                    DrawRules(width);
-                    DrawMenu(width, height);
-                    if (challenge != null && IsShowingReadyMenu) _challengeScreen.DrawEntry(challenge, width);
+                    if (IsShowingReadyMenu) DrawReady(width, height, challenge);
                     return;
                 }
 
-                if (GUI.Button(new Rect(width - 174f, 16f, 158f, 36f), "Duraklat (Esc)"))
+                if (GUI.Button(new Rect(width - 174f, 16f, 158f, 36f), "Duraklat"))
                     _settings.ToggleSettings();
                 if (_settings.IsOpen) return;
 
@@ -108,17 +137,188 @@ namespace RobotSavaslari.UI
             finally { GUI.matrix = previous; }
         }
 
-        private void DrawMenu(float width, float height)
+        private void DrawReady(float width, float height, ChallengeSessionController challenge)
         {
-            float center = height * .5f;
-            float x = (width - 280f) * .5f;
-            GUI.Label(new Rect(0, center - 190f, width, 75f), "ROBOT SAVAŞLARI", _titleStyle);
-            if (GUI.Button(new Rect(x, center - 84f, 280f, 52f), "Oyna (Enter)", _buttonStyle))
-                _match.RequestCountdown();
-            if (GUI.Button(new Rect(x, center - 14f, 280f, 52f), "Ayarlar (Esc)", _buttonStyle))
+            var theme = ArenaMenuStyle.Current;
+            if (_arena == null) _arena = FindAnyObjectByType<ArenaEnvironment>();
+            if (_driving == null) _driving = FindAnyObjectByType<DrivingFeatureInstaller>();
+            if (_opponentPanel == null) _opponentPanel = GetComponent<OpponentSelectionPanel>();
+            if (_archive == null) _archive = GetComponent<MatchReplayArchiveScreen>();
+
+            ArenaMenuStyle.DrawGarage(width, height);
+            var dock = new Rect(Outer, Outer, 316f, height - Outer * 2f);
+            ArenaMenuStyle.Panel(dock);
+            ArenaMenuStyle.Fill(new Rect(dock.x, dock.y, dock.width, 3f), ArenaMenuStyle.Accent);
+            ArenaMenuStyle.HazardStripe(new Rect(dock.x + 22f, dock.yMax - 24f, 88f, 8f));
+
+            float x = dock.x + 22f;
+            float w = dock.width - 44f;
+            GUI.Label(new Rect(x, 58, w, 114), "ROBOT\nSAVAŞLARI", theme.Logo);
+            if (GUI.Button(new Rect(x, 190, w, 56), "Maça başla", theme.Primary))
+            {
+                StartLobbyMatch();
+                return;
+            }
+
+            ArenaMenuStyle.Fill(new Rect(x, 270, w, 1), ArenaMenuStyle.Border);
+            GUI.Label(new Rect(x, 285, w, 28), "MÜCADELE VE EĞİTİM", theme.Heading);
+            if (Button(new Rect(x, 322, w, 46), "Yerel mücadele", challenge != null && challenge.isActiveAndEnabled))
+            {
+                _challengeScreen.Open(challenge);
+                return;
+            }
+
+            var trial = _driving != null && _driving.isActiveAndEnabled ? _driving.TimeTrial : null;
+            if (Button(new Rect(x, 378, w, 46), "Sürüş eğitimi", trial != null && trial.CanEnter))
+            {
+                trial.Enter();
+                return;
+            }
+
+            ArenaMenuStyle.Fill(new Rect(x, height - 126, w, 1), ArenaMenuStyle.Border);
+            if (GUI.Button(new Rect(x, height - 106, w * .65f - 4, 49), "Ayarlar", theme.Button))
+            {
                 _settings.ToggleSettings();
-            if (GUI.Button(new Rect(x, center + 56f, 280f, 52f), "Çıkış", _buttonStyle))
+                return;
+            }
+
+            if (GUI.Button(new Rect(x + w * .65f + 4, height - 106, w * .35f - 4, 49), "Çıkış", theme.Button))
                 QuitGame();
+
+            DrawSetup(new Rect(width - Outer - SetupWidth, Outer, SetupWidth, height - Outer * 2), width, height);
+        }
+
+        private static bool Button(Rect rect, string label, bool enabled)
+        {
+            bool previous = GUI.enabled;
+            GUI.enabled = previous && enabled;
+            try { return GUI.Button(rect, label, ArenaMenuStyle.Current.Button); }
+            finally { GUI.enabled = previous; }
+        }
+
+        private void DrawSetup(Rect dock, float width, float height)
+        {
+            var theme = ArenaMenuStyle.Current;
+            ArenaMenuStyle.Panel(dock);
+            float x = dock.x + 20f;
+            float w = dock.width - 40f;
+            GUI.Label(new Rect(x, 43, w, 44), "Maç kurulumu", theme.Title);
+
+            GUI.Label(new Rect(x, 98, w, 24), "MAÇ ARENASI", theme.Heading);
+            DrawArenas(new Rect(x, 125, w, 82));
+
+            MatchRules rules = _match.Rules;
+            GUI.Label(new Rect(x, 215, w, 24), "MAÇ BİÇİMİ", theme.Heading);
+            if (Choice(new Rect(x, 242, (w - 8) * .5f, 34), "Tek maç", rules.mode == MatchMode.Single))
+            {
+                rules.mode = MatchMode.Single;
+                _match.ConfigureRules(rules);
+            }
+            if (Choice(new Rect(x + (w + 8) * .5f, 242, (w - 8) * .5f, 34), "İlk 2 galibiyet", rules.mode == MatchMode.FirstToTwo))
+            {
+                rules.mode = MatchMode.FirstToTwo;
+                _match.ConfigureRules(rules);
+            }
+
+            GUI.Label(new Rect(x, 288, w, 24), "RAUND SÜRESİ", theme.Heading);
+            float cell = (w - 18f) / 4f;
+            for (int i = 0; i < RoundLimits.Length; i++)
+            {
+                if (!Choice(new Rect(x + i * (cell + 6), 315, cell, 34), RoundNames[i],
+                    rules.timeLimitSeconds == RoundLimits[i])) continue;
+                rules.timeLimitSeconds = RoundLimits[i];
+                _match.ConfigureRules(rules);
+            }
+
+            GUI.Label(new Rect(x, 353, w, 34), rules.timeLimitSeconds > 0f
+                ? "Süre dolunca can oranı sonucu belirler. Eşitlikte beraberlik."
+                : "Raund, robotlardan biri yenildiğinde biter.", theme.Hint);
+
+            if (_opponentPanel != null && _opponentPanel.CanSelect)
+                DrawOpponent(x, w);
+
+            ArenaMenuStyle.Fill(new Rect(x, height - 103, w, 1), ArenaMenuStyle.Border);
+            Rect archive = ReadyArchiveRect(width, height);
+            if (GUI.Button(new Rect(x, archive.y, archive.width, archive.height), "Maç geçmişi", theme.Button))
+            {
+                _historyScroll = Vector2.zero;
+                _showHistory = true;
+                return;
+            }
+            if (Button(archive, "Tekrar arşivi", _archive != null && _archive.IsEntryVisible))
+                _archive.OpenArchive();
+        }
+
+        private void DrawArenas(Rect rect)
+        {
+            if (_arena == null || _arena.Layouts == null) return;
+            IReadOnlyList<ArenaLayout> layouts = _arena.Layouts;
+            int rows = (layouts.Count + 1) / 2;
+            bool scrolling = rows > 2;
+            float w = rect.width - (scrolling ? 18f : 0f);
+            if (scrolling)
+                _arenaScroll = GUI.BeginScrollView(rect, _arenaScroll, new Rect(0, 0, w, rows * 41f));
+            float x = scrolling ? 0 : rect.x;
+            float y = scrolling ? 0 : rect.y;
+            float cell = (w - 8f) * .5f;
+            for (int i = 0; i < layouts.Count; i++)
+            {
+                var layout = layouts[i];
+                if (layout == null) continue;
+                Rect chip = new Rect(x + i % 2 * (cell + 8f), y + i / 2 * 41f, cell, 34f);
+                if (!Choice(chip, layout.displayName, layout == SelectedArena)) continue;
+                _pendingArena = layout;
+                _arenaStartError = false;
+            }
+            if (scrolling) GUI.EndScrollView();
+            if (_arenaStartError)
+                GUI.Label(new Rect(rect.x, 562f, rect.width, 44f), "Bu arena yüklenemedi. Başka bir arena seç.", ArenaMenuStyle.Current.Hint);
+        }
+
+        private void StartLobbyMatch()
+        {
+            if (IsShowingReadyMenu && TryApplyArena()) _match.RequestCountdown();
+        }
+
+        private bool TryApplyArena()
+        {
+            if (_pendingArena == null || _arena == null || _pendingArena == _arena.Layout) return true;
+            for (int i = 0; i < _arena.Layouts.Count; i++)
+            {
+                if (_arena.Layouts[i] != _pendingArena) continue;
+                _arenaStartError = !_arena.Select(i);
+                return !_arenaStartError;
+            }
+            _arenaStartError = true;
+            return false;
+        }
+
+        private void DrawOpponent(float x, float w)
+        {
+            var theme = ArenaMenuStyle.Current;
+            float cell = (w - 8f) * .5f;
+            bool aggressive = _opponentPanel.Personality == BotPersonality.Aggressive;
+            bool easy = _opponentPanel.Difficulty == BotDifficulty.Easy;
+            GUI.Label(new Rect(x, 395, w, 24), "RAKİP DAVRANIŞI", theme.Heading);
+            if (Choice(new Rect(x, 423, cell, 34), "Baskıcı", aggressive))
+                _opponentPanel.Select(BotPersonality.Aggressive, _opponentPanel.Difficulty);
+            if (Choice(new Rect(x + cell + 8, 423, cell, 34), "Karşı saldırı", !aggressive))
+                _opponentPanel.Select(BotPersonality.Counter, _opponentPanel.Difficulty);
+            GUI.Label(new Rect(x, 462, w, 28), aggressive ? "Yaklaşır ve baskı kurar." : "Açı arar ve fırsatta karşılık verir.", theme.Hint);
+            GUI.Label(new Rect(x, 490, w, 24), "ZORLUK", theme.Heading);
+            if (Choice(new Rect(x, 517, cell, 34), "Kolay", easy))
+                _opponentPanel.Select(_opponentPanel.Personality, BotDifficulty.Easy);
+            if (Choice(new Rect(x + cell + 8, 517, cell, 34), "Zor", !easy))
+                _opponentPanel.Select(_opponentPanel.Personality, BotDifficulty.Hard);
+        }
+
+        private static bool Choice(Rect rect, string label, bool selected)
+        {
+            var theme = ArenaMenuStyle.Current;
+            bool pressed = GUI.Button(rect, label, selected ? theme.Selected : theme.Chip);
+            if (selected)
+                ArenaMenuStyle.Fill(new Rect(rect.x, rect.yMax - 2f, rect.width, 2f), ArenaMenuStyle.Accent);
+            return pressed && !selected;
         }
 
         private void DrawMatchHud()
@@ -178,8 +378,8 @@ namespace RobotSavaslari.UI
                 if (!string.IsNullOrEmpty(_match.HistoryNotice)) GUI.Label(new Rect(16, 250, width - 32, 24), _match.HistoryNotice);
                 return;
             }
-            string next = !_match.EncounterComplete ? (_match.Outcome == MatchController.MatchOutcome.Draw ? "Raundu tekrarla (R)" : "Sonraki raund (R)")
-                : _match.Rules.mode == MatchMode.FirstToTwo ? "Yeni seri (R)" : "Yeni maç (R)";
+            string next = !_match.EncounterComplete ? (_match.Outcome == MatchController.MatchOutcome.Draw ? "Raundu tekrarla" : "Sonraki raund")
+                : _match.Rules.mode == MatchMode.FirstToTwo ? "Yeni seri" : "Yeni maç";
             if (GUI.Button(left, next, _buttonStyle)) _match.RequestCountdown();
             if (GUI.Button(right, "Ana menü", _buttonStyle)) _match.Prepare();
             if (!string.IsNullOrEmpty(_match.HistoryNotice)) GUI.Label(new Rect(16, 175, 600, 42), _match.HistoryNotice);
@@ -190,34 +390,15 @@ namespace RobotSavaslari.UI
             GUI.Label(rect, $"{name}: Can {value.remainingHealth:0.#}/{value.maximumHealth:0.#} | Verilen {value.dealtDamage:0.#} | Alınan {value.receivedDamage:0.#} | Kopan parça {value.detachedParts}");
         }
 
-        private void DrawRules(float width)
-        {
-            var rules = _match.Rules;
-            GUI.Box(new Rect(16, 16, 430, 130), "Karşılaşma kuralları");
-            bool single = rules.mode == MatchMode.Single;
-            if (GUI.Toggle(new Rect(30, 46, 180, 26), single, "Tek maç") && !single)
-            { rules.mode = MatchMode.Single; _match.ConfigureRules(rules); }
-            if (GUI.Toggle(new Rect(220, 46, 210, 26), !single, "İlk 2 galibiyet") && single)
-            { rules.mode = MatchMode.FirstToTwo; _match.ConfigureRules(rules); }
-            GUI.Label(new Rect(30, 78, 110, 26), "Raund süresi:");
-            float[] limits = { 0, 60, 120, 180 };
-            for (int i = 0; i < limits.Length; i++)
-            {
-                float limit = limits[i];
-                bool selected = rules.timeLimitSeconds == limit;
-                if (GUI.Toggle(new Rect(140 + i * 72, 78, 72, 26), selected, limit == 0 ? "Süresiz" : limit + " sn") && !selected)
-                { rules.timeLimitSeconds = limit; _match.ConfigureRules(rules); }
-            }
-            GUI.Label(new Rect(30, 108, 400, 24), "Süre dolunca can oranı; eşitse beraberlik.");
-            if (GUI.Button(new Rect(width - 174, 16, 158, 36), "Maç geçmişi")) _showHistory = true;
-        }
-
         private void DrawHistory(float width, float height)
         {
             var panel = new Rect((width - 560) * .5f, 70, 560, Mathf.Min(480, height - 220));
-            GUI.Box(panel, "Yerel maç geçmişi");
+            var theme = ArenaMenuStyle.Current;
+            ArenaMenuStyle.DrawGarage(width, height, ArenaMenuStyle.Canvas);
+            ArenaMenuStyle.Panel(panel);
+            GUI.Label(new Rect(panel.x + 16, panel.y + 8, 528, 32), "Maç geçmişi", theme.Title);
             var records = _match.HistoryStore.Load();
-            GUI.Label(new Rect(panel.x + 16, panel.y + 28, 528, 42),
+            GUI.Label(new Rect(panel.x + 16, panel.y + 38, 528, 34),
                 "Rövanş temel maç kurallarını kullanır. Mevcut arena ve rakip seçimi korunur.");
             if (records.Count == 0) GUI.Label(new Rect(panel.x + 16, panel.y + 76, 520, 44),
                 _match.HistoryStore.LastError ?? "Henüz tamamlanmış karşılaşma yok.");
@@ -231,10 +412,14 @@ namespace RobotSavaslari.UI
                     : record.outcome == MatchController.MatchOutcome.OpponentVictory ? "Mağlubiyet" : "Berabere";
                 GUI.Label(new Rect(6, y, 360, 24), $"{mode}: {outcome} | {record.playerWins}-{record.opponentWins} | {record.durationSeconds:0.0} sn");
                 GUI.Label(new Rect(6, y + 26, 360, 24), record.endedAtUtc + (record.rules.timeLimitSeconds == 0 ? " | Süresiz" : $" | {record.rules.timeLimitSeconds:0} sn"));
-                if (GUI.Button(new Rect(380, y + 8, 116, 38), "Rövanş") && _match.Rematch(record)) _showHistory = false;
+                if (GUI.Button(new Rect(380, y + 8, 116, 38), "Rövanş"))
+                {
+                    _showHistory = false;
+                    if (TryApplyArena() && !_match.Rematch(record)) _showHistory = true;
+                }
             }
             GUI.EndScrollView();
-            if (GUI.Button(new Rect(panel.x + 180, panel.yMax - 52, 200, 36), "Kapat")) _showHistory = false;
+            if (GUI.Button(new Rect(panel.x + 180, panel.yMax - 52, 200, 36), "Geri", theme.Button)) _showHistory = false;
         }
 
         private static void QuitGame()
