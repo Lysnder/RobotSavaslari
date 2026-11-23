@@ -35,7 +35,13 @@ namespace RobotSavaslari.UI
         private Vector2 _arenaScroll;
         private ArenaEnvironment _arena;
         private ArenaLayout _pendingArena;
-        private bool _arenaStartError;
+        private string _setupNotice;
+        private bool _loadedSetup;
+        private bool _protectPreference;
+        private DuelSetup _playedSetup;
+        private string _playedEncounter;
+        private readonly DuelSetup[] _presets = { DuelSetup.Quick(), DuelSetup.Tactical(), DuelSetup.Series() };
+        private static readonly string[] PresetNames = { "Hızlı düello", "Taktik düello", "Seri" };
         private ArenaLayout SelectedArena => _pendingArena != null ? _pendingArena : _arena != null ? _arena.Layout : null;
         private DrivingFeatureInstaller _driving;
         private bool _showExercises;
@@ -85,7 +91,7 @@ namespace RobotSavaslari.UI
             if (_match.State == MatchController.MatchState.Ready && enter)
                 StartLobbyMatch();
             else if (_match.State == MatchController.MatchState.Result && keyboard.rKey.wasPressedThisFrame)
-                _match.RequestCountdown();
+                ContinueResult();
         }
 
         private void OnGUI()
@@ -144,9 +150,8 @@ namespace RobotSavaslari.UI
         private void DrawReady(float width, float height, ChallengeSessionController challenge)
         {
             var theme = ArenaMenuStyle.Current;
-            if (_arena == null) _arena = FindAnyObjectByType<ArenaEnvironment>();
+            EnsureLobbySetup();
             if (_driving == null) _driving = FindAnyObjectByType<DrivingFeatureInstaller>();
-            if (_opponentPanel == null) _opponentPanel = GetComponent<OpponentSelectionPanel>();
             if (_archive == null) _archive = GetComponent<MatchReplayArchiveScreen>();
 
             ArenaMenuStyle.DrawGarage(width, height);
@@ -262,12 +267,12 @@ namespace RobotSavaslari.UI
             if (Choice(new Rect(x, 242, (w - 8) * .5f, 34), "Tek maç", rules.mode == MatchMode.Single))
             {
                 rules.mode = MatchMode.Single;
-                _match.ConfigureRules(rules);
+                EditSetup(rules: rules);
             }
             if (Choice(new Rect(x + (w + 8) * .5f, 242, (w - 8) * .5f, 34), "İlk 2 galibiyet", rules.mode == MatchMode.FirstToTwo))
             {
                 rules.mode = MatchMode.FirstToTwo;
-                _match.ConfigureRules(rules);
+                EditSetup(rules: rules);
             }
 
             GUI.Label(new Rect(x, 288, w, 24), "RAUND SÜRESİ", theme.Heading);
@@ -277,15 +282,22 @@ namespace RobotSavaslari.UI
                 if (!Choice(new Rect(x + i * (cell + 6), 315, cell, 34), RoundNames[i],
                     rules.timeLimitSeconds == RoundLimits[i])) continue;
                 rules.timeLimitSeconds = RoundLimits[i];
-                _match.ConfigureRules(rules);
+                EditSetup(rules: rules);
             }
 
-            GUI.Label(new Rect(x, 353, w, 34), rules.timeLimitSeconds > 0f
+            GUI.Label(new Rect(x, 353, w, 38), _setupNotice ?? (rules.timeLimitSeconds > 0f
                 ? "Süre dolunca can oranı sonucu belirler. Eşitlikte beraberlik."
-                : "Raund, robotlardan biri yenildiğinde biter.", theme.Hint);
+                : "Raund, robotlardan biri yenildiğinde biter."), theme.Hint);
 
             if (_opponentPanel != null && _opponentPanel.CanSelect)
                 DrawOpponent(x, w);
+
+            var current = CaptureSetup();
+            GUI.Label(new Rect(x, 551f, w, 22f), "HAZIR DÜELLO", theme.Heading);
+            float presetWidth = (w - 12f) / 3f;
+            for (int i = 0; i < _presets.Length; i++)
+                if (Choice(new Rect(x + i * (presetWidth + 6f), 572f, presetWidth, 34f),
+                    PresetNames[i], !_protectPreference && _presets[i].SameAs(current))) SelectPreset(_presets[i]);
 
             ArenaMenuStyle.Fill(new Rect(x, height - 103, w, 1), ArenaMenuStyle.Border);
             Rect archive = ReadyArchiveRect(width, height);
@@ -317,30 +329,118 @@ namespace RobotSavaslari.UI
                 if (layout == null) continue;
                 Rect chip = new Rect(x + i % 2 * (cell + 8f), y + i / 2 * 41f, cell, 34f);
                 if (!Choice(chip, layout.displayName, layout == SelectedArena)) continue;
-                _pendingArena = layout;
-                _arenaStartError = false;
+                EditSetup(layout: layout);
             }
             if (scrolling) GUI.EndScrollView();
-            if (_arenaStartError)
-                GUI.Label(new Rect(rect.x, 562f, rect.width, 44f), "Bu arena yüklenemedi. Başka bir arena seç.", ArenaMenuStyle.Current.Hint);
         }
 
-        private void StartLobbyMatch()
+        private void EnsureLobbySetup()
         {
-            if (IsShowingReadyMenu && TryApplyArena()) _match.RequestCountdown();
+            if (_arena == null) _arena = FindAnyObjectByType<ArenaEnvironment>();
+            if (_opponentPanel == null) _opponentPanel = GetComponent<OpponentSelectionPanel>();
+            if (_loadedSetup || !IsShowingReadyMenu || _arena?.Layout == null || _opponentPanel == null) return;
+            _loadedSetup = true;
+            if (!PlayerPrefs.HasKey(DuelSetup.PreferenceKey)) return;
+            var stored = DuelSetup.Read(PlayerPrefs.GetString(DuelSetup.PreferenceKey));
+            if (stored != null && StageSetup(stored)) return;
+            _protectPreference = true;
+            _setupNotice = "Kayıtlı kurulum okunamadı. Yeni tercih kaydetmek için hazır düello seç.";
+        }
+
+        private DuelSetup CaptureSetup() => SelectedArena == null || _opponentPanel == null ? null :
+            DuelSetup.Create(SelectedArena.name, _opponentPanel.Personality, _opponentPanel.Difficulty, _match.Rules);
+
+        private ArenaLayout ResolveArena(DuelSetup selection)
+        {
+            if (selection == null || !selection.Valid || _arena?.Layouts == null) return null;
+            foreach (var layout in _arena.Layouts)
+                if (layout != null && layout.name == selection.arenaId) return layout;
+            return null;
+        }
+
+        public bool SelectPreset(DuelSetup selection)
+        {
+            EnsureLobbySetup();
+            if (!StageSetup(selection)) return false;
+            SavePreference(selection);
+            return true;
+        }
+
+        private void EditSetup(ArenaLayout layout = null, BotPersonality? bot = null, BotDifficulty? level = null, MatchRules rules = null)
+        {
+            if (_opponentPanel == null || SelectedArena == null) return;
+            SelectPreset(DuelSetup.Create((layout ?? SelectedArena).name, bot ?? _opponentPanel.Personality,
+                level ?? _opponentPanel.Difficulty, rules ?? _match.Rules));
+        }
+
+        private bool StageSetup(DuelSetup selection)
+        {
+            var layout = ResolveArena(selection);
+            if (!IsShowingReadyMenu || layout == null || _opponentPanel == null || !_opponentPanel.CanSelect ||
+                ArenaLayoutValidator.Validate(layout, _arena.ClearanceRadius).Count != 0)
+            {
+                _setupNotice = "Kurulum kullanılamıyor. Başka bir arena veya hazır düello seç.";
+                return false;
+            }
+            var currentRules = _match.Rules;
+            if (currentRules.mode != selection.mode || currentRules.timeLimitSeconds != selection.seconds)
+                _match.ConfigureRules(selection.Rules);
+            _opponentPanel.Select(selection.personality, selection.difficulty);
+            _pendingArena = layout;
+            _setupNotice = null;
+            _protectPreference = false;
+            return true;
+        }
+
+        public void StartLobbyMatch()
+        {
+            if (!IsShowingReadyMenu || !_match.IsInitialized || (Challenge != null && Challenge.InChallenge)) return;
+            EnsureLobbySetup();
+            var setup = CaptureSetup();
+            if (setup == null || !setup.Valid || !TryApplyArena()) return;
+            if (_match.RequestCountdown()) RememberEncounter(setup);
+        }
+
+        private void RememberEncounter(DuelSetup setup)
+        {
+            _playedSetup = setup;
+            _playedEncounter = _match.EncounterId;
+            if (!_protectPreference) SavePreference(setup);
+        }
+
+        private static void SavePreference(DuelSetup setup)
+        {
+            if (setup == null) return;
+            PlayerPrefs.SetString(DuelSetup.PreferenceKey, JsonUtility.ToJson(setup));
+            PlayerPrefs.Save();
         }
 
         private bool TryApplyArena()
         {
-            if (_pendingArena == null || _arena == null || _pendingArena == _arena.Layout) return true;
+            if (_arena?.Layout == null || _pendingArena == null || _pendingArena == _arena.Layout) return _arena?.Layout != null;
             for (int i = 0; i < _arena.Layouts.Count; i++)
-            {
-                if (_arena.Layouts[i] != _pendingArena) continue;
-                _arenaStartError = !_arena.Select(i);
-                return !_arenaStartError;
-            }
-            _arenaStartError = true;
+                if (_arena.Layouts[i] == _pendingArena && _arena.Select(i)) return true;
+            _setupNotice = "Bu arena yüklenemedi. Başka bir arena seç.";
             return false;
+        }
+
+        public void ContinueResult()
+        {
+            if (!isActiveAndEnabled || _match.State != MatchController.MatchState.Result || _match.IsPaused ||
+                BindingsOpen || (Challenge != null && Challenge.InChallenge)) return;
+            if (!_match.EncounterComplete || _playedEncounter != _match.EncounterId || _playedSetup == null)
+            {
+                _match.RequestCountdown();
+                return;
+            }
+            var layout = ResolveArena(_playedSetup);
+            if (layout == null || ArenaLayoutValidator.Validate(layout, _arena.ClearanceRadius).Count != 0)
+            {
+                _setupNotice = "Oynanan kurulum yeniden yüklenemedi.";
+                return;
+            }
+            _match.Prepare();
+            if (StageSetup(_playedSetup)) StartLobbyMatch();
         }
 
         private void DrawOpponent(float x, float w)
@@ -351,15 +451,15 @@ namespace RobotSavaslari.UI
             bool easy = _opponentPanel.Difficulty == BotDifficulty.Easy;
             GUI.Label(new Rect(x, 395, w, 24), "RAKİP DAVRANIŞI", theme.Heading);
             if (Choice(new Rect(x, 423, cell, 34), "Baskıcı", aggressive))
-                _opponentPanel.Select(BotPersonality.Aggressive, _opponentPanel.Difficulty);
+                EditSetup(bot: BotPersonality.Aggressive);
             if (Choice(new Rect(x + cell + 8, 423, cell, 34), "Karşı saldırı", !aggressive))
-                _opponentPanel.Select(BotPersonality.Counter, _opponentPanel.Difficulty);
+                EditSetup(bot: BotPersonality.Counter);
             GUI.Label(new Rect(x, 462, w, 28), aggressive ? "Yaklaşır ve baskı kurar." : "Açı arar ve fırsatta karşılık verir.", theme.Hint);
             GUI.Label(new Rect(x, 490, w, 24), "ZORLUK", theme.Heading);
             if (Choice(new Rect(x, 517, cell, 34), "Kolay", easy))
-                _opponentPanel.Select(_opponentPanel.Personality, BotDifficulty.Easy);
+                EditSetup(level: BotDifficulty.Easy);
             if (Choice(new Rect(x + cell + 8, 517, cell, 34), "Zor", !easy))
-                _opponentPanel.Select(_opponentPanel.Personality, BotDifficulty.Hard);
+                EditSetup(level: BotDifficulty.Hard);
         }
 
         private static bool Choice(Rect rect, string label, bool selected)
@@ -410,7 +510,7 @@ namespace RobotSavaslari.UI
             if (result != null)
             {
                 GUI.Label(new Rect(panel.x + 12, panel.y + 44, 536, 22),
-                    $"Raund {result.roundNumber} | {result.durationSeconds:0.0} sn | Skor {_match.PlayerWins}-{_match.OpponentWins} | Berabere: {_match.DrawnRounds}");
+                    $"Raund {result.roundNumber} · {(result.reason == RoundFinishReason.Defeat ? "Nakavt" : "Süre doldu · can oranı")} | {result.durationSeconds:0.0} sn | Skor {_match.PlayerWins}-{_match.OpponentWins} | Berabere: {_match.DrawnRounds}");
                 DrawStatistics(new Rect(panel.x + 12, panel.y + 68, 536, 22), "Oyuncu", result.player);
                 DrawStatistics(new Rect(panel.x + 12, panel.y + 92, 536, 22), "Rakip", result.opponent);
                 string summary = _match.LastMatch != null
@@ -428,9 +528,10 @@ namespace RobotSavaslari.UI
                 if (!string.IsNullOrEmpty(_match.HistoryNotice)) GUI.Label(new Rect(16, 250, width - 32, 24), _match.HistoryNotice);
                 return;
             }
+            if (_setupNotice != null) GUI.Label(new Rect(panel.x + 12, panel.y + 135, 536, 20), _setupNotice);
             string next = !_match.EncounterComplete ? (_match.Outcome == MatchController.MatchOutcome.Draw ? "Raundu tekrarla" : "Sonraki raund")
-                : _match.Rules.mode == MatchMode.FirstToTwo ? "Yeni seri" : "Yeni maç";
-            if (GUI.Button(left, next, _buttonStyle)) _match.RequestCountdown();
+                : "Aynı ayarla yeniden oyna";
+            if (GUI.Button(left, next, _buttonStyle)) ContinueResult();
             if (GUI.Button(right, "Ana menü", _buttonStyle)) _match.Prepare();
             if (!string.IsNullOrEmpty(_match.HistoryNotice)) GUI.Label(new Rect(16, 175, 600, 42), _match.HistoryNotice);
         }
@@ -465,7 +566,9 @@ namespace RobotSavaslari.UI
                 if (GUI.Button(new Rect(380, y + 8, 116, 38), "Rövanş"))
                 {
                     _showHistory = false;
-                    if (TryApplyArena() && !_match.Rematch(record)) _showHistory = true;
+                    if (record != null && record.IsValid && TryApplyArena() && _match.Rematch(record))
+                        RememberEncounter(CaptureSetup());
+                    else _showHistory = true;
                 }
             }
             GUI.EndScrollView();
