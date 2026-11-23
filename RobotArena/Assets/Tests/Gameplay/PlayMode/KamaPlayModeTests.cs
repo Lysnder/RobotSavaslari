@@ -145,11 +145,28 @@ namespace RobotSavaslari.Gameplay.Tests
         }
 
         [UnityTest]
+        public IEnumerator MissingKitKeepsTheOriginalPlayerAndProfile()
+        {
+            var owner = match.Player;
+            var melee = owner.GetComponent<MeleeAttack>();
+            var profile = melee.Profile;
+            GameplayTestScene.SetField(panel, "kit", null);
+            Assert.That(panel.SelectFork(true), Is.False);
+            Assert.That(panel.ForkSelected, Is.False);
+            Assert.That(melee.Profile, Is.SameAs(profile));
+            Assert.That(match.Player, Is.SameAs(owner));
+            Assert.That(owner.name, Is.EqualTo("Mavi Robot"));
+            StringAssert.Contains("Döner", GameplayTestScene.GetField<string>(panel, "notice"));
+            yield return null;
+        }
+
+        [UnityTest]
         public IEnumerator MissDetachedWeaponAndRetry()
         {
             Assert.That(panel.SelectFork(true), Is.True);
             Assert.That(match.StartMatch(), Is.True);
-            GameplayTestScene.SeparateRobots();
+            GameplayTestScene.Place(match.Player, new Vector3(-4, .8f, -3), false);
+            GameplayTestScene.Place(match.Opponent, new Vector3(4, .8f, 3), false);
             var attack = match.Player.GetComponent<MeleeAttack>();
             float clock = Time.time;
             attack.Clock = () => clock;
