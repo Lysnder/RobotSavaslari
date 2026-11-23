@@ -811,6 +811,35 @@ namespace RobotSavaslari.Presentation.Tests
         }
 
         [UnityTest]
+        public IEnumerator PulseDamageKeepsItsUnknownSourceWhileWeaponAndRobotContactAreIdentified()
+        {
+            yield return Load();
+            var arena = Object.FindAnyObjectByType<ArenaEnvironment>();
+            Assert.That(arena.Select(arena.Layouts.ToList().FindIndex(layout => layout.displayName == "PulseArena")), Is.True);
+            yield return MainArenaTestScene.StartPlaying();
+            SeparateRobots();
+            var hazard = arena.Contents.GetComponentInChildren<ArenaHazard>();
+            Vector3 point = hazard.transform.position;
+            point.y = MainArenaTestScene.Floor;
+            MainArenaTestScene.PlaceRobot(Match.Player, point, true);
+            yield return null;
+            var source = Match.Player.GetComponent<RobotHealth>();
+            var target = Match.Opponent.GetComponent<RobotHealth>();
+            target.TakeDamage(1f, target.transform.position, Vector3.up, Vector3.zero, true, source);
+            target.TakeDamage(1f, target.transform.position, Vector3.up, Vector3.zero, false, source);
+            yield return new WaitForSeconds(3f);
+            Match.Defeat(false);
+            yield return null;
+            var info = SingleEntry().Info;
+            var impacts = info.Events.FindAll(item => item.Type == ReplayEventType.Impact);
+            Assert.That(impacts.Exists(item => item.Robot == MatchReplayRecorder.OpponentRobot && item.Source == ReplayImpactSource.Weapon), Is.True);
+            Assert.That(impacts.Exists(item => item.Robot == MatchReplayRecorder.OpponentRobot && item.Source == ReplayImpactSource.RobotContact), Is.True);
+            var environmental = impacts.First(item => item.Robot == MatchReplayRecorder.PlayerRobot);
+            Assert.That(environmental.Source, Is.EqualTo(ReplayImpactSource.Unknown));
+            StringAssert.Contains("Kaynak belirsiz", MatchReplayArchive.DescribeEvent(environmental, info));
+        }
+
+        [UnityTest]
         public IEnumerator InterruptedEncounterIsCommittedOnceWhenRecorderIsEnabledAgain()
         {
             yield return Load();
