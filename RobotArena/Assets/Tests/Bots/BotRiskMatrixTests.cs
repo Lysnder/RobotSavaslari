@@ -177,9 +177,9 @@ namespace RobotSavaslari.Tests
                 if (bot.NavigationReason == BotRouteReason.HazardDetour && Mathf.Abs(bot.Command.y) > .1f) steered = true;
             }
             Assert.IsTrue(steered, "The warning should produce a lateral route to a safe opponent.");
+            Phase(HazardPhase.Active);
             Place(targetBody, center, -90);
             Physics.SyncTransforms();
-            Phase(HazardPhase.Active);
             bot.Tick(.02f);
             Assert.AreEqual(BotRouteReason.HazardWait, bot.NavigationReason);
             Assert.AreEqual(Vector2.zero, bot.Command);
@@ -201,7 +201,12 @@ namespace RobotSavaslari.Tests
             bot.Tick(.02f);
             Assert.AreEqual(BotRouteReason.HazardWait, bot.NavigationReason);
 
+            // Keep both robots intact while fast-forwarding the trap. Matrix runs measure actual damage.
+            Place(targetBody, center + Vector3.right * 3.5f + Vector3.back * 1.75f, -90);
+            Physics.SyncTransforms();
             Phase(HazardPhase.Recovery);
+            Place(targetBody, center, -90);
+            Physics.SyncTransforms();
             Vector3 beforeRecovery = botBody.position;
             var nextStep = new WaitForFixedUpdate();
             float travel = 0;
@@ -213,8 +218,9 @@ namespace RobotSavaslari.Tests
                 if (travel >= .15f && bot.NavigationReason != BotRouteReason.HazardWait) break;
             }
             Assert.AreNotEqual(BotRouteReason.HazardWait, bot.NavigationReason);
-            Assert.Greater(travel, .14f,
-                "The bot must advance again, including when detached parts require a physical detour.");
+            Assert.Greater(travel, .14f, $"After recovery: phases {string.Join(",", hazards.Select(z => z.Phase))}, " +
+                $"position {beforeRecovery} to {botBody.position}, target {targetBody.position}, state {bot.State}, " +
+                $"route {bot.NavigationReason}, plans {bot.NavigationPlans}, command {bot.Command}, match {match.State}.");
             match.Player.GetComponent<RobotHealth>().TakeDamage(10000);
             Assert.AreEqual(MatchController.MatchState.Result, match.State);
             Assert.AreEqual(BotRouteReason.None, bot.NavigationReason);
