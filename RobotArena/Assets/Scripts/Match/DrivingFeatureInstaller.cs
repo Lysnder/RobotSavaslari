@@ -48,6 +48,8 @@ namespace RobotSavaslari.Match
         /// <summary>Bağlanan sürüş eğitimi; tanı ve test için.</summary>
         public TimeTrialSession TimeTrial => timeTrial;
 
+        public DrivingExerciseCatalog ExerciseCatalog { get; private set; }
+
         /// <summary>Eğitim sürüyor mu? Sürerken eşleme ekranına girilmez.</summary>
         private bool IsTrialActive => timeTrial != null && timeTrial.State != TimeTrialState.Inactive;
 
@@ -131,7 +133,8 @@ namespace RobotSavaslari.Match
             }
 
             trialHud.Session = timeTrial;
-            trialHud.ExerciseCatalog = Resources.Load<DrivingExerciseCatalog>("Training/DrivingExerciseCatalog");
+            ExerciseCatalog = Resources.Load<DrivingExerciseCatalog>("Training/DrivingExerciseCatalog");
+            trialHud.ExerciseCatalog = ExerciseCatalog;
             if (timeTrial.ExerciseStore == null)
             {
                 string folder = Application.isEditor
@@ -217,24 +220,22 @@ namespace RobotSavaslari.Match
                 settings = FindAnyObjectByType<SettingsPanelController>();
             }
 
-            // Eşleme ekranına ve eğitime yalnızca kurulmuş, hazır bir maçta ve
-            // ayarlar kapalıyken girilir; maç başlayınca ikisi de kapanır.
-            bool readyAccess = match.isActiveAndEnabled && match.IsInitialized && !match.IsPaused
-
-                               && (cameraController == null || !cameraController.HasPresentationTargets)
-                               && match.State == MatchController.MatchState.Ready
-                               && (settings == null || !settings.IsOpen);
+            bool ready = match.isActiveAndEnabled && match.IsInitialized &&
+                         match.State == MatchController.MatchState.Ready &&
+                         (cameraController == null || !cameraController.HasPresentationTargets);
+            bool settingsOpen = settings != null && settings.IsOpen;
 
             if (bindingsScreen != null)
             {
                 // Ana menüsü olan sahnelerde eşleme ekranı ayarların içinden açılır.
                 bindingsScreen.AccessAllowed = ready && !IsTrialActive &&
-                                               (!settingsOpen || !bindingsScreen.ShowReadyShortcut);
+                                               (settingsOpen ? !bindingsScreen.ShowReadyShortcut : !match.IsPaused);
             }
 
             if (timeTrial != null)
             {
-                timeTrial.CanEnter = readyAccess && timeTrial.ReadyMenuVisible && (bindingsScreen == null || (!bindingsScreen.IsOpen && !bindingsScreen.Capturing.HasValue));
+                timeTrial.CanEnter = ready && !match.IsPaused && !settingsOpen && timeTrial.ReadyMenuVisible &&
+                                     (bindingsScreen == null || (!bindingsScreen.IsOpen && !bindingsScreen.Capturing.HasValue));
             }
 
             if (gauge != null) gauge.Visible = match.State == MatchController.MatchState.Playing || IsTrialActive;
