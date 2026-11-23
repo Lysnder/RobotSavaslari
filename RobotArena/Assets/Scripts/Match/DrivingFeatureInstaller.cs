@@ -24,6 +24,7 @@ namespace RobotSavaslari.Match
         private SettingsPanelController settings;
         private PlayerKeyboardDriver driver;
         private DriveBoost boost;
+        private DriveBoostGauge gauge;
         private DriveHandbrake handbrake;
         private DriveBindingsScreen bindingsScreen;
         private MainMenuScreen menu;
@@ -89,7 +90,7 @@ namespace RobotSavaslari.Match
             driver.Boost = boost;
             driver.Handbrake = handbrake;
 
-            DriveBoostGauge gauge = driver.GetComponent<DriveBoostGauge>();
+            gauge = driver.GetComponent<DriveBoostGauge>();
             if (gauge == null)
             {
                 gauge = driver.gameObject.AddComponent<DriveBoostGauge>();
@@ -147,6 +148,8 @@ namespace RobotSavaslari.Match
                 settings = FindAnyObjectByType<SettingsPanelController>();
             }
 
+            trialHud.ShowReadyShortcut = menu == null;
+            bindingsScreen.ShowReadyShortcut = menu == null;
             timeTrial.Bind(match, menu, settings, driver);
 
             installed = true;
@@ -214,6 +217,8 @@ namespace RobotSavaslari.Match
             {
                 timeTrial.CanEnter = readyAccess && (bindingsScreen == null || !bindingsScreen.IsOpen);
             }
+
+            if (gauge != null) gauge.Visible = match.State == MatchController.MatchState.Playing || IsTrialActive;
 
             bool newMatch = match.MatchCount != lastMatchCount;
             bool returnedToStart = match.State != lastState &&

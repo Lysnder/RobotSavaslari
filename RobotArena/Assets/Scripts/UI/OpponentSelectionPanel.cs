@@ -15,8 +15,6 @@ namespace RobotSavaslari.UI
         private SettingsPanelController _settings;
         private RobotBotController _appliedBot;
         private int _appliedMatch = -1;
-        private static readonly string[] Personalities = { "Aggressive", "Counter" };
-        private static readonly string[] Difficulties = { "Easy", "Hard" };
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void Register()
@@ -59,26 +57,6 @@ namespace RobotSavaslari.UI
             if (bot == null || (_appliedBot == bot && _appliedMatch == _match.MatchCount)) return;
             bot.ConfigureDecisions(Personality, Difficulty);
             _appliedBot = bot; _appliedMatch = _match.MatchCount;
-        }
-        private void OnGUI()
-        {
-            if (!CanSelect) return;
-            Matrix4x4 previous = GUI.matrix;
-            try
-            {
-                float scale = Mathf.Max(0.01f, Mathf.Min(Screen.height / 720f, Screen.width / 600f));
-                float width = Screen.width / scale, height = Screen.height / scale;
-                GUI.matrix = Matrix4x4.Scale(new Vector3(scale, scale, 1));
-                GUILayout.BeginArea(new Rect(width - 304, height - 158, 288, 142), GUI.skin.box);
-                GUILayout.Label("RAKİP DAVRANIŞI");
-                int personality = GUILayout.SelectionGrid((int)Personality, Personalities, 2);
-                int difficulty = GUILayout.SelectionGrid((int)Difficulty, Difficulties, 2);
-                GUILayout.Label(Personality == BotPersonality.Aggressive ? "Mesafeyi kapatır, baskı kurar." : "Açı arar, fırsatta karşılık verir.");
-                GUILayout.EndArea();
-                if (personality != (int)Personality || difficulty != (int)Difficulty)
-                    Select((BotPersonality)personality, (BotDifficulty)difficulty);
-            }
-            finally { GUI.matrix = previous; }
         }
     }
 }

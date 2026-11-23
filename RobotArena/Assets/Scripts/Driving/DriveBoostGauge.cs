@@ -17,6 +17,7 @@ namespace RobotSavaslari.Driving
         [SerializeField] private Vector2 size = new Vector2(220f, 18f);
         [SerializeField] private int fontSize = 13;
 
+        public bool Visible { get; set; } = true;
         private GUIStyle labelStyle;
         private Texture2D barTexture;
 
@@ -45,7 +46,7 @@ namespace RobotSavaslari.Driving
 
         private void OnGUI()
         {
-            if (boost == null)
+            if (!Visible || boost == null)
             {
                 return;
             }

@@ -22,6 +22,7 @@ namespace RobotSavaslari.Training
 
         private readonly List<GameObject> markers = new List<GameObject>();
         private GUIStyle panelStyle;
+        public bool ShowReadyShortcut { get; set; } = true;
 
 
         [SerializeField] private GhostRunner ghost;
@@ -160,7 +161,7 @@ namespace RobotSavaslari.Training
 
         private void DrawAccess()
         {
-            if (!session.CanEnter)
+            if (!ShowReadyShortcut || !session.CanEnter)
             {
                 return;
             }

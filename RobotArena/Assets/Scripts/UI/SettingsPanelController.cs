@@ -5,42 +5,45 @@ using RobotSavaslari.Match;
 
 namespace RobotSavaslari.UI
 {
-    /// <summary>
-    /// Arena icinden ses, goruntu ve kamera ayarlarini duzenler.
-    /// </summary>
     [DisallowMultipleComponent]
     [DefaultExecutionOrder(-105)]
     public sealed class SettingsPanelController : MonoBehaviour
     {
-        private const float ReferenceHeight = 720f;
         public bool IsOpen { get; private set; }
 
         private float _previousTimeScale;
-        private GUIStyle _subtitleStyle;
-        private GUIStyle _labelStyle;
-        private GUIStyle _qualityStyle;
-        private GUIStyle _sectionStyle;
+        private bool _cameraPage;
+        private MatchController _match;
+        private MainMenuScreen _menu;
+
+        private void Awake()
+        {
+            _match = GetComponent<MatchController>();
+            _menu = GetComponent<MainMenuScreen>();
+        }
 
         private void Update()
         {
-            var match = GetComponent<MatchController>();
-            if (match != null && match.Player != null &&
-                match.Player.TryGetComponent<DriveBindingsScreen>(out var bindings) && bindings.IsOpen) return;
-            if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
-                ToggleSettings();
+            if (_match != null && _match.Player != null &&
+                _match.Player.TryGetComponent<DriveBindingsScreen>(out var bindings) && bindings.IsOpen) return;
+            if (Keyboard.current == null || !Keyboard.current.escapeKey.wasPressedThisFrame) return;
+            if (!IsOpen && _menu != null && _menu.TryCloseHistory()) return;
+            ToggleSettings();
         }
 
         public void ToggleSettings()
         {
             if (IsOpen)
-                CloseSettings();
-            else
             {
-                GameSettings.Load();
-                _previousTimeScale = Time.timeScale;
-                Time.timeScale = 0f;
-                IsOpen = true;
+                CloseSettings();
+                return;
             }
+
+            GameSettings.Load();
+            _cameraPage = false;
+            _previousTimeScale = Time.timeScale;
+            Time.timeScale = 0f;
+            IsOpen = true;
         }
 
         private void OnDisable()
@@ -51,172 +54,134 @@ namespace RobotSavaslari.UI
         private void OnGUI()
         {
             if (!IsOpen) return;
-            EnsureStyles();
-            Matrix4x4 previousMatrix = GUI.matrix;
-            bool previousEnabled = GUI.enabled;
+            Matrix4x4 previous = GUI.matrix;
             try
             {
-                float scale = Mathf.Max(0.01f, Mathf.Min(Screen.height / ReferenceHeight, Screen.width / 600f));
+                float scale = ArenaMenuStyle.Scale(Screen.width, Screen.height);
                 GUI.matrix = Matrix4x4.Scale(new Vector3(scale, scale, 1f));
-                float width = Screen.width / scale;
-                DrawSettingsPage(width);
+                DrawPanel(Screen.width / scale, Screen.height / scale);
             }
-            finally
-            {
-                GUI.matrix = previousMatrix;
-                GUI.enabled = previousEnabled;
-            }
+            finally { GUI.matrix = previous; }
         }
 
-        private void DrawSettingsPage(float width)
+        private void DrawPanel(float width, float height)
         {
-            GUI.Label(new Rect(0f, 60f, width, 36f), "AYARLAR", _subtitleStyle);
+            var theme = ArenaMenuStyle.Current;
+            var rect = new Rect((width - 676) * .5f, (height - 538) * .5f, 676, 538);
+            ArenaMenuStyle.Fill(new Rect(0, 0, width, height), ArenaMenuStyle.Canvas);
+            ArenaMenuStyle.Panel(rect);
+            ArenaMenuStyle.Fill(new Rect(rect.x, rect.y, 4, 89), ArenaMenuStyle.Accent);
+            float x = rect.x + 28f;
+            float w = rect.width - 56f;
+            GUI.Label(new Rect(x, rect.y + 22, w, 44), "Ayarlar", theme.Title);
+            GUI.Label(new Rect(x, rect.y + 66, w, 26), "Değişiklikler anında uygulanır, çıkarken kaydedilir.", theme.Hint);
 
-            const float panelTop = 105f;
-            const float panelWidth = 520f;
-            const float row = 42f;
-            float x = (width - panelWidth) / 2f;
-            GUI.Box(new Rect(x, panelTop, panelWidth, 470f), string.Empty);
+            if (GUI.Button(new Rect(x, rect.y + 109, 188, 39), "Ses ve görüntü", _cameraPage ? theme.Chip : theme.Selected))
+                _cameraPage = false;
+            if (GUI.Button(new Rect(x + 196, rect.y + 109, 126, 39), "Kamera", _cameraPage ? theme.Selected : theme.Chip))
+                _cameraPage = true;
+            ArenaMenuStyle.Fill(new Rect(x, rect.y + 164, w, 1), ArenaMenuStyle.Border);
+            if (_cameraPage) DrawCamera(x, rect.y + 177, w);
+            else DrawGeneral(x, rect.y + 177, w);
 
-            float labelX = x + 24f;
-            float valueX = x + 230f;
-            float valueWidth = panelWidth - 254f;
-            float y = panelTop + 20f;
-
-            // Ses
-            GUI.Label(new Rect(labelX, y, 200f, 30f), "Ses", _labelStyle);
-            float volume = GUI.HorizontalSlider(new Rect(valueX, y + 10f, valueWidth - 60f, 20f), GameSettings.MasterVolume, 0f, 1f);
-            GUI.Label(new Rect(valueX + valueWidth - 50f, y, 50f, 30f), Mathf.RoundToInt(volume * 100f) + "%", _labelStyle);
-            if (!Mathf.Approximately(volume, GameSettings.MasterVolume))
+            ArenaMenuStyle.Fill(new Rect(x, rect.yMax - 75, w, 1), ArenaMenuStyle.Border);
+            if (GUI.Button(new Rect(x, rect.yMax - 58, 242, 40),
+                _cameraPage ? "Kamera varsayılanları" : "Tüm ayarları sıfırla", theme.Button))
             {
-                GameSettings.MasterVolume = volume;
-                GameSettings.Apply();
-            }
-            y += row;
-
-            // Tam ekran
-            GUI.Label(new Rect(labelX, y, 200f, 30f), "Tam ekran", _labelStyle);
-            bool fullscreen = GUI.Toggle(new Rect(valueX, y + 5f, valueWidth, 24f), GameSettings.Fullscreen,
-                GameSettings.Fullscreen ? " Acik" : " Kapali");
-            if (fullscreen != GameSettings.Fullscreen)
-            {
-                GameSettings.Fullscreen = fullscreen;
-                GameSettings.Apply();
-            }
-            y += row;
-
-            // Grafik kalitesi
-            string[] qualityNames = QualitySettings.names;
-            GUI.Label(new Rect(labelX, y, 200f, 30f), "Grafik kalitesi", _labelStyle);
-            int quality = GameSettings.QualityLevel;
-            // Oklar yalnizca gidilecek bir seviye varken aktif olur.
-            bool previousEnabled = GUI.enabled;
-            GUI.enabled = previousEnabled && quality > 0;
-            if (GUI.Button(new Rect(valueX, y, 36f, 30f), "<"))
-                quality--;
-            GUI.enabled = previousEnabled && quality < qualityNames.Length - 1;
-            if (GUI.Button(new Rect(valueX + valueWidth - 36f, y, 36f, 30f), ">"))
-                quality++;
-            GUI.enabled = previousEnabled;
-            GUI.Label(new Rect(valueX + 40f, y, valueWidth - 80f, 30f), qualityNames[quality], _qualityStyle);
-            if (quality != GameSettings.QualityLevel)
-            {
-                GameSettings.QualityLevel = quality;
-                GameSettings.Apply();
-            }
-            y += row + 4f;
-
-            DrawCameraSettings(labelX, valueX, valueWidth, y, row);
-
-            float buttonY = panelTop + 470f - 60f;
-            if (GUI.Button(new Rect(x + 20f, buttonY, 150f, 40f), "Varsayilanlar"))
-            {
-                GameSettings.ResetToDefaults();
-                GameSettings.Apply();
+                if (_cameraPage) GameSettings.ResetCameraToDefaults();
+                else
+                {
+                    GameSettings.ResetToDefaults();
+                    GameSettings.Apply();
+                }
             }
 
-            if (GUI.Button(new Rect(x + 185f, buttonY, 150f, 40f), "Kamera varsayilanlari"))
-                GameSettings.ResetCameraToDefaults();
-
-            if (GUI.Button(new Rect(x + 350f, buttonY, 150f, 40f), "Kaydet ve Kapat"))
+            if (GUI.Button(new Rect(x + w - 192, rect.yMax - 58, 192, 40), "Kaydet ve dön   [Esc]", theme.Primary))
                 CloseSettings();
         }
 
-        /// <summary>Camera section. Values are clamped by <see cref="GameSettings"/> and read live by the camera.</summary>
-        private float DrawCameraSettings(float labelX, float valueX, float valueWidth, float y, float row)
+        private void DrawGeneral(float x, float y, float width)
         {
-            GUI.Label(new Rect(labelX, y, 200f, 26f), "KAMERA", _sectionStyle);
-            y += 34f;
+            var theme = ArenaMenuStyle.Current;
+            float before = GameSettings.MasterVolume;
+            GameSettings.MasterVolume = Slider(x, y, width, "Ana ses", before, 0f, 1f, $"{Mathf.RoundToInt(before * 100f)}%");
+            if (!Mathf.Approximately(before, GameSettings.MasterVolume)) GameSettings.Apply();
 
-            GameSettings.CameraHorizontalSensitivity = DrawSliderRow("Yatay hassasiyet", labelX, valueX, valueWidth, y,
+            y += 55;
+            GUI.Label(new Rect(x, y, 228, 46), "Ekran modu", theme.Body);
+            bool fullscreen = GameSettings.Fullscreen;
+            if (GUI.Button(new Rect(x + 253, y + 4, 164, 36), "Tam ekran", fullscreen ? theme.Selected : theme.Chip) && !fullscreen)
+            {
+                GameSettings.Fullscreen = true;
+                GameSettings.Apply();
+            }
+            if (GUI.Button(new Rect(x + 425, y + 4, 164, 36), "Pencereli", fullscreen ? theme.Chip : theme.Selected) && fullscreen)
+            {
+                GameSettings.Fullscreen = false;
+                GameSettings.Apply();
+            }
+            Divide(x, y, width);
+
+            y += 55;
+            GUI.Label(new Rect(x, y, 228, 46), "Grafik kalitesi", theme.Body);
+            string[] names = QualitySettings.names;
+            int quality = GameSettings.QualityLevel;
+            if (names.Length == 0) return;
+            bool enabled = GUI.enabled;
+            GUI.enabled = enabled && quality > 0;
+            if (GUI.Button(new Rect(x + 253, y + 4, 45, 36), "‹", theme.Button)) quality--;
+            GUI.enabled = enabled && quality < names.Length - 1;
+            if (GUI.Button(new Rect(x + width - 45, y + 4, 45, 36), "›", theme.Button)) quality++;
+            GUI.enabled = enabled;
+            GUI.Label(new Rect(x + 304, y, width - 358, 46), names[quality], theme.Value);
+            Divide(x, y, width);
+            if (quality == GameSettings.QualityLevel) return;
+            GameSettings.QualityLevel = quality;
+            GameSettings.Apply();
+        }
+
+        private void DrawCamera(float x, float y, float width)
+        {
+            var theme = ArenaMenuStyle.Current;
+            GameSettings.CameraHorizontalSensitivity = Slider(x, y, width, "Yatay hassasiyet",
                 GameSettings.CameraHorizontalSensitivity, GameSettings.CameraSensitivityMin, GameSettings.CameraSensitivityMax,
-                GameSettings.CameraHorizontalSensitivity.ToString("0.0") + "x");
-            y += row;
-
-            GameSettings.CameraVerticalSensitivity = DrawSliderRow("Dikey hassasiyet", labelX, valueX, valueWidth, y,
+                $"{GameSettings.CameraHorizontalSensitivity:0.0}×");
+            GameSettings.CameraVerticalSensitivity = Slider(x, y += 52, width, "Dikey hassasiyet",
                 GameSettings.CameraVerticalSensitivity, GameSettings.CameraSensitivityMin, GameSettings.CameraSensitivityMax,
-                GameSettings.CameraVerticalSensitivity.ToString("0.0") + "x");
-            y += row;
-
-            GUI.Label(new Rect(labelX, y, 200f, 30f), "Dikey ters cevir", _labelStyle);
-            GameSettings.CameraInvertY = GUI.Toggle(new Rect(valueX, y + 5f, valueWidth, 24f), GameSettings.CameraInvertY,
-                GameSettings.CameraInvertY ? " Acik" : " Kapali");
-            y += row;
-
-            GameSettings.CameraSmoothing = DrawSliderRow("Yumusatma", labelX, valueX, valueWidth, y,
+                $"{GameSettings.CameraVerticalSensitivity:0.0}×");
+            GUI.Label(new Rect(x, y += 52, 230, 46), "Dikey ekseni ters çevir", theme.Body);
+            bool inverted = GameSettings.CameraInvertY;
+            if (GUI.Button(new Rect(x + 253, y + 4, 171, 36), inverted ? "Açık" : "Kapalı",
+                inverted ? theme.Selected : theme.Button))
+                GameSettings.CameraInvertY = !inverted;
+            Divide(x, y, width);
+            GameSettings.CameraSmoothing = Slider(x, y += 52, width, "Yumuşatma",
                 GameSettings.CameraSmoothing, GameSettings.CameraSmoothingMin, GameSettings.CameraSmoothingMax,
-                Mathf.RoundToInt(GameSettings.CameraSmoothing * 100f) + "%");
-            y += row;
-
-            GameSettings.CameraDefaultDistance = DrawSliderRow("Varsayilan mesafe", labelX, valueX, valueWidth, y,
+                $"{Mathf.RoundToInt(GameSettings.CameraSmoothing * 100f)}%");
+            GameSettings.CameraDefaultDistance = Slider(x, y + 52, width, "Varsayılan mesafe",
                 GameSettings.CameraDefaultDistance, GameSettings.CameraDistanceMin, GameSettings.CameraDistanceMax,
-                GameSettings.CameraDefaultDistance.ToString("0.0") + " m");
-            return y + row;
+                $"{GameSettings.CameraDefaultDistance:0.0} m");
         }
 
-        private float DrawSliderRow(string label, float labelX, float valueX, float valueWidth, float y,
-            float value, float min, float max, string valueText)
+        private static float Slider(float x, float y, float width, string label, float value, float min, float max,
+            string text)
         {
-            GUI.Label(new Rect(labelX, y, 200f, 30f), label, _labelStyle);
-            float result = GUI.HorizontalSlider(new Rect(valueX, y + 10f, valueWidth - 70f, 20f), value, min, max);
-            GUI.Label(new Rect(valueX + valueWidth - 62f, y, 62f, 30f), valueText, _labelStyle);
-            return result;
+            var theme = ArenaMenuStyle.Current;
+            GUI.Label(new Rect(x, y, 230, 46), label, theme.Body);
+            float updated = GUI.HorizontalSlider(new Rect(x + 253, y + 17, width - 334, 18), value, min, max);
+            GUI.Label(new Rect(x + width - 74, y, 74, 46), text, theme.Value);
+            Divide(x, y, width);
+            return updated;
         }
+
+        private static void Divide(float x, float y, float width) =>
+            ArenaMenuStyle.Fill(new Rect(x, y + 47, width, 1), ArenaMenuStyle.Border);
 
         private void CloseSettings()
         {
             GameSettings.Save();
             Time.timeScale = _previousTimeScale;
             IsOpen = false;
-        }
-
-        private void EnsureStyles()
-        {
-            if (_subtitleStyle != null || GUI.skin == null)
-                return;
-
-            _subtitleStyle = new GUIStyle(GUI.skin.label)
-            {
-                fontSize = 24,
-                fontStyle = FontStyle.Bold,
-                alignment = TextAnchor.MiddleCenter
-            };
-            _labelStyle = new GUIStyle(GUI.skin.label)
-            {
-                fontSize = 18,
-                alignment = TextAnchor.MiddleLeft
-            };
-            _qualityStyle = new GUIStyle(GUI.skin.label)
-            {
-                fontSize = 18,
-                alignment = TextAnchor.MiddleCenter
-            };
-            _sectionStyle = new GUIStyle(GUI.skin.label)
-            {
-                fontSize = 16,
-                fontStyle = FontStyle.Bold,
-                alignment = TextAnchor.MiddleLeft
-            };
         }
     }
 }
