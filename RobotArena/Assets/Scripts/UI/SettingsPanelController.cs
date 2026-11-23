@@ -68,7 +68,10 @@ namespace RobotSavaslari.UI
         {
             var theme = ArenaMenuStyle.Current;
             var rect = new Rect((width - 676) * .5f, (height - 538) * .5f, 676, 538);
-            ArenaMenuStyle.Fill(new Rect(0, 0, width, height), ArenaMenuStyle.Canvas);
+            if (_match != null && _match.State == MatchController.MatchState.Ready)
+                ArenaMenuStyle.DrawGarage(width, height, ArenaMenuStyle.Canvas);
+            else
+                ArenaMenuStyle.Fill(new Rect(0, 0, width, height), ArenaMenuStyle.Canvas);
             ArenaMenuStyle.Panel(rect);
             ArenaMenuStyle.Fill(new Rect(rect.x, rect.y, 4, 89), ArenaMenuStyle.Accent);
             float x = rect.x + 28f;
@@ -96,7 +99,7 @@ namespace RobotSavaslari.UI
                 }
             }
 
-            if (GUI.Button(new Rect(x + w - 192, rect.yMax - 58, 192, 40), "Kaydet ve dön   [Esc]", theme.Primary))
+            if (GUI.Button(new Rect(x + w - 192, rect.yMax - 58, 192, 40), "Kaydet ve dön", theme.Primary))
                 CloseSettings();
         }
 

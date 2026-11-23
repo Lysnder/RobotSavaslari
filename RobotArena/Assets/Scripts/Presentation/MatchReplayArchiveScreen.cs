@@ -212,7 +212,7 @@ namespace RobotSavaslari.Presentation
             float panelWidth = Mathf.Min(780f, width - 32f);
             float panelHeight = Mathf.Min(600f, height - 32f);
             var panel = new Rect((width - panelWidth) * 0.5f, (height - panelHeight) * 0.5f, panelWidth, panelHeight);
-            ArenaMenuStyle.Fill(new Rect(0, 0, width, height), ArenaMenuStyle.Canvas);
+            ArenaMenuStyle.DrawGarage(width, height, ArenaMenuStyle.Canvas);
             ArenaMenuStyle.Panel(panel);
             float x = panel.x + 14f, w = panel.width - 28f, y = panel.y + 10f;
             GUI.Label(new Rect(x, y, w, 28f), "TEKRAR ARŞİVİ", _titleStyle);

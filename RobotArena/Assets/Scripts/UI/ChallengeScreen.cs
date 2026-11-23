@@ -21,7 +21,10 @@ namespace RobotSavaslari.UI
             float panelHeight = Mathf.Min(450, height - 32);
             var theme = ArenaMenuStyle.Current;
             var panel = new Rect((width - panelWidth) / 2f, (height - panelHeight) / 2f, panelWidth, panelHeight);
-            ArenaMenuStyle.Fill(new Rect(0, 0, width, height), ArenaMenuStyle.Canvas);
+            if (session.InChallenge)
+                ArenaMenuStyle.Fill(new Rect(0, 0, width, height), ArenaMenuStyle.Canvas);
+            else
+                ArenaMenuStyle.DrawGarage(width, height, ArenaMenuStyle.Canvas);
             ArenaMenuStyle.Panel(panel);
             GUILayout.BeginArea(new Rect(panel.x + 18f, panel.y + 14f, panel.width - 36f, panel.height - 28f));
             GUILayout.Label(session.Title, theme.Title);

@@ -7,16 +7,18 @@ namespace RobotSavaslari.UI
         private static ArenaMenuStyle instance;
         public static ArenaMenuStyle Current => instance ??= new ArenaMenuStyle();
 
-        public static readonly Color Canvas = new Color32(13, 19, 25, 224);
-        public static readonly Color Surface = new Color32(21, 29, 38, 250);
-        public static readonly Color Border = new Color32(54, 67, 81, 255);
-        public static readonly Color Accent = new Color32(255, 183, 85, 255);
+        private readonly Texture2D garage = Resources.Load<Texture2D>("Menu/RobotGarage");
+
+        public static readonly Color Canvas = new Color32(16, 18, 18, 224);
+        public static readonly Color Surface = new Color32(26, 29, 29, 248);
+        public static readonly Color Border = new Color32(74, 76, 70, 255);
+        public static readonly Color Accent = new Color32(255, 190, 78, 255);
         private static readonly Color Ink = new Color32(20, 23, 28, 255);
         private static readonly Color Paper = new Color32(245, 247, 249, 255);
-        private static readonly Color Muted = new Color32(181, 195, 209, 255);
-        private static readonly Color Slate = new Color32(31, 43, 55, 255);
+        private static readonly Color Muted = new Color32(188, 196, 190, 255);
+        private static readonly Color Slate = new Color32(43, 48, 47, 255);
 
-        public readonly GUIStyle Logo = Label(47, Paper, FontStyle.Bold, TextAnchor.UpperLeft);
+        public readonly GUIStyle Logo = Label(43, Paper, FontStyle.Bold, TextAnchor.UpperLeft);
         public readonly GUIStyle Title = Label(30, Paper, FontStyle.Bold);
         public readonly GUIStyle Body = Label(17, Paper);
         public readonly GUIStyle Hint = Label(14, Muted, FontStyle.Normal, TextAnchor.MiddleLeft, true);
@@ -24,7 +26,7 @@ namespace RobotSavaslari.UI
         public readonly GUIStyle Value = Label(17, Paper, FontStyle.Bold, TextAnchor.MiddleCenter);
         public readonly GUIStyle Button = Action(17, Slate, Paper);
         public readonly GUIStyle Chip = Action(15, Slate, Paper);
-        public readonly GUIStyle Selected = Action(15, new Color32(108, 74, 44, 255), Paper, true);
+        public readonly GUIStyle Selected = Action(15, new Color32(102, 77, 39, 255), Paper, true);
         public readonly GUIStyle Primary = Action(20, Accent, Ink, true);
 
         public static float Scale(float width, float height) =>
@@ -37,6 +39,42 @@ namespace RobotSavaslari.UI
             GUI.color = color;
             GUI.DrawTexture(rect, Texture2D.whiteTexture);
             GUI.color = prior;
+        }
+
+        public static void DrawGarage(float width, float height, Color overlay = default)
+        {
+            if (Event.current.type != EventType.Repaint) return;
+            var viewport = new Rect(0, 0, width, height);
+            Texture2D art = Current.garage;
+            Color previous = GUI.color;
+            GUI.color = Color.white;
+            if (art != null)
+                GUI.DrawTexture(viewport, art, ScaleMode.ScaleAndCrop, false);
+            else
+                Fill(viewport, new Color32(18, 21, 20, 255));
+            GUI.color = previous;
+            if (overlay.a > 0f) Fill(viewport, overlay);
+        }
+
+        public static void HazardStripe(Rect rect)
+        {
+            if (Event.current.type != EventType.Repaint) return;
+            GUI.BeginGroup(rect);
+            Matrix4x4 previous = GUI.matrix;
+            try
+            {
+                for (int x = -4; x < rect.width; x += 16)
+                {
+                    GUI.matrix = previous;
+                    GUIUtility.RotateAroundPivot(32f, new Vector2(x + 4f, rect.height * .5f));
+                    Fill(new Rect(x, -5f, 7f, rect.height + 10f), Accent);
+                }
+            }
+            finally
+            {
+                GUI.matrix = previous;
+                GUI.EndGroup();
+            }
         }
 
         public static void Panel(Rect rect)

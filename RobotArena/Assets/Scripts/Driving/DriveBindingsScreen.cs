@@ -249,7 +249,7 @@ namespace RobotSavaslari.Driving
                 var panel = new Rect((width - w) * .5f, (height - h) * .5f, w, h);
                 if (Event.current.type == EventType.Repaint)
                 {
-                    GUI.color = new Color32(13, 19, 25, 224);
+                    GUI.color = new Color32(20, 23, 24, 255);
                     GUI.DrawTexture(new Rect(0, 0, width, height), Texture2D.whiteTexture);
                     GUI.color = new Color32(21, 29, 38, 255);
                     GUI.DrawTexture(panel, Texture2D.whiteTexture);

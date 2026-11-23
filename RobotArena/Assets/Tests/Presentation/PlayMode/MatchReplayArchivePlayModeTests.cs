@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
+using RobotSavaslari.Arena;
 using RobotSavaslari.Driving;
 using RobotSavaslari.Match;
 using RobotSavaslari.Training;
@@ -470,6 +471,31 @@ namespace RobotSavaslari.Presentation.Tests
             settings.ToggleSettings();
             Assert.That(menu.IsShowingReadyMenu, Is.True);
         }
+        [UnityTest]
+        public IEnumerator ReadyMenuAppliesArenaOnlyWhenStarting()
+        {
+            yield return Load();
+            var arena = Object.FindAnyObjectByType<ArenaEnvironment>();
+            var menu = Match.GetComponent<MainMenuScreen>();
+            Assert.That(Resources.Load<Texture2D>("Menu/RobotGarage"), Is.Not.Null);
+            Assert.That(arena.Layouts.Count, Is.GreaterThanOrEqualTo(2));
+
+            ArenaLayout previous = arena.Layout;
+            Transform previousContents = arena.Contents;
+            int choice = previous == arena.Layouts[0] ? 1 : 0;
+            float scale = MainMenuScreen.ReadyScale(Screen.width, Screen.height);
+            float width = Screen.width / scale;
+            ArchiveGui.Click(menu, new Vector2(width - (choice == 1 ? 122f : 284f), 142f) * scale);
+            Assert.That(arena.Layout, Is.SameAs(previous));
+            Assert.That(arena.Contents, Is.SameAs(previousContents));
+            Assert.That(Match.State, Is.EqualTo(MatchController.MatchState.Ready));
+
+            ArchiveGui.Click(menu, new Vector2(182f, 249f) * scale);
+            Assert.That(Match.State, Is.EqualTo(MatchController.MatchState.Countdown));
+            Assert.That(arena.Layout, Is.SameAs(arena.Layouts[choice]));
+            Assert.That(arena.Contents, Is.Not.SameAs(previousContents));
+        }
+
         [UnityTest]
         public IEnumerator PanelButtonsOpenTheArchiveAndDeleteAfterConfirmation()
         {

@@ -52,10 +52,10 @@ $acceptanceProcess = Start-Process -FilePath (Join-Path $acceptanceBuild 'RobotS
 
 ## A. Menü ve ayarlar
 
-1. Ana menüde gerçek fareyle “Ayarlar [Esc]” düğmesine tıkla.
+1. Ana menüde gerçek fareyle “Ayarlar” düğmesine tıkla.
 2. Ses sürgüsünü, tam ekran seçimini ve etkin kalite okunu değiştir. Eski/yeni değerleri yaz. Kamera hassasiyetini de değiştirip etkisini D'de kontrol et.
-3. “Kaydet ve dön [Esc]” ile dön; tekrar açıp değerlerin durduğunu kontrol et.
-4. Menüde “Maç geçmişi”ni sağdaki maç kurulumu panelinden açıp “Geri” ile dön. “Maça başla [Enter]” tıklamasını E'de uygula. “Çıkış”ı C/G'deki süreç kapatmada kullan.
+3. “Kaydet ve dön” ile dön; tekrar açıp değerlerin durduğunu kontrol et.
+4. Menüde “Maç geçmişi”ni sağdaki maç kurulumu panelinden açıp “Geri” ile dön. “Maça başla” tıklamasını E'de uygula. “Çıkış”ı C/G'deki süreç kapatmada kullan.
 
 Beklenen: Her düğme görünen işlemi yapar, değerler uygulanır/kaydedilir; ayarlara girip çıkmak maçı kendiliğinden başlatmaz. Menü, pencere/tam ekran geçişinde tıklanabilir kalır.
 
@@ -117,11 +117,11 @@ Beklenen: Hareket/yakınlaşma doğru yönde ve sınırlarda çalışır, kamera
 
 ## E. Başlat, saldır, duraklat, ayarlar, devam
 
-1. Menüde “Maça başla [Enter]”a gerçek fareyle bas, geri sayımı izle.
+1. Menüde “Maça başla”a gerçek fareyle bas, geri sayımı izle.
 2. WASD/oklarla rakibe git, Space ile saldır. Silah hareketi ve uygun temas varsa hasarı gözle.
 3. Sürüşten sonra tüm tuşları bırak, Esc ile duraklat/ayarları aç; bir süre bekle. Ayrı denemede “Duraklat (Esc)” düğmesine tıkla.
 4. Ayarlarda fareyle bir değeri değiştir, Enter/Space/W bas-bırak; arka maçın ilerlemediğini izle.
-5. “Kaydet ve dön [Esc]” ile dön. Tuşları bırakıp yeniden sürüş ve saldırı yap; sonra Esc ile aç/kapatmayı da dene.
+5. “Kaydet ve dön” ile dön. Tuşları bırakıp yeniden sürüş ve saldırı yap; sonra Esc ile aç/kapatmayı da dene.
 
 Beklenen: Geri sayım bir kez başlar. Oyun duraklamada ilerlemez, ayar girdileri oyuna gitmez. Dönüşte odak/input geri gelir; eski basılı hareket/saldırı takılı kalmaz.
 

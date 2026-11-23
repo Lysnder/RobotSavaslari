@@ -15,8 +15,6 @@ namespace RobotSavaslari.Arena
         [SerializeField] private MatchController match;
         [SerializeField] private Transform playerSpawn,opponentSpawn;
         [SerializeField] private Material obstacleMaterial;
-        private string selectionError;
-        public string SelectionError => selectionError;
         private RobotHealth playerHealth,opponentHealth;
         public ArenaLayout Layout => layouts!=null && selectedLayout>=0 && layouts.Length>selectedLayout ? layouts[selectedLayout] : null;
         public IReadOnlyList<ArenaLayout> Layouts => layouts;
@@ -80,8 +78,7 @@ namespace RobotSavaslari.Arena
         {
             if(!CanSelect || layouts==null || index<0 || index>=layouts.Length) return false;
             var errors=ArenaLayoutValidator.Validate(layouts[index],ClearanceRadius);
-            if(errors.Count>0) {selectionError = string.Join("\n", errors); Debug.LogWarning(selectionError); return false;}
-            selectionError = null;
+            if(errors.Count>0) {Debug.LogWarning(string.Join("\n", errors)); return false;}
             selectedLayout=index;Rebuild();return true;
         }
 

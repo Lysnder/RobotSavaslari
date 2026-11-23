@@ -33,6 +33,9 @@ namespace RobotSavaslari.UI
         private Vector2 _historyScroll;
         private Vector2 _arenaScroll;
         private ArenaEnvironment _arena;
+        private ArenaLayout _pendingArena;
+        private bool _arenaStartError;
+        private ArenaLayout SelectedArena => _pendingArena != null ? _pendingArena : _arena != null ? _arena.Layout : null;
         private DrivingFeatureInstaller _driving;
         private OpponentSelectionPanel _opponentPanel;
         private MatchReplayArchiveScreen _archive;
@@ -75,8 +78,9 @@ namespace RobotSavaslari.UI
                 if (keyboard.rKey.wasPressedThisFrame && !_match.EncounterComplete) _match.ContinueSeries();
                 return;
             }
-            if ((_match.State == MatchController.MatchState.Ready && enter) ||
-                (_match.State == MatchController.MatchState.Result && keyboard.rKey.wasPressedThisFrame))
+            if (_match.State == MatchController.MatchState.Ready && enter)
+                StartLobbyMatch();
+            else if (_match.State == MatchController.MatchState.Result && keyboard.rKey.wasPressedThisFrame)
                 _match.RequestCountdown();
         }
 
@@ -111,7 +115,7 @@ namespace RobotSavaslari.UI
                     return;
                 }
 
-                if (GUI.Button(new Rect(width - 174f, 16f, 158f, 36f), "Duraklat (Esc)"))
+                if (GUI.Button(new Rect(width - 174f, 16f, 158f, 36f), "Duraklat"))
                     _settings.ToggleSettings();
                 if (_settings.IsOpen) return;
 
@@ -141,26 +145,27 @@ namespace RobotSavaslari.UI
             if (_opponentPanel == null) _opponentPanel = GetComponent<OpponentSelectionPanel>();
             if (_archive == null) _archive = GetComponent<MatchReplayArchiveScreen>();
 
-            ArenaMenuStyle.Fill(new Rect(0, 0, width, height), new Color32(10, 18, 26, 96));
+            ArenaMenuStyle.DrawGarage(width, height);
             var dock = new Rect(Outer, Outer, 316f, height - Outer * 2f);
             ArenaMenuStyle.Panel(dock);
-            ArenaMenuStyle.Fill(new Rect(dock.x, dock.y, 4f, 104f), ArenaMenuStyle.Accent);
+            ArenaMenuStyle.Fill(new Rect(dock.x, dock.y, dock.width, 3f), ArenaMenuStyle.Accent);
+            ArenaMenuStyle.HazardStripe(new Rect(dock.x + 22f, dock.yMax - 24f, 88f, 8f));
 
             float x = dock.x + 22f;
             float w = dock.width - 44f;
             GUI.Label(new Rect(x, 58, w, 114), "ROBOT\nSAVAŞLARI", theme.Logo);
             var rules = _match.Rules;
             string mode = rules.mode == MatchMode.FirstToTwo ? "İlk 2 galibiyet" : "Tek maç";
-            string arenaName = _arena != null && _arena.Layout != null ? _arena.Layout.displayName : "MainArena";
+            string arenaName = SelectedArena != null ? SelectedArena.displayName : "MainArena";
             GUI.Label(new Rect(x, 174, w, 38), arenaName + "  /  " + mode, theme.Hint);
-            if (GUI.Button(new Rect(x, 222, w, 56), "Maça başla   [Enter]", theme.Primary))
+            if (GUI.Button(new Rect(x, 222, w, 56), "Maça başla", theme.Primary))
             {
-                _match.RequestCountdown();
+                StartLobbyMatch();
                 return;
             }
 
             ArenaMenuStyle.Fill(new Rect(x, 302, w, 1), ArenaMenuStyle.Border);
-            GUI.Label(new Rect(x, 317, w, 28), "OYUN MODLARI", theme.Heading);
+            GUI.Label(new Rect(x, 317, w, 28), "MÜCADELE VE EĞİTİM", theme.Heading);
             if (Button(new Rect(x, 354, w, 46), "Yerel mücadele", challenge != null && challenge.isActiveAndEnabled))
             {
                 _challengeScreen.Open(challenge);
@@ -183,7 +188,7 @@ namespace RobotSavaslari.UI
             }
 
             ArenaMenuStyle.Fill(new Rect(x, height - 126, w, 1), ArenaMenuStyle.Border);
-            if (GUI.Button(new Rect(x, height - 106, w * .65f - 4, 49), "Ayarlar   [Esc]", theme.Button))
+            if (GUI.Button(new Rect(x, height - 106, w * .65f - 4, 49), "Ayarlar", theme.Button))
             {
                 _settings.ToggleSettings();
                 return;
@@ -211,7 +216,7 @@ namespace RobotSavaslari.UI
             float w = dock.width - 40f;
             GUI.Label(new Rect(x, 43, w, 44), "Maç kurulumu", theme.Title);
 
-            GUI.Label(new Rect(x, 98, w, 24), "ARENA", theme.Heading);
+            GUI.Label(new Rect(x, 98, w, 24), "MAÇ ARENASI", theme.Heading);
             DrawArenas(new Rect(x, 125, w, 82));
 
             MatchRules rules = _match.Rules;
@@ -273,11 +278,31 @@ namespace RobotSavaslari.UI
                 var layout = layouts[i];
                 if (layout == null) continue;
                 Rect chip = new Rect(x + i % 2 * (cell + 8f), y + i / 2 * 41f, cell, 34f);
-                if (Choice(chip, layout.displayName, layout == _arena.Layout)) _arena.Select(i);
+                if (!Choice(chip, layout.displayName, layout == SelectedArena)) continue;
+                _pendingArena = layout;
+                _arenaStartError = false;
             }
             if (scrolling) GUI.EndScrollView();
-            if (!string.IsNullOrEmpty(_arena.SelectionError))
-                GUI.Label(new Rect(rect.x, 562f, rect.width, 44f), "Arena seçilemedi. Geçerli düzen kullanılıyor.", ArenaMenuStyle.Current.Hint);
+            if (_arenaStartError)
+                GUI.Label(new Rect(rect.x, 562f, rect.width, 44f), "Bu arena yüklenemedi. Başka bir arena seç.", ArenaMenuStyle.Current.Hint);
+        }
+
+        private void StartLobbyMatch()
+        {
+            if (IsShowingReadyMenu && TryApplyArena()) _match.RequestCountdown();
+        }
+
+        private bool TryApplyArena()
+        {
+            if (_pendingArena == null || _arena == null || _pendingArena == _arena.Layout) return true;
+            for (int i = 0; i < _arena.Layouts.Count; i++)
+            {
+                if (_arena.Layouts[i] != _pendingArena) continue;
+                _arenaStartError = !_arena.Select(i);
+                return !_arenaStartError;
+            }
+            _arenaStartError = true;
+            return false;
         }
 
         private void DrawOpponent(float x, float w)
@@ -365,8 +390,8 @@ namespace RobotSavaslari.UI
                 if (!string.IsNullOrEmpty(_match.HistoryNotice)) GUI.Label(new Rect(16, 250, width - 32, 24), _match.HistoryNotice);
                 return;
             }
-            string next = !_match.EncounterComplete ? (_match.Outcome == MatchController.MatchOutcome.Draw ? "Raundu tekrarla (R)" : "Sonraki raund (R)")
-                : _match.Rules.mode == MatchMode.FirstToTwo ? "Yeni seri (R)" : "Yeni maç (R)";
+            string next = !_match.EncounterComplete ? (_match.Outcome == MatchController.MatchOutcome.Draw ? "Raundu tekrarla" : "Sonraki raund")
+                : _match.Rules.mode == MatchMode.FirstToTwo ? "Yeni seri" : "Yeni maç";
             if (GUI.Button(left, next, _buttonStyle)) _match.RequestCountdown();
             if (GUI.Button(right, "Ana menü", _buttonStyle)) _match.Prepare();
             if (!string.IsNullOrEmpty(_match.HistoryNotice)) GUI.Label(new Rect(16, 175, 600, 42), _match.HistoryNotice);
@@ -381,7 +406,7 @@ namespace RobotSavaslari.UI
         {
             var panel = new Rect((width - 560) * .5f, 70, 560, Mathf.Min(480, height - 220));
             var theme = ArenaMenuStyle.Current;
-            ArenaMenuStyle.Fill(new Rect(0, 0, width, height), ArenaMenuStyle.Canvas);
+            ArenaMenuStyle.DrawGarage(width, height, ArenaMenuStyle.Canvas);
             ArenaMenuStyle.Panel(panel);
             GUI.Label(new Rect(panel.x + 16, panel.y + 8, 528, 32), "Maç geçmişi", theme.Title);
             var records = _match.HistoryStore.Load();
@@ -399,10 +424,14 @@ namespace RobotSavaslari.UI
                     : record.outcome == MatchController.MatchOutcome.OpponentVictory ? "Mağlubiyet" : "Berabere";
                 GUI.Label(new Rect(6, y, 360, 24), $"{mode}: {outcome} | {record.playerWins}-{record.opponentWins} | {record.durationSeconds:0.0} sn");
                 GUI.Label(new Rect(6, y + 26, 360, 24), record.endedAtUtc + (record.rules.timeLimitSeconds == 0 ? " | Süresiz" : $" | {record.rules.timeLimitSeconds:0} sn"));
-                if (GUI.Button(new Rect(380, y + 8, 116, 38), "Rövanş") && _match.Rematch(record)) _showHistory = false;
+                if (GUI.Button(new Rect(380, y + 8, 116, 38), "Rövanş"))
+                {
+                    _showHistory = false;
+                    if (TryApplyArena() && !_match.Rematch(record)) _showHistory = true;
+                }
             }
             GUI.EndScrollView();
-            if (GUI.Button(new Rect(panel.x + 180, panel.yMax - 52, 200, 36), "Geri   [Esc]", theme.Button)) _showHistory = false;
+            if (GUI.Button(new Rect(panel.x + 180, panel.yMax - 52, 200, 36), "Geri", theme.Button)) _showHistory = false;
         }
 
         private static void QuitGame()
