@@ -152,6 +152,8 @@ namespace RobotSavaslari.Presentation.Tests
             float playerHealth = Match.Player.GetComponent<RobotHealth>().CurrentHealth;
             float opponentHealth = Match.Opponent.GetComponent<RobotHealth>().CurrentHealth;
             int matchCount = Match.MatchCount;
+            // A Ready rigidbody can settle between rendered frames. Hold the reference pose for the ownership check.
+            MainArenaTestScene.PlaceRobot(Match.Player, Match.Player.transform.position, true);
             Vector3 playerPosition = Match.Player.transform.position;
             int healthEvents = 0;
             Action<RobotHealth> onHealth = _ => healthEvents++;
@@ -785,12 +787,12 @@ namespace RobotSavaslari.Presentation.Tests
             File.Copy(entry.Path, Path.Combine(output, entry.Id + MatchReplayArchive.FileExtension));
         }
 
-        [UnityTest, Explicit("Requires the five files recorded by the preceding Windows player run.")]
+        [UnityTest, UnityPlatform(RuntimePlatform.WindowsPlayer), Explicit("Requires the five files recorded by the preceding Windows player run.")]
         public IEnumerator ReopenEncountersAfterPlayerRestart()
         {
-            yield return Load();
             string path = Environment.GetEnvironmentVariable("REPLAY03_ACCEPTANCE_DIR");
-            Assert.That(path, Is.Not.Null.And.Not.Empty);
+            if (string.IsNullOrEmpty(path)) Assert.Ignore("Run with the isolated archive directory from the preceding Windows test player.");
+            yield return Load();
             var previousRun = new MatchReplayArchiveStore(path);
             Assert.That(MainArenaPresentationInstaller.UseArchiveStore(Match, previousRun), Is.True);
             Assert.That(_screen.OpenArchive(), Is.True, _screen.Notice);
