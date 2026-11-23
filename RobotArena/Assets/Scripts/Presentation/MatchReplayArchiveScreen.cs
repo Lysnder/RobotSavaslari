@@ -367,7 +367,7 @@ namespace RobotSavaslari.Presentation
             GUI.Label(new Rect(x, bar.yMax - 22f, w, 20f), "Sağ tık + sürükle: döndür · Tekerlek: yakınlaştır · C: kamera modu" +
                 (info.IsComplete ? "" : " · " + MatchReplayArchive.DescribeCompleteness(info)), _smallStyle);
 
-            if (_player.InspectedRobot >= 0) DrawInspection(height);
+            if (_player.InspectedRobot >= 0) DrawInspection(width, height);
             DrawEventList(info, width, showEvents ? height : bar.y, time);
         }
 
@@ -486,19 +486,20 @@ namespace RobotSavaslari.Presentation
             return true;
         }
 
-        private void DrawInspection(float height)
+        private void DrawInspection(float width, float height)
         {
             int robot = _player.InspectedRobot;
             _player.GetPartStates(robot, _parts);
-            var area = new Rect(16f, 16f, 300f, Mathf.Min(height - 210f, 60f + _parts.Count * 20f));
+            var area = new Rect(16f, 16f, Mathf.Min(300f, width - 368f), Mathf.Min(height - 210f, 60f + _parts.Count * 20f));
             GUI.Box(area, string.Empty);
             GUI.Label(new Rect(area.x + 10f, area.y + 6f, area.width - 20f, 24f), robot == MatchReplayRecorder.PlayerRobot ? "OYUNCU PARÇALARI" : "RAKİP PARÇALARI", _titleStyle);
             float y = area.y + 32f;
             foreach (KeyValuePair<string, bool> part in _parts)
             {
                 if (y > area.yMax - 20f) break;
-                GUI.Label(new Rect(area.x + 10f, y, 160f, 20f), part.Key, part.Value ? _smallStyle : _warnStyle);
-                GUI.Label(new Rect(area.x + 170f, y, 120f, 20f), part.Value ? "yerinde" : "kopmuş", part.Value ? _goodStyle : _warnStyle);
+                float nameWidth = area.width * 0.55f;
+                GUI.Label(new Rect(area.x + 10f, y, nameWidth, 20f), part.Key, part.Value ? _smallStyle : _warnStyle);
+                GUI.Label(new Rect(area.x + 10f + nameWidth, y, area.width - nameWidth - 16f, 20f), part.Value ? "yerinde" : "kopmuş", part.Value ? _goodStyle : _warnStyle);
                 y += 20f;
             }
         }
