@@ -60,10 +60,18 @@ namespace RobotSavaslari.Gameplay.Tests
             var original = weapon.Mesh;
             Assert.That(spinner.pushSpeed, Is.Zero);
             Assert.That(panel.ForkSelected, Is.False);
+            var playback = match.GetComponent<MatchReplayArchivePlayer>();
+            string historical = Environment.GetEnvironmentVariable("ROBOT_ARENA_LEGACY_REPLAY");
+            if (!string.IsNullOrEmpty(historical))
+            {
+                Assert.That(playback.OpenArchiveMode(), Is.True, playback.LastError);
+                Assert.That(playback.Open(historical), Is.True, playback.LastError);
+                Assert.That(playback.IsActive, Is.True);
+                playback.CloseArchiveMode();
+            }
             yield return WinFromMenu(spinner);
 
             var oldRecording = archive.List().Single();
-            var playback = match.GetComponent<MatchReplayArchivePlayer>();
             Assert.That(playback.OpenArchiveMode(), Is.True, playback.LastError);
             Assert.That(playback.Open(oldRecording.Path), Is.True, playback.LastError);
             playback.CloseArchiveMode();
