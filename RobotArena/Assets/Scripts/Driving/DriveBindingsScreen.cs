@@ -170,7 +170,7 @@ namespace RobotSavaslari.Driving
 
         private void Update()
         {
-            // Maç başladıysa ya da ayarlar açıldıysa ekran kendiliğinden kapanır.
+            // Sahne erişimi kapattığında eşleme ekranı da kapanır.
             if (IsOpen && !AccessAllowed)
             {
                 Close();

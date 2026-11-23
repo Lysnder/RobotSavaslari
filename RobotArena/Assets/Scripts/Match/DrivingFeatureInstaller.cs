@@ -202,20 +202,19 @@ namespace RobotSavaslari.Match
                 settings = FindAnyObjectByType<SettingsPanelController>();
             }
 
-            // Eşleme ekranına ve eğitime yalnızca kurulmuş, hazır bir maçta ve
-            // ayarlar kapalıyken girilir; maç başlayınca ikisi de kapanır.
-            bool readyAccess = match.IsInitialized
-                               && match.State == MatchController.MatchState.Ready
-                               && (settings == null || !settings.IsOpen);
+            bool ready = match.IsInitialized && match.State == MatchController.MatchState.Ready;
+            bool settingsOpen = settings != null && settings.IsOpen;
 
             if (bindingsScreen != null)
             {
-                bindingsScreen.AccessAllowed = readyAccess && !IsTrialActive;
+                // Ana menüsü olan sahnelerde eşleme ekranı ayarların içinden açılır.
+                bindingsScreen.AccessAllowed = ready && !IsTrialActive &&
+                                               (!settingsOpen || !bindingsScreen.ShowReadyShortcut);
             }
 
             if (timeTrial != null)
             {
-                timeTrial.CanEnter = readyAccess && (bindingsScreen == null || !bindingsScreen.IsOpen);
+                timeTrial.CanEnter = ready && !settingsOpen && (bindingsScreen == null || !bindingsScreen.IsOpen);
             }
 
             if (gauge != null) gauge.Visible = match.State == MatchController.MatchState.Playing || IsTrialActive;

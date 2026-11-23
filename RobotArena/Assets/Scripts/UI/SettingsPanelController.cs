@@ -15,6 +15,9 @@ namespace RobotSavaslari.UI
         private bool _cameraPage;
         private MatchController _match;
         private MainMenuScreen _menu;
+        private DriveBindingsScreen Bindings => _match != null && _match.Player != null
+            ? _match.Player.GetComponent<DriveBindingsScreen>()
+            : null;
 
         private void Awake()
         {
@@ -24,8 +27,7 @@ namespace RobotSavaslari.UI
 
         private void Update()
         {
-            if (_match != null && _match.Player != null &&
-                _match.Player.TryGetComponent<DriveBindingsScreen>(out var bindings) && bindings.IsOpen) return;
+            if (Bindings is { IsOpen: true }) return;
             if (Keyboard.current == null || !Keyboard.current.escapeKey.wasPressedThisFrame) return;
             if (!IsOpen && _menu != null && _menu.TryCloseHistory()) return;
             ToggleSettings();
@@ -54,17 +56,19 @@ namespace RobotSavaslari.UI
         private void OnGUI()
         {
             if (!IsOpen) return;
+            var bindings = Bindings;
+            if (bindings != null && bindings.IsOpen) return;
             Matrix4x4 previous = GUI.matrix;
             try
             {
                 float scale = ArenaMenuStyle.Scale(Screen.width, Screen.height);
                 GUI.matrix = Matrix4x4.Scale(new Vector3(scale, scale, 1f));
-                DrawPanel(Screen.width / scale, Screen.height / scale);
+                DrawPanel(Screen.width / scale, Screen.height / scale, bindings);
             }
             finally { GUI.matrix = previous; }
         }
 
-        private void DrawPanel(float width, float height)
+        private void DrawPanel(float width, float height, DriveBindingsScreen bindings)
         {
             var theme = ArenaMenuStyle.Current;
             var rect = new Rect((width - 676) * .5f, (height - 538) * .5f, 676, 538);
@@ -83,6 +87,12 @@ namespace RobotSavaslari.UI
                 _cameraPage = false;
             if (GUI.Button(new Rect(x + 196, rect.y + 109, 126, 39), "Kamera", _cameraPage ? theme.Selected : theme.Chip))
                 _cameraPage = true;
+            if (bindings != null && bindings.isActiveAndEnabled && bindings.AccessAllowed &&
+                GUI.Button(new Rect(x + 330, rect.y + 109, 154, 39), "Sürüş tuşları", theme.Button))
+            {
+                bindings.Open();
+                return;
+            }
             ArenaMenuStyle.Fill(new Rect(x, rect.y + 164, w, 1), ArenaMenuStyle.Border);
             if (_cameraPage) DrawCamera(x, rect.y + 177, w);
             else DrawGeneral(x, rect.y + 177, w);

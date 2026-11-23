@@ -67,7 +67,7 @@ Beklenen: Her düğme görünen işlemi yapar, değerler uygulanır/kaydedilir; 
 
 ## B. WASD ve ok tuşları
 
-1. Ana menüde “Sürüş tuşları” → “Varsayılanlara dön” → “Geri”; böylece mevcut kişisel eşlemenin etkisini kaldır. Kişisel ilk durum sonda geri yüklenecek.
+1. Ana menüde “Ayarlar” → “Sürüş tuşları” → “Varsayılanlara dön” → “Geri” → “Kaydet ve dön”; böylece mevcut kişisel eşlemenin etkisini kaldır. Kişisel ilk durum sonda geri yüklenecek.
 2. “Tek maç” ve “60 sn” seç; Enter veya Maça başla ile geri sayımı başlat, BAŞLA'yı bekle.
 3. Boş alanda önce W, S, A, D'yi **tek tek** bas/bırak. İleri, geri, sola ve sağa dönmeyi kaydet.
 4. Ayrı olarak ↑, ↓, ←, → tuşlarını tek tek dene. W+A / ↑+← gibi birer birleşik dönüş dene.
@@ -117,7 +117,7 @@ Beklenen: Hareket/yakınlaşma doğru yönde ve sınırlarda çalışır, kamera
 
 ## E. Başlat, saldır, duraklat, ayarlar, devam
 
-1. Menüde “Maça başla”a gerçek fareyle bas, geri sayımı izle.
+1. Menüde “Maça başla” düğmesine gerçek fareyle bas, geri sayımı izle.
 2. WASD/oklarla rakibe git, Space ile saldır. Silah hareketi ve uygun temas varsa hasarı gözle.
 3. Sürüşten sonra tüm tuşları bırak, Esc ile duraklat/ayarları aç; bir süre bekle. Ayrı denemede “Duraklat (Esc)” düğmesine tıkla.
 4. Ayarlarda fareyle bir değeri değiştir, Enter/Space/W bas-bırak; arka maçın ilerlemediğini izle.

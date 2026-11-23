@@ -154,36 +154,24 @@ namespace RobotSavaslari.UI
             float x = dock.x + 22f;
             float w = dock.width - 44f;
             GUI.Label(new Rect(x, 58, w, 114), "ROBOT\nSAVAŞLARI", theme.Logo);
-            var rules = _match.Rules;
-            string mode = rules.mode == MatchMode.FirstToTwo ? "İlk 2 galibiyet" : "Tek maç";
-            string arenaName = SelectedArena != null ? SelectedArena.displayName : "MainArena";
-            GUI.Label(new Rect(x, 174, w, 38), arenaName + "  /  " + mode, theme.Hint);
-            if (GUI.Button(new Rect(x, 222, w, 56), "Maça başla", theme.Primary))
+            if (GUI.Button(new Rect(x, 190, w, 56), "Maça başla", theme.Primary))
             {
                 StartLobbyMatch();
                 return;
             }
 
-            ArenaMenuStyle.Fill(new Rect(x, 302, w, 1), ArenaMenuStyle.Border);
-            GUI.Label(new Rect(x, 317, w, 28), "MÜCADELE VE EĞİTİM", theme.Heading);
-            if (Button(new Rect(x, 354, w, 46), "Yerel mücadele", challenge != null && challenge.isActiveAndEnabled))
+            ArenaMenuStyle.Fill(new Rect(x, 270, w, 1), ArenaMenuStyle.Border);
+            GUI.Label(new Rect(x, 285, w, 28), "MÜCADELE VE EĞİTİM", theme.Heading);
+            if (Button(new Rect(x, 322, w, 46), "Yerel mücadele", challenge != null && challenge.isActiveAndEnabled))
             {
                 _challengeScreen.Open(challenge);
                 return;
             }
 
             var trial = _driving != null && _driving.isActiveAndEnabled ? _driving.TimeTrial : null;
-            if (Button(new Rect(x, 410, w, 46), "Sürüş eğitimi", trial != null && trial.CanEnter))
+            if (Button(new Rect(x, 378, w, 46), "Sürüş eğitimi", trial != null && trial.CanEnter))
             {
                 trial.Enter();
-                return;
-            }
-
-            var bindings = _driving != null ? _driving.BindingsScreen : null;
-            if (Button(new Rect(x, 466, w, 46), "Sürüş tuşları",
-                bindings != null && bindings.isActiveAndEnabled && bindings.AccessAllowed))
-            {
-                bindings.Open();
                 return;
             }
 

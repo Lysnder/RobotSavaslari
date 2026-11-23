@@ -454,6 +454,7 @@ namespace RobotSavaslari.Presentation.Tests
         public IEnumerator ReadyMenuSelectsMatchFormatAndOpensSettings()
         {
             yield return Load();
+            yield return InstallDrivingFeatures();
             var menu = Match.GetComponent<MainMenuScreen>();
             var settings = Match.GetComponent<SettingsPanelController>();
             float scale = MainMenuScreen.ReadyScale(Screen.width, Screen.height);
@@ -464,9 +465,20 @@ namespace RobotSavaslari.Presentation.Tests
             Assert.That(Match.Rules.mode, Is.EqualTo(MatchMode.FirstToTwo));
             ArchiveGui.Click(menu, new Vector2(width - 163f, 331f) * scale);
             Assert.That(Match.Rules.timeLimitSeconds, Is.EqualTo(120f));
+            var bindings = Match.Player.GetComponent<DriveBindingsScreen>();
+            Assert.That(bindings, Is.Not.Null);
+            ArchiveGui.Click(menu, new Vector2(182f, 489f) * scale);
+            Assert.That(bindings.IsOpen, Is.False, "the lobby no longer opens the bindings screen directly");
             ArchiveGui.Click(menu, new Vector2(120f, height - 81f) * scale);
             Assert.That(settings.IsOpen, Is.True);
             Assert.That(menu.IsShowingReadyMenu, Is.False);
+            Assert.That(Time.timeScale, Is.Zero);
+            yield return null;
+            ArchiveGui.Click(settings, new Vector2(width * .5f + 97f, height * .5f - 140f) * scale);
+            yield return null;
+            Assert.That(bindings.IsOpen, Is.True, "bindings remain open within settings");
+            bindings.Close();
+            Assert.That(settings.IsOpen, Is.True);
             Assert.That(Time.timeScale, Is.Zero);
             settings.ToggleSettings();
             Assert.That(menu.IsShowingReadyMenu, Is.True);
@@ -490,7 +502,7 @@ namespace RobotSavaslari.Presentation.Tests
             Assert.That(arena.Contents, Is.SameAs(previousContents));
             Assert.That(Match.State, Is.EqualTo(MatchController.MatchState.Ready));
 
-            ArchiveGui.Click(menu, new Vector2(182f, 249f) * scale);
+            ArchiveGui.Click(menu, new Vector2(182f, 218f) * scale);
             Assert.That(Match.State, Is.EqualTo(MatchController.MatchState.Countdown));
             Assert.That(arena.Layout, Is.SameAs(arena.Layouts[choice]));
             Assert.That(arena.Contents, Is.Not.SameAs(previousContents));
