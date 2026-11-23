@@ -483,6 +483,37 @@ namespace RobotSavaslari.Presentation.Tests
             settings.ToggleSettings();
             Assert.That(menu.IsShowingReadyMenu, Is.True);
         }
+
+        [UnityTest]
+        public IEnumerator ReadyMenuStartsAllFourDrivingExercisesAndTheTimeTrial()
+        {
+            yield return Load();
+            yield return InstallDrivingFeatures();
+            var menu = Match.GetComponent<MainMenuScreen>();
+            var installer = Object.FindAnyObjectByType<DrivingFeatureInstaller>();
+            var session = installer.TimeTrial;
+            var exercises = installer.ExerciseCatalog.exercises;
+            Assert.That(exercises, Has.Length.EqualTo(4));
+            float scale = MainMenuScreen.ReadyScale(Screen.width, Screen.height);
+
+            for (int i = 0; i < exercises.Length; i++)
+            {
+                ArchiveGui.Click(menu, new Vector2(182f, 457f) * scale);
+                ArchiveGui.Click(menu, new Vector2(112f + i % 2 * 140f, 504f + i / 2 * 37f) * scale);
+                Assert.That(session.Exercise, Is.SameAs(exercises[i]), exercises[i].title);
+                Assert.That(session.State, Is.Not.EqualTo(TimeTrialState.Inactive));
+                Assert.That(menu.IsShowingReadyMenu, Is.False);
+                session.Exit();
+                yield return null;
+                Assert.That(menu.IsShowingReadyMenu, Is.True);
+            }
+
+            ArchiveGui.Click(menu, new Vector2(182f, 401f) * scale);
+            Assert.That(session.State, Is.Not.EqualTo(TimeTrialState.Inactive));
+            Assert.That(session.Exercise, Is.Null);
+            session.Exit();
+        }
+
         [UnityTest]
         public IEnumerator ReadyMenuAppliesArenaOnlyWhenStarting()
         {

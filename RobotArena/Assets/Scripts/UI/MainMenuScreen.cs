@@ -3,6 +3,7 @@ using RobotSavaslari.Arena;
 using RobotSavaslari.Match;
 using RobotSavaslari.Presentation;
 using RobotSavaslari.Driving;
+using RobotSavaslari.Training;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -37,6 +38,9 @@ namespace RobotSavaslari.UI
         private bool _arenaStartError;
         private ArenaLayout SelectedArena => _pendingArena != null ? _pendingArena : _arena != null ? _arena.Layout : null;
         private DrivingFeatureInstaller _driving;
+        private bool _showExercises;
+        private Vector2 _exerciseScroll;
+        private string _exerciseNotice;
         private OpponentSelectionPanel _opponentPanel;
         private MatchReplayArchiveScreen _archive;
 
@@ -174,6 +178,7 @@ namespace RobotSavaslari.UI
                 trial.Enter();
                 return;
             }
+            if (trial != null && DrawExerciseMenu(trial, x, w)) return;
 
             ArenaMenuStyle.Fill(new Rect(x, height - 126, w, 1), ArenaMenuStyle.Border);
             if (GUI.Button(new Rect(x, height - 106, w * .65f - 4, 49), "Ayarlar", theme.Button))
@@ -186,6 +191,51 @@ namespace RobotSavaslari.UI
                 QuitGame();
 
             DrawSetup(new Rect(width - Outer - SetupWidth, Outer, SetupWidth, height - Outer * 2), width, height);
+        }
+
+        private bool DrawExerciseMenu(TimeTrialSession trial, float x, float width)
+        {
+            var exercises = _driving.ExerciseCatalog?.exercises;
+            if (exercises == null || exercises.Length == 0) return false;
+            if (Button(new Rect(x, 434, width, 46),
+                _showExercises ? "Alıştırmaları kapat" : "Sürüş alıştırmaları", trial.CanEnter))
+            {
+                _showExercises = !_showExercises;
+                _exerciseNotice = null;
+            }
+            if (!_showExercises || !trial.CanEnter) return false;
+
+            float cell = (width - 8f) * .5f;
+            float rowsHeight = Mathf.CeilToInt(exercises.Length * .5f) * 37f;
+            var theme = ArenaMenuStyle.Current;
+            var rows = new Rect(x, 488f, width, 74f);
+            bool scroll = rowsHeight > rows.height;
+            if (scroll)
+            {
+                _exerciseScroll = GUI.BeginScrollView(rows, _exerciseScroll, new Rect(0f, 0f, width - 18f, rowsHeight));
+                cell = (width - 26f) * .5f;
+            }
+            Vector2 origin = scroll ? Vector2.zero : rows.position;
+            bool entered = false;
+            for (int i = 0; i < exercises.Length; i++)
+            {
+                var exercise = exercises[i];
+                if (exercise == null) continue;
+                var rect = new Rect(origin.x + i % 2 * (cell + 8f), origin.y + i / 2 * 37f, cell, 32f);
+                if (!GUI.Button(rect, exercise.title, theme.Chip)) continue;
+                entered = trial.EnterExercise(exercise);
+                if (entered)
+                {
+                    _showExercises = false;
+                    _exerciseNotice = null;
+                    break;
+                }
+                _exerciseNotice = "Bu arenada güvenli rota bulunamadı.";
+            }
+            if (scroll) GUI.EndScrollView();
+            if (_exerciseNotice != null)
+                GUI.Label(new Rect(x, 562f, width, 30f), _exerciseNotice, theme.Hint);
+            return entered;
         }
 
         private static bool Button(Rect rect, string label, bool enabled)

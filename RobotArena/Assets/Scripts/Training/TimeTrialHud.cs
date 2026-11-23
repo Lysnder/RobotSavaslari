@@ -37,6 +37,7 @@ namespace RobotSavaslari.Training
         private string entryNotice;
 
         public DrivingExerciseCatalog ExerciseCatalog { get; set; }
+        public bool ShowReadyShortcut { get; set; } = true;
 
 
         [SerializeField] private GhostRunner ghost;
