@@ -342,7 +342,8 @@ namespace RobotSavaslari.Training
             float width = Mathf.Min(480f, guiWidth - 20f);
             if (wrapped == null) wrapped = new GUIStyle(GUI.skin.label) { wordWrap = true };
             DrawTargetLabels(exercise);
-            GUILayout.BeginArea(new Rect((guiWidth - width) * .5f, 8f, width, 230f), GUI.skin.box);
+            float height = 145f + (showControls ? 47f : 0f) + (finished ? 42f : 0f);
+            GUILayout.BeginArea(new Rect((guiWidth - width) * .5f, 8f, width, height), GUI.skin.box);
             GUILayout.Label($"Maça hazırlık  ·  {session.PreparationStep}/2  ·  {exercise.title}", panelStyle);
             if (stop)
             {
@@ -362,6 +363,7 @@ namespace RobotSavaslari.Training
                     $"Tekrar dene · {session.Notice} Sert temas: {result.contacts}", wrapped);
             showControls = GUILayout.Toggle(showControls, "Sürüş tuşları");
             if (showControls) GUILayout.Label(session.PreparationControls, wrapped);
+            GUILayout.FlexibleSpace();
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("Tekrar dene", GUILayout.Height(28f))) session.Retry();
             if (finished && result.success && stop && GUILayout.Button("Sonraki adım", GUILayout.Height(28f)))
