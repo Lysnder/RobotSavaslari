@@ -41,6 +41,9 @@ namespace RobotSavaslari.Presentation
         private bool _confirmDiscardPending;
         private long _usedBytes;
         private Vector2 _listScroll, _eventScroll;
+        private static readonly string[] FilterNames = { "Tümü", "Darbe", "Parça", "Tehlike", "Raund" };
+        private readonly List<int> _visibleEvents = new List<int>();
+        private int _eventFilter, _roundFilter = -1;
         private GUIStyle _titleStyle, _smallStyle, _warnStyle, _goodStyle, _wrapStyle;
 
         public IReadOnlyList<MatchReplayArchiveStore.Entry> Entries
@@ -110,7 +113,7 @@ namespace RobotSavaslari.Presentation
                 _rows.Add(new Row
                 {
                     Entry = entry,
-                    Compatibility = entry.IsReadable ? _player.CheckCompatibility(entry.Info) : "Bozuk: " + entry.Error,
+                    Compatibility = entry.IsReadable ? _player.CheckCompatibility(entry.Info) : MatchReplayArchive.ReadFailureLabel(entry.Error),
                     InHistory = entry.Info != null && entry.Info.EncounterId != null && history.Contains(entry.Info.EncounterId),
                 });
         }
@@ -126,7 +129,7 @@ namespace RobotSavaslari.Presentation
                 return false;
             }
             _notice = null;
-            _eventScroll = Vector2.zero;
+            FilterEvents(0, -1);
             return true;
         }
 
@@ -363,7 +366,7 @@ namespace RobotSavaslari.Presentation
                 (info.IsComplete ? "" : " · " + MatchReplayArchive.DescribeCompleteness(info)), _smallStyle);
 
             if (_player.InspectedRobot >= 0) DrawInspection(height);
-            if (showEvents) DrawEventList(info, width, height, time);
+            DrawEventList(info, width, showEvents ? height : bar.y, time);
         }
 
         private float _buttonScale = 1f;
@@ -381,11 +384,19 @@ namespace RobotSavaslari.Presentation
         {
             float start = _player.Reader != null ? _player.Reader.StartTime : 0f;
             Color previous = GUI.color;
+            for (int r = 0; r < info.Rounds.Count; r++)
+            {
+                ReplayRound round = info.Rounds[r];
+                float left = slider.x + Mathf.Clamp01((round.StartTime - start) / duration) * slider.width;
+                float right = slider.x + Mathf.Clamp01((round.EndTime - start) / duration) * slider.width;
+                GUI.color = r % 2 == 0 ? new Color(.35f, .7f, .9f) : new Color(.7f, .85f, .6f);
+                GUI.DrawTexture(new Rect(left, slider.y - 7f, Mathf.Max(1, right - left - 1), 3f), Texture2D.whiteTexture);
+            }
             float lastX = float.NegativeInfinity;
             foreach (ReplayEvent item in info.Events)
             {
                 float px = slider.x + Mathf.Clamp01((item.Time - start) / duration) * slider.width;
-                bool boundary = item.Type != ReplayEventType.Impact;
+                bool boundary = item.Type == ReplayEventType.RoundStart || item.Type == ReplayEventType.RoundEnd || item.Type == ReplayEventType.EncounterEnd;
                 if (!boundary && px - lastX < 2f) continue;
                 lastX = px;
                 GUI.color = EventColor(item.Type);
@@ -396,26 +407,65 @@ namespace RobotSavaslari.Presentation
 
         private void DrawEventList(ReplayArchiveInfo info, float width, float height, float time)
         {
-            var area = new Rect(width - 336f, 16f, 320f, height - 32f);
+            var area = new Rect(width - 336f, 16f, 320f, Mathf.Min(height - 32f, width < 900f ? 240f : height));
             GUI.Box(area, "Olaylar");
             float start = _player.Reader != null ? _player.Reader.StartTime : 0f;
-            var view = new Rect(area.x + 6f, area.y + 24f, area.width - 12f, area.height - 30f);
+            var filters = new Rect(area.x + 6f, area.y + 24f, area.width - 12f, 26f);
+            int filter = GUI.Toolbar(filters, _eventFilter, FilterNames);
+            if (filter != _eventFilter) FilterEvents(filter, _roundFilter);
+            float y = filters.yMax + 4f;
+            if (GUI.Button(new Rect(filters.x, y, 32f, 24f), "◀"))
+                FilterEvents(filter, _roundFilter == -1 ? info.Rounds.Count - 1 : _roundFilter - 1);
+            string roundLabel = _roundFilter < 0 ? "Tüm raundlar" : $"Raund {info.Rounds[_roundFilter].RoundNumber}";
+            GUI.Label(new Rect(filters.x + 46f, y, 205f, 24f), $"{roundLabel} · {_visibleEvents.Count} olay");
+            if (GUI.Button(new Rect(filters.xMax - 32f, y, 32f, 24f), "▶"))
+                FilterEvents(filter, _roundFilter + 1 >= info.Rounds.Count ? -1 : _roundFilter + 1);
+            var view = new Rect(filters.x, y + 28f, filters.width, area.yMax - y - 34f);
             const float rowHeight = 24f;
-            _eventScroll = GUI.BeginScrollView(view, _eventScroll, new Rect(0f, 0f, view.width - 20f, info.Events.Count * rowHeight));
+            _eventScroll = GUI.BeginScrollView(view, _eventScroll, new Rect(0f, 0f, view.width - 20f, _visibleEvents.Count * rowHeight));
             int first = Mathf.Max(0, Mathf.FloorToInt(_eventScroll.y / rowHeight));
-            int last = Mathf.Min(info.Events.Count, first + Mathf.CeilToInt(view.height / rowHeight) + 1);
+            int last = Mathf.Min(_visibleEvents.Count, first + Mathf.CeilToInt(view.height / rowHeight) + 1);
             Color previous = GUI.color;
             for (int i = first; i < last; i++)
             {
-                ReplayEvent item = info.Events[i];
+                ReplayEvent item = info.Events[_visibleEvents[i]];
                 bool past = item.Time - start <= time + 0.001f;
                 GUI.color = past ? Color.white : new Color(1f, 1f, 1f, 0.6f);
                 if (GUI.Button(new Rect(0f, i * rowHeight, view.width - 20f, rowHeight - 2f),
                         FormatTime(item.Time - start) + "  " + MatchReplayArchive.DescribeEvent(item, info), _smallStyle))
-                    _player.Seek(item.Time - start);
+                    JumpToListedEvent(i);
             }
             GUI.color = previous;
             GUI.EndScrollView();
+        }
+
+        public void FilterEvents(int filter, int round)
+        {
+            if (_player == null || !_player.IsActive) return;
+            filter = Mathf.Clamp(filter, 0, FilterNames.Length - 1);
+            round = Mathf.Clamp(round, -1, _player.Info.Rounds.Count - 1);
+            _eventFilter = filter;
+            _roundFilter = round;
+            _eventScroll = Vector2.zero;
+            _visibleEvents.Clear();
+            var events = _player.Info.Events;
+            for (int i = 0; i < events.Count; i++)
+            {
+                ReplayEvent item = events[i];
+                if (round >= 0 && item.Round != round) continue;
+                bool match = filter == 0 || filter == 1 && item.Type == ReplayEventType.Impact ||
+                    filter == 2 && item.Type == ReplayEventType.PartDetached || filter == 3 && item.Type == ReplayEventType.HazardPhaseChanged ||
+                    filter == 4 && (item.Type == ReplayEventType.RoundStart || item.Type == ReplayEventType.RoundEnd || item.Type == ReplayEventType.EncounterEnd);
+                if (match) _visibleEvents.Add(i);
+            }
+        }
+
+        public bool JumpToListedEvent(int row)
+        {
+            if (_player == null || !_player.IsActive || (uint)row >= (uint)_visibleEvents.Count) return false;
+            _player.SetPaused(true);
+            _player.Seek(_player.Info.Events[_visibleEvents[row]].Time - _player.Reader.StartTime);
+            return true;
         }
 
         private void DrawInspection(float height)
@@ -447,6 +497,7 @@ namespace RobotSavaslari.Presentation
         {
             switch (type)
             {
+                case ReplayEventType.HazardPhaseChanged: return new Color(0.8f, 0.5f, 1f);
                 case ReplayEventType.Impact: return new Color(1f, 0.55f, 0.15f);
                 case ReplayEventType.PartDetached: return new Color(1f, 0.25f, 0.2f);
                 case ReplayEventType.RoundStart: return new Color(0.4f, 0.8f, 1f);
