@@ -198,9 +198,12 @@ namespace RobotSavaslari.Tests
             Assert.AreEqual(BotRouteReason.HazardWait, bot.NavigationReason);
 
             Phase(HazardPhase.Recovery);
-            for (int i = 0; i < 24 && bot.Command.x <= 0; i++) bot.Tick(.02f);
-            Assert.AreEqual(BotRouteReason.None, bot.NavigationReason);
-            Assert.Greater(bot.Command.x, 0);
+            Vector3 beforeRecovery = botBody.position;
+            var nextStep = new WaitForFixedUpdate();
+            for (int i = 0; i < 60 && Vector3.Distance(botBody.position, beforeRecovery) < .15f; i++) yield return nextStep;
+            Assert.AreNotEqual(BotRouteReason.HazardWait, bot.NavigationReason);
+            Assert.Greater(Vector3.Distance(botBody.position, beforeRecovery), .14f,
+                "The bot must advance again, including when detached parts require a physical detour.");
             match.Player.GetComponent<RobotHealth>().TakeDamage(10000);
             Assert.AreEqual(MatchController.MatchState.Result, match.State);
             Assert.AreEqual(BotRouteReason.None, bot.NavigationReason);
