@@ -58,6 +58,25 @@ namespace RobotSavaslari.Driving.Tests
         private void ReleaseAllKeys() => HoldKeys();
 
         [UnityTest]
+        public IEnumerator HeldCommandsMustBeReleasedAcrossPracticeAttempts()
+        {
+            HoldKeys(Key.W, Key.LeftArrow);
+            yield return null;
+            driver.RequireInputRelease();
+            yield return null;
+            Assert.That(motor.MoveCommand, Is.Zero);
+            Assert.That(motor.TurnCommand, Is.Zero);
+            HoldKeys(Key.LeftArrow);
+            yield return null;
+            Assert.That(motor.TurnCommand, Is.Zero);
+            ReleaseAllKeys();
+            yield return null;
+            HoldKeys(Key.W);
+            yield return null;
+            Assert.That(motor.MoveCommand, Is.EqualTo(1f));
+        }
+
+        [UnityTest]
         public IEnumerator OkTuslariIkiEkseniAyniAndaSurer()
         {
             HoldKeys(Key.UpArrow, Key.LeftArrow);

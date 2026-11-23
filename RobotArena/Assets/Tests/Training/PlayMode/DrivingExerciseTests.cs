@@ -260,6 +260,16 @@ namespace RobotSavaslari.Training.Tests
                 {
                     Assert.That(session.PreparationStep, Is.EqualTo(step));
                     Assert.That(session.NextPreparationStep(), Is.False);
+                    // Supply a measured impact to the real active evaluator, then finish the attempt.
+                    var evaluator = (DrivingExerciseSession)typeof(TimeTrialSession)
+                        .GetField("exerciseRun", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                        .GetValue(session);
+                    evaluator.Step(session.GetCheckpoint(0).position, session.Exercise.targetYaw, Vector3.zero,
+                        session.Exercise.dwellSeconds + .1f, 1);
+                    yield return new WaitForFixedUpdate();
+                    Assert.That(session.State, Is.EqualTo(TimeTrialState.Finished));
+                    Assert.That(session.ExerciseResult.success, Is.False);
+                    Assert.That(session.NextPreparationStep(), Is.False);
                     int revision = session.AttemptRevision;
                     session.Retry();
                     Assert.That(session.AttemptRevision, Is.EqualTo(revision + 1));
