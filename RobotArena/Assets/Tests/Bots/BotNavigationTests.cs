@@ -73,6 +73,23 @@ namespace RobotSavaslari.Tests
         }
 
         [Test]
+        public void OccludedOpponentInsideAttackRangeIsNotAnAttackOpportunity()
+        {
+            body.position = new Vector3(0, 50, -.7f);
+            opponent.transform.position = new Vector3(0, 50, .7f);
+            Physics.SyncTransforms();
+            int attempts = 0;
+            bot.AttackRequest += (_, __) => attempts++;
+            bot.Tick(Tick);
+            Assert.Zero(attempts);
+            Assert.IsFalse(bot.AttackRequested);
+            obstacle.SetActive(false);
+            Physics.SyncTransforms();
+            bot.Tick(Tick);
+            Assert.AreEqual(1, attempts);
+        }
+
+        [Test]
         public void ClosedTargetRetriesAreBoundedAndResetDiscardsTheRoute()
         {
             obstacle.GetComponent<BoxCollider>().size = new Vector3(10, 2, .3f);

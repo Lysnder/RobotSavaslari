@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace RobotSavaslari
 {
-    public enum BotRouteReason { None, Obstructed, SegmentBlocked, TargetMoved, NoProgress, Unreachable, QuerySaturated }
+    public enum BotRouteReason { None, Obstructed, SegmentBlocked, TargetMoved, NoProgress, Unreachable, QuerySaturated, HazardDetour, HazardWait }
 
     internal sealed class BotNavigationRoute
     {
@@ -49,6 +49,12 @@ namespace RobotSavaslari
             Vector2 motorVelocity, Vector2 conveyorVelocity, float dt, out Vector2 steering)
         {
             steering = position;
+            bool risk = space.Hazards.Crosses(position, target);
+            if (risk && space.Hazards.Crosses(target, target))
+            {
+                Invalidate(target, BotRouteReason.HazardWait);
+                return false;
+            }
             if (wait > 0) return false;
             var direct = space.Probe(position, target);
             if (direct == BotNavigationSpace.ProbeResult.Clear)
@@ -124,7 +130,11 @@ namespace RobotSavaslari
                 bestDistance = float.PositiveInfinity;
                 progressTime = 0;
                 Plans++;
-                if (Reason == BotRouteReason.None) { Reason = BotRouteReason.Obstructed; BlockedPoint = target; }
+                if (risk || Reason == BotRouteReason.None)
+                {
+                    Reason = risk ? BotRouteReason.HazardDetour : BotRouteReason.Obstructed;
+                    BlockedPoint = target;
+                }
             }
             if (planner.State == BotRoutePlanner.Status.Searching)
             {
@@ -132,8 +142,19 @@ namespace RobotSavaslari
                 Expanded = planner.Expanded;
             }
             if (space.Saturated) Invalidate(target, BotRouteReason.QuerySaturated);
-            else if (planner.State == BotRoutePlanner.Status.Unreachable) Fail(target, BotRouteReason.Unreachable);
+            else if (planner.State == BotRoutePlanner.Status.Unreachable) Fail(target, risk ? BotRouteReason.HazardWait : BotRouteReason.Unreachable);
             return false;
+        }
+
+        internal void RiskChanged()
+        {
+            // Resume a blocked crossing as soon as the observed warning clears.
+            if (Reason == BotRouteReason.HazardWait || Reason == BotRouteReason.HazardDetour)
+            {
+                retry = wait = 0;
+                failures = 0;
+                Invalidate(BlockedPoint, BotRouteReason.None);
+            }
         }
 
         internal void Invalidate(Vector2 point, BotRouteReason reason)

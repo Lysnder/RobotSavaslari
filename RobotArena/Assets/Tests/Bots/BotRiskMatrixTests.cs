@@ -18,6 +18,7 @@ namespace RobotSavaslari.Tests
     {
         private Scene scene;
         private string data;
+        private ArenaEnvironment arena;
         private float oldScale;
 
         [UnityTearDown]
@@ -28,8 +29,8 @@ namespace RobotSavaslari.Tests
             if (data != null && Directory.Exists(data)) Directory.Delete(data, true);
         }
 
-        [UnityTest]
-        public IEnumerator SixteenSeededArenaDuelsFinishWithinBudget()
+        [UnitySetUp]
+        public IEnumerator LoadMainArena()
         {
             oldScale = Time.timeScale;
             Time.timeScale = 1;
@@ -37,12 +38,18 @@ namespace RobotSavaslari.Tests
             yield return SceneManager.LoadSceneAsync(path, LoadSceneMode.Additive);
             scene = SceneManager.GetSceneByPath(path);
             yield return null;
-            var arena = scene.GetRootGameObjects().SelectMany(root => root.GetComponentsInChildren<ArenaEnvironment>()).Single();
+            arena = scene.GetRootGameObjects().SelectMany(root => root.GetComponentsInChildren<ArenaEnvironment>()).Single();
             var match = arena.Match;
             data = Path.Combine(Application.temporaryCachePath, "bot03-" + Guid.NewGuid().ToString("N"));
             Directory.CreateDirectory(data);
             match.HistoryStore = new MatchHistoryStore(Path.Combine(data, "history.json"));
             Assert.IsTrue(MainArenaPresentationInstaller.UseArchiveStore(match, new MatchReplayArchiveStore(Path.Combine(data, "replays"))));
+        }
+
+        [UnityTest]
+        public IEnumerator SixteenSeededArenaDuelsFinishWithinBudget()
+        {
+            var match = arena.Match;
             var panel = match.GetComponent<OpponentSelectionPanel>();
             var next = new WaitForFixedUpdate();
             Time.timeScale = 5;
@@ -127,6 +134,73 @@ namespace RobotSavaslari.Tests
                 Assert.LessOrEqual(nodes, 128);
                 yield return null;
             }
+        }
+
+        [UnityTest]
+        public IEnumerator PulseWarningDetoursWaitsForExposedTargetAndResumesAfterPauseAndRecovery()
+        {
+            int index = arena.Layouts.ToList().FindIndex(layout => layout.displayName == "PulseArena");
+            Assert.IsTrue(arena.Select(index));
+            var match = arena.Match;
+            Time.timeScale = 5f;
+            Assert.IsTrue(match.RequestCountdown());
+            for (int i = 0; i < 500 && match.State == MatchController.MatchState.Countdown; i++)
+                yield return new WaitForFixedUpdate();
+            Assert.AreEqual(MatchController.MatchState.Playing, match.State);
+            Time.timeScale = 1f;
+            var bot = match.Opponent.GetComponent<RobotBotController>();
+            var botBody = bot.GetComponent<Rigidbody>();
+            var targetBody = match.Player.GetComponent<Rigidbody>();
+            var hazard = arena.Contents.GetComponentInChildren<ArenaHazard>();
+            var center = hazard.transform.position;
+            var advance = (Action)Delegate.CreateDelegate(typeof(Action), hazard, typeof(ArenaHazard).GetMethod(
+                "FixedUpdate", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic));
+            void Phase(HazardPhase phase)
+            {
+                for (int i = 0; i < 225 && hazard.Phase != phase; i++) advance();
+                Assert.AreEqual(phase, hazard.Phase);
+            }
+            Place(botBody, center + Vector3.left * 3.5f, 90);
+            Place(targetBody, center + Vector3.right * 3.5f, -90);
+            Physics.SyncTransforms();
+            Phase(HazardPhase.Warning);
+            bot.ConfigureDecisions(BotPersonality.Aggressive, BotDifficulty.Hard);
+            bool steered = false;
+            for (int i = 0; i < 80; i++)
+            {
+                bot.Tick(.02f);
+                Assert.LessOrEqual(bot.NavigationQueries, 64);
+                if (bot.NavigationReason == BotRouteReason.HazardDetour && Mathf.Abs(bot.Command.y) > .1f) steered = true;
+            }
+            Assert.IsTrue(steered, "The warning should produce a lateral route to a safe opponent.");
+            Place(targetBody, center, -90);
+            Physics.SyncTransforms();
+            Phase(HazardPhase.Active);
+            bot.Tick(.02f);
+            Assert.AreEqual(BotRouteReason.HazardWait, bot.NavigationReason);
+            Assert.AreEqual(Vector2.zero, bot.Command);
+            Assert.IsFalse(bot.AttackRequested);
+
+            Time.timeScale = 0f;
+            yield return null;
+            Assert.AreEqual(BotRouteReason.None, bot.NavigationReason);
+            Assert.AreEqual(0, bot.NavigationPlans);
+            Time.timeScale = 1f;
+            bot.Tick(.02f);
+            Assert.AreEqual(BotRouteReason.HazardWait, bot.NavigationReason);
+
+            Phase(HazardPhase.Recovery);
+            for (int i = 0; i < 24 && bot.Command.x <= 0; i++) bot.Tick(.02f);
+            Assert.AreEqual(BotRouteReason.None, bot.NavigationReason);
+            Assert.Greater(bot.Command.x, 0);
+            match.Player.GetComponent<RobotHealth>().TakeDamage(10000);
+            Assert.AreEqual(MatchController.MatchState.Result, match.State);
+            Assert.AreEqual(BotRouteReason.None, bot.NavigationReason);
+            Assert.IsTrue(match.RestartMatch());
+            for (int i = 0; i < 8 && match.State != MatchController.MatchState.Playing; i++) yield return null;
+            Assert.AreEqual(MatchController.MatchState.Playing, match.State);
+            Assert.AreEqual(HazardPhase.Idle, hazard.Phase);
+            Assert.AreEqual(BotRouteReason.None, bot.NavigationReason);
         }
 
         private static void Place(Rigidbody body, Vector3 point, float yaw)

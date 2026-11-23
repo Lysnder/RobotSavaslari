@@ -10,6 +10,7 @@ namespace RobotSavaslari
         private const float Margin = .04f;
         private readonly Collider[] overlaps = new Collider[64];
         private readonly RaycastHit[] hits = new RaycastHit[64];
+        internal readonly BotHazardMap Hazards = new BotHazardMap();
         private readonly Rigidbody body;
         private Transform opponent;
         private readonly Vector3 halfBox;
@@ -68,6 +69,7 @@ namespace RobotSavaslari
                 ~0, QueryTriggerInteraction.Ignore);
             if (count == overlaps.Length) return Saturate();
             for (int i = 0; i < count; i++) if (IsObstacle(overlaps[i], allowOpponent)) return ProbeResult.Blocked;
+            if (Hazards.Crosses(from, to)) return ProbeResult.Blocked;
             if (!segment) return ProbeResult.Clear;
 
             Queries++;
@@ -83,6 +85,19 @@ namespace RobotSavaslari
                 return ProbeResult.Blocked;
             }
             return ProbeResult.Clear;
+        }
+
+        internal bool CanSeeOpponent(Vector2 from, Vector2 to)
+        {
+            Vector2 ray = to - from;
+            if (ray.sqrMagnitude < .000001f) return true;
+            if (Saturated || Queries >= MaxQueries - 2) return false;
+            Queries++;
+            int count = Physics.RaycastNonAlloc(AtHeight(from), new Vector3(ray.x, 0, ray.y).normalized,
+                hits, ray.magnitude, ~0, QueryTriggerInteraction.Ignore);
+            if (count == hits.Length) { Saturate(); return false; }
+            for (int i = 0; i < count; i++) if (IsObstacle(hits[i].collider, true)) return false;
+            return true;
         }
 
         internal static Vector2 Planar(Vector3 point) => new Vector2(point.x, point.z);
