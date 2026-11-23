@@ -27,6 +27,7 @@ namespace RobotSavaslari.Training
         private readonly List<Material> createdMaterials = new List<Material>();
 
         private GhostLapRecording personalBest;
+        public DrivingExerciseStore.Record ExerciseRecord { get; private set; }
         private GameObject ghost;
         private Transform source;
         private TimeTrialState previousState = TimeTrialState.Inactive;
@@ -76,11 +77,27 @@ namespace RobotSavaslari.Training
                 return;
             }
 
-            loadedCourseId = session.CourseId;
-            personalBest = GhostLapStore.Load(loadedCourseId);
+            loadedCourseId = session.ExerciseKey ?? session.CourseId;
+            ExerciseRecord = session.Exercise != null ? session.ExerciseStore?.Find(loadedCourseId) : null;
+            var legacy = session.Exercise == null ? GhostLapStore.Load(loadedCourseId) : null;
+            personalBest = session.Exercise != null
+                ? ExerciseRecord?.ghost
+                : legacy ??
+                  session.ExerciseStore?.MigrateLegacy(loadedCourseId, GhostLapStore.Load);
+            if (legacy != null) session.ExerciseStore?.MigrateLegacy(loadedCourseId, _ => legacy);
         }
 
         private void Update()
+        {
+            if (session == null || session.Exercise == null) Tick();
+        }
+
+        private void FixedUpdate()
+        {
+            if (session != null && session.Exercise != null) Tick();
+        }
+
+        private void Tick()
         {
             if (session == null)
             {
@@ -103,10 +120,10 @@ namespace RobotSavaslari.Training
             }
 
             if (state == TimeTrialState.Running &&
-                (previousState != TimeTrialState.Running || recordedAttempt != session.AttemptNumber))
+                (previousState != TimeTrialState.Running || recordedAttempt != session.AttemptRevision))
             {
                 BeginAttempt();
-                recordedAttempt = session.AttemptNumber;
+                recordedAttempt = session.AttemptRevision;
             }
 
             if (state == TimeTrialState.Running)
@@ -117,7 +134,8 @@ namespace RobotSavaslari.Training
 
             if (previousState == TimeTrialState.Running && state == TimeTrialState.Finished)
             {
-                ReportLap();
+                if (session.Exercise != null) ReportExercise();
+                else ReportLap();
             }
 
             previousState = state;
@@ -128,7 +146,13 @@ namespace RobotSavaslari.Training
             samples.Clear();
             lastSampleTime = -1f;
 
-            if (loadedCourseId != session.CourseId || personalBest == null)
+            if (session.Exercise != null)
+            {
+                samples.Capacity = Mathf.Max(samples.Capacity, DrivingExerciseStore.MaxSamples);
+                if (session.Motor != null) AddSample(0f);
+            }
+
+            if (session.Exercise != null || loadedCourseId != session.CourseId || personalBest == null)
             {
                 ReloadPersonalBest();
             }
@@ -136,6 +160,7 @@ namespace RobotSavaslari.Training
             if (personalBest != null)
             {
                 EnsureGhost();
+                PlayGhost();
             }
             else
             {
@@ -150,6 +175,14 @@ namespace RobotSavaslari.Training
                 return;
             }
 
+            if (session.Exercise != null)
+            {
+                float sampleTime = samples.Count / 10f;
+                if (sampleTime <= session.ElapsedTime && samples.Count < DrivingExerciseStore.MaxSamples)
+                    AddSample(sampleTime);
+                return;
+            }
+
             float time = session.ElapsedTime;
             if (lastSampleTime >= 0f && time - lastSampleTime < sampleInterval)
             {
@@ -157,6 +190,11 @@ namespace RobotSavaslari.Training
             }
 
             lastSampleTime = time;
+            AddSample(time);
+        }
+
+        private void AddSample(float time)
+        {
             Transform robot = session.Motor.transform;
 
             samples.Add(new GhostLapSample
@@ -178,6 +216,26 @@ namespace RobotSavaslari.Training
             // hayalet de başa döner.
             personalBest.Evaluate(session.ElapsedTime, out Vector3 position, out float yaw);
             ghost.transform.SetPositionAndRotation(position, Quaternion.Euler(0f, yaw, 0f));
+        }
+
+        private void ReportExercise()
+        {
+            var store = session.ExerciseStore;
+            if (store == null) return;
+            var result = session.ExerciseResult;
+            if (samples.Count == 0 || samples[samples.Count - 1].time < result.seconds)
+            {
+                if (samples.Count < DrivingExerciseStore.MaxSamples) AddSample(result.seconds);
+            }
+
+            var recording = result.success ? new GhostLapRecording
+            {
+                courseId = session.ExerciseKey,
+                lapTime = result.seconds,
+                samples = samples.ToArray()
+            } : null;
+            store.Save(session.ExerciseKey, result, recording);
+            ExerciseRecord = store.Find(session.ExerciseKey);
         }
 
         private void ReportLap()
@@ -324,6 +382,7 @@ namespace RobotSavaslari.Training
         {
             if (ghost != null)
             {
+                ghost.SetActive(false);
                 Destroy(ghost);
                 ghost = null;
             }

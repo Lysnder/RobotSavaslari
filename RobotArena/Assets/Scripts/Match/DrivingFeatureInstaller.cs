@@ -1,4 +1,6 @@
+using System.IO;
 using RobotSavaslari.Driving;
+using RobotSavaslari.Presentation;
 using RobotSavaslari.Training;
 using RobotSavaslari.UI;
 using UnityEngine;
@@ -29,6 +31,7 @@ namespace RobotSavaslari.Match
         private DriveBindingsScreen bindingsScreen;
         private MainMenuScreen menu;
         private TimeTrialSession timeTrial;
+        private CombatCameraController cameraController;
         private bool installed;
         private int lastMatchCount = -1;
         private MatchController.MatchState lastState = MatchController.MatchState.Result;
@@ -128,6 +131,18 @@ namespace RobotSavaslari.Match
             }
 
             trialHud.Session = timeTrial;
+            trialHud.ExerciseCatalog = Resources.Load<DrivingExerciseCatalog>("Training/DrivingExerciseCatalog");
+            if (timeTrial.ExerciseStore == null)
+            {
+                string folder = Application.isEditor
+                    ? Path.Combine(Application.dataPath, "../Library/DrivingExercises")
+                    : Application.persistentDataPath;
+                timeTrial.ExerciseStore = new DrivingExerciseStore(Path.Combine(folder, "driving-exercises.json"));
+            }
+
+            if (!driver.TryGetComponent<CollisionReporter>(out _))
+                driver.gameObject.AddComponent<CollisionReporter>();
+            cameraController = FindAnyObjectByType<CombatCameraController>();
 
             GhostRunner ghostRunner = GetComponent<GhostRunner>();
             if (ghostRunner == null)
@@ -202,8 +217,13 @@ namespace RobotSavaslari.Match
                 settings = FindAnyObjectByType<SettingsPanelController>();
             }
 
-            bool ready = match.IsInitialized && match.State == MatchController.MatchState.Ready;
-            bool settingsOpen = settings != null && settings.IsOpen;
+            // Eşleme ekranına ve eğitime yalnızca kurulmuş, hazır bir maçta ve
+            // ayarlar kapalıyken girilir; maç başlayınca ikisi de kapanır.
+            bool readyAccess = match.isActiveAndEnabled && match.IsInitialized && !match.IsPaused
+
+                               && (cameraController == null || !cameraController.HasPresentationTargets)
+                               && match.State == MatchController.MatchState.Ready
+                               && (settings == null || !settings.IsOpen);
 
             if (bindingsScreen != null)
             {
@@ -214,7 +234,7 @@ namespace RobotSavaslari.Match
 
             if (timeTrial != null)
             {
-                timeTrial.CanEnter = ready && !settingsOpen && (bindingsScreen == null || !bindingsScreen.IsOpen);
+                timeTrial.CanEnter = readyAccess && timeTrial.ReadyMenuVisible && (bindingsScreen == null || (!bindingsScreen.IsOpen && !bindingsScreen.Capturing.HasValue));
             }
 
             if (gauge != null) gauge.Visible = match.State == MatchController.MatchState.Playing || IsTrialActive;
