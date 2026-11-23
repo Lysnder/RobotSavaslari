@@ -1,0 +1,781 @@
+{
+ "source": "91a8daf2abf4599988ae35fa52af3dbc9840968a",
+ "unity": "6000.4.4f1 (360f97ecca93)",
+ "target": "StandaloneWindows64",
+ "method": "relative paths sorted by UTF-8 bytes; each line path TAB uppercase SHA-256 LF; SHA-256 of the UTF-8 text",
+ "build_id": "sha256:7A78B38A87CE4D3079B295D7ABB1FFDDCDF6214EA4FEC4CF6FD062A8ACDFF9D0",
+ "files": [
+  {
+   "path": "D3D12/D3D12Core.dll",
+   "sha256": "625BD40005B1C3708695D5256ECF230D278E6B8EDBA5A88AF70F3D91324F3052"
+  },
+  {
+   "path": "MonoBleedingEdge/EmbedRuntime/MonoPosixHelper.dll",
+   "sha256": "A08C0E9B6F0220E2E842FE2EEA4EFCEBBC6FD0EA0DD7D8087ABBC6E5C78C05A2"
+  },
+  {
+   "path": "MonoBleedingEdge/EmbedRuntime/mono-2.0-bdwgc.dll",
+   "sha256": "165472E153EDBF04AB93C81988C4D0A6A47794E8AB43CA4F4C0E18E053BB0EE2"
+  },
+  {
+   "path": "MonoBleedingEdge/etc/mono/2.0/Browsers/Compat.browser",
+   "sha256": "8A1082057AC5681DCD4E9C227ED7FB8EB42AC1618963B5DE3B65739DD77E2741"
+  },
+  {
+   "path": "MonoBleedingEdge/etc/mono/2.0/DefaultWsdlHelpGenerator.aspx",
+   "sha256": "751861040B69EA63A3827507B7C8DA9C7F549DC181C1C8AF4B7CA78CC97D710A"
+  },
+  {
+   "path": "MonoBleedingEdge/etc/mono/2.0/machine.config",
+   "sha256": "E91782A27FA39FC6C1D6EE8B08529F5D35052310D0006034B878EB04B8F2AF30"
+  },
+  {
+   "path": "MonoBleedingEdge/etc/mono/2.0/settings.map",
+   "sha256": "49C6160F9D54AF4270A3B4E997FC4A8301F79B9E2070118FA46DDBCBBC44F9A2"
+  },
+  {
+   "path": "MonoBleedingEdge/etc/mono/2.0/web.config",
+   "sha256": "CF2B54339E069B9E42F7D6795EECBF562C50C1011F4CA8F65F578FE52D97FF92"
+  },
+  {
+   "path": "MonoBleedingEdge/etc/mono/4.0/Browsers/Compat.browser",
+   "sha256": "8A1082057AC5681DCD4E9C227ED7FB8EB42AC1618963B5DE3B65739DD77E2741"
+  },
+  {
+   "path": "MonoBleedingEdge/etc/mono/4.0/DefaultWsdlHelpGenerator.aspx",
+   "sha256": "751861040B69EA63A3827507B7C8DA9C7F549DC181C1C8AF4B7CA78CC97D710A"
+  },
+  {
+   "path": "MonoBleedingEdge/etc/mono/4.0/machine.config",
+   "sha256": "E60AEC2C5115D65B3ACB3C55EA21576DBD770F579166C017125571E46AE560ED"
+  },
+  {
+   "path": "MonoBleedingEdge/etc/mono/4.0/settings.map",
+   "sha256": "CE1DB1AD8A9512073164E3ECCDC193F7EDA036E1A9733CAEC4635DE21B2865C8"
+  },
+  {
+   "path": "MonoBleedingEdge/etc/mono/4.0/web.config",
+   "sha256": "E38BB8CC68FE5B4EDECDFD288D094B9E8CED7629039B2A347682ABA0D8BD7492"
+  },
+  {
+   "path": "MonoBleedingEdge/etc/mono/4.5/Browsers/Compat.browser",
+   "sha256": "8A1082057AC5681DCD4E9C227ED7FB8EB42AC1618963B5DE3B65739DD77E2741"
+  },
+  {
+   "path": "MonoBleedingEdge/etc/mono/4.5/DefaultWsdlHelpGenerator.aspx",
+   "sha256": "751861040B69EA63A3827507B7C8DA9C7F549DC181C1C8AF4B7CA78CC97D710A"
+  },
+  {
+   "path": "MonoBleedingEdge/etc/mono/4.5/machine.config",
+   "sha256": "EE950004B576FB28DC85F4B0435ED04BF96612DE2E8B53BE84D07AFE85A0DE6C"
+  },
+  {
+   "path": "MonoBleedingEdge/etc/mono/4.5/settings.map",
+   "sha256": "CE1DB1AD8A9512073164E3ECCDC193F7EDA036E1A9733CAEC4635DE21B2865C8"
+  },
+  {
+   "path": "MonoBleedingEdge/etc/mono/4.5/web.config",
+   "sha256": "C4CBDDD4FD9347B58CC5A72B36DC4BA1AD2BB699E65869D05CD3FB9865F0D824"
+  },
+  {
+   "path": "MonoBleedingEdge/etc/mono/browscap.ini",
+   "sha256": "4DDD50F31FB968F30BEDEFC253A46DC3F2890192D05CDAA9E0A64A056EEE807E"
+  },
+  {
+   "path": "MonoBleedingEdge/etc/mono/config",
+   "sha256": "5776169973A26A387B8B3E5C0F2301A7AB9A6DD7C7D3EFA22A96ABC47FBF8662"
+  },
+  {
+   "path": "MonoBleedingEdge/etc/mono/mconfig/config.xml",
+   "sha256": "0C56E34C69124510FA8C19E7B4C2CA6C1C4FF460AE19F798DD0CA035809E396D"
+  },
+  {
+   "path": "RobotSavaslari.exe",
+   "sha256": "413A04009D5FC13E03FE4E5C6941A8606C63C103EDD08853EFC6C9BD57E6151B"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/Assembly-CSharp.dll",
+   "sha256": "2A7AFDABF5BAECE67ACDC41F98584D1DCEC86C2C19313CA03858E5219624541D"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/Mono.Security.dll",
+   "sha256": "9838776992DC44EBE2AFF2E9EC52C292024F5464542897AA5D29429A921437B9"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/Newtonsoft.Json.dll",
+   "sha256": "A56146202232958F46BD6A28B5A7DA166AEA123EE0D646735A46E5C341DFBF1F"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/RobotSavaslari.Driving.dll",
+   "sha256": "53CA393A78AEFAB7A2E345589AFC4F7EA8B50BBDACE3C59E67C17B18D81F6CD9"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/RobotSavaslari.Gameplay.dll",
+   "sha256": "3C0CE7CCF664FBA30FA2A2FB6BFEFC8F7FB26FBF42A4F1344AD16C795BDEE146"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/RobotSavaslari.Robots.dll",
+   "sha256": "384BED94C07FFDF67A5B009CF8214E5F63644A047B528668C92C014D54465291"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/System.ComponentModel.Composition.dll",
+   "sha256": "A30FDDE214493B540A5A169AA1729FF494D46F519D9C9A036746967C0845E764"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/System.Configuration.dll",
+   "sha256": "223A6629BB9DEBB0327082DA3E525860E734F231274D0F6BB83A164DF778B779"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/System.Core.dll",
+   "sha256": "DB725196B862D96BEEFB95BBB6693F892A12DC401B5C044660D13789E45C255D"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/System.Data.DataSetExtensions.dll",
+   "sha256": "1D6F66F38CABD57B3D099804593CE5144E22921871DFDF0D6487A4BC725B9C8B"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/System.Data.dll",
+   "sha256": "F1E0909723A04B1B8BA3630593893E1A4683B391349B79697B8958D7E897A68F"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/System.Drawing.dll",
+   "sha256": "630AEBA7B15DE154E6FAF86270EAAF6921AB2B5E9DD2273382E3A0DF8ED918AD"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/System.EnterpriseServices.dll",
+   "sha256": "E0BD4C9AA95B3264E2BC5C43404637447DE098829BE95D5364A50C286651EDE1"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/System.IO.Compression.FileSystem.dll",
+   "sha256": "738C6EA02BB89C69473F8E128F077CB6F7D62B04E7928E0E244EA7A991E65853"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/System.IO.Compression.dll",
+   "sha256": "11877B20D2C14BB0EB208F3E20F102DDD3C78B8C5D18EDCEA935DD5960E48449"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/System.IO.Hashing.dll",
+   "sha256": "AC7AC3E83805B0B621C48B90543DC733C9A89106835278618357D6187E3DA74E"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/System.Memory.dll",
+   "sha256": "C4F030A2CBA7DA7CDCF493257C24560E203D355904AEE490D645A935842F834A"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/System.Net.Http.dll",
+   "sha256": "31DD2EC15094027CB78457421633E24F8272A5D83792BD02F5C483339FDC948A"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/System.Numerics.dll",
+   "sha256": "5AC2ED1D8235E6E27A7527FC159A852B1391854E35589746276377847228EB62"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/System.Runtime.CompilerServices.Unsafe.dll",
+   "sha256": "01748200F2400C742AA689F1F5101BD6298EFDFD92C00C18F4FA473847235BA9"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/System.Runtime.Serialization.dll",
+   "sha256": "5B7219B02B2724941F532F6806CC6402B7B413BE0161F8994364EBB80B045330"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/System.Runtime.dll",
+   "sha256": "E0A7334B7BA419AAAB6BD3BB6992D693E689341A9178172C9BF99C2AA6A085BD"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/System.Security.dll",
+   "sha256": "A51236ACA52E7F43A5D236667AEEE4C29B74F05E70ED4E66F23BD01F1219471D"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/System.ServiceModel.Internals.dll",
+   "sha256": "10362190426D7F2FEB552223EBCEC5DEA0FB33C2EC2E4B512832DDBAD2D3FBEA"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/System.Transactions.dll",
+   "sha256": "8A962B8B8A99A111BD765D090CF27605F0E84911354D7B272CD2EF484BD117C7"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/System.Xml.Linq.dll",
+   "sha256": "EEE68BC1879F7A5007752AA31DB5640A6EC8F5F18AECD40C92D38989758F795B"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/System.Xml.dll",
+   "sha256": "22362D813E444A18592EC32A56731DD4265362BC8B2C2AAB76A1816F2D7D679E"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/System.dll",
+   "sha256": "C3C900393EFFD00A0D36F1DFD317FFE0F19744AAD0C3D9C0B10E5F4D5A00BDD7"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/Unity.AI.Navigation.dll",
+   "sha256": "D972D23850612D153C53FF4F2D4128F3A959896A45047B054372153ECF978111"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/Unity.Burst.Unsafe.dll",
+   "sha256": "9D9C1FF52411DECBEE5D9F0D1CD61EBEAA222077AA77A52101EA3DEBAFAE98E2"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/Unity.Burst.dll",
+   "sha256": "AABF5A7F7FC591D61EE32E8D3E0222A57FC17D05D5385428E20CC84D399AC805"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/Unity.Collections.LowLevel.ILSupport.dll",
+   "sha256": "FF50383F807F9692E4913B97E47D86FEFCB8FAA33D6D48CD3E3FD6FC7FFB448D"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/Unity.Collections.dll",
+   "sha256": "E84FFC4DD6DAA2D7E7E110CE03E233EA7E016D8D5329C730691145C1492254D1"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/Unity.InputSystem.ForUI.dll",
+   "sha256": "E1D247C6501769FA09ADEC12997AC1BD22F9B374DF4866B5F1949003E9D60AD5"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/Unity.InputSystem.dll",
+   "sha256": "1F5032B0894DEE8D123A87C87A22BCF1C9E7BA257A62D7FE16119DC94B25D136"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/Unity.InternalAPIEngineBridge.004.dll",
+   "sha256": "68D0508C7A258B3DFB21B8853DAE16908705FB669AEDFAC26B79E14D137ECF36"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/Unity.InternalAPIEngineBridge.RenderPipelines.Core.Runtime.Shared.dll",
+   "sha256": "45B08F26850DC3C320D2F30F6667D5D5BAFDB8BB3F61549FC4AB57E601035EFD"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/Unity.Mathematics.dll",
+   "sha256": "C7746757CA270D488FB08D6EC7C3C6B5589FB5498009D0DE1C3AC4C1DD029FA7"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/Unity.Multiplayer.Center.Common.dll",
+   "sha256": "5FED315448E9E91AC1F245DCB87AE7898C1E520C789B1663C0CDCD7BD9A45C11"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/Unity.PathTracing.Runtime.dll",
+   "sha256": "C34CEA6AE28717B7B279279B7BF91EA12DBA0560FA2D98A662D3165D361D2236"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/Unity.Pipeline.Attributes.dll",
+   "sha256": "F9113F24DCEE9DE76CBA7CE7F4315B406B0B9386031F2CB392E00B7C5AC2BC46"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/Unity.RenderPipeline.Universal.ShaderLibrary.dll",
+   "sha256": "0A08E519BA2FFFE75D0B98F855585E63642062B8694630845A81366F7AC9AEDD"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/Unity.RenderPipelines.Core.Runtime.Shared.dll",
+   "sha256": "9EF6924DA6AFFAF1FAF81A22DDD094085F5C13CAD0F560F94424F144C49CFBF1"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/Unity.RenderPipelines.Core.Runtime.dll",
+   "sha256": "2BD3CB7E2AA60EE1A6CCCAD4EB03B302109841C851AC40AD1D76AF4500A241A5"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/Unity.RenderPipelines.Core.ShaderLibrary.dll",
+   "sha256": "83BCDC05FD57E126FA4DA2303FB0A08074C070CC50F3A1A0235E2546E0CC3CAC"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/Unity.RenderPipelines.GPUDriven.Runtime.dll",
+   "sha256": "069D5EDB1D331D82188C997EF25E7011D5B273F2CBA54F160396E5E8BB495A97"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.dll",
+   "sha256": "0B74B50855C4E8163455C405DAD6A475775CCC61DD0AA14F5C19F0C72A73155B"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/Unity.RenderPipelines.Universal.2D.Runtime.dll",
+   "sha256": "D0C90996CD9CA2939E042DC4A53211A18CDFC7F8FDC5B216731A8087AA75D0EE"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/Unity.RenderPipelines.Universal.Config.Runtime.dll",
+   "sha256": "A7C8A37BF8ECB4D763A51428F239C29BF85C18821169F879EB2A2EFC71EC3DCD"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/Unity.RenderPipelines.Universal.Runtime.dll",
+   "sha256": "0A453CE2F4CB9A436B6023230A71BBAF4EF08C2ECF1833BB134D436FDA0B2F4C"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/Unity.RenderPipelines.Universal.Shaders.dll",
+   "sha256": "3C24D18705791A3512EF112856D77D98FD1A9F017F0D6AEA5FF7CE1AEA95BBA7"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/Unity.Scripting.dll",
+   "sha256": "50CA84CE5C391C40775485371C9AEA29E5397735D0EBCA2D4DA79BE07DC340B9"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/Unity.SurfaceCache.Runtime.dll",
+   "sha256": "063C06DE775AAABE00C9BFDE21D30B1180B35BC84FF89B95237AF46C2C58E1E7"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/Unity.TextMeshPro.dll",
+   "sha256": "B3FBFABAF0A8C6CB4060F0FA78486CE9034B8A756A2B782E96BA50A84378BA6D"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/Unity.Timeline.dll",
+   "sha256": "F9AA1649006814C028EB49A7A0920ECC855BAEA31A911481E30A7F94CA393383"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/Unity.UnifiedRayTracing.Runtime.dll",
+   "sha256": "B363C6750DD1D5C3DC4EC4BE0D9258748F6302DD38044C2D715AC9182E9220B9"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/Unity.VisualScripting.Antlr3.Runtime.dll",
+   "sha256": "ED7CE205F66EAFE39BBB5D084D42E7FE11CB4B386FF208E5D5110891BE0B7B37"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/Unity.VisualScripting.Core.dll",
+   "sha256": "E9450B22C2E05A77E04392036899BD46CF8418212A3EDC4AC84EF2ADBD941621"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/Unity.VisualScripting.DocCodeExamples.dll",
+   "sha256": "0714667C511CAD57170B685EB97B870112FE2CC86EB4C195B57127762311D5FA"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/Unity.VisualScripting.Flow.dll",
+   "sha256": "33A40370BCC27FA074F85040A84DB61595D066859EF8A45581DF47F72EA7391B"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/Unity.VisualScripting.State.dll",
+   "sha256": "61459D6EFFEE4EB43C8127F679724FE846BEBDE74123AE8FC8C65DC253DD8F87"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.AIModule.dll",
+   "sha256": "68B30EA331ADDB2572590E5D0FE64C22D7C9C7D20ABB0DB5F6EAB64F3B595A1C"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.AMDModule.dll",
+   "sha256": "342D87574A91D5E0B075FE875E5EC47090E9DE290816EA012B4A4820B9CA9F40"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.ARModule.dll",
+   "sha256": "D7A3ED4AE062F1383783F80040366F6F433D8A5AE6F796C57A82872EF0FB6FF9"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.AccessibilityModule.dll",
+   "sha256": "1BCB4BB2CED45DB532B3B36B6ED4F023F9FEB756FD085ECAA4CEA6F7C49F089A"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.AdaptivePerformanceModule.dll",
+   "sha256": "0E3196F6C9D6099CE66F944272EF101F2525479BDE4CE1F17C967C18DE0F2DE6"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.AndroidJNIModule.dll",
+   "sha256": "B1A403D740B005A6971B62FB1C153535762CA05E8DA40A4C04100667CB14776A"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.AnimationModule.dll",
+   "sha256": "15719D51809B11CE5377997AEBB2BB0393C8C60A7E190FC0218C41F7F6F9C48C"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.AssetBundleModule.dll",
+   "sha256": "392917DAE96D13B9F911386FCDEE12F671CB7F1A02127DE24614BC0317224E3E"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.AudioModule.dll",
+   "sha256": "A1927EB5B8335B79B20AD8FA596EFF2A6F36D8930E4C47CF1BCBC2C38EC1A821"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.ClothModule.dll",
+   "sha256": "29BFEFF11AB40F78FF93BA66A329966B5F9C001D0147A9B1C7848EF83339F8D3"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.ClusterInputModule.dll",
+   "sha256": "B49516347C56BA3F247F813248CC2B5A7C93A4CA24BC248AAB9F218645A013A3"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.ClusterRendererModule.dll",
+   "sha256": "87222E927DFE70FADCC77C927F15283041BF09571DB26CA6C20185260D36F17B"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.ContentLoadModule.dll",
+   "sha256": "FFB5090D2DB79B5B83F5A175A6B9DCD7F6B1C7B0C26C9654DDF413914B4BA315"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.CoreModule.dll",
+   "sha256": "7FB6A9BE521CD31E081E6A5A512134D236058FC8572EAB5F9DB998068E8FB807"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.CrashReportingModule.dll",
+   "sha256": "F000D3394403D2B66D3EF5FEC99BA5C3EF690FFC6AB02FF0A15142CEB463277B"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.DSPGraphModule.dll",
+   "sha256": "39C179DC62772C9422E21ED6912EFE5B7024CB0CAECD54B1381627578CC9AC9C"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.DirectorModule.dll",
+   "sha256": "F78A278473B3CB2C950FF7CEA0F4796ECFEB36437B6B7B8E5767B94EB8D1093B"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.GIModule.dll",
+   "sha256": "45B988B980B41821113FA7144B422E5ED54F54CEB0D018D9E6BE5EBF65EFEB80"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.GameCenterModule.dll",
+   "sha256": "D54B965D81BDD67BA7503476E455959F232AF025CB848C4CF919F6E93AB38225"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.GraphicsStateCollectionSerializerModule.dll",
+   "sha256": "E054DB02F25439B22A227768EC572C6671C2F16A66FF8E02FC50D7751328E76F"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.GridModule.dll",
+   "sha256": "86D63CDC7A3AE015747CAC97D5AF2BD46F2D5B8CAC0DE8F83EB62714C7AE343C"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.HierarchyCoreModule.dll",
+   "sha256": "E5AD36850632E25F5D54AE74AECE9135BF7525EBF9AA57B0A51E6E3D3F538DE2"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.HierarchyModule.dll",
+   "sha256": "EDD3A9A1419168C79128A5E645DBC6EA473A2877E9014F398B7CC6844CED5D83"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.HotReloadModule.dll",
+   "sha256": "B644B794488009C2E6BAED94A2CB71A64234A8E8260B45995EF40367FE189789"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.IMGUIModule.dll",
+   "sha256": "4B9EB8EE3DB997D9FD9E87D97D15A1B301F6C85AE8CFEC26A91CAA4F64C47EA8"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.IdentifiersModule.dll",
+   "sha256": "5914C5322454AF6081AB6DDBF4AF529084939AA66CA67FFB9C0EA231E2EA569A"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.ImageConversionModule.dll",
+   "sha256": "B96861A87ACAB418A2FB07893726E5B9B1D54F00685534B439D4AA23DA9E6177"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.InputForUIModule.dll",
+   "sha256": "1ADFDE2006D86233CD8D7A454C99BF16731883ACFE0AED7BCCD91401AFE9AF84"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.InputLegacyModule.dll",
+   "sha256": "06B700B06BBA8AE1AB54DFD96E8536657F87D0408A7F87E3F8F89CB8D6D0CB35"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.InputModule.dll",
+   "sha256": "8A2CB9B2866815CD21CE6B63DB94CE80CB664455F66800BD98CE7D45A99097BB"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.InsightsModule.dll",
+   "sha256": "3DDC647F25E10EF7DE7117A2626F433864064560E0B23E5D1A79162A527BE3D4"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.JSONSerializeModule.dll",
+   "sha256": "5B02B1556E015FC3F20F40C2B5933EB8077121A8869CE16496B0C326C3920164"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.LocalizationModule.dll",
+   "sha256": "DD77D6E4F918407149FA1133A781B8A3A1D39A601440EC082740784A84BA8760"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.MarshallingModule.dll",
+   "sha256": "7C9F9F50A10CE1534EFBE597A4487961086043D060BB83D02AD1AA025A4A22DB"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.MultiplayerModule.dll",
+   "sha256": "B5510129FC947386883A8D0CF49EA04B51736B6AF9114E3E36BBA41873AB0BA6"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.NVIDIAModule.dll",
+   "sha256": "200B98F33298E0A7993978BEF402800C4F24A7B7A094DC1E81293213E93F5BD4"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.ParticleSystemModule.dll",
+   "sha256": "BDE6619C225BE098F75552562DC5D7DCBD1E41CFA4299DE6BAEC63F9E4B2FCAF"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.PerformanceReportingModule.dll",
+   "sha256": "E47A9FFCA6962D34D6FE647D280F83D9D9B5BD3DC902D1F5B0A46C4089453359"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.Physics2DModule.dll",
+   "sha256": "3D6E2034411F7CABFEA7C5B8AAFD0A130D6E0EC177B4CE5F2047367824C0B5DB"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.PhysicsBackendPhysXModule.dll",
+   "sha256": "5B2DCFC4DFB53EFFB23AAA86E779777346465F04BCCBF25E8634CCF5C847BBBA"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.PhysicsModule.dll",
+   "sha256": "025617DC08435CA94C1BB012ADD4FD065CE78F809287631B71535631BE1EC4F8"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.PropertiesModule.dll",
+   "sha256": "8B620B55182AB1C15AD60310FF1AB717D7F602BADCF05719876CE4CA7D114047"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.RenderAs2DModule.dll",
+   "sha256": "7FC621B023DCD3329B127F5F7B063CD4F37607FA625CA67739806DE0915DA143"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule.dll",
+   "sha256": "13113E7F10E2CD0B7995F0DDFF7E86089C8D9885EC1C4BAFB53D97BB08D1DF86"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.ScreenCaptureModule.dll",
+   "sha256": "821FF20A4337D5D954E9657F3579586DAA430B7F91DCE649E0952C011AFA0382"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.ScriptingModule.dll",
+   "sha256": "A9CDA78FCEC460CE769D55BDBA72CA03639C580201C3F072B048E5A9C37506DE"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.ShaderVariantAnalyticsModule.dll",
+   "sha256": "69A98B2CC4AD290B1FA79D403D57C95AFD66C44E664B3FE0C6DF40F6C5C26015"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.SharedInternalsModule.dll",
+   "sha256": "CF5FF12728B7D55BBAF524EDECFF6DC5443D9A9ED762E4278C32C8D4E32C4716"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.SpriteMaskModule.dll",
+   "sha256": "0432179AF3BEB65E0C0F4CA246C95E5B4F6AD73A17BA61253E54B80626AAC463"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.SpriteShapeModule.dll",
+   "sha256": "8C6CCC2013E37FBE9C178B7917A050F96ED5EDD4B84BAE26AC5A4938A4BD47CF"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.StreamingModule.dll",
+   "sha256": "70CEAAF849547854D76E6385909EA5EB413CED03683923E251054BEFC498FB06"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.SubstanceModule.dll",
+   "sha256": "1A031CE68487BCDEF150E77EDDB353BAD588E74A4339C0435577620F1037C67F"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.SubsystemsModule.dll",
+   "sha256": "D0DADF98A9B80537C80A1405E460EBD014EF481C69D05C646B3954B5C6FA614F"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.TLSModule.dll",
+   "sha256": "6E61E6BDAF4BBFA819186E53068958C5686A1311A217328A3C1B9C83856E3CCB"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.TerrainModule.dll",
+   "sha256": "A7143DDB3FFB008FF98BF04B3A508162D579956BCAB4CC03A99B4E31BAA0BED4"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.TerrainPhysicsModule.dll",
+   "sha256": "8FCEC01903C8DC3CD64A942EB5D3B71CB90D432F60E71B95C8754A8A539F4E91"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.TextCoreFontEngineModule.dll",
+   "sha256": "CBC4327D5799C9BBB71DFEBDB1F83E82F9666F3425EBA5C7EE4C86C6C52B85CB"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.TextCoreTextEngineModule.dll",
+   "sha256": "41F81E52DE4CDA3649BA36902F784DBE4363B1710819EB0901670CD55976182E"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.TextRenderingModule.dll",
+   "sha256": "0AA6B373BC81509A356327F0A14E5F113C0AA30782A0CB3FBE93AC926F8D94C9"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.TilemapModule.dll",
+   "sha256": "929EFBBA2292E5DF6724701B18B705C330F746F2E0F6ED809472D08E84ADCC48"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.UI.dll",
+   "sha256": "86F78C68356E02FF46EBDD14CDB506654E588EB971D49D06A622F7286A4FAACE"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.UIElementsModule.dll",
+   "sha256": "54173D02C09EF6DB21FA17C5C7D5C00239C89C21BE388B830E2CBDFA4341422F"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.UIModule.dll",
+   "sha256": "B492895C7A954FBC0D99EC35F1A93E609DBE33AC43316FF34F62AF36D4CD3806"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.UmbraModule.dll",
+   "sha256": "CB784B6471DE81B0A9FBBB938BE9E7CEFD38EDC748E7521029D0AB6190CDBA20"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.UnityAnalyticsCommonModule.dll",
+   "sha256": "297A6509F0CE9655EF243600FD87468D0BB465C3D46C02A38DA82DCA4687B515"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.UnityAnalyticsModule.dll",
+   "sha256": "5A1C2CC870194DA7CFA7228B3BDBB245CF75DEC5AEBE3389509D7DD454B9AEC1"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.UnityConnectModule.dll",
+   "sha256": "D38412C44DF9C34063CDC0C0B8508366940DB2DED02430781253DE51A7E9C71E"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.UnityConsentModule.dll",
+   "sha256": "7CF987D619FCD150D6E7A6E4821A5BE961D55F5A77C13657B9879A7EE1059C9C"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.UnityCurlModule.dll",
+   "sha256": "D572DD31C30482AC71B7FF2EAA7AFF159C585DC5402AFCDB69C56A35E1AC1AB1"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.UnityWebRequestAssetBundleModule.dll",
+   "sha256": "6110E8BB6DFB5C7EEC0FB95D75FCB44F90E105B527A310AFD6FA848F68665761"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.UnityWebRequestAudioModule.dll",
+   "sha256": "AD294E435317E313CD947105FF5E260482B1B2569F3C6993D86CC920E86B1829"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.UnityWebRequestModule.dll",
+   "sha256": "3EF52D81E217CE341C0A4C17524A0335DE7187149517A92D6547D5D92494B64E"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.UnityWebRequestTextureModule.dll",
+   "sha256": "48DFF111B79190974070EE0EBDDDD3044F0F8576E1D91BE8DD2938977B139AAE"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.UnityWebRequestWWWModule.dll",
+   "sha256": "C7C9180A1F1166C1156B41BB972AF799698C2D5D8789B70C1042712E089928D3"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.VFXModule.dll",
+   "sha256": "893DA60B55E49918ECEEF15011CBDFEF4EB082DD427FE368E62BC9585B30D40A"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.VRModule.dll",
+   "sha256": "A015EE318F0514EF1C632F627CA0826AFE881878FB79E6DD3263406652AF4BF7"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.VectorGraphicsModule.dll",
+   "sha256": "050BA4A2B906C2E194D28E9B088142E33485C515A1C69DF5E867D922CC22866D"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.VehiclesModule.dll",
+   "sha256": "480C15186A2C6ED67B799D02C015E59C099632A62BFE0D0A83172AAF037CD9C6"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.VideoModule.dll",
+   "sha256": "AA586A16E0F856D3FF0D3D82FC71A629EF7E2E226BE1B4841AE1955C4EA96B58"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.VirtualTexturingModule.dll",
+   "sha256": "D1A2C1B73AE892DAEF4E59ACFF93AACFEC00051F4B11BD0F2F5F1C8501EBFA09"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.WindModule.dll",
+   "sha256": "AF79D345363E06063FA222BBD6C31F1011DD96DB96D9486E49E1F744F9FCFAC4"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.XRModule.dll",
+   "sha256": "26C0C5F1C83F27420E284E676D18267D96E08966D2E1FC32D7517B62A65D6F02"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/UnityEngine.dll",
+   "sha256": "421A89EAD3F9481EB6B33449D529024EAE9EA137C23A8704778258834BBFCE52"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/glTFast.Documentation.Examples.dll",
+   "sha256": "1B1E5FD92A840866DF5817913D8EC4FD54A1948E667E902CEAC71D9FA9C7FC58"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/glTFast.Export.dll",
+   "sha256": "4DAC1EDBDA0EF4EE040D5B188EED95CB1B9F4B947D64834F9224E3C00FFB7029"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/glTFast.Newtonsoft.dll",
+   "sha256": "50B7AB66E38788552ECEC71E17DC2B8156692ACBB4C42460069C0707DBE18932"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/glTFast.dll",
+   "sha256": "BE4A42DB0218BEF7A4BE6EDDF1FC09AD93E67EAFBA616276770A834E9405ACFD"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/glTFast.dots.dll",
+   "sha256": "698B6FB3AF49D17A190638E1825E49EF9673E24701D6A2DF9511A3DB562EE28A"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/mscorlib.dll",
+   "sha256": "EAF6B07FD716403E8FEDC054BDD1650142D1DC95D34C01D9485DE97B5A0DD84B"
+  },
+  {
+   "path": "RobotSavaslari_Data/Managed/netstandard.dll",
+   "sha256": "6AE62E082DC494A2433984177F60CA4DB5FAE69B1F360A8B33754172B310B8C5"
+  },
+  {
+   "path": "RobotSavaslari_Data/Plugins/x86_64/lib_burst_generated.dll",
+   "sha256": "0D44798794F31ED1F8CCF8FC579AFACA3B3F80D807C3D02A9D38ED30984943A0"
+  },
+  {
+   "path": "RobotSavaslari_Data/Plugins/x86_64/libonigwrap.dll",
+   "sha256": "6D539F2AD6E1B58D3C8836B9C3A1D50C97CBD7A6CA0C5DE25D994A7C4B1ECF42"
+  },
+  {
+   "path": "RobotSavaslari_Data/Resources/unity default resources",
+   "sha256": "96C07875F9764CEAA248EB5715503DE54E55FE87166B909330A4AE209A644F70"
+  },
+  {
+   "path": "RobotSavaslari_Data/Resources/unity_builtin_extra",
+   "sha256": "59ACD25BF1B1A02FEC05A4C8F7D2D40E6CF92DB0CCD63658DFD70BD747E6B619"
+  },
+  {
+   "path": "RobotSavaslari_Data/RuntimeInitializeOnLoads.json",
+   "sha256": "F3A4FCD9DF36757671004F8AD2C82342BAD7709ECC3486EA4D2CB70C32543548"
+  },
+  {
+   "path": "RobotSavaslari_Data/ScriptingAssemblies.json",
+   "sha256": "A1005447A51374432F08D51EB92C35102A0A39FF68513FFB8E026C7DFF34646C"
+  },
+  {
+   "path": "RobotSavaslari_Data/app.info",
+   "sha256": "3BB6332AE7314BB436FCC36971A2181F41A15C33C02B2B3C12FEC5213FCE5BE1"
+  },
+  {
+   "path": "RobotSavaslari_Data/boot.config",
+   "sha256": "5FE0D56AF2275779A3DF8F124566F3DA7F222074C042954ED69CA737ACDA8E5E"
+  },
+  {
+   "path": "RobotSavaslari_Data/globalgamemanagers",
+   "sha256": "C69EDF9051B3CCE75E6850C5D19E2993A4C8BDFE14B70F5843A6D5250B69A3AD"
+  },
+  {
+   "path": "RobotSavaslari_Data/globalgamemanagers.assets",
+   "sha256": "B8508C71879E33BBD0A3A2DC4C652BB63614C62356D394AEADF684B1426D7BA7"
+  },
+  {
+   "path": "RobotSavaslari_Data/globalgamemanagers.assets.resS",
+   "sha256": "26B24BBD0BDB7017ECBAC3B829C0ED7C4848BC343AF5702E96EBDB75A7258B04"
+  },
+  {
+   "path": "RobotSavaslari_Data/level0",
+   "sha256": "4D4168457E3408A34DFD4A559D111A056E3CF11EA6CA3219B30ACCB790C3C949"
+  },
+  {
+   "path": "RobotSavaslari_Data/resources.assets",
+   "sha256": "21FC7B6665E7E7C089BCB5E4A18035E093C9221E265FFD053524AF7E42B4428F"
+  },
+  {
+   "path": "RobotSavaslari_Data/resources.assets.resS",
+   "sha256": "F12F30B4C1648273E460DAB9F8EC974E616980F7A3027D54AC4CA0F19BA89CD3"
+  },
+  {
+   "path": "RobotSavaslari_Data/sharedassets0.assets",
+   "sha256": "D2CE430DFAA88E4133EAFBA5725FFA2E0857B5DD2335EB1FF7BD02705AACF30F"
+  },
+  {
+   "path": "RobotSavaslari_Data/sharedassets0.assets.resS",
+   "sha256": "2AB74E7561B5A3891A5B895E15FBD6FA6FA03A244830AF760A4497D5A1901F26"
+  },
+  {
+   "path": "UnityCrashHandler64.exe",
+   "sha256": "1C7886CA06806B6849B37B1D90C34C6E3DB036B8203FB8C8AFD6B177BC614807"
+  },
+  {
+   "path": "UnityPlayer.dll",
+   "sha256": "C85753EB31138449090594157977BB5D8003099FA18671CC3399DA4DF6DF49CF"
+  },
+  {
+   "path": "dstorage.dll",
+   "sha256": "CAE65787F61514BEC6F012F44546E68B19E39D8854A9AB52AF813370D44B272A"
+  },
+  {
+   "path": "dstoragecore.dll",
+   "sha256": "CF85B19A92A8276F8BACA0DB9BBCD60735BAD50768DEB303D310E84D5F4FDD11"
+  }
+ ]
+}

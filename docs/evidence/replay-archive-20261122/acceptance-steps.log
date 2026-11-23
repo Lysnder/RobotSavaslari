@@ -1,0 +1,51 @@
+2026-11-22T23:41:05.7958986Z launch session1 pid=31204 log=<evidence>\player-session1.log
+2026-11-22T23:41:05.9118302Z screenshot <evidence>\01-ready-menu.png
+2026-11-22T23:41:06.5891127Z click 'Ilk 2 galibiyet' at reference (325,59) screen (326,90)
+2026-11-22T23:41:07.2279212Z click '60 sn' at reference (248,91) screen (249,122)
+2026-11-22T23:41:07.8827507Z click 'Oyna' at reference (640,302) screen (641,333)
+2026-11-22T23:41:29.9126916Z waited 22 s
+2026-11-22T23:41:30.0081291Z screenshot <evidence>\02-round1-result.png
+2026-11-22T23:41:30.6721320Z click 'Sonraki raund' at reference (503,427) screen (504,458)
+2026-11-22T23:41:52.6812811Z waited 22 s
+2026-11-22T23:41:52.7727332Z screenshot <evidence>\03-series-result.png
+2026-11-22T23:41:53.4324199Z click 'Ana menu' at reference (777,427) screen (778,458)
+2026-11-22T23:41:54.0725094Z click 'Tekrar arsivi' at reference (1185,78) screen (1186,109)
+2026-11-22T23:41:54.1580497Z screenshot <evidence>\04-archive-list.png
+2026-11-22T23:41:54.7892764Z click 'Ac' at reference (812,153) screen (813,184)
+2026-11-22T23:41:57.8033614Z waited 3 s
+2026-11-22T23:41:57.8904483Z screenshot <evidence>\05-playback.png
+2026-11-22T23:41:58.5362539Z click 'Rakip' at reference (551,625) screen (552,656)
+2026-11-22T23:41:59.5499047Z waited 1 s
+2026-11-22T23:41:59.6496470Z screenshot <evidence>\06-opponent-view.png
+2026-11-22T23:42:00.2974383Z click 'Duraklat' at reference (80,625) screen (81,656)
+2026-11-22T23:42:00.9368394Z click 'Oyuncuyu incele' at reference (103,667) screen (104,698)
+2026-11-22T23:42:01.9469718Z waited 1 s
+2026-11-22T23:42:02.0321011Z screenshot <evidence>\07-inspect-player.png
+2026-11-22T23:42:02.6678726Z click 'Oynat' at reference (80,625) screen (81,656)
+2026-11-22T23:42:03.1840520Z key Escape
+2026-11-22T23:42:06.1938788Z waited 3 s
+2026-11-22T23:42:06.2768080Z screenshot <evidence>\08-settings-open.png
+2026-11-22T23:42:06.7886286Z key Escape
+2026-11-22T23:42:06.8759824Z screenshot <evidence>\09-settings-closed.png
+2026-11-22T23:42:07.5198749Z click 'Kapat' at reference (531,667) screen (532,698)
+2026-11-22T23:42:07.6041712Z screenshot <evidence>\10-menu-restored.png
+2026-11-22T23:42:08.2390710Z click 'Tek mac' at reference (120,59) screen (121,90)
+2026-11-22T23:42:08.8813204Z click 'Oyna' at reference (640,302) screen (641,333)
+2026-11-22T23:42:30.8997784Z waited 22 s
+2026-11-22T23:42:30.9960580Z screenshot <evidence>\11-single-result.png
+2026-11-22T23:42:31.6336641Z click 'Ana menu' at reference (777,427) screen (778,458)
+2026-11-22T23:42:32.2729487Z click 'Cikis' at reference (640,442) screen (641,473)
+2026-11-22T23:42:42.4015177Z launch session2 pid=29960 log=<evidence>\player-session2.log
+2026-11-22T23:42:43.0608787Z click 'Tekrar arsivi' at reference (1185,78) screen (1186,109)
+2026-11-22T23:42:43.1476995Z screenshot <evidence>\12-reopen-list.png
+2026-11-22T23:42:43.7935700Z click 'Ac (series, row 2)' at reference (812,219) screen (813,250)
+2026-11-22T23:42:46.8060754Z waited 3 s
+2026-11-22T23:42:46.8988577Z screenshot <evidence>\13-reopen-playback.png
+2026-11-22T23:42:47.5581444Z click 'Listeye don' at reference (405,667) screen (406,698)
+2026-11-22T23:42:48.1977768Z click 'Sil... row 1' at reference (932,153) screen (933,184)
+2026-11-22T23:42:48.2971091Z screenshot <evidence>\14-delete-confirm.png
+2026-11-22T23:42:48.9305104Z click 'Evet, sil' at reference (812,153) screen (813,184)
+2026-11-22T23:42:49.0125416Z screenshot <evidence>\15-after-delete.png
+2026-11-22T23:42:49.6501134Z click 'Kapat (list)' at reference (941,632) screen (942,663)
+2026-11-22T23:42:49.7398766Z screenshot <evidence>\16-menu-after-close.png
+2026-11-22T23:42:50.3809836Z click 'Cikis' at reference (640,442) screen (641,473)
