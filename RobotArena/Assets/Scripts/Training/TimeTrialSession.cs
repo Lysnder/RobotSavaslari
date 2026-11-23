@@ -85,6 +85,10 @@ namespace RobotSavaslari.Training
         private CombatCameraController cameraController;
         private bool savedCameraEnabled;
         private bool savedCamera;
+        private Camera trainingCamera;
+        private Pose previousCameraPose;
+        private bool previousOrthographic;
+        private float previousOrthographicSize;
         private float lastImpactTime;
         private Vector3 legacyStart;
         private float legacyYaw;
@@ -276,6 +280,7 @@ namespace RobotSavaslari.Training
                 savedCamera = true;
                 savedCameraEnabled = cameraController.enabled;
                 cameraController.enabled = false;
+                FramePracticeArea();
             }
 
             // Dövüş durur: eğitimde hasar ve sonuç üretilmez.
@@ -317,9 +322,7 @@ namespace RobotSavaslari.Training
                 legacyRoute = null;
             }
 
-            if (savedCamera && cameraController != null)
-                cameraController.enabled = savedCameraEnabled;
-            savedCamera = false;
+            RestoreExerciseCamera();
 
             if (motor != null)
             {
@@ -468,6 +471,42 @@ namespace RobotSavaslari.Training
             State = TimeTrialState.Finished;
             driver.enabled = false;
             motor.ResetMotion();
+        }
+
+        private void FramePracticeArea()
+        {
+            if (arenaBounds == null) return;
+            trainingCamera = cameraController.GetComponent<Camera>();
+            if (trainingCamera == null) return;
+
+            Transform view = trainingCamera.transform;
+            previousCameraPose = new Pose(view.position, view.rotation);
+            previousOrthographic = trainingCamera.orthographic;
+            previousOrthographicSize = trainingCamera.orthographicSize;
+
+            Vector2 center = arenaBounds.Center;
+            Vector2 extents = arenaBounds.HalfExtents;
+            trainingCamera.orthographic = true;
+            trainingCamera.orthographicSize = Mathf.Max(extents.y * 1.42f,
+                (extents.x + 1f) / Mathf.Max(.25f, trainingCamera.aspect));
+            // +Z is up on screen. Leave space above the route for the lesson HUD.
+            view.SetPositionAndRotation(new Vector3(center.x, SurfaceHeight + 24f, center.y + extents.y * .24f),
+                Quaternion.Euler(90f, 0f, 0f));
+        }
+
+        private void RestoreExerciseCamera()
+        {
+            if (trainingCamera != null)
+            {
+                trainingCamera.transform.SetPositionAndRotation(previousCameraPose.position, previousCameraPose.rotation);
+                trainingCamera.orthographic = previousOrthographic;
+                trainingCamera.orthographicSize = previousOrthographicSize;
+                trainingCamera = null;
+            }
+
+            if (savedCamera && cameraController != null)
+                cameraController.enabled = savedCameraEnabled;
+            savedCamera = false;
         }
 
         private bool TryResolveRoute(DrivingExerciseDefinition definition, out Vector3 start, out TimeTrialCheckpoint[] route)

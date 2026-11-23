@@ -174,6 +174,9 @@ namespace RobotSavaslari.Training.Tests
             var runner = installer.GetComponent<GhostRunner>();
             session.ExerciseStore = new DrivingExerciseStore(SavePath);
             Assert.That(hud.ExerciseCatalog.exercises.Length, Is.EqualTo(4));
+            Camera camera = Camera.main;
+            Assert.That(camera, Is.Not.Null);
+            bool initialProjection = camera.orthographic;
             int matches = match.MatchCount;
             int results = match.ResultCount;
 
@@ -185,6 +188,14 @@ namespace RobotSavaslari.Training.Tests
                     Assert.That(session.EnterExercise(exercise), Is.True, exercise.title);
                     Assert.That(match.enabled, Is.False);
                     Assert.That(menu.enabled, Is.False);
+                    Assert.That(camera.orthographic, Is.True);
+                    for (int checkpoint = 0; checkpoint < session.CheckpointCount; checkpoint++)
+                    {
+                        Vector3 world = session.GetCheckpoint(checkpoint).position;
+                        Vector3 viewport = camera.WorldToViewportPoint(world);
+                        Assert.That(viewport.x, Is.InRange(.02f, .98f));
+                        Assert.That(viewport.y, Is.InRange(.02f, .98f));
+                    }
                     var current = session.ExerciseKey;
                     Assert.That(current, Does.StartWith(exercise.exerciseId + "/"));
                     yield return new WaitForFixedUpdate();
@@ -202,6 +213,7 @@ namespace RobotSavaslari.Training.Tests
                     Assert.That(match.enabled, Is.True);
                     Assert.That(menu.enabled, Is.True);
                     Assert.That(driver.enabled, Is.EqualTo(readyDriver));
+                    Assert.That(camera.orthographic, Is.EqualTo(initialProjection));
                 }
 
                 Assert.That(match.MatchCount, Is.EqualTo(matches));
