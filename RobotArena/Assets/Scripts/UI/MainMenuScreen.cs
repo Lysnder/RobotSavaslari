@@ -506,7 +506,7 @@ namespace RobotSavaslari.UI
         {
             // Keep the height used by the existing replay/inspection controls.
             var panel = new Rect((width - 560f) * .5f, (height - 218f) * .5f, 560f, 218f);
-            GUI.Box(panel, string.Empty);
+            ArenaMenuStyle.Panel(panel);
             string title = _match.IsSeriesComplete ? "Seri bitti - " + _match.ResultText : _match.ResultText;
             _resultStyle.fontSize = _match.IsSeriesComplete ? 22 : 24;
             GUI.Label(new Rect(panel.x, panel.y + 4f, panel.width, 40f), title, _resultStyle);
