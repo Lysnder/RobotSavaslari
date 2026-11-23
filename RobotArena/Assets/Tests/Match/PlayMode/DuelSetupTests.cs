@@ -42,6 +42,34 @@ namespace RobotSavaslari.Match.Tests
         public void InvalidPreferencesAreRejected(string json) => Assert.That(DuelSetup.Read(json), Is.Null);
 
         [UnityTest]
+        public IEnumerator SeriesRematchStartsAtZeroAndPartialSeriesKeepsItsScore()
+        {
+            yield return SceneManager.LoadSceneAsync("MainArena");
+            yield return null;
+            var match = UnityEngine.Object.FindAnyObjectByType<MatchController>();
+            match.HistoryStore = new MatchHistoryStore(Path.Combine(folder, "history.json"));
+            match.SetManualMode(true);
+            var menu = match.GetComponent<MainMenuScreen>();
+            Assert.That(menu.SelectPreset(DuelSetup.Series()), Is.True);
+            menu.StartLobbyMatch();
+            string encounter = match.EncounterId;
+            Time.timeScale = 4f;
+            for (int win = 1; win <= 2; win++)
+            {
+                yield return new WaitForSeconds(3.2f);
+                match.Opponent.GetComponent<RobotHealth>().TakeDamage(1000);
+                Assert.That(match.PlayerWins, Is.EqualTo(win));
+                Assert.That(match.EncounterId, Is.EqualTo(encounter));
+                Assert.That(match.EncounterComplete, Is.EqualTo(win == 2));
+                menu.ContinueResult();
+                Assert.That(match.State, Is.EqualTo(MatchController.MatchState.Countdown));
+            }
+            Assert.That(match.PlayerWins, Is.Zero);
+            Assert.That(match.EncounterId, Is.Not.EqualTo(encounter));
+            Assert.That(match.HistoryStore.Load(), Has.Count.EqualTo(1));
+        }
+
+        [UnityTest]
         public IEnumerator PresetsUseExistingCatalogAndSnapshotSurvivesRematchAndReload()
         {
             yield return SceneManager.LoadSceneAsync("MainArena");

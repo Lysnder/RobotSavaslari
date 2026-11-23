@@ -398,7 +398,11 @@ namespace RobotSavaslari.UI
             EnsureLobbySetup();
             var setup = CaptureSetup();
             if (setup == null || !setup.Valid || !TryApplyArena()) return;
-            if (_match.RequestCountdown()) RememberEncounter(setup);
+            if (_match.RequestCountdown())
+            {
+                if (!_protectPreference) _setupNotice = null;
+                RememberEncounter(setup);
+            }
         }
 
         private void RememberEncounter(DuelSetup setup)
