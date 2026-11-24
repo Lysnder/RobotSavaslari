@@ -1,0 +1,10 @@
+Revision 3d90dbf
+Win64 build
+Build Finished, Result: Success.
+Release smoke
+ARENA_SMOKE INPUT virtualKeyboard=1 enabled=True applicationFocused=True batch=True updateMode=ProcessEventsInDynamicUpdate
+ARENA_SMOKE START round=1 state=Playing matchCount=1
+ARENA_SMOKE ROUND 1 PASS outcome=PlayerVictory playerHealth=75 opponentHealth=0 detached=2
+ARENA_SMOKE START round=2 state=Playing matchCount=2
+ARENA_SMOKE ROUND 2 PASS outcome=PlayerVictory playerHealth=19,62392 opponentHealth=0 detached=2
+ARENA_SMOKE PASS two real keyboard-driven matches, bot movement and counterattack, contact damage, regional wear, single result, clean restart

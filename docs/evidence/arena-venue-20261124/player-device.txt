@@ -1,0 +1,7 @@
+Initialize engine version: 6000.4.4f1 (360f97ecca93)
+Direct3D:
+    Version:         Direct3D 12 [level 12.2]
+    Renderer:        NVIDIA GeForce RTX 5090 (ID=0x2b85)
+    Vendor:          NVIDIA
+    Driver:          32.0.16.2124
+[Physics::Module] SDK Version: 4.1.2
