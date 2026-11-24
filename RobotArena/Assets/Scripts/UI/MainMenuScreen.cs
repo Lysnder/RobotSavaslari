@@ -71,6 +71,8 @@ namespace RobotSavaslari.UI
         {
             _match = GetComponent<MatchController>();
             _settings = GetComponent<SettingsPanelController>();
+            if (string.Equals(gameObject.scene.name, "MainArena", System.StringComparison.OrdinalIgnoreCase) &&
+                !TryGetComponent<PlayerRobotSelection>(out _)) gameObject.AddComponent<PlayerRobotSelection>();
         }
 
         private void OnDisable() => Challenge?.Close();
@@ -398,7 +400,7 @@ namespace RobotSavaslari.UI
             EnsureLobbySetup();
             var setup = CaptureSetup();
             if (setup == null || !setup.Valid || !TryApplyArena()) return;
-            if (_match.RequestCountdown())
+            if (_match.RequestCountdown(_match.CreateDuelStart(setup)))
             {
                 if (!_protectPreference) _setupNotice = null;
                 RememberEncounter(setup);
@@ -453,7 +455,8 @@ namespace RobotSavaslari.UI
             float cell = (w - 8f) * .5f;
             bool aggressive = _opponentPanel.Personality == BotPersonality.Aggressive;
             bool easy = _opponentPanel.Difficulty == BotDifficulty.Easy;
-            GUI.Label(new Rect(x, 395, w, 24), "RAKİP DAVRANIŞI", theme.Heading);
+            GUI.Label(new Rect(x, 395, w, 24), DuelSetup.OtherRobot(_match.EquippedPlayerId) == DuelSetup.Fork
+                ? "KAMA  /  RAKİP DAVRANIŞI" : "DÖNER  /  RAKİP DAVRANIŞI", theme.Heading);
             if (Choice(new Rect(x, 423, cell, 34), "Baskıcı", aggressive))
                 EditSetup(bot: BotPersonality.Aggressive);
             if (Choice(new Rect(x + cell + 8, 423, cell, 34), "Karşı saldırı", !aggressive))

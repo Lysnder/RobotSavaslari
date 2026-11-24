@@ -20,6 +20,7 @@ namespace RobotSavaslari.UI
         private Material spinnerMaterial;
         private string playerName, spinnerName, notice;
         private Vector3 spinnerPivot, forkPivot;
+        private Matrix4x4 spinnerRobotSpace;
         private CombatProfile spinnerProfile;
         public bool ForkSelected { get; private set; }
 
@@ -86,6 +87,8 @@ namespace RobotSavaslari.UI
             spinnerMesh = weapon.Mesh;
             spinnerMaterial = weapon.Transform.GetComponent<MeshRenderer>().sharedMaterial;
             spinnerPivot = weapon.RestPosition;
+            spinnerRobotSpace = match.Player.transform.worldToLocalMatrix * parent.localToWorldMatrix *
+                Matrix4x4.TRS(spinnerPivot, weapon.RestRotation, weapon.Transform.localScale);
             spinnerProfile = melee.Profile;
             playerName = match.Player.name;
             forkPivot = parent.InverseTransformPoint(match.Player.transform.TransformPoint(kit.hinge));
@@ -108,6 +111,35 @@ namespace RobotSavaslari.UI
             match.Player.SelectWeaponProfile(useFork ? kit.profile : spinnerProfile);
             match.Player.GetComponent<RobotModelAnimator>().BindParts();
             ForkSelected = useFork;
+        }
+
+        internal bool BuildOpponentWeapon(bool fork, Transform robot, Transform parent, out Mesh mesh,
+            out Vector3 pivot, out Material material, out CombatProfile profile)
+        {
+            mesh = null;
+            pivot = Vector3.zero;
+            material = null;
+            profile = null;
+            if (!PrepareKit()) return false;
+            var intoModel = parent.worldToLocalMatrix * robot.localToWorldMatrix;
+            if (fork)
+            {
+                mesh = kit.BuildMesh(robot, parent);
+                pivot = intoModel.MultiplyPoint3x4(kit.hinge);
+                material = kit.material;
+                profile = kit.profile;
+            }
+            else
+            {
+                var pose = intoModel * spinnerRobotSpace;
+                pivot = pose.MultiplyPoint3x4(Vector3.zero);
+                mesh = new Mesh { name = "Opponent spinner" };
+                mesh.CombineMeshes(new[] { new CombineInstance { mesh = spinnerMesh,
+                    transform = Matrix4x4.Translate(-pivot) * pose } });
+                material = spinnerMaterial;
+                profile = spinnerProfile;
+            }
+            return mesh && material && profile;
         }
 
         private void OnDestroy()
