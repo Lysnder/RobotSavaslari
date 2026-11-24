@@ -7,7 +7,6 @@ using RobotSavaslari.Arena;
 using RobotSavaslari.Combat;
 using RobotSavaslari.Driving;
 using RobotSavaslari.Match;
-using RobotSavaslari.Presentation;
 using RobotSavaslari.UI;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -30,15 +29,11 @@ namespace RobotSavaslari.Gameplay.Tests
             savedDuel = PlayerPrefs.GetString(DuelSetup.PreferenceKey);
             temporary = Path.Combine(Application.temporaryCachePath, "WorkshopDuel-" + Guid.NewGuid().ToString("N"));
             Directory.CreateDirectory(temporary);
-            yield return GameplayTestScene.LoadMainArena();
+            yield return GameplayTestScene.LoadMainArena(temporary);
             match = GameplayTestScene.Match;
             menu = match.GetComponent<MainMenuScreen>();
             arena = UnityEngine.Object.FindAnyObjectByType<ArenaEnvironment>();
             Assert.That(Selection.UseStore(new WorkshopStore(Path.Combine(temporary, "workshop.json"))), Is.True);
-            match.HistoryStore = new MatchHistoryStore(Path.Combine(temporary, "history.json"));
-            MainArenaPresentationInstaller.Install(match.gameObject.scene);
-            Assert.That(MainArenaPresentationInstaller.UseArchiveStore(match,
-                new MatchReplayArchiveStore(Path.Combine(temporary, "replays"))), Is.True);
         }
 
         [UnityTearDown]

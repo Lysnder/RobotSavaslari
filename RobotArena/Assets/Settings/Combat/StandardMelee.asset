@@ -17,3 +17,4 @@ MonoBehaviour:
   cooldown: 1
   activeDuration: 0.15
   arcDegrees: 120
+  style: 6

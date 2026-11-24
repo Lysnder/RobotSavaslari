@@ -49,6 +49,8 @@ namespace RobotSavaslari.Match
     public sealed class MatchRecord
     {
         public string id, endedAtUtc;
+        public int setupVersion;
+        public DuelSetup setup;
         public MatchRules rules;
         public MatchController.MatchOutcome outcome;
         public int playerWins, opponentWins, drawnRounds, roundsPlayed;

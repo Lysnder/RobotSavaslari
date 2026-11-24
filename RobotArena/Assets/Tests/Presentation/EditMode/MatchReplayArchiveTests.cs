@@ -151,6 +151,29 @@ namespace RobotSavaslari.Presentation.Tests
         }
 
         [Test]
+        public void OutOfRangeDebrisDoesNotInvalidateTheOtherTracks()
+        {
+            var info = NewInfo(1, false);
+            var writer = _store.CreateWriter(info);
+            var edge = new Vector3(100000, -100000, 100000);
+            var frame = new[] { new MatchReplayClip.Pose(edge, Quaternion.identity, true),
+                new MatchReplayClip.Pose(new Vector3(0, -100001, 0), Quaternion.identity, true) };
+            info.Rounds.Add(new ReplayRound { MatchId = 1, RoundNumber = 1, StartTime = 0, EndTime = .05f, Outcome = 1 });
+            Assert.That(writer.WriteFrame(0, 0, frame, Array.Empty<byte>()), Is.True);
+            Assert.That(writer.WriteFrame(.05f, 0, frame, Array.Empty<byte>()), Is.True);
+            info.Duration = .05f;
+            Assert.That(_store.Commit(writer, out string message), Is.EqualTo(MatchReplayArchiveStore.CommitResult.Archived), message);
+            using var reader = MatchReplayArchiveReader.Open(_store.List()[0].Path, out string error);
+            Assert.That(reader, Is.Not.Null, error);
+            Assert.That(reader.VerifyAllChunks(out error), Is.True, error);
+            Assert.That(reader.Sample(0, frame, Array.Empty<byte>(), Array.Empty<Vector4>(), out error), Is.True, error);
+            Assert.That(frame[0].Position, Is.EqualTo(edge));
+            Assert.That(frame[0].Visible, Is.True);
+            Assert.That(frame[1].Position, Is.EqualTo(Vector3.zero));
+            Assert.That(frame[1].Visible, Is.False);
+        }
+
+        [Test]
         public void SamplesReturnTheWrittenFramesAndWear()
         {
             MatchReplayArchiveStore.Entry entry = CommitOne(null, 45);

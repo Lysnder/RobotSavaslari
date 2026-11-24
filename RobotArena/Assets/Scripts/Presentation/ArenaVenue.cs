@@ -17,11 +17,12 @@ namespace RobotSavaslari.Presentation
         private RobotHealth blue, orange;
         private ArenaLayout layout;
         private bool low;
-        private AudioSource room, signals;
-        private AudioClip bed, bell;
+        private AudioSource room, signals, audience;
+        private AudioClip bed, bell, applause;
         private MatchController.MatchState previous;
         private int lastCount;
         private float lastBlue = -10f, lastOrange = -10f;
+        private float lastHeavyHit = -10f, lastReaction = -10f;
         public bool IsPresenting { get; private set; }
         public float BlueSignal { get; private set; }
         public float OrangeSignal { get; private set; }
@@ -44,8 +45,10 @@ namespace RobotSavaslari.Presentation
             model = root.AddComponent<ArenaVenueModel>();
             room = NewSource(root, true);
             signals = NewSource(root, false);
+            audience = NewSource(root, false);
             bed = MakeSound(true);
             bell = MakeSound(false);
+            applause = MakeApplause();
             room.clip = bed;
             root.SetActive(false);
         }
@@ -85,8 +88,53 @@ namespace RobotSavaslari.Presentation
             return clip;
         }
 
-        private void BlueHit(RobotHit hit) { if (hit.Weapon && hit.Source == orange) lastOrange = Time.time; }
-        private void OrangeHit(RobotHit hit) { if (hit.Weapon && hit.Source == blue) lastBlue = Time.time; }
+        private static AudioClip MakeApplause()
+        {
+            const int rate = 16000;
+            var samples = new float[rate];
+            var random = new System.Random(752);
+            for (int clap = 0; clap < 58; clap++)
+            {
+                int start = random.Next(0, (int)(rate * .90f));
+                float volume = .18f * (1f - (float)start / rate);
+                float low = 0;
+                for (int i = 0; i < 360; i++)
+                {
+                    float noise = (float)random.NextDouble() * 2 - 1;
+                    low += .22f * (noise - low);
+                    samples[start + i] += (noise - low) * volume * Mathf.Exp(-i / 64f);
+                }
+            }
+            for (int voice = 0; voice < 6; voice++)
+            {
+                float pitch = 138 + voice * 18f, phase = 0;
+                int start = random.Next(0, rate / 5);
+                for (int i = start; i < rate; i++)
+                {
+                    float t = (float)(i - start) / (rate - start);
+                    phase += Mathf.PI * 2f / rate * (pitch + 44f * Mathf.Sin(t * Mathf.PI));
+                    samples[i] += .042f * Mathf.Sin(t * Mathf.PI) *
+                        (Mathf.Sin(phase) + .38f * Mathf.Sin(phase * 2) + .13f * Mathf.Sin(phase * 4));
+                }
+            }
+            var clip = AudioClip.Create("Arena supporters", samples.Length, 1, rate, false);
+            clip.SetData(samples, 0);
+            return clip;
+        }
+
+        private void BlueHit(RobotHit hit)
+        {
+            if (!hit.Weapon || hit.Source != orange) return;
+            lastOrange = Time.time;
+            if (hit.Amount >= 5f) lastHeavyHit = lastOrange;
+        }
+
+        private void OrangeHit(RobotHit hit)
+        {
+            if (!hit.Weapon || hit.Source != blue) return;
+            lastBlue = Time.time;
+            if (hit.Amount >= 5f) lastHeavyHit = lastBlue;
+        }
 
         private void LateUpdate()
         {
@@ -95,7 +143,7 @@ namespace RobotSavaslari.Presentation
             bool active = match.isActiveAndEnabled && !match.IsPaused &&
                 (state == MatchController.MatchState.Playing || state == MatchController.MatchState.Countdown || state == MatchController.MatchState.Result) &&
                 !(replay && replay.IsActive) && !(inspection && inspection.IsActive) &&
-                !(archive && archive.IsArchiveModeOpen) && !(challenge && (challenge.DialogOpen || challenge.InChallenge));
+                !(archive && archive.IsArchiveModeOpen) && !(challenge && challenge.DialogOpen);
             if (!active || !arena.Layout) { Silence(); return; }
             bool economy = QualitySettings.GetQualityLevel() == 0;
             if (layout != arena.Layout || low != economy)
@@ -120,10 +168,16 @@ namespace RobotSavaslari.Presentation
                 state == MatchController.MatchState.Playing && match.ShowStartMessage ? .85f : .18f + .82f * blueHit;
             OrangeSignal = result ? (match.Outcome == MatchController.MatchOutcome.PlayerVictory ? .12f : 1) :
                 state == MatchController.MatchState.Playing && match.ShowStartMessage ? .85f : .18f + .82f * orangeHit;
-            float cheer = result ? .8f : Mathf.Max(blueHit, orangeHit);
+            float cheer = result ? .8f : counting ? .22f + .36f * amber : Mathf.Max(blueHit, orangeHit);
             model.Present(now, cheer, BlueSignal, OrangeSignal, amber);
             room.volume = (low ? .075f : .14f) + cheer * (low ? .02f : .055f);
             int tick = counting ? Mathf.CeilToInt(match.CountdownRemaining) : 0;
+            if ((result && previous != state) || (state == MatchController.MatchState.Playing &&
+                now - lastHeavyHit < .14f && now - lastReaction > .85f))
+            {
+                audience.PlayOneShot(applause, (low ? .24f : .38f) * (result ? 1f : .78f));
+                lastReaction = now;
+            }
             if ((counting && tick > 0 && lastCount != tick) ||
                 (previous == MatchController.MatchState.Countdown && state == MatchController.MatchState.Playing) ||
                 (result && previous != state))
@@ -141,12 +195,13 @@ namespace RobotSavaslari.Presentation
             {
                 if (room) room.Stop();
                 if (signals) signals.Stop();
+                if (audience) audience.Stop();
                 if (model) model.gameObject.SetActive(false);
             }
             IsPresenting = false;
             lastCount = 0;
             previous = match ? match.State : MatchController.MatchState.Ready;
-            lastBlue = lastOrange = -10;
+            lastBlue = lastOrange = lastHeavyHit = lastReaction = -10;
             BlueSignal = OrangeSignal = 0;
         }
 
@@ -159,6 +214,7 @@ namespace RobotSavaslari.Presentation
             if (model) Destroy(model.gameObject);
             if (bed) Destroy(bed);
             if (bell) Destroy(bell);
+            if (applause) Destroy(applause);
         }
     }
 }

@@ -53,10 +53,13 @@ namespace RobotSavaslari
             !_opponent.CombatStopped && _health != null && !_health.IsDefeated &&
             _damage != null && _damage.WeaponOperational;
 
+        internal event System.Action<CombatProfile> WeaponProfileSelected;
+
         internal void SelectWeaponProfile(CombatProfile selected)
         {
             weaponProfile = selected;
             _melee.ApplyProfile(selected);
+            WeaponProfileSelected?.Invoke(selected);
         }
 
         private void BindWeapon()
@@ -78,6 +81,7 @@ namespace RobotSavaslari
             _keyboardDriver = GetComponent<PlayerKeyboardDriver>();
             if (_keyboardDriver != null) _keyboardDriver.enabled = !computer && isActiveAndEnabled;
             if (_motor == null) _motor = GetComponent<RobotDriveMotor>() ?? gameObject.AddComponent<RobotDriveMotor>();
+            _motor.ReleaseIncomingGrips();
             if (_bot == null) _bot = GetComponent<RobotBotController>();
             if (computer)
             {
@@ -107,6 +111,8 @@ namespace RobotSavaslari
         public void StopCombat()
         {
             CombatStopped = true;
+            if (_melee) _melee.ReleaseGrip();
+            if (_motor) _motor.ReleaseIncomingGrips();
             if (_keyboardDriver != null) _keyboardDriver.enabled = false;
             if (_bot != null) _bot.SetMatchRunning(false);
             WeaponActive = false;
@@ -171,6 +177,8 @@ namespace RobotSavaslari
 
         private void OnDisable()
         {
+            if (_melee) _melee.ReleaseGrip();
+            if (_motor) _motor.ReleaseIncomingGrips();
             if (Selected == this) Selected = null;
             if (_bot != null) { _bot.SetMatchRunning(false); _bot.enabled = false; }
             if (_motor != null) _motor.Clear(true);
@@ -207,7 +215,7 @@ namespace RobotSavaslari
             if ((p.x >= center.x + limits.x && v.x > 0f) || (p.x <= center.x - limits.x && v.x < 0f)) v.x = 0f;
             if ((p.z >= center.y + limits.y && v.z > 0f) || (p.z <= center.y - limits.y && v.z < 0f)) v.z = 0f;
             if (x != p.x || z != p.z) _body.position = new Vector3(x, p.y, z);
-            _body.linearVelocity = v;
+            if (!_body.isKinematic) _body.linearVelocity = v;
         }
 
         private void FixedUpdate() => TickCombatControls();
@@ -284,16 +292,22 @@ namespace RobotSavaslari
         internal void ApplyKnockback(Vector3 direction, float speed)
         {
             if (speed <= 0f || _health.IsDefeated || CombatStopped) return;
-            Vector3 velocity = _body.linearVelocity;
-            _body.linearVelocity = velocity + direction * (speed - Vector3.Dot(velocity, direction));
+            if (!_body.isKinematic)
+            {
+                Vector3 velocity = _body.linearVelocity;
+                _body.linearVelocity = velocity + direction * (speed - Vector3.Dot(velocity, direction));
+            }
             _motor.ReleaseTraction(knockbackDuration, knockbackTraction);
         }
 
         public void ResetMotion()
         {
             if (_body == null) _body = GetComponent<Rigidbody>();
-            _body.linearVelocity = Vector3.zero;
-            _body.angularVelocity = Vector3.zero;
+            if (!_body.isKinematic)
+            {
+                _body.linearVelocity = Vector3.zero;
+                _body.angularVelocity = Vector3.zero;
+            }
             _preStepVelocity = Vector3.zero;
             if (_motor != null) _motor.Clear(true);
         }

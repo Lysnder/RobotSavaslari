@@ -20,12 +20,15 @@ namespace RobotSavaslari.UI
         private Material spinnerMaterial;
         private string playerName, spinnerName, notice;
         private Vector3 spinnerPivot, forkPivot;
+        private Matrix4x4 spinnerRobotSpace;
         private CombatProfile spinnerProfile;
         private WorkshopSelection workshop;
         public bool ForkSelected { get; private set; }
         public string Notice => workshop != null && !string.IsNullOrEmpty(workshop.Notice) ? workshop.Notice : notice;
         internal CombatProfile ProfileFor(bool fork) => fork ? kit?.profile : spinnerProfile;
         internal string StockName(bool fork) => fork ? playerName + " - Kama" : playerName;
+        internal Mesh StockWeaponMesh(bool fork) => fork ? forkMesh : spinnerMesh;
+        internal Material StockWeaponMaterial(bool fork) => fork ? kit.material : spinnerMaterial;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void Register()
@@ -98,6 +101,8 @@ namespace RobotSavaslari.UI
             spinnerMesh = weapon.Mesh;
             spinnerMaterial = weapon.Transform.GetComponent<MeshRenderer>().sharedMaterial;
             spinnerPivot = weapon.RestPosition;
+            spinnerRobotSpace = match.Player.transform.worldToLocalMatrix * parent.localToWorldMatrix *
+                Matrix4x4.TRS(spinnerPivot, weapon.RestRotation, weapon.Transform.localScale);
             spinnerProfile = melee.Profile;
             playerName = match.Player.name;
             forkPivot = parent.InverseTransformPoint(match.Player.transform.TransformPoint(kit.hinge));
@@ -120,6 +125,54 @@ namespace RobotSavaslari.UI
             match.Player.SelectWeaponProfile(useFork ? kit.profile : spinnerProfile);
             match.Player.GetComponent<RobotModelAnimator>().BindParts();
             ForkSelected = useFork;
+        }
+
+        internal string IdFor(CombatProfile profile) => WorkshopWeapons.Id(profile.style) ?? (profile == kit?.profile ? "fork" : "spinner");
+
+        internal CombatProfile ProfileFor(string id) => id == "fork" || id == "spinner" ? ProfileFor(id == "fork") :
+            WorkshopWeapons.Index(id) >= 2 ? Resources.Load<CombatProfile>("Robots/" + id) : null;
+
+        internal bool BuildOpponentWeapon(string id, Transform robot, Transform parent, out Mesh mesh,
+            out Vector3 pivot, out Material material, out CombatProfile profile)
+        {
+            mesh = null;
+            pivot = Vector3.zero;
+            material = null;
+            profile = null;
+            if (!PrepareKit()) return false;
+            var intoModel = parent.worldToLocalMatrix * robot.localToWorldMatrix;
+            if (WorkshopWeapons.Index(id) >= 2)
+            {
+                var workshopKit = WorkshopKit.Load();
+                if (!workshopKit) return false;
+                var source = workshopKit.WeaponMesh(id);
+                if (!source) return false;
+                pivot = intoModel.MultiplyPoint3x4(new Vector3(0, .49f, .56f));
+                mesh = new Mesh { name = WorkshopWeapons.Part(id) };
+                var basis = intoModel;
+                basis.SetColumn(3, new Vector4(0, 0, 0, 1));
+                mesh.CombineMeshes(new[] { new CombineInstance { mesh = source, transform = basis } });
+                material = workshopKit.WeaponMetal;
+                profile = ProfileFor(id);
+            }
+            else if (id == "fork")
+            {
+                mesh = kit.BuildMesh(robot, parent);
+                pivot = intoModel.MultiplyPoint3x4(kit.hinge);
+                material = kit.material;
+                profile = kit.profile;
+            }
+            else
+            {
+                var pose = intoModel * spinnerRobotSpace;
+                pivot = pose.MultiplyPoint3x4(Vector3.zero);
+                mesh = new Mesh { name = "Opponent spinner" };
+                mesh.CombineMeshes(new[] { new CombineInstance { mesh = spinnerMesh,
+                    transform = Matrix4x4.Translate(-pivot) * pose } });
+                material = spinnerMaterial;
+                profile = spinnerProfile;
+            }
+            return mesh && material && profile;
         }
 
         private void OnDestroy()

@@ -12,7 +12,7 @@ namespace RobotSavaslari.Combat
     /// - Kabul edilen istek bekleme suresini hemen baslatir ve kisa bir saldiri penceresi acar.
     /// - Pencere boyunca menzil ve yay icindeki rakip collider'lar aranir. Collider'in ait oldugu
     ///   <see cref="RobotHealth"/> hedef sayilir; kendi robotu hedef olamaz.
-    /// - Bir saldiri her hedefe en fazla bir kez hasar verir (coklu collider, suren temas).
+    /// - Tek darbeler hedef başına bir kere, testere ise kesintisiz temasta sınırlı aralıklarla hasar verir.
     /// - Pencere sirasinda mac kapanirsa saldiri kesilir ve artik hasar yazilmaz.
     /// </summary>
     [DisallowMultipleComponent]
@@ -36,7 +36,21 @@ namespace RobotSavaslari.Combat
         private RobotHealth _health;
         private bool _initialized;
         private bool _active;
-        private float _activeUntil;
+        private float _activeUntil, _strikeAt, _nextCut, _releaseAt;
+        private int _cuts;
+        private RobotHealth _sawContact;
+        private RobotDriveMotor _grip;
+        private Collider _gripContact;
+        private RobotHealth _gripHealth;
+        private AudioSource _toolSpeaker;
+        private AudioClip _toolCue;
+        private WeaponStyle _cueStyle;
+        private WeaponStyle Style => profile ? profile.style : WeaponStyle.Standard;
+        public bool HoldingTarget => _grip != null;
+        public bool WindingUp => _active && Now < _strikeAt;
+        public float WindupFraction => !WindingUp ? 1f : 1f - (_strikeAt - Now) / profile.windup;
+        public string PhaseLabel => HoldingTarget ? "Kavradı" : WindingUp ? (Style == WeaponStyle.Drum ? "Devir alıyor" : "Hazırlanıyor") :
+            _active ? "Etkin" : CooldownRemaining > 0f ? $"Bekliyor  {CooldownRemaining:0.0} sn" : "Hazır";
 
         /// <summary>Kod ile atanan mac izni; null ise sahnedeki <see cref="LocalMatchGate"/> kullanilir, o da yoksa mac acik sayilir.</summary>
         public IMatchGate Gate { get; set; }
@@ -93,8 +107,15 @@ namespace RobotSavaslari.Combat
             Tick();
         }
 
+        private void Update()
+        {
+            // Opening settings can stop fixed updates altogether.
+            if (_grip && (Time.timeScale <= 0f || !IsGateOpen)) ReleaseGrip();
+        }
+
         public void ApplyProfile(CombatProfile newProfile)
         {
+            if (newProfile != profile) ReleaseGrip();
             profile = newProfile;
             if (profile != null) CopyProfile(profile);
         }
@@ -111,7 +132,12 @@ namespace RobotSavaslari.Combat
             _cooldown.Begin(now, cooldown);
             _hitLog.Clear();
             _active = true;
-            _activeUntil = now + activeDuration;
+            _cuts = 0;
+            _sawContact = null;
+            _nextCut = now;
+            _strikeAt = now + (profile ? Mathf.Max(0f, profile.windup) : 0f);
+            _activeUntil = _strikeAt + activeDuration;
+            PlayToolCue();
             LastReport = new AttackReport(AttackOutcome.Started, 0, now);
             Started?.Invoke(this);
             Tick();
@@ -121,8 +147,10 @@ namespace RobotSavaslari.Combat
         /// <summary>Suren saldiri penceresini ilerletir. FixedUpdate cagirir; testler elle de cagirabilir.</summary>
         public void Tick()
         {
-            if (!_active) return;
             float now = Now;
+            if (_grip && (now >= _releaseAt || !IsGateOpen || IsSelfDefeated || _grip.Body.isKinematic || !_gripContact || !_gripContact.enabled ||
+                (_gripContact.ClosestPoint(Origin) - Origin).sqrMagnitude > (range + .2f) * (range + .2f))) ReleaseGrip();
+            if (!_active) return;
             if (!IsGateOpen)
             {
                 Finish(AttackOutcome.MatchClosed, now);
@@ -135,6 +163,7 @@ namespace RobotSavaslari.Combat
                 return;
             }
 
+            if (now < _strikeAt) return;
             // A zero-duration profile samples once, synchronously in RequestAttack.
             // A late physics tick must not collect a hit after the window closed.
             if (now < _activeUntil || (activeDuration == 0f && now == _activeUntil))
@@ -147,6 +176,7 @@ namespace RobotSavaslari.Combat
         public void ResetForNewMatch()
         {
             EnsureInitialized();
+            ReleaseGrip();
             _cooldown.Reset();
             _hitLog.Clear();
             _active = false;
@@ -173,24 +203,103 @@ namespace RobotSavaslari.Combat
         {
             Physics.SyncTransforms();
             Collider[] colliders = Physics.OverlapSphere(Origin, range, targetLayers, QueryTriggerInteraction.Ignore);
+            bool stillCutting = false;
             foreach (Collider collider in colliders)
             {
                 // Damage callbacks can end the match synchronously, even before this loop returns.
                 if (!_active || !IsGateOpen || IsSelfDefeated) break;
                 RobotHealth target = collider.GetComponentInParent<RobotHealth>();
                 if (target == null || target == _health || target.IsDefeated) continue;
-                if (_hitLog.Contains(target) || !IsInReach(collider, out Vector3 point)) continue;
+                if (!IsInReach(collider, out Vector3 point)) continue;
+                if (Style == WeaponStyle.Saw)
+                {
+                    if (_sawContact != null && _sawContact != target) continue;
+                    stillCutting = true;
+                    if (Now < _nextCut || _cuts >= 4) continue;
+                    _sawContact = target;
+                    _cuts++;
+                    _nextCut = Now + .18f;
+                }
+                else if (_hitLog.Contains(target)) continue;
 
                 _hitLog.TryRegister(target);
                 Vector3 direction = point - Origin;
                 direction.y = 0f;
                 direction = direction.sqrMagnitude > 1e-6f ? direction.normalized : transform.forward;
-                target.TakeDamage(damage, point, -direction, direction * 2f, true, _health);
-                if (profile != null && profile.pushSpeed > 0f && target.TryGetComponent(out RobotPrototypeController robot))
-                    robot.ApplyKnockback(direction, profile.pushSpeed * robot.WeaponPushMultiplier);
+                if (Style == WeaponStyle.Hammer)
+                {
+                    var hull = target.GetComponent<BoxCollider>();
+                    if (hull) point = hull.ClosestPoint(new Vector3(point.x, hull.bounds.max.y + 1f, point.z));
+                }
+                target.TakeDamage(damage, point, Style == WeaponStyle.Hammer ? Vector3.up : -direction, direction * 2f, true, _health);
+                if (IsGateOpen && !target.IsDefeated) ApplyToolEffect(target, collider, direction);
                 TargetHit?.Invoke(this, target, damage);
             }
+            // An interrupted cut cannot resume until the next activation.
+            if (_active && _sawContact != null && !stillCutting) Finish(AttackOutcome.Hit, Now);
         }
+
+        private void ApplyToolEffect(RobotHealth target, Collider collider, Vector3 direction)
+        {
+            if (!profile) return;
+            if (!target.TryGetComponent(out RobotPrototypeController robot)) return;
+            if (profile.pushSpeed > 0f) robot.ApplyKnockback(direction, profile.pushSpeed * robot.WeaponPushMultiplier);
+            if (!target.TryGetComponent(out Rigidbody body) || body.isKinematic) return;
+            if (Style == WeaponStyle.Drum || Style == WeaponStyle.Flipper)
+            {
+                float lift = Style == WeaponStyle.Drum ? 1.35f : 3.05f;
+                body.AddForce(Vector3.up * (lift * robot.WeaponPushMultiplier), ForceMode.VelocityChange);
+            }
+            else if (Style == WeaponStyle.Clamp && !_grip && TryGetComponent(out Rigidbody owner) && !owner.isKinematic &&
+                !robot.CombatStopped && target.TryGetComponent(out RobotDriveMotor drive) && drive.isActiveAndEnabled)
+            {
+                // Both drivers own their rigidbody velocities. Limit the target's powered motion
+                // without welding two actively driven, colliding hulls together.
+                _grip = drive;
+                _gripContact = collider;
+                _gripHealth = target;
+                target.Defeated += GripTargetDefeated;
+                target.Restored += ReleaseGrip;
+                drive.AddGrip(this);
+                _releaseAt = Now + .64f;
+            }
+        }
+
+        private void GripTargetDefeated(RobotHealth target) => ReleaseGrip();
+
+        internal void ReleaseGrip()
+        {
+            if (_grip) _grip.RemoveGrip(this);
+            if (_gripHealth)
+            {
+                _gripHealth.Defeated -= GripTargetDefeated;
+                _gripHealth.Restored -= ReleaseGrip;
+            }
+            _grip = null;
+            _gripContact = null;
+            _gripHealth = null;
+        }
+
+        private void PlayToolCue()
+        {
+            if (Style == WeaponStyle.Standard || Application.isBatchMode && SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.Null) return;
+            if (!_toolSpeaker)
+            {
+                _toolSpeaker = gameObject.AddComponent<AudioSource>();
+                _toolSpeaker.playOnAwake = false;
+                _toolSpeaker.spatialBlend = .6f;
+            }
+            if (!_toolCue || _cueStyle != Style)
+            {
+                if (_toolCue) Destroy(_toolCue);
+                _cueStyle = Style;
+                _toolCue = ToolSound.Create(Style);
+            }
+            _toolSpeaker.PlayOneShot(_toolCue, .32f);
+        }
+
+        private void OnDisable() => ReleaseGrip();
+        private void OnDestroy() { if (_toolCue) Destroy(_toolCue); }
 
         private AttackOutcome Reject(AttackOutcome outcome, float now)
         {

@@ -37,7 +37,8 @@ namespace RobotSavaslari.UI
                     sockets.Add(ModularRobotPreview.Find(art.transform, "WheelMount_" + suffix), "Wheel_" + suffix);
                 foreach (string suffix in new[] { "L", "R" })
                     sockets.Add(ModularRobotPreview.Find(art.transform, "ArmorMount_" + suffix), "Armor_" + suffix);
-                sockets.Add(ModularRobotPreview.Find(art.transform, "WeaponMount_A"), loadout.weaponId == "spinner" ? "Spinner" : "Lifter");
+                Transform weaponMount = ModularRobotPreview.Find(art.transform, "WeaponMount_A");
+                sockets.Add(weaponMount, Combat.WorkshopWeapons.Part(loadout.weaponId));
 
                 var renderers = new Dictionary<string, List<MeshRenderer>>();
                 var pivots = new Dictionary<string, Vector3>();
@@ -54,7 +55,7 @@ namespace RobotSavaslari.UI
                     {
                         // Kama is an ungrouped primitive assembly mounted below the chassis LOD.
                         var weapon = renderer.GetComponentInParent<RobotSavaslari.Combat.ForkLoadout>(true);
-                        if (weapon == null && renderer.transform.parent != art.transform) continue;
+                        if (weapon == null && renderer.transform.parent != art.transform && renderer.transform.parent != weaponMount) continue;
                     }
                     string slot = "Body";
                     for (var t = renderer.transform; t != art.transform; t = t.parent)

@@ -45,6 +45,7 @@ namespace RobotSavaslari.Presentation
         private readonly BehaviourEnableScope _inputScope = new BehaviourEnableScope();
         private readonly List<Renderer> _liveLayout = new List<Renderer>();
         private readonly List<ReplayEvent> _impacts = new List<ReplayEvent>();
+        private readonly List<int> _partTracks = new List<int>();
         private MatchController _match;
         private SettingsPanelController _settings;
         private CombatCameraController _camera;
@@ -54,6 +55,7 @@ namespace RobotSavaslari.Presentation
         private Transform _root, _playerRoot, _opponentRoot, _debrisRoot, _arenaRoot;
         private MeshRenderer[] _proxies;
         private MeshRenderer[] _templates;
+        private ArchivedRobotModels _archivedModels;
         private MatchReplayClip.Pose[] _poses;
         private ReplayHazardSample[] _hazards;
         private byte[] _wear, _appliedWear;
@@ -230,13 +232,15 @@ namespace RobotSavaslari.Presentation
         // ---- Compatibility ---------------------------------------------------------------------------
 
         /// <summary>
-        /// Null when this build and scene can draw the archive; otherwise why not. Every robot track must
-        /// resolve to a mesh at the same path on a live robot of the same name with the same vertex count,
-        /// and every arena track to a known layout object. Nothing is guessed or carried over.
+        /// Every recorded robot path and mesh signature must resolve to the live model or a known catalog part.
         /// </summary>
-        public string CheckCompatibility(ReplayArchiveInfo info) => ResolveTemplates(info, null, out _);
+        public string CheckCompatibility(ReplayArchiveInfo info)
+        {
+            using var models = new ArchivedRobotModels(_match);
+            return ResolveTemplates(info, null, models, out _);
+        }
 
-        private string ResolveTemplates(ReplayArchiveInfo info, MeshRenderer[] templates, out Material layoutMaterial)
+        private string ResolveTemplates(ReplayArchiveInfo info, MeshRenderer[] templates, ArchivedRobotModels models, out Material layoutMaterial)
         {
             layoutMaterial = null;
             if (info == null) return "Kayıt okunamadı.";
@@ -258,14 +262,11 @@ namespace RobotSavaslari.Presentation
                 }
                 string robotName = MatchReplayArchive.KeyRobotName(track.Key);
                 string path = MatchReplayArchive.KeyRobotPath(track.Key);
-                Transform robot = FindRobot(robotName);
-                if (robot == null) return "Uyumsuz: robot bulunamadı (" + robotName + ").";
-                string templatePath = StripDuplicateSuffix(path);
-                Transform node = robot.Find(templatePath);
-                var renderer = node != null ? node.GetComponent<MeshRenderer>() : null;
-                var filter = node != null ? node.GetComponent<MeshFilter>() : null;
-                if (renderer == null || filter == null || filter.sharedMesh == null) return "Uyumsuz: görsel parça bulunamadı (" + track.Key + ").";
-                if (filter.sharedMesh.vertexCount != track.MeshSignature) return "Uyumsuz: parça görünümü değişti (" + track.Key + ").";
+                bool player = track.Robot == MatchReplayRecorder.PlayerRobot;
+                if (robotName != (player ? info.PlayerName : info.OpponentName) || !models.Known(robotName, player))
+                    return "Uyumsuz: robot bulunamadı (" + robotName + ").";
+                var renderer = models.Resolve(robotName, player, StripDuplicateSuffix(path), track.MeshSignature);
+                if (renderer == null) return "Uyumsuz: kayıtlı görsel parça veya mesh imzası bulunamadı (" + track.Key + ").";
                 if (templates != null) templates[t] = renderer;
             }
             if (needsLayout)
@@ -280,14 +281,6 @@ namespace RobotSavaslari.Presentation
         {
             int hash = path.LastIndexOf('#');
             return hash > 0 && path.IndexOf('/', hash) < 0 ? path.Substring(0, hash) : path;
-        }
-
-        private Transform FindRobot(string name)
-        {
-            if (string.IsNullOrEmpty(name) || _match == null) return null;
-            if (_match.Player != null && _match.Player.name == name) return _match.Player.transform;
-            if (_match.Opponent != null && _match.Opponent.name == name) return _match.Opponent.transform;
-            return null;
         }
 
         private Material FindLayoutMaterial(string name)
@@ -353,16 +346,19 @@ namespace RobotSavaslari.Presentation
                 return false;
             }
             var templates = new MeshRenderer[reader.Info.Tracks.Count];
-            string incompatible = ResolveTemplates(reader.Info, templates, out Material layoutMaterial);
+            var models = new ArchivedRobotModels(_match);
+            string incompatible = ResolveTemplates(reader.Info, templates, models, out Material layoutMaterial);
             if (incompatible == null && reader.Info.Chunks.Count == 0) incompatible = "Kayıtta kare yok.";
             if (incompatible == null && !reader.VerifyAllChunks(out error)) incompatible = "Bozuk kayıt: " + error;
             if (incompatible != null)
             {
+                models.Dispose();
                 reader.Dispose();
                 LastError = incompatible;
                 return false;
             }
 
+            _archivedModels = models;
             _reader = reader;
             _templates = templates;
             ReplayArchiveInfo info = reader.Info;
@@ -483,33 +479,19 @@ namespace RobotSavaslari.Presentation
 
         /// <summary>
         /// Damage parts of a robot at the current moment: name and whether it is still on the robot. The
-        /// part list is the live robot's <see cref="RobotDamageVisuals"/> partition, matched by path.
+        /// part list comes from the detachable parts in the recording.
         /// </summary>
         public void GetPartStates(int robot, List<KeyValuePair<string, bool>> output)
         {
             output.Clear();
             if (!IsActive) return;
             ReplayArchiveInfo info = _reader.Info;
-            string robotName = robot == MatchReplayRecorder.PlayerRobot ? info.PlayerName : info.OpponentName;
-            Transform live = FindRobot(robotName);
-            var visuals = live != null ? live.GetComponent<RobotDamageVisuals>() : null;
-            if (visuals == null) return;
-            foreach (RobotDamageVisuals.Part part in visuals.Parts)
+            foreach (int index in _partTracks)
             {
-                if (part.Transform == null) continue;
-                string key = MatchReplayArchive.RobotPrefix + robotName + "/" + PathUnder(live, part.Transform);
-                ReplayTrack track = info.Tracks.Find(t => t.Key == key);
-                if (track == null || track.Column < 0) continue;
-                output.Add(new KeyValuePair<string, bool>(part.Name, _poses[track.Column].Visible));
+                var track = info.Tracks[index];
+                if (track.Robot == robot)
+                    output.Add(new KeyValuePair<string, bool>(_proxies[index].name, _poses[track.Column].Visible));
             }
-        }
-
-        private static string PathUnder(Transform root, Transform node)
-        {
-            var names = new List<string>();
-            for (Transform current = node; current != null && current != root; current = current.parent) names.Add(current.name);
-            names.Reverse();
-            return string.Join("/", names);
         }
 
         public void Stop()
@@ -532,10 +514,13 @@ namespace RobotSavaslari.Presentation
             _root = _playerRoot = _opponentRoot = _debrisRoot = _arenaRoot = null;
             _proxies = null;
             _templates = null;
+            _archivedModels?.Dispose();
+            _archivedModels = null;
             _marker = null;
             _markerMaterial = null;
             _impacts.Clear();
             _liveLayout.Clear();
+            _partTracks.Clear();
             _reader?.Dispose();
             _reader = null;
             ProxyCount = 0;
@@ -638,6 +623,12 @@ namespace RobotSavaslari.Presentation
                 }
                 _proxies[t] = proxy;
                 if (proxy != null) ProxyCount++;
+                if (proxy != null && track.Kind == ReplayTrackKind.RobotPart && !track.Wear && track.Column >= 0)
+                {
+                    // Wear tracks are retained before debris when the recorder reaches its track limit.
+                    string wearKey = track.Key + "/Damage Wear";
+                    if (info.Tracks.Exists(part => part.Wear && part.Key == wearKey)) _partTracks.Add(t);
+                }
             }
         }
 

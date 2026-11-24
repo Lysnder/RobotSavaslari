@@ -125,6 +125,8 @@ namespace RobotSavaslari.UI
         {
             _match = GetComponent<MatchController>();
             _settings = GetComponent<SettingsPanelController>();
+            if (string.Equals(gameObject.scene.name, "MainArena", System.StringComparison.OrdinalIgnoreCase) &&
+                !TryGetComponent<PlayerRobotSelection>(out _)) gameObject.AddComponent<PlayerRobotSelection>();
         }
 
         private void OnDisable()
@@ -465,7 +467,7 @@ namespace RobotSavaslari.UI
             EnsureLobbySetup();
             var setup = CaptureSetup();
             if (setup == null || !setup.Valid || !TryApplyArena()) return;
-            if (_match.RequestCountdown())
+            if (_match.RequestCountdown(_match.CreateDuelStart(setup)))
             {
                 if (!_protectPreference) _setupNotice = null;
                 RememberEncounter(setup);
@@ -495,6 +497,31 @@ namespace RobotSavaslari.UI
             return false;
         }
 
+        internal bool StartHistoryRematch(MatchRecord record)
+        {
+            EnsureLobbySetup();
+            DuelSetup lobby;
+            if (record.setupVersion == 1)
+            {
+                var saved = record.setup;
+                lobby = DuelSetup.Create(saved.arenaId, saved.personality, saved.difficulty, record.rules);
+                if (!StageSetup(lobby) || !GetComponent<WorkshopSelection>().RestoreForDuel(saved.playerRobotId)) return false;
+            }
+            else
+            {
+                if (!_match.ConfigureRules(record.rules)) return false;
+                lobby = CaptureSetup();
+            }
+            if (lobby == null || !TryApplyArena()) return false;
+            var start = _match.CreateDuelStart(lobby);
+            if (record.setupVersion == 1 && (start == null || start.playerRobotId != record.setup.playerRobotId ||
+                start.opponentRobotId != record.setup.opponentRobotId)) return false;
+            if (!_match.RequestCountdown(start)) return false;
+            _playedSetup = lobby;
+            _playedEncounter = _match.EncounterId;
+            return true;
+        }
+
         public void ContinueResult()
         {
             if (!isActiveAndEnabled || _match.State != MatchController.MatchState.Result || _match.IsPaused ||
@@ -520,7 +547,8 @@ namespace RobotSavaslari.UI
             float cell = (w - 8f) * .5f;
             bool aggressive = _opponentPanel.Personality == BotPersonality.Aggressive;
             bool easy = _opponentPanel.Difficulty == BotDifficulty.Easy;
-            GUI.Label(new Rect(x, 395, w, 24), "RAKİP DAVRANIŞI", theme.Heading);
+            GUI.Label(new Rect(x, 395, w, 24), Combat.WorkshopWeapons.Label(DuelSetup.OtherRobot(_match.EquippedPlayerId)) +
+                "  /  RAKİP DAVRANIŞI", theme.Heading);
             if (Choice(new Rect(x, 423, cell, 34), "Baskıcı", aggressive))
                 EditSetup(bot: BotPersonality.Aggressive);
             if (Choice(new Rect(x + cell + 8, 423, cell, 34), "Karşı saldırı", !aggressive))
@@ -553,6 +581,11 @@ namespace RobotSavaslari.UI
             GUI.color = previousColor;
             GUILayout.Label("Oyuncu: " + Mathf.CeilToInt(_match.Player.GetComponent<RobotHealth>().CurrentHealth) +
                             "   Rakip: " + Mathf.CeilToInt(_match.Opponent.GetComponent<RobotHealth>().CurrentHealth));
+            var attack = _match.Player.GetComponent<Combat.MeleeAttack>();
+            string toolId = attack && attack.Profile ? Combat.WorkshopWeapons.Id(attack.Profile.style) : null;
+            if (toolId != null)
+                GUILayout.Label(Combat.WorkshopWeapons.Label(toolId) + "   " +
+                    (_match.Player.GetComponent<RobotDamageVisuals>().WeaponOperational ? attack.PhaseLabel : "Silah koptu"));
             GUILayout.Label("W/S veya ↑/↓: sürüş    A/D veya ←/→: dönüş    Space: saldırı");
             GUILayout.EndArea();
         }
@@ -621,7 +654,7 @@ namespace RobotSavaslari.UI
             GUI.Label(new Rect(panel.x + 16, panel.y + 8, 528, 32), "Maç geçmişi", theme.Title);
             var records = _match.HistoryStore.Load();
             GUI.Label(new Rect(panel.x + 16, panel.y + 38, 528, 34),
-                "Rövanş temel maç kurallarını kullanır. Mevcut arena ve rakip seçimi korunur.");
+                "Rövanş kayıtlı kurulumu açar. Eski maçlarda güncel robotlar ve arena kullanılır.");
             if (records.Count == 0) GUI.Label(new Rect(panel.x + 16, panel.y + 76, 520, 44),
                 _match.HistoryStore.LastError ?? "Henüz tamamlanmış karşılaşma yok.");
             _historyScroll = GUI.BeginScrollView(new Rect(panel.x + 12, panel.y + 78, 536, panel.height - 142),
@@ -637,9 +670,7 @@ namespace RobotSavaslari.UI
                 if (GUI.Button(new Rect(380, y + 8, 116, 38), "Rövanş"))
                 {
                     _showHistory = false;
-                    if (record != null && record.IsValid && TryApplyArena() && _match.Rematch(record))
-                        RememberEncounter(CaptureSetup());
-                    else _showHistory = true;
+                    if (!_match.Rematch(record)) _showHistory = true;
                 }
             }
             GUI.EndScrollView();

@@ -6,7 +6,7 @@ using UnityEngine.Rendering;
 namespace RobotSavaslari.Presentation
 {
     [DisallowMultipleComponent]
-    public sealed class ArenaVenueModel : MonoBehaviour
+    public sealed partial class ArenaVenueModel : MonoBehaviour
     {
         private enum Ink { Steel, Frame, Concrete, Nosing, Seat, Navy, Blue, Orange, Amber, Ice, Ivory, Skin, Ochre, Cap, DarkSkin, White }
 
@@ -68,6 +68,7 @@ namespace RobotSavaslari.Presentation
                 var cabin = Side(i + 2, i == 0 ? "Team 1 - blue booth" : "Team 2 - orange booth", new Vector3(end * half.x, 0, 0), end * 90);
                 BuildCabin(cabin, i);
             }
+            BuildRing(bounds, layout);
             var clock = new Geometry();
             // Countdown indicators sit on the middle grandstand fascia, away from the hazard grid.
             for (int i = -1; i <= 1; i++)
@@ -98,7 +99,7 @@ namespace RobotSavaslari.Presentation
                 var people = economy ? steel : new Geometry();
                 for (int row = 0; row < rows; row++)
                 {
-                    float z = 1.68f + row * .78f, y = -.32f + row * .34f;
+                    float z = 1.95f + row * .82f, y = -.01f + row * .46f;
                     float width = pitch - .52f;
                     steel.Block(x, y - .18f, z, width, .36f, .79f, Ink.Steel);
                     steel.Block(x, y + .015f, z - .33f, width, .045f, .09f, Ink.Nosing);
@@ -114,7 +115,7 @@ namespace RobotSavaslari.Presentation
                 }
                 if (!economy)
                     spectators[side * 3 + bay] = Draw(parent, "Supporters bay " + (bay + 1), people).transform;
-                float back = 1.77f + rows * .78f, high = (rows - 1) * .34f;
+                float back = 2.04f + rows * .82f, high = .31f + (rows - 1) * .46f;
                 steel.Beam(new Vector3(x - pitch * .46f, -.42f, back), new Vector3(x - pitch * .46f, high + .33f, back), .055f, Ink.Frame);
                 steel.Beam(new Vector3(x + pitch * .46f, -.42f, back), new Vector3(x + pitch * .46f, high + .33f, back), .055f, Ink.Frame);
                 steel.Block(x, high + .32f, back, pitch - .12f, .055f, .055f, Ink.Nosing);
@@ -129,7 +130,7 @@ namespace RobotSavaslari.Presentation
                 steel.Block(x, gantry - .035f, 4.43f, pitch - .43f, .042f, .048f, Ink.Ice);
                 if (bay < 2)
                     for (int step = 0; step < rows * 2; step++)
-                        steel.Block(x + pitch * .5f, -.40f + step * .17f, 1.41f + step * .39f,
+                        steel.Block(x + pitch * .5f, -.10f + step * .23f, 1.68f + step * .41f,
                             .38f, .10f, .40f, step % 2 == 0 ? Ink.Concrete : Ink.Nosing);
             }
             Draw(parent, "Steel tiers and aisles", steel);
@@ -137,7 +138,8 @@ namespace RobotSavaslari.Presentation
 
         private static void Spectator(Geometry mesh, float x, float y, float z, int id, bool detailed)
         {
-            Ink jacket = (id % 5) switch { 0 => Ink.Cap, 1 => Ink.Ochre, 2 => Ink.Navy, 3 => Ink.Steel, _ => Ink.Seat };
+            Ink jacket = (id % 8) switch { 0 => Ink.Ivory, 1 => Ink.Ochre, 2 => Ink.Navy, 3 => Ink.Orange,
+                4 => Ink.Blue, 5 => Ink.Steel, 6 => Ink.Cap, _ => Ink.Seat };
             Ink skin = id % 3 == 0 ? Ink.DarkSkin : Ink.Skin;
             float k = .92f + (id % 4) * .045f;
             mesh.Taper(new Vector3(x, y + .18f * k, z), .20f, .16f, .31f, .20f, .33f * k, jacket, Quaternion.identity);
@@ -220,6 +222,14 @@ namespace RobotSavaslari.Presentation
                 g.Block(x + side * .11f, .012f, z - .028f, .13f, .07f, .19f, Ink.Steel);
                 g.Beam(new Vector3(x + side * .15f, .74f, z), new Vector3(x + side * .21f, .56f, z - .08f), .096f, jacket);
                 g.Beam(new Vector3(x + side * .21f, .56f, z - .08f), new Vector3(x + side * .14f, .62f, z - .25f), .073f, Ink.Cap);
+                g.Head(new Vector3(x + side * .12f, .64f, z - .27f), .047f, .079f, primary ? Ink.Skin : Ink.DarkSkin);
+                if (primary)
+                    g.Beam(new Vector3(x + side * .09f, .66f, z - .29f), new Vector3(x + side * .085f, .70f, z - .31f), .022f, Ink.Ivory);
+            }
+            if (primary)
+            {
+                g.Block(x, .63f, z - .29f, .29f, .072f, .12f, Ink.Frame);
+                g.Block(x, .668f, z - .32f, .07f, .012f, .051f, Ink.Ice);
             }
             g.Taper(new Vector3(x, .605f, z), .22f, .19f, .36f, .21f, .39f, jacket, Quaternion.identity);
             g.Head(new Vector3(x, .92f, z - .014f), .119f, .23f, primary ? Ink.Skin : Ink.DarkSkin);
@@ -258,6 +268,13 @@ namespace RobotSavaslari.Presentation
                     float sightHeight = .35f + (p.y - .35f) * 2.0f / Mathf.Max(2.0f, edge + .7f);
                     bool obscure = edge > .85f && across < (i < 2 ? half.x + .6f : 1.9f) && sightHeight < (i < 2 ? 2.1f : 1.75f);
                     if (sides[i].gameObject.activeSelf == obscure) sides[i].gameObject.SetActive(!obscure);
+                    // A lens immediately inside the wall can also overlap a post on its near plane.
+                    float sightAtWall = .35f + (p.y - .35f) * .7f / Mathf.Max(.7f, edge + .7f);
+                    bool hideFrame = edge > -.28f && across < (i < 2 ? half.x : half.y) + .3f && sightAtWall < RingHeight + .16f;
+                    if (frames[i].activeSelf == hideFrame) frames[i].SetActive(!hideFrame);
+                    float sightAtHall = .35f + (p.y - .35f) * 6.2f / Mathf.Max(6.2f, edge + .7f);
+                    bool hideHall = edge > 5.15f && sightAtHall < 5.4f;
+                    if (hallWalls[i].activeSelf == hideHall) hallWalls[i].SetActive(!hideHall);
                 }
             }
             if (!economy)
@@ -287,7 +304,7 @@ namespace RobotSavaslari.Presentation
             lamps[index].SetPropertyBlock(emission);
         }
 
-        private MeshRenderer Draw(Transform parent, string label, Geometry geometry)
+        private MeshRenderer Draw(Transform parent, string label, Geometry geometry, Material surface = null)
         {
             var node = new GameObject(label);
             node.transform.SetParent(parent, false);
@@ -295,7 +312,7 @@ namespace RobotSavaslari.Presentation
             meshes.Add(mesh);
             node.AddComponent<MeshFilter>().sharedMesh = mesh;
             var renderer = node.AddComponent<MeshRenderer>();
-            renderer.sharedMaterial = material;
+            renderer.sharedMaterial = surface ? surface : material;
             renderer.shadowCastingMode = ShadowCastingMode.Off;
             renderer.receiveShadows = false;
             renderer.lightProbeUsage = LightProbeUsage.Off;
@@ -310,11 +327,18 @@ namespace RobotSavaslari.Presentation
             meshes.Clear();
             if (material) Destroy(material);
             if (atlas) Destroy(atlas);
+            if (glass) Destroy(glass);
+            if (wash) Destroy(wash);
+            if (stripLight) Destroy(stripLight);
             for (int i = 0; i < lampLevels.Length; i++) lampLevels[i] = -1;
             scenery = null;
         }
 
-        private void OnDestroy() => Release();
+        private void OnDestroy()
+        {
+            Release();
+            if (brushedDeck) Destroy(brushedDeck);
+        }
 
         private sealed class Geometry
         {
@@ -364,7 +388,15 @@ namespace RobotSavaslari.Presentation
                 indices.Add(start); indices.Add(start + 1); indices.Add(start + 2);
             }
 
-            private void Face(Vector3 a, Vector3 b, Vector3 c, Vector3 d, Ink ink)
+            public void Sheet(Vector3 a, Vector3 b, Vector3 c, Vector3 d)
+            {
+                int first = vertices.Count;
+                Face(a, b, c, d, Ink.White);
+                uv[first] = Vector2.zero; uv[first + 1] = Vector2.right;
+                uv[first + 2] = Vector2.one; uv[first + 3] = Vector2.up;
+            }
+
+            public void Face(Vector3 a, Vector3 b, Vector3 c, Vector3 d, Ink ink)
             {
                 int start = vertices.Count;
                 Point(a, ink); Point(b, ink); Point(c, ink); Point(d, ink);
