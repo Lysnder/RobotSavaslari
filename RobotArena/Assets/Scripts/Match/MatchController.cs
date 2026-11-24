@@ -1,5 +1,6 @@
 using System;
 using RobotSavaslari.Combat;
+using RobotSavaslari.Arena;
 using RobotSavaslari.Driving;
 using RobotSavaslari.UI;
 using UnityEngine;
@@ -19,6 +20,9 @@ namespace RobotSavaslari.Match
         [SerializeField] private Transform opponentSpawn;
         public MatchState State { get; private set; }
         public string EncounterId => encounterId;
+        public DuelStart LockedSetup { get; private set; }
+        private readonly DuelOpponentLoadout botLoadout = new DuelOpponentLoadout();
+        private bool IsMainArena => gameplayInterface && string.Equals(gameObject.scene.name, "MainArena", StringComparison.OrdinalIgnoreCase);
         public int MatchCount { get; private set; }
         public MatchOutcome Outcome { get; private set; }
         public int ResultCount { get; private set; }
@@ -36,7 +40,7 @@ namespace RobotSavaslari.Match
         [SerializeField, Min(0f)] private float startMessageDuration = 0.8f;
         private float countdownEndsAt;
         private float startMessageEndsAt;
-        public float CountdownRemaining => State == MatchState.Countdown ? Mathf.Max(0f, countdownEndsAt - Time.time) : 0f;
+        public float CountdownRemaining => State == MatchState.Countdown ? Mathf.Clamp(countdownEndsAt - Time.time, 0f, Mathf.Max(1, countdownSeconds)) : 0f;
         public bool ShowStartMessage => State == MatchState.Playing && Time.time < startMessageEndsAt;
 
         [SerializeField] private MatchRules rules = new MatchRules();
@@ -217,12 +221,15 @@ namespace RobotSavaslari.Match
             opponentHealth.Damaged += OnOpponentDamaged;
             if (rules == null || !rules.IsValid) rules = new MatchRules();
             initialized = true;
+            if (IsMainArena) player.WeaponProfileSelected += PreviewOpponent;
             SetManualMode(manualNotificationsOnly);
             Prepare();
         }
 
         private void OnDestroy()
         {
+            if (player) player.WeaponProfileSelected -= PreviewOpponent;
+            botLoadout.Dispose();
             if (!initialized) return;
             if (playerHealth != null) { playerHealth.Defeated -= OnDefeated; playerHealth.Damaged -= OnPlayerDamaged; }
             if (opponentHealth != null) { opponentHealth.Defeated -= OnDefeated; opponentHealth.Damaged -= OnOpponentDamaged; }
@@ -237,6 +244,7 @@ namespace RobotSavaslari.Match
 
         private void ResetEncounter()
         {
+            LockedSetup = null;
             PlayerWins = OpponentWins = DrawnRounds = roundsPlayed = 0;
             totalSeconds = 0f;
             playerTotal = new RobotMatchStatistics(); opponentTotal = new RobotMatchStatistics();
@@ -278,6 +286,60 @@ namespace RobotSavaslari.Match
         }
 
         // User input goes through the countdown. Direct start is kept for existing tools.
+        public string EquippedPlayerId
+        {
+            get
+            {
+                var modular = GetComponent<IEquippedDuelRobot>()?.ModularRobotId;
+                var catalog = GetComponent<PlayerRobotSelection>();
+                return modular ?? (catalog != null && catalog.ForkSelected ? DuelSetup.Fork : DuelSetup.Spinner);
+            }
+        }
+
+        public DuelSetup CreateDuelStart(DuelSetup lobby)
+        {
+            if (lobby == null || lobby.version != 1 || !lobby.Valid) return null;
+            string id = EquippedPlayerId;
+            return lobby.ForEncounter(EncounterId, id, DuelSetup.OtherRobot(id));
+        }
+
+        private DuelSetup CurrentDuelStart()
+        {
+            var arena = FindAnyObjectByType<ArenaEnvironment>();
+            var bot = GetComponent<OpponentSelectionPanel>();
+            if (arena == null || arena.Layout == null || bot == null) return null;
+            return CreateDuelStart(DuelSetup.Create(arena.Layout.name, bot.Personality, bot.Difficulty, rules));
+        }
+
+        private void PreviewOpponent(CombatProfile profile)
+        {
+            if (State != MatchState.Ready || LockedSetup != null || !profile) return;
+            var catalog = GetComponent<PlayerRobotSelection>();
+            if (catalog) botLoadout.Fit(opponent, catalog, catalog.IsForkProfile(profile) ? DuelSetup.Spinner : DuelSetup.Fork);
+        }
+
+        private bool LockDuel(DuelSetup start)
+        {
+            if (start == null || start.version != 2 || !start.Valid || start.encounterId != encounterId) return false;
+            var live = CurrentDuelStart();
+            if (live == null || !live.SameAs(start) || live.playerRobotId != start.playerRobotId ||
+                live.opponentRobotId != start.opponentRobotId) return false;
+            var arena = FindAnyObjectByType<ArenaEnvironment>();
+            if (ArenaLayoutValidator.Validate(arena.Layout, arena.ClearanceRadius).Count != 0) return false;
+            var catalog = GetComponent<PlayerRobotSelection>();
+            if (catalog == null || !botLoadout.Fit(opponent, catalog, start.opponentRobotId)) return false;
+            LockedSetup = new DuelStart(start);
+            return true;
+        }
+
+        public bool RequestCountdown(DuelSetup start)
+        {
+            if (!IsMainArena || !initialized || !isActiveAndEnabled || IsPaused || State != MatchState.Ready ||
+                LockedSetup != null || !GetComponent<MainMenuScreen>().IsShowingReadyMenu || !LockDuel(start)) return false;
+            BeginCountdown();
+            return true;
+        }
+
         public bool RequestCountdown()
         {
             if (!initialized || !isActiveAndEnabled || IsPaused || (State != MatchState.Ready && State != MatchState.Result)) return false;
@@ -286,14 +348,21 @@ namespace RobotSavaslari.Match
                 if (EncounterComplete) Prepare();
                 else PrepareRound();
             }
+            if (IsMainArena && LockedSetup == null && !LockDuel(CurrentDuelStart())) return false;
+            BeginCountdown();
+            return true;
+        }
+
+        private void BeginCountdown()
+        {
             countdownEndsAt = Time.time + Mathf.Max(1, countdownSeconds);
             State = MatchState.Countdown;
-            return true;
         }
 
         public bool StartMatch()
         {
             if (!initialized || !isActiveAndEnabled || IsPaused || State != MatchState.Ready) return false;
+            if (IsMainArena && LockedSetup == null && !LockDuel(CurrentDuelStart())) return false;
             BeginPlaying();
             return true;
         }
