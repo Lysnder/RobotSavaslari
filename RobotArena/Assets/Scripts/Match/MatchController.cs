@@ -18,6 +18,7 @@ namespace RobotSavaslari.Match
         [SerializeField] private Transform playerSpawn;
         [SerializeField] private Transform opponentSpawn;
         public MatchState State { get; private set; }
+        public string EncounterId => encounterId;
         public int MatchCount { get; private set; }
         public MatchOutcome Outcome { get; private set; }
         public int ResultCount { get; private set; }
