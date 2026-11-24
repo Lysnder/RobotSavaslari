@@ -1,0 +1,2368 @@
+[
+  {
+    "run": "edit-delivery",
+    "total": 237,
+    "passed": 237,
+    "failed": 0,
+    "skipped": 0,
+    "cases": [
+      {
+        "name": "RobotSavaslari.Tests.ArenaAuthoringTests.AuthoredHazardsSurviveSaveAndReopen(\"PulseArena\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.ArenaAuthoringTests.AuthoredHazardsSurviveSaveAndReopen(\"SweepArena\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.ArenaAuthoringTests.InvalidGenerationDoesNotTouchCurrentScene",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.ArenaAuthoringTests.SharedBuilderPreservesCustomLayoutChoice",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.ArenaAuthoringTests.SixRolesGenerateIdempotentlyAndPreserveExternalReferencesAfterReopen",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.ArenaGeometryTests.ProductionGridMatchesFloorPerimeterAndOriginalScale",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.ArenaGeometryTests.RebuildingKeepsSceneConnectionsAndObjectCount",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.ArenaLayoutTests.ClearanceRejectsPointRobotOnlyPassage",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.ArenaLayoutTests.DefaultLayoutsHaveRobotWidthRoutes(False)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.ArenaLayoutTests.DefaultLayoutsHaveRobotWidthRoutes(True)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.ArenaLayoutTests.FloorAndSpawnAreCompatibleButDuplicateSpawnIsRejected",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.ArenaLayoutTests.InvalidWarningPreventsGeneration(0.99f)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.ArenaLayoutTests.InvalidWarningPreventsGeneration(float.NaN)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.ArenaLayoutTests.InvalidWarningPreventsGeneration(float.PositiveInfinity)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.ArenaLayoutTests.MovingHazardsCannotEnterSpawnTurningBuffer(Pulse)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.ArenaLayoutTests.MovingHazardsCannotEnterSpawnTurningBuffer(Sweep)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.ArenaLayoutTests.RejectsDisconnectedArena",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.ArenaLayoutTests.RejectsIncompatibleSpawnContent(Obstacle)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.ArenaLayoutTests.RejectsIncompatibleSpawnContent(Hazard)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.ArenaLayoutTests.RejectsIncompatibleSpawnContent(Conveyor)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.ArenaLayoutTests.RejectsInteriorWallVariation",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.ArenaLayoutTests.RejectsInvalidConveyorDirection(0.0f,0.0f)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.ArenaLayoutTests.RejectsInvalidConveyorDirection(float.NaN,1.0f)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.ArenaLayoutTests.RejectsInvalidConveyorDirection(float.PositiveInfinity,0.0f)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.ArenaLayoutTests.RejectsInvalidRobotClearance(0.0f)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.ArenaLayoutTests.RejectsInvalidRobotClearance(float.NaN)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.ArenaLayoutTests.RejectsInvalidRobotClearance(float.PositiveInfinity)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.ArenaLayoutTests.RejectsMissingSpawn",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.ArenaLayoutTests.RejectsObstructedSpawn",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.ArenaLayoutTests.RejectsOutsideCoordinates",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.ArenaLayoutTests.RejectsOverlappingDefinitions",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.ArenaLayoutTests.SweepTravelsWhilePulseCoversAStationaryArea",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.ArenaLayoutTests.TacticalRequiresADetour",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.WarningBarrierTests.OccupancyDefersAtCentreAndEdge(0.0f)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.WarningBarrierTests.OccupancyDefersAtCentreAndEdge(0.9f)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.WarningBarrierTests.WarningAlwaysPrecedesPhysicalRiseAndThreeCyclesComplete",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.ArenaAssetReferenceTests.AssetMovesPreserveUniqueGuids",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.ArenaAssetReferenceTests.MainArenaIsTheOnlyEnabledBuildScene",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences(\"Assets/Scenes/Gameplay/MainArena.unity\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences(\"Assets/Scenes/Tests/AI/BotScenarios.unity\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences(\"Assets/Scenes/Tests/Combat/MeleeCombatValidation.unity\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences(\"Assets/Scenes/Tests/CombatArena.unity\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences(\"Assets/Scenes/Tests/Driving/CollisionRecovery.unity\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences(\"Assets/Scenes/Tests/Driving/DrivingAcceptance.unity\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences(\"Assets/Scenes/Tests/Driving/DrivingFeel.unity\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences(\"Assets/Scenes/Tests/Driving/KeyboardDriving.unity\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences(\"Assets/Scenes/Tests/MatchRegression.unity\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences(\"Assets/Scenes/Tests/RobotMotor.unity\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences(\"Assets/Scenes/Tests/Template.unity\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.ArenaAssetReferenceTests.MovedScenesKeepScriptsAndAssetReferences(\"Assets/Scenes/Tools/ModularRobotPreview.unity\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.BotDecisionTests.CloseContactAndPassingOffsetAreNotCharges",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.BotDecisionTests.DifficultyChangesDecisionParametersOnly",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.BotDecisionTests.MemoryIsBoundedExpiresAndResets",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.BotDecisionTests.OneContinuousChargeIsOneSample",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.BotDecisionTests.PursuingStationaryTargetIsNotACharge",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.BotDecisionTests.RepetitionAdaptsThenDifferentAnglesDiluteIt",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.BotDecisionTests.ThreatUsesRelativeMotion(0,-4,True)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.BotDecisionTests.ThreatUsesRelativeMotion(0,4,False)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.BotDecisionTests.ThreatUsesRelativeMotion(4,0,False)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.BotDecisionTests.ThreatUsesRelativeMotion(0,0,False)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.BotDecisionTests.ZeroDeltaPreservesMemory",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.CombatCalculationTests.InvalidSpeedDoesNotDamage",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.CombatCalculationTests.RamUsesOutgoingSpeedAndMassRatio(4.0f,20.0f,10.0f,8.0f)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.CombatCalculationTests.RamUsesOutgoingSpeedAndMassRatio(4.0f,10.0f,20.0f,2.0f)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.CombatCalculationTests.RamUsesOutgoingSpeedAndMassRatio(0.0f,10.0f,10.0f,0.0f)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.CombatCalculationTests.RamUsesOutgoingSpeedAndMassRatio(-4.0f,10.0f,10.0f,0.0f)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.CombatCalculationTests.RamUsesOutgoingSpeedAndMassRatio(4.0f,10.0f,0.0f,0.0f)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.CombatCalculationTests.RecoilIsMassScaledAndCapped",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.MatchRulesTests.CorruptAndFutureHistoryFailSafely",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.MatchRulesTests.FailedWriteIsReportedWithoutThrowing",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.MatchRulesTests.HistoryIsBoundedAndNewestFirst",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.MatchRulesTests.HistorySurvivesANewStoreAndDoesNotDuplicateResults",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.MatchRulesTests.InvalidStatisticsCannotOverwriteValidHistory",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.MatchRulesTests.InvalidTimeLimitsAreRejected(-1)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.MatchRulesTests.InvalidTimeLimitsAreRejected(0.5f)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.MatchRulesTests.InvalidTimeLimitsAreRejected(3601)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.MatchRulesTests.InvalidTimeLimitsAreRejected(float.NaN)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.MatchRulesTests.InvalidTimeLimitsAreRejected(float.PositiveInfinity)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.MatchRulesTests.TimeOverComparesHealthRatios(80,100,100,200,PlayerVictory)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.MatchRulesTests.TimeOverComparesHealthRatios(50,100,150,200,OpponentVictory)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.MatchRulesTests.TimeOverComparesHealthRatios(50,100,100,200,Draw)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveBindingsTests.AltiEylemDeEslenebilir",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveBindingsTests.AyniTusIkiEylemdeKayitliysaTumuVarsayilanaDoner",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveBindingsTests.AyniTusuAyniEylemeYenidenAtamakCakismaSayilmaz",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveBindingsTests.BozukKayitVarsayilanaDoner",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveBindingsTests.CakismaReddedilirVeSebepBildirilir",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveBindingsTests.KayitYenidenAcilistaYuklenir",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveBindingsTests.OkTuslariBirincilEslemeOlamaz(UpArrow)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveBindingsTests.OkTuslariBirincilEslemeOlamaz(DownArrow)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveBindingsTests.OkTuslariBirincilEslemeOlamaz(LeftArrow)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveBindingsTests.OkTuslariBirincilEslemeOlamaz(RightArrow)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveBindingsTests.SahiplenilmeyenTusKayitliysaVarsayilanaDoner(Space)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveBindingsTests.SahiplenilmeyenTusKayitliysaVarsayilanaDoner(C)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveBindingsTests.SahiplenilmeyenTuslarReddedilir(Escape)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveBindingsTests.SahiplenilmeyenTuslarReddedilir(Enter)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveBindingsTests.SahiplenilmeyenTuslarReddedilir(R)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveBindingsTests.SahiplenilmeyenTuslarReddedilir(Space)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveBindingsTests.SahiplenilmeyenTuslarReddedilir(C)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveBindingsTests.VarsayilanaDonusYalnizcaSurusAnahtarlariniEtkiler",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveBindingsTests.VarsayilanlarWasdVeEkTuslardir",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DrivingDeliveryTests.AyarSetiOrtakPrefabinVaryantidir(\"Assets/Prefabs/Driving/Robot_AyarA_Sabit.prefab\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DrivingDeliveryTests.AyarSetiOrtakPrefabinVaryantidir(\"Assets/Prefabs/Driving/Robot_AyarB_Cevik.prefab\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DrivingDeliveryTests.AyarSetiSurusBilesenleriniTasir(\"Assets/Prefabs/Driving/Robot_AyarA_Sabit.prefab\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DrivingDeliveryTests.AyarSetiSurusBilesenleriniTasir(\"Assets/Prefabs/Driving/Robot_AyarB_Cevik.prefab\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DrivingDeliveryTests.DenemeSahneleriDerlemeListesindeDegil",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DrivingDeliveryTests.DenemeSahneleriYerinde",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DrivingDeliveryTests.IkiAyarSetiFarkliDegerlerTasir",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.CombatRulesTests.AttackDataKeepsItsInputs",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.CombatRulesTests.CooldownStartsWhenUsedAndCanBeReset",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.CombatRulesTests.HitLogCountsEachTargetOnce",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.CombatRulesTests.KnockbackRejectsInvalidInput(0.0f,1.0f,1.0f,1.0f,1.0f)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.CombatRulesTests.KnockbackRejectsInvalidInput(1.0f,0.0f,1.0f,1.0f,1.0f)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.CombatRulesTests.KnockbackRejectsInvalidInput(1.0f,1.0f,float.NaN,1.0f,1.0f)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.CombatRulesTests.KnockbackRejectsInvalidInput(1.0f,1.0f,1.0f,-1.0f,1.0f)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.CombatRulesTests.KnockbackRejectsInvalidInput(1.0f,1.0f,1.0f,1.0f,float.PositiveInfinity)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.CombatRulesTests.LighterRobotIsPushedFurtherUpToTheCap",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.CombatRulesTests.ProfileCountsHitsToDefeat",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.CombatRulesTests.RamDamageRejectsInvalidInput(float.NaN,10.0f,10.0f)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.CombatRulesTests.RamDamageRejectsInvalidInput(float.PositiveInfinity,10.0f,10.0f)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.CombatRulesTests.RamDamageRejectsInvalidInput(4.0f,float.NaN,10.0f)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.CombatRulesTests.RamDamageRejectsInvalidInput(4.0f,-1.0f,10.0f)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.CombatRulesTests.RamDamageRejectsInvalidInput(4.0f,10.0f,float.NegativeInfinity)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.CombatRulesTests.RamDamageThroughTheAttackEntryPoint(4.0f,20.0f,10.0f,8.0f)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.CombatRulesTests.RamDamageThroughTheAttackEntryPoint(3.0f,10.0f,10.0f,3.0f)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.CombatRulesTests.ReportsDescribeEveryOutcome(None,0,\"-\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.CombatRulesTests.ReportsDescribeEveryOutcome(Started,0,\"SALDIRI SURUYOR\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.CombatRulesTests.ReportsDescribeEveryOutcome(Hit,2,\"ISABET (2 hedef)\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.CombatRulesTests.ReportsDescribeEveryOutcome(Miss,0,\"ISKA\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.CombatRulesTests.ReportsDescribeEveryOutcome(Cooldown,0,\"BEKLEME - istek reddedildi\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.CombatRulesTests.ReportsDescribeEveryOutcome(MatchClosed,0,\"MAC KAPALI\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.CombatRulesTests.ReportsDescribeEveryOutcome(MatchClosed,1,\"MAC KAPANDI - saldiri kesildi\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.CombatRulesTests.ReportsDescribeEveryOutcome(AttackerDefeated,0,\"SALDIRAN YENIK\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.CombatRulesTests.RobotHitAndMoveCommandCarryTheirValues",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.CombatRulesTests.UnknownAttackTypeIsRejected",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.CombatScenarioSuiteTests.EveryMeleeScenarioPasses",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.CombatScenarioSuiteTests.ProfileIsAppliedToBothRobots",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.CombatScenarioSuiteTests.RealTimeRigCannotBeAdvancedByHand",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.CombatScenarioSuiteTests.ResultTextShowsVerdictCardAndDetail",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.CombatScenarioSuiteTests.RigBuildsTwoOpposingRobotsAndCleansUp",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.GameSettingsTests.ApplyPushesVolumeToTheListener",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.GameSettingsTests.LoadClampsVolumeAndQuality",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.GameSettingsTests.ResetRestoresFullVolumeFullscreenAndBestQuality",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.GameSettingsTests.SaveWritesWhatLoadReadsBack",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.DuelContractTests.InvalidCatalogPairIsRejected(null,\"fork\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.DuelContractTests.InvalidCatalogPairIsRejected(\"future\",\"fork\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.DuelContractTests.InvalidCatalogPairIsRejected(\"workshop/standard/soft/light/drum\",\"fork\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.DuelContractTests.InvalidCatalogPairIsRejected(\"workshop/standard/soft/heavy\",\"fork\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.DuelContractTests.InvalidCatalogPairIsRejected(\"spinner\",\"spinner\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.DuelContractTests.InvalidCatalogPairIsRejected(\"fork\",\"unknown\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.DuelContractTests.StartChecksRolesRevisionEncounterAndFiniteDuration",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.DuelContractTests.ValidCatalogPairFormsASeparateStart(\"spinner\",\"fork\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.DuelContractTests.ValidCatalogPairFormsASeparateStart(\"fork\",\"spinner\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.DuelContractTests.ValidCatalogPairFormsASeparateStart(\"workshop/standard/hard/heavy/fork\",\"spinner\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.CameraSettingsPersistenceTests.CameraResetKeepsAudioDisplayAndOtherPackagesKeys",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.CameraSettingsPersistenceTests.CorruptValuesFallBackToDefaults",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.CameraSettingsPersistenceTests.FirstLaunchWithoutSavedCameraValuesUsesDefaults",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.CameraSettingsPersistenceTests.FullResetAlsoRestoresCameraDefaults",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.CameraSettingsPersistenceTests.OutOfRangeValuesAreClampedOnLoad",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.CameraSettingsPersistenceTests.SavedValuesSurviveReload",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.CameraSettingsPersistenceTests.SettersClampAndRejectInvalidNumbers",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.CameraSettingsPersistenceTests.SmoothingSettingMapsToFollowSharpness",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.CombatCameraFramingTests.EnclosePairContainsEveryCornerOfBothRobots",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.CombatCameraFramingTests.FitDistanceUsesNarrowerFieldOfView",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.CombatCameraFramingTests.KeepAboveFloorUsesRealFloorHeight",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.CombatCameraFramingTests.NearPlaneRadiusCoversNearPlaneCorners",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.CombatCameraFramingTests.OrbitDirectionPointsBehindAndAbovePivot",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.CombatCameraFramingTests.OrbitRotationLooksBackAtPivot",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.CombatCameraFramingTests.PairAxisYawKeepsPreviousWhenRobotsOverlap",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.CombatCameraFramingTests.RateLimitedYawNeverExceedsMaximumTurnRate",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.CombatCameraFramingTests.SmoothingWeightIsFrameRateIndependent",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.CombatCameraFramingTests.WrapYawStaysInHalfOpenRange(0.0f,0.0f)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.CombatCameraFramingTests.WrapYawStaysInHalfOpenRange(190.0f,-170.0f)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.CombatCameraFramingTests.WrapYawStaysInHalfOpenRange(-190.0f,170.0f)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.CombatCameraFramingTests.WrapYawStaysInHalfOpenRange(750.0f,30.0f)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.CombatCameraFramingTests.WrapYawStaysInHalfOpenRange(180.0f,-180.0f)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.CombatCameraFramingTests.ZoomUsesDirectionOnlyAndClamps",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MainArenaCameraSceneTests.SavedArenaHasOneCameraOneListenerAndNoSerializedCameraController",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchiveTests.ArchivesReopenFromANewStoreInstance",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchiveTests.BinaryFramesAreSmallerThanJson",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchiveTests.BreakingAChunkStoresFreshHitMarks",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchiveTests.EventListIsBoundedAndBoundariesUseTheReserve",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchiveTests.FifteenMinuteArchiveWritesOpensAndSeeksWithinBudget",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchiveTests.FileSizeLimitStopsRecordingAndMarksTheArchiveIncomplete",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchiveTests.FullArchiveKeepsOldRecordingsAndQueuesTheNewOne",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchiveTests.InterpolatesAcrossChunksButNeverAcrossRounds",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchiveTests.KeysFollowTheWhitelist",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchiveTests.OriginalRevisionOneBytesStillSeekAcrossTheEncounter(\"Open\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchiveTests.OriginalRevisionOneBytesStillSeekAcrossTheEncounter(\"Tactical\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchiveTests.OutOfRangeDebrisDoesNotInvalidateTheOtherTracks",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchiveTests.RandomSeeksReadOnlyNearbyChunksInFixedMemory",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchiveTests.RejectsFutureAndUnknownVersions",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchiveTests.RejectsHostileKeysAndCounts",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchiveTests.RejectsNonFiniteAndNegativeValues",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchiveTests.RejectsOversizedUnfinishedAndCorruptFiles",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchiveTests.RoundTripKeepsMetadataTracksRoundsEventsAndCells",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchiveTests.SameTimeEventsKeepArrivalOrderAndLateTimesAreClamped",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchiveTests.SamplesReturnTheWrittenFramesAndWear",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchiveTests.StoreAcceptsOnlyItsOwnGuidFiles",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchiveTests.UnfinishedWritesAreNeverListedAndStaleOnesAreCleaned",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayClipTests.ClearEmptiesFramesAndImpacts",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayClipTests.DetachedPartDisappearsAfterLastVisibleFrame",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayClipTests.EmptyClipCannotBeSampled",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayClipTests.ImpactsOutsideTheWindowAreDroppedAndCapacityIsBounded",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayClipTests.RepeatedOrOlderTimesAndWrongTrackCountsAreIgnored",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayClipTests.RingBufferKeepsOnlyTheNewestFramesInFixedMemory",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayClipTests.SamplingInterpolatesPositionAndRotationAndClamps",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayClipTests.SingleFrameClipReturnsThatFrameForAnyTime",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayClipTests.SkippedFramesStillInterpolateAcrossTheGap",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.CaptureOfNullRobotIsEmpty",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.ConditionIsDescribed(0.0f,False,\"Sağlam\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.ConditionIsDescribed(0.004f,False,\"Sağlam\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.ConditionIsDescribed(0.42f,False,\"%42 hasarlı\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.ConditionIsDescribed(5.0f,False,\"%100 hasarlı\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.ConditionIsDescribed(0.3f,True,\"Koptu\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.DetachedPartsAndDisabledWeaponAreCounted",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.PartDamageAloneMeansDamaged",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.PartNamesAreDescribedForPlayers(\"Body\",\"Gövde\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.PartNamesAreDescribedForPlayers(\"Spinner\",\"Döner silah\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.PartNamesAreDescribedForPlayers(\"Lifter\",\"Kaldırıcı silah\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.PartNamesAreDescribedForPlayers(\"Wheel_FL\",\"Sol ön tekerlek\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.PartNamesAreDescribedForPlayers(\"Wheel_RL\",\"Sol arka tekerlek\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.PartNamesAreDescribedForPlayers(\"Wheel_FR\",\"Sağ ön tekerlek\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.PartNamesAreDescribedForPlayers(\"Wheel_RR\",\"Sağ arka tekerlek\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.PartNamesAreDescribedForPlayers(\"Armor_FL\",\"Sol ön zırh\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.PartNamesAreDescribedForPlayers(\"Armor_RR\",\"Sağ arka zırh\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.PartNamesAreDescribedForPlayers(\"Wheel_XY\",\"Wheel_XY\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.PartNamesAreDescribedForPlayers(\"Wheel_FLX\",\"Wheel_FLX\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.PartNamesAreDescribedForPlayers(\"Antenna\",\"Antenna\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.PartNamesAreDescribedForPlayers(\"\",\"\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.PartNamesAreDescribedForPlayers(null,\"\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.RatiosAreClampedAndNaNIsTreatedAsNoDamage",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.RobotWithoutPartDataReportsHealthOnly",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.RobotInspectionReportTests.UndamagedRobotIsRecognised",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Robots.Tests.RobotPrefabTests.AnaArenaTekEtkinDerlemeSahnesi",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Robots.Tests.RobotPrefabTests.PrefabCarpismaHacmineSahip",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Robots.Tests.RobotPrefabTests.PrefabFizikGovdesineSahip",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Robots.Tests.RobotPrefabTests.PrefabHareketVeKlavyeBilesenlerineSahip",
+        "result": "Passed"
+      }
+    ]
+  },
+  {
+    "run": "all-final-04",
+    "total": 314,
+    "passed": 309,
+    "failed": 0,
+    "skipped": 5,
+    "cases": [
+      {
+        "name": "RobotSavaslari.Arena.Tests.ArenaHazardTests.BotMatchMatrix",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Arena.Tests.ArenaHazardTests.DamageIsEnvironmentalAndStopsOnPauseAndDefeat",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Arena.Tests.ArenaHazardTests.MeasureEightActiveHazards",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Arena.Tests.ArenaHazardTests.RepeatedSelectionRetiresEveryPreviousHazard",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.BotControllerTests.ChargeDoesNotRestartCommittedCounterManeuver",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.BotControllerTests.CloseCounterOpponentIsReacquiredBeforeContinuingAFlank",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.BotControllerTests.CounterOpeningTurnsBackTowardTheOpponent",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.BotControllerTests.CounterUsesAReadyStrikeInsteadOfDiscardingItDuringDefence(Easy,False)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.BotControllerTests.CounterUsesAReadyStrikeInsteadOfDiscardingItDuringDefence(Hard,False)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.BotControllerTests.CounterUsesAReadyStrikeInsteadOfDiscardingItDuringDefence(Easy,True)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.BotControllerTests.CounterUsesAReadyStrikeInsteadOfDiscardingItDuringDefence(Hard,True)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.BotControllerTests.DifficultyHasMeasuredReactionAndAimDifferenceWithRepeatableSeed",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.BotControllerTests.EscapeRejectsWallAndChoosesOtherSide",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.BotControllerTests.ExistingStuckRecoveryStillHasPriority",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.BotControllerTests.IncomingChargeEvadesButRetreatDoesNot",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.BotControllerTests.PausePreservesStateAndRandomSequenceButNewMatchResets",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.BotControllerTests.ProfilesDoNotChangePhysicalStats(Aggressive,Easy)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.BotControllerTests.ProfilesDoNotChangePhysicalStats(Aggressive,Hard)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.BotControllerTests.ProfilesDoNotChangePhysicalStats(Counter,Easy)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.BotControllerTests.ProfilesDoNotChangePhysicalStats(Counter,Hard)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.BotControllerTests.RepeatedChargesSwitchDefenseAndTargetLossClearsMemory",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.BotControllerTests.SameScenarioProducesDifferentPersonalityDecisions",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.BotNavigationTests.ClosedTargetRetriesAreBoundedAndResetDiscardsTheRoute",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.BotNavigationTests.MainArenaBotMakesProgressWithAgainstAndAcrossTheConveyor",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.BotNavigationTests.MovingTargetDoesNotDiscardAnUnobstructedDetourSegment",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.BotNavigationTests.NewObstructionStopsExistingCommandAndOpeningRestoresDirectPursuit",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.BotNavigationTests.OccludedOpponentInsideAttackRangeIsNotAnAttackOpportunity",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.BotNavigationTests.OpenPursuitSkipsSearchAndObstructionProducesLateralSteering",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.BotNavigationTests.PlannerFindsAClearanceSizedPassageBetweenTwoWalls",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.BotNavigationTests.SaturatedQueriesStopTheBotWithoutStartingASearch",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.BotNavigationTests.SharedMotorDrivesAroundWallAndReachesRealAttackRange",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.BotNavigationTests.TwoBotsStayWithinTheUpdateBudgetAfterWarmup",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.BotRiskMatrixTests.PulseWarningDetoursWaitsForExposedTargetAndResumesAfterPauseAndRecovery",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Tests.BotRiskMatrixTests.SixteenSeededArenaDuelsFinishWithinBudget",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.CollisionRecoveryTests.AciliCarpismaSonrasiYonDuzeltilebilir",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.CollisionRecoveryTests.DuvarBoyuncaSurusteKontrolKaybolmaz",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.CollisionRecoveryTests.HareketsizVeHizliRobotAyriAyriDurdurulur",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.CollisionRecoveryTests.KoseyeSurulenRobotGeriCikabilir",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.CollisionRecoveryTests.OdakGeriGelinceTusBasilmadanKomutGelmez",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.CollisionRecoveryTests.OdakKaybindaKomutTemizlenir",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.CollisionRecoveryTests.OndenCarpismaSonrasiGeriSurusleCikilir",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveBindingsScreenTests.CakisanTusReddedilirVeMesajGosterilir",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveBindingsScreenTests.EkranAcilincaKontrolKapanirKapanincaDoner",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveBindingsScreenTests.ErisimKapanincaEkranKapanir",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveBindingsScreenTests.EscYakalamayiIptalEder",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveBindingsScreenTests.OkTuslariEslemeDegissseDeCalisir",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveBindingsScreenTests.VarsayilanaDonusEslemeleriGeriGetirir",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveBindingsScreenTests.YakalamaSirasindaOyunaKomutGitmez",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveBindingsScreenTests.YakalananTusEslemeyiDegistirirVeSurucuyeUygulanir",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveBoostTests.BoostAyniKosuldaNormaldenHizlidir",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveBoostTests.BoostBirakilincaNormalSinirGeriGelir",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveBoostTests.BoostEnerjiHarcarVeSonraYenilenir",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveBoostTests.BoostsuzMotorEskiDavranisiKorur",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveBoostTests.BoostTusuSurucuUzerindenIstekUretir",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveBoostTests.EnerjiBitinceBasiliBoostDurur",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveBoostTests.EnerjiKapasiteyiAsmaz",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveBoostTests.GeriSurusteBoostUygulanmaz",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveBoostTests.HasarKosuluBoostlaBirlikteGecerliKalir",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveBoostTests.SifirlamaEnerjiyiVeCarpaniTemizler",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveFeelMeasurementTests.AyarSetleriAyarlananUstHizaUlasir",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveFeelMeasurementTests.AyniSurusFarkliFizikAdimindaAyniSonucuVerir",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveFeelMeasurementTests.DonusYaricapiAyarSetineGoreDegisir",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveFeelMeasurementTests.DusukIvmeliAyarSurtunmeTabaninaTakilir",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveFeelMeasurementTests.FrenMesafesiAyarSetineGoreDegisir",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveFeelMeasurementTests.TersKomutGecikmedenAlgilanir",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveHandbrakeTests.BoostVeElFreniBirlikteIstendigindeElFreniOnceliklidir",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveHandbrakeTests.ElFreniAyniHizdaDahaKeskinDondururVeHizKaybettirir",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveHandbrakeTests.ElFreniBirakilincaGeciciDurumTemizlenir",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveHandbrakeTests.ElFreniDonusHiziniSinirlarVeBedavaDonusVermez",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveHandbrakeTests.ElFreniHizUretmez",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveHandbrakeTests.ElFreniTusuSurucuUzerindenIstekUretir",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveHandbrakeTests.NormalFrenIleElFreniFarkliDavranir",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveHandbrakeTests.SifirHizdaElFreniDevreyeGirmez",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.DriveHandbrakeTests.SifirlamaVeKapatmaGeciciDurumuTemizler",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests.DenemeKontroluKlavyesizSurer",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests.DonusTuslariIkiYoneCalisir",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests.GeriTusuGeriKomutuGonderir",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests.HeldCommandsMustBeReleasedAcrossPracticeAttempts",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests.IkiTusTakimiAyniYonuBirKezSayarVeKarsitYonuSifirlar",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests.IleriTusuIleriKomutuGonderir",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests.IleriyleBirlikteDonusYapilabilir",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests.KarsitTuslarDigerEkseniEtkilemez",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests.KarsitTuslarDonusEkseniniSifirlar",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests.KarsitTuslarIleriGeriEkseniniSifirlar",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests.KlavyeCikarilincaOkKomutlariTemizlenir",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests.KontrolKapaliykenGirdiMotoraUlasmaz",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests.KontrolTekrarAcilincaEskiDegerKullanilmaz",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests.OkTuslariIkiEkseniAyniAndaSurer",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests.OrtakRobotGirdisiKarisikKarsitTuslariSifirlar",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Driving.Tests.PlayerKeyboardDriverTests.TusBirakilincaKomutSifirlanir",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.ArenaMatchControllerPlayModeTests.BothRobotsDefeatedIsADraw",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.ArenaMatchControllerPlayModeTests.DefeatEndsTheMatchAndRestartRestoresBothRobots",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.ArenaMatchControllerPlayModeTests.MouseClickSelectsThroughTheMainCamera",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.ArenaMatchControllerPlayModeTests.PanelsBlockSelectionOnlyWhereTheyAre",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.ArenaMatchControllerPlayModeTests.RaySelectsThePlayerRobotButNeverTheBot",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.ArenaMatchControllerPlayModeTests.SpawnsRobotsAndPlacesTheCamera",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.ArenaRobotPlayModeTests.KeyboardDrivesTheRobotAndSpaceSwingsTheWeapon",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.ArenaRobotPlayModeTests.PartsDetachWearShowsAndANewMatchRepairsEverything",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.ArenaRobotPlayModeTests.RammingDealsMassScaledDamageAndKnocksBack",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.ArenaRobotPlayModeTests.RobotsAreKeptInsideTheArenaWalls",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.ArenaRobotPlayModeTests.SelectionIgnoresTheComputerAndFollowsEnableState",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.ArenaRobotPlayModeTests.StoppedCombatClosesTheWeaponGate",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.ArenaRobotPlayModeTests.WheelsTurnWhileTheRobotDrives",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.DrivingRigPlayModeTests.ButtonsResetAndAdvanceAndToggleControl",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.DrivingRigPlayModeTests.CollisionIsReportedWithSpeedAngleAndResidual",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.DrivingRigPlayModeTests.FollowCameraTracksPositionNotRotation",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.DrivingRigPlayModeTests.KeysSwitchRoutesSetsAndControl",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.DrivingRigPlayModeTests.LandingWhileDrivingDoesNotReportAWallImpact",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.DrivingRigPlayModeTests.MissingSetsOrPrefabsAreReported",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.DrivingRigPlayModeTests.ProbeDrivesTheSameMotorWithoutAKeyboard",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.DrivingRigPlayModeTests.RouteWithoutStartPointUsesItsOwnTransform",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.DrivingRigPlayModeTests.SpawnsTheFirstSetOnTheFirstRoute",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.DrivingRigPlayModeTests.TelemetryDescribesEveryInputSource",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.DuelContractFlowTests.ForkPlayerSpinnerBotWinsFirstToTwoWithLockedSlots",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.DuelContractFlowTests.LegacyHistoryRematchResolvesLiveSlots",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.DuelContractFlowTests.MalformedStartsRejectedAndAcceptedInputIsFrozen",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.DuelContractFlowTests.SavedHistoryRestoresBothRobotsArenaAndBotWithFreshId",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.DuelContractFlowTests.SpinnerPlayerForkBotTimedFinishAndMenuRematch",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.KamaPlayModeTests.LegacyKamaFileUsesAuthoredBotLifterWhileLiveBotKeepsSpinner",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.KamaPlayModeTests.MissDetachedWeaponAndRetry",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.KamaPlayModeTests.MissingKitKeepsTheOriginalPlayerAndProfile",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.KamaPlayModeTests.NormalMenuTwoDuelsAndArchivedModelIdentity",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.MatchFlowPlayModeTests.CountdownLocksTheRobotsThenStartsPlaying",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.MatchFlowPlayModeTests.IncompleteSetupDisablesTheMatch",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.MatchFlowPlayModeTests.LosingAllHealthDecidesTheMatch",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.MatchFlowPlayModeTests.ManualModeSwitchesRobotControllersOff",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.MatchFlowPlayModeTests.OnlyTheFirstValidDefeatProducesAResult",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.MatchFlowPlayModeTests.PrepareResetsRobotsOnlyOutsideOfPlay",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.MatchFlowPlayModeTests.RegressionPanelDrawsInEveryState",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.MatchFlowPlayModeTests.RestartStartsANewMatchAfterOneFrame",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.MenuAndSettingsPlayModeTests.DisablingTheOpenPanelClosesItAndRestoresTime",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.MenuAndSettingsPlayModeTests.EnterStartsAndRStartsTheNextMatch",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.MenuAndSettingsPlayModeTests.EscapeTogglesSettingsAndPausesTheGame",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.MenuAndSettingsPlayModeTests.MenuButtonsStartAndOpenSettings",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.MenuAndSettingsPlayModeTests.SettingsPanelControlsChangeAndSaveValues",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.PresentationScreensPlayModeTests.CameraButtonsToggleModeAndResetTheView",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.PresentationScreensPlayModeTests.InspectionPanelButtonsHideTheInterfaceAndExit",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.PresentationScreensPlayModeTests.InstallerIgnoresOtherScenesAndRepeatedCalls",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.PresentationScreensPlayModeTests.ResultButtonsOpenReplayAndInspection",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.PresentationScreensPlayModeTests.ResultScreenStaysHiddenWhileSettingsAreOpen",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.RobotBotControllerPlayModeTests.AttackProbeCountsRequests",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.RobotBotControllerPlayModeTests.CombatRhythmBacksOffRepositionsAndComesBack",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.RobotBotControllerPlayModeTests.FarTargetResetsTheRhythm",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.RobotBotControllerPlayModeTests.FollowsTurnsAndRequestsAttacksWhenCloseAndFacing",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.RobotBotControllerPlayModeTests.ScenarioLabRunsEveryScenario",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.RobotBotControllerPlayModeTests.ScenarioLabTargetCanBeSteeredByKeyboard",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.RobotBotControllerPlayModeTests.SpinningTargetTriggersARepositionNearTheWall",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.RobotBotControllerPlayModeTests.StopsWithoutTargetMatchOrLife",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.RobotBotControllerPlayModeTests.StuckBotBacksOutTurnsAndDrivesAgain",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.RobotDrivingComponentsPlayModeTests.ArenaDriveMotorFeedsTheSharedMotorOrDrivesItself",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.RobotDrivingComponentsPlayModeTests.ComponentsWithoutAMotorReportAndDisableThemselves",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.RobotDrivingComponentsPlayModeTests.KeyboardInputSendsAxesAndStopsWhenKeyboardGoes",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.RobotDrivingComponentsPlayModeTests.LoopingSequenceRepeatsUntilStoppedOrDisabled",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.RobotDrivingComponentsPlayModeTests.MotorLosesTractionAfterARamAndRespectsDamage",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.RobotDrivingComponentsPlayModeTests.SequencePlaysOnStartWhenAsked",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.RobotDrivingComponentsPlayModeTests.SequenceStepsThroughCommandsAndStopsWithoutLoop",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.TestHarnessPlayModeTests.ArenaSmokeRunsOnlyWhenRequestedOnTheCommandLine",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.TestHarnessPlayModeTests.AttackComponentsRunOnTheirOwnInRealTime",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.TestHarnessPlayModeTests.CleanupUnloadsOwnedObjectsAndPreservesUnrelatedScene",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.TestHarnessPlayModeTests.HealthReportsDamageDefeatAndRestore",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.TestHarnessPlayModeTests.MeleeTestSceneDrivesEveryActionFromTheKeyboard",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.TestHarnessPlayModeTests.ModularPreviewEquipsWeaponsAndArmour",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.WorkshopDuelTests.AllEightOpenDuelsAndOppositeBuildsInTacticalAndPulse",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.WorkshopDuelTests.BothModularWeaponsLockAgainstOppositeBotAndTriggerVenue",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.WorkshopDuelTests.CancelApplyTwiceArenaTrainingAndReload",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.WorkshopDuelTests.ClampOwnersShareDriveLimitAndReleaseOnSeparationPauseAndRematch",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.WorkshopDuelTests.ClampReleasesOnDetachmentAndRoundEnd",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.WorkshopDuelTests.DamagedChassisHandlesBeltImpactAndRematch",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.WorkshopDuelTests.FiveNaturalToolDuels",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.WorkshopDuelTests.FiveNewToolsInBothProductionSlotsAndRematches",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.WorkshopDuelTests.FourCornerDamageChangesAttitudeAndDrive",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.WorkshopDuelTests.OpenPhysicalMeasurementsForEveryBuild",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.WorkshopDuelTests.SeriesLocksBuildAndStockReplayChecksTheModel",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.WorkshopDuelTests.StockQuickDuelMeasurements",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.WorkshopDuelTests.StrikeMotionLiftAndMissRecovery",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.WorkshopDuelTests.UnknownMissingAndFutureRecordsRemainIntact",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.WorkshopDuelTests.WindowsWorkshopToResultAndRematch",
+        "result": "Skipped",
+        "reason": "Only supported on WindowsPlayer"
+      },
+      {
+        "name": "RobotSavaslari.Match.Tests.ChallengeSessionTests.CompetingProcessCannotOverwriteNewerFile",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Match.Tests.ChallengeSessionTests.FailedAtomicWriteKeepsCheckpointAndHistoryFailureKeepsNotice",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Match.Tests.ChallengeSessionTests.InvalidSaveIsPreservedOnlyOnExplicitRecovery(\"{\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Match.Tests.ChallengeSessionTests.InvalidSaveIsPreservedOnlyOnExplicitRecovery(\"{\\\"version\\\":2,\\\"checkpoint\\\":[],\\\"archive\\\":[]}\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Match.Tests.ChallengeSessionTests.InvalidSaveIsPreservedOnlyOnExplicitRecovery(\"{\\\"version\\\":1,\\\"checkpoint\\\":[{\\\"definitionRevision\\\":99,\\\"definitionId\\\":\\\"local-circuit\\\"}],\\\"archive\\\":[]}\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Match.Tests.ChallengeSessionTests.InvalidSaveIsPreservedOnlyOnExplicitRecovery(\"{\\\"version\\\":1,\\\"checkpoint\\\":[{\\\"definitionRevision\\\":1,\\\"definitionId\\\":\\\"local-circuit\\\",\\\"sessionId\\\":\\\"00000000000000000000000000000042\\\",\\\"nextStageIndex\\\":9,\\\"results\\\":[]}],\\\"archive\\\":[]}\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Match.Tests.ChallengeSessionTests.MeasureCheckpointWrites",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Match.Tests.ChallengeSessionTests.MeasureOpenToTacticalTransition",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Match.Tests.ChallengeSessionTests.ModalBlocksKeyboardAndRestoresEnabledStates",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Match.Tests.ChallengeSessionTests.ReloadDuringSecondEncounterRestartsThatStageAndKeepOrRestartWorks",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Match.Tests.ChallengeSessionTests.ThreeEncountersSaveOnceEachAndRestoreNormalRematch",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Match.Tests.ChallengeSessionTests.UnavailableOpponentSelectionDoesNotReplaceCheckpoint",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Match.Tests.DuelSetupTests.InvalidPreferencesAreRejected(\"{broken\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Match.Tests.DuelSetupTests.InvalidPreferencesAreRejected(\"{}\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Match.Tests.DuelSetupTests.InvalidPreferencesAreRejected(\"{\\\"version\\\":99,\\\"arenaId\\\":\\\"Open\\\"}\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Match.Tests.DuelSetupTests.InvalidPreferencesAreRejected(\"{\\\"version\\\":1,\\\"arenaId\\\":\\\"Open\\\"}\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Match.Tests.DuelSetupTests.PresetsUseExistingCatalogAndSnapshotSurvivesRematchAndReload",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Match.Tests.DuelSetupTests.SeriesRematchStartsAtZeroAndPartialSeriesKeepsItsScore",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Match.Tests.DuelWindowsFrameTests.TacticalReadyResultAndRematchAt720And1080",
+        "result": "Skipped",
+        "reason": "Only supported on WindowsPlayer"
+      },
+      {
+        "name": "RobotSavaslari.Match.Tests.MatchRulesPlayModeTests.ActualDamageIncludesFatalHitButNeverAttributesUnknownSource",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Match.Tests.MatchRulesPlayModeTests.DisabledMatchRejectsTransitionsAndDoesNotAdvanceTimer",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Match.Tests.MatchRulesPlayModeTests.HistoryRematchRestoresRulesButNotOldHealthOrScore",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Match.Tests.MatchRulesPlayModeTests.PauseFreezesTimerAndCombatAndRequiresFreshInput",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Match.Tests.MatchRulesPlayModeTests.SeriesEndsTwoOneAndNewSeriesStartsClean",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Match.Tests.MatchRulesPlayModeTests.SeriesEndsTwoZeroAndCannotContinueACompletedSeries",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Match.Tests.MatchRulesPlayModeTests.SharedMeleeAttributesClampedFatalDamageBeforeResult",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Match.Tests.MatchRulesPlayModeTests.TiedTimedRoundRepeatsWithoutConsumingAWinningRound",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Match.Tests.MatchRulesPlayModeTests.TimeOverUsesRatiosAndPublishesOneResult",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.ArenaVenueTests.AllLayoutsKeepTheirGeometryAndUseTheSameTwoRobots",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.ArenaVenueTests.ChallengeDialogPauseAndReplaySilenceOnlyTheirOwnPhases",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.ArenaVenueTests.FloorPaintHasNoDepthAndNearbyProtectiveFramesClearALowCamera",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.ArenaVenueWindowsTests.CompareOpenAt720And1080",
+        "result": "Skipped",
+        "reason": "Only supported on WindowsPlayer"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.CameraSettingsPlayModeTests.CameraStartsAtSavedDefaultDistance",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.CameraSettingsPlayModeTests.DistanceChangeInPausedSettingsPreviewsWithoutResumingGameplay",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.CameraSettingsPlayModeTests.MatchResetDoesNotChangeCameraSettings",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.CameraSettingsPlayModeTests.SensitivityAndInvertChangeOrbitResponse",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.CameraSettingsPlayModeTests.SmoothingControlsHowFastTheViewCatchesUp",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.CombatCameraPlayModeTests.InstallsOnceOnExistingCameraAcrossReloads",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.CombatCameraPlayModeTests.OpenSettingsBlockOrbitInput",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.CombatCameraPlayModeTests.RightMouseOrbitsWheelZoomsAndResetRestoresDefaults",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.CombatCameraPlayModeTests.SecondMatchRetargetsSpawnWithoutSweepOrDuplicate",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.CombatCameraPlayModeTests.StaysAboveFloorAndInsideWallsAtEveryCorner",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.DuelCameraPlayModeTests.FramesOnlyTheMatchRobotsNotDebris",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.DuelCameraPlayModeTests.KeepsBothRobotsInFrameNearAndFar",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.DuelCameraPlayModeTests.ModeToggleIsBlockedBySettingsAndPersistsIntoNextMatch",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.DuelCameraPlayModeTests.OpponentPassingBehindTurnsAtLimitedRateWithoutFlip",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.DuelCameraPlayModeTests.OverlappingRobotsKeepPreviousDirection",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchivePlayModeTests.AbandonedSeriesIsArchivedAsIncompleteAndHistoryStaysUntouched",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchivePlayModeTests.ArchiveOpensOnlyFromTheNormalReadyMenu",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchivePlayModeTests.ExistingBarrierAndConveyorsAreRecordedAsWhitelistedTracks",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchivePlayModeTests.FiveAndFifteenMinuteRecordingsStayWithinBudget(5)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchivePlayModeTests.FiveAndFifteenMinuteRecordingsStayWithinBudget(15)",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchivePlayModeTests.FullEncounterReopensWithFilteredEventsAndRecordedHazards(\"Open\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchivePlayModeTests.FullEncounterReopensWithFilteredEventsAndRecordedHazards(\"Tactical\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchivePlayModeTests.FullEncounterReopensWithFilteredEventsAndRecordedHazards(\"PulseArena\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchivePlayModeTests.FullEncounterReopensWithFilteredEventsAndRecordedHazards(\"SweepArena\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchivePlayModeTests.IncompatibleAndCorruptArchivesAreShownButNotPlayed",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchivePlayModeTests.InterruptedEncounterIsCommittedOnceWhenRecorderIsEnabledAgain",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchivePlayModeTests.PanelButtonsOpenTheArchiveAndDeleteAfterConfirmation",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchivePlayModeTests.PauseDisableAndLeavingReadyCloseSafely",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchivePlayModeTests.PulseDamageKeepsItsUnknownSourceWhileWeaponAndRobotContactAreIdentified",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchivePlayModeTests.ReadyMenuAppliesArenaOnlyWhenStarting",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchivePlayModeTests.ReadyMenuPlaysOriginalV1Archive(\"Open\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchivePlayModeTests.ReadyMenuPlaysOriginalV1Archive(\"Tactical\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchivePlayModeTests.ReadyMenuSelectsMatchFormatAndOpensSettings",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchivePlayModeTests.ReadyMenuStartsAllFourDrivingExercisesAndTheTimeTrial",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchivePlayModeTests.RealSceneFitsTheTrackBudgetAndSamplingDoesNotAllocate",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchivePlayModeTests.RecordingAddsNoManagedHeapGrowth",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchivePlayModeTests.ReopenEncountersAfterPlayerRestart",
+        "result": "Skipped",
+        "reason": "Requires the five files recorded by the preceding Windows player run."
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchivePlayModeTests.SeriesRecordsEveryRoundWithOrderedBoundaries",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchivePlayModeTests.SingleMatchIsArchivedWithEventsAndPlaysWithLookOnlyProxies",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchivePlayModeTests.TenOpenCloseCyclesGiveEverythingBack",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayPlayModeTests.DetachedPartVanishesAtTheMomentItCameOff",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayPlayModeTests.LongMatchUsesBoundedBuffer",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayPlayModeTests.NewMatchClearsTheReplayAndStopsPlayback",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayPlayModeTests.OpenSettingsPausePlayback",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayPlayModeTests.RecordsOnlyWhilePlayingAndFreezesAtTheResult",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayPlayModeTests.ReplayHasNoGameplaySideEffects",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayPlayModeTests.VeryShortMatchStillOffersASafeReplay",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.PostMatchInspectionPlayModeTests.InspectionShowsTheFinalDamageWithoutSideEffects",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.PostMatchInspectionPlayModeTests.NewMatchClosesInspection",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.PostMatchInspectionPlayModeTests.OpenSettingsBlockTheHideShortcut",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.PostMatchInspectionPlayModeTests.ReplayAndInspectionNeverRunTogether",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.PostMatchInspectionPlayModeTests.SnapshotOutlivesDebrisAndIgnoresTheLiveRobot",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.PostMatchInspectionPlayModeTests.UndamagedRobotAndInvalidSelectionsAreHandled",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Robots.Tests.RobotMotorPlayModeTests.DonusKomutuIkiYoneCalisir",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Robots.Tests.RobotMotorPlayModeTests.DuvaraSurulenRobotDisariGecmez",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Robots.Tests.RobotMotorPlayModeTests.GeriKomutuRobotuGeriGoturur",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Robots.Tests.RobotMotorPlayModeTests.IleriKomutuRobotuIleriGoturur",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Robots.Tests.RobotMotorPlayModeTests.KlavyeOlmadanKomutDiziIleSurulur",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Robots.Tests.RobotMotorPlayModeTests.KomutBirakilincaHareketKesilir",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Robots.Tests.RobotMotorPlayModeTests.KomutlarAraliginDisindaKirpilir",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Robots.Tests.RobotMotorPlayModeTests.KoseyeSurulenRobotDisariGecmez",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Training.Tests.DrivingExerciseTests.FourKeysPersistIndependentlyAndInvalidOrSlowerAttemptsKeepGhost",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Training.Tests.DrivingExerciseTests.InvalidSaveStaysIntactAndLiveExerciseStillWorks(\"{broken\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Training.Tests.DrivingExerciseTests.InvalidSaveStaysIntactAndLiveExerciseStillWorks(\"{\\\"version\\\":99,\\\"entries\\\":[]}\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Training.Tests.DrivingExerciseTests.LegacyMigrationOnlyCopiesExactCourseAndDoesNotRewriteOnSecondLoad",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Training.Tests.DrivingExerciseTests.MainArenaRoutesRetryAndExitKeepTheReadyMatchIntact",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Training.Tests.DrivingExerciseTests.MeasureWarmedEvaluationAndGhostInterpolation",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Training.Tests.DrivingExerciseTests.PreparationUsesTwoRealAttemptsAndRestoresTheTimeTrial",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Training.Tests.DrivingExerciseTests.ReverseParkRejectsFrontEntryAndRequiresAngleAndDwell",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Training.Tests.DrivingExerciseTests.SlalomCountsMissedGateAndRealImpactAndFinishesOnlyOnce",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Training.Tests.DrivingExerciseTests.StopResetsDwellWhenSpeedExceedsThresholdAndReportsOvershoot",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Training.Tests.DrivingExerciseTests.TurnRequiresBothPositionAndYawAtSameStep",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Training.Tests.DrivingPreparationPlayerTests.TwoPreparationStepsReturnToReadyAndStartADuelAtBothResolutions",
+        "result": "Skipped",
+        "reason": "Only supported on WindowsPlayer"
+      },
+      {
+        "name": "RobotSavaslari.Training.Tests.GhostLapTests.AradegerHesabiSinirlardaTasmaz",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Training.Tests.GhostLapTests.BaskaParkurKaydiKullanilmaz",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Training.Tests.GhostLapTests.BozukDosyaGuvenleAtlanir",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Training.Tests.GhostLapTests.DahaYavasTurRekoruEzmez",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Training.Tests.GhostLapTests.EgitimdenCikisHayaletiTemizler",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Training.Tests.GhostLapTests.EksikKayitKullanilmaz",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Training.Tests.GhostLapTests.EskiSurumKaydiKullanilmaz",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Training.Tests.GhostLapTests.GecerliTurRekorOlarakKaydedilir",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Training.Tests.GhostLapTests.GecersizTurRekorOlmaz",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Training.Tests.GhostLapTests.HayaletFizikVeDovusBileseniTasimaz",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Training.Tests.GhostLapTests.KayitYazilipOkunur",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests.CameraKeyIsRejectedAndDoesNotChangeCameraDuringCapture",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests.CheckpointMarkersAreAboveArenaSurface",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests.EnterDuringCaptureDoesNotStartMatch",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests.EscapeCancelsCaptureWithoutOpeningSettings",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests.LayoutSelectionAndContentChangesInvalidateOldBest",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Training.Tests.InputAndTrainingRegressionTests.RetryDuringUnfinishedLapDiscardsOldSamples",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Training.Tests.MainArenaDrivingIntegrationTests.EgitimdenSonraIkinciEgitimeGirilebilir",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Training.Tests.MainArenaDrivingIntegrationTests.EgitimGirisCikisiMacSayaclariniDegistirmez",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Training.Tests.MainArenaDrivingIntegrationTests.IkinciKurulumBilesenleriCogaltmaz",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Training.Tests.MainArenaDrivingIntegrationTests.KayitliEslemeSahnedekiSurucuyeUygulanir",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Training.Tests.MainArenaDrivingIntegrationTests.MacDurumuDegisinceBoostVeElFreniBirakilir",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Training.Tests.MainArenaDrivingIntegrationTests.SahnedekiOyuncuyaSurusBilesenleriBaglanir",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Training.Tests.TimeTrialSessionTests.BitisSonrasiSureIlerlemez",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Training.Tests.TimeTrialSessionTests.CikisSaklananKontrolDurumunuGeriYukler",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Training.Tests.TimeTrialSessionTests.EgitimeGirisKontroluAcarVeBaslangicaKoyar",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Training.Tests.TimeTrialSessionTests.GirisIzniYokkenGirilmez",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Training.Tests.TimeTrialSessionTests.KontrolNoktalariYalnizSirayilaIlerler",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Training.Tests.TimeTrialSessionTests.SirayilaGecilenTurTamamlanirVeBitisBirKezRaporlanir",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Training.Tests.TimeTrialSessionTests.SureIlerler",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Training.Tests.TimeTrialSessionTests.YanlisSiraliTurGecersizKalir",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Training.Tests.TimeTrialSessionTests.YenidenDenemeHerSeyiSifirlar",
+        "result": "Passed"
+      }
+    ]
+  },
+  {
+    "run": "ring-grip-60-01",
+    "total": 3,
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0,
+    "cases": [
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.WorkshopDuelTests.ClampReleasesOnDetachmentAndRoundEnd",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.WorkshopDuelTests.FiveNaturalToolDuels",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.WorkshopDuelTests.FiveNewToolsInBothProductionSlotsAndRematches",
+        "result": "Passed"
+      }
+    ]
+  },
+  {
+    "run": "ring-grip-30-01",
+    "total": 1,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "cases": [
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.WorkshopDuelTests.FiveNaturalToolDuels",
+        "result": "Passed"
+      }
+    ]
+  },
+  {
+    "run": "clamp-motion-01",
+    "total": 2,
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "cases": [
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.WorkshopDuelTests.ClampOwnersShareDriveLimitAndReleaseOnSeparationPauseAndRematch",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.WorkshopDuelTests.ClampReleasesOnDetachmentAndRoundEnd",
+        "result": "Passed"
+      }
+    ]
+  },
+  {
+    "run": "winchecks-01",
+    "total": 8,
+    "passed": 8,
+    "failed": 0,
+    "skipped": 0,
+    "cases": [
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.WorkshopDuelTests.WindowsWorkshopToResultAndRematch",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Match.Tests.DuelWindowsFrameTests.TacticalReadyResultAndRematchAt720And1080",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchivePlayModeTests.FullEncounterReopensWithFilteredEventsAndRecordedHazards(\"Open\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchivePlayModeTests.FullEncounterReopensWithFilteredEventsAndRecordedHazards(\"Tactical\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchivePlayModeTests.FullEncounterReopensWithFilteredEventsAndRecordedHazards(\"PulseArena\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchivePlayModeTests.FullEncounterReopensWithFilteredEventsAndRecordedHazards(\"SweepArena\")",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchivePlayModeTests.SeriesRecordsEveryRoundWithOrderedBoundaries",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Training.Tests.DrivingPreparationPlayerTests.TwoPreparationStepsReturnToReadyAndStartADuelAtBothResolutions",
+        "result": "Passed"
+      }
+    ]
+  },
+  {
+    "run": "winchecks-read01",
+    "total": 1,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "cases": [
+      {
+        "name": "RobotSavaslari.Presentation.Tests.MatchReplayArchivePlayModeTests.ReopenEncountersAfterPlayerRestart",
+        "result": "Passed"
+      }
+    ]
+  },
+  {
+    "run": "venue-ring-final",
+    "total": 1,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "cases": [
+      {
+        "name": "RobotSavaslari.Presentation.Tests.ArenaVenueWindowsTests.CompareOpenAt720And1080",
+        "result": "Passed"
+      }
+    ]
+  },
+  {
+    "run": "winchecks-grip01",
+    "total": 3,
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0,
+    "cases": [
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.WorkshopDuelTests.ClampOwnersShareDriveLimitAndReleaseOnSeparationPauseAndRematch",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.WorkshopDuelTests.ClampReleasesOnDetachmentAndRoundEnd",
+        "result": "Passed"
+      },
+      {
+        "name": "RobotSavaslari.Gameplay.Tests.WorkshopDuelTests.FiveNaturalToolDuels",
+        "result": "Passed"
+      }
+    ]
+  }
+]
