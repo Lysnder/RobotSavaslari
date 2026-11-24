@@ -81,6 +81,7 @@ namespace RobotSavaslari
             _keyboardDriver = GetComponent<PlayerKeyboardDriver>();
             if (_keyboardDriver != null) _keyboardDriver.enabled = !computer && isActiveAndEnabled;
             if (_motor == null) _motor = GetComponent<RobotDriveMotor>() ?? gameObject.AddComponent<RobotDriveMotor>();
+            _motor.ReleaseIncomingGrips();
             if (_bot == null) _bot = GetComponent<RobotBotController>();
             if (computer)
             {
@@ -111,6 +112,7 @@ namespace RobotSavaslari
         {
             CombatStopped = true;
             if (_melee) _melee.ReleaseGrip();
+            if (_motor) _motor.ReleaseIncomingGrips();
             if (_keyboardDriver != null) _keyboardDriver.enabled = false;
             if (_bot != null) _bot.SetMatchRunning(false);
             WeaponActive = false;
@@ -175,6 +177,8 @@ namespace RobotSavaslari
 
         private void OnDisable()
         {
+            if (_melee) _melee.ReleaseGrip();
+            if (_motor) _motor.ReleaseIncomingGrips();
             if (Selected == this) Selected = null;
             if (_bot != null) { _bot.SetMatchRunning(false); _bot.enabled = false; }
             if (_motor != null) _motor.Clear(true);

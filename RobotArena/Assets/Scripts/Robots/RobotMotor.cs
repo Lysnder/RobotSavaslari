@@ -39,17 +39,19 @@ namespace RobotSavaslari.Robots
         private float steeringPull;
         private float traction = 1f;
         private float brakeGrip = 1f;
+        private float commandScale = 1f;
         private float speedModifier = 1f;
         private float accelerationModifier = 1f;
         private float turnModifier = 1f;
 
-        public void SetDriveCondition(float mobilityScale, float turningScale, float pull, float grip, float brakingScale = 1f)
+        public void SetDriveCondition(float mobilityScale, float turningScale, float pull, float grip, float brakingScale = 1f, float controlScale = 1f)
         {
             mobility = Mathf.Clamp01(mobilityScale);
             turning = Mathf.Clamp01(turningScale);
             steeringPull = Mathf.Clamp(pull, -1f, 1f);
             traction = Mathf.Clamp01(grip);
             brakeGrip = Mathf.Clamp01(brakingScale);
+            commandScale = Mathf.Clamp01(controlScale);
         }
 
         /// <summary>
@@ -89,13 +91,13 @@ namespace RobotSavaslari.Robots
         /// hızı sınırı (derece/s). El freni bu sınırı yükseltir ama
         /// <see cref="driveModifierCeiling"/> üstüne çıkamaz.
         /// </summary>
-        public float EffectiveMaxTurnSpeed => maxTurnSpeed * turning * turnModifier;
+        public float EffectiveMaxTurnSpeed => maxTurnSpeed * turning * turnModifier * commandScale;
 
         /// <summary>
         /// Hasar ve geçici değişim uygulandıktan sonra şu an geçerli olan ileri
         /// üst hız. Gösterge ve testler bu sınırı okur.
         /// </summary>
-        public float EffectiveMaxForwardSpeed => maxForwardSpeed * mobility * speedModifier;
+        public float EffectiveMaxForwardSpeed => maxForwardSpeed * mobility * speedModifier * commandScale;
 
         public void ResetMotion()
         {
@@ -226,8 +228,8 @@ namespace RobotSavaslari.Robots
             // Geçici çarpan yalnızca ileri sürüşe uygulanır: boost geri vitesi
             // tasarlanan sınırın üstüne çıkarmaz.
             float targetSpeed = moveCommand >= 0f
-                ? moveCommand * maxForwardSpeed * mobility * speedModifier
-                : moveCommand * maxReverseSpeed * mobility;
+                ? moveCommand * EffectiveMaxForwardSpeed
+                : moveCommand * maxReverseSpeed * mobility * commandScale;
 
             bool braking = Mathf.Approximately(moveCommand, 0f) || targetSpeed * forwardSpeed < 0f;
             float speedChange = (braking
@@ -243,7 +245,7 @@ namespace RobotSavaslari.Robots
             // her adımda dönüşü yiyip bitirmesin, robot komutu verildiği hızda
             // dönsün. Duvar yine gövdeyi fiziken durdurur.
             float targetTurnSpeed = Mathf.Clamp(turnCommand + moveCommand * steeringPull, -1f, 1f)
-                                    * maxTurnSpeed * turning * turnModifier;
+                                    * EffectiveMaxTurnSpeed;
             bool turnBraking = Mathf.Approximately(turnCommand, 0f) || targetTurnSpeed * turnSpeed < 0f;
             float turnChange = (turnBraking ? turnBrakeDeceleration : turnAcceleration) * deltaTime;
             turnSpeed = Mathf.MoveTowards(turnSpeed, targetTurnSpeed, turnChange);

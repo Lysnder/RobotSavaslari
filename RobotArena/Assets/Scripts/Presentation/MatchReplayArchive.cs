@@ -358,14 +358,14 @@ namespace RobotSavaslari.Presentation
             return value;
         }
 
-        /// <summary>Writes one pose in <see cref="PoseBytes"/> bytes. Non-finite values are stored as an invisible origin pose.</summary>
+        /// <summary>Poses outside the archive coordinate range are encoded as invisible, including detached debris.</summary>
         public static void WritePose(byte[] buffer, ref int offset, MatchReplayClip.Pose pose, byte wear)
         {
             Vector3 p = pose.Position;
             Quaternion q = pose.Rotation;
-            bool finite = IsFinite(p) && IsFinite(q.x) && IsFinite(q.y) && IsFinite(q.z) && IsFinite(q.w);
-            float magnitude = finite ? Mathf.Sqrt(q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w) : 0f;
-            if (!finite) p = Vector3.zero;
+            bool valid = CanStorePosition(p) && IsFinite(q.x) && IsFinite(q.y) && IsFinite(q.z) && IsFinite(q.w);
+            float magnitude = valid ? Mathf.Sqrt(q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w) : 0f;
+            if (!valid) p = Vector3.zero;
             if (magnitude < 1e-6f) q = Quaternion.identity;
             else q = new Quaternion(q.x / magnitude, q.y / magnitude, q.z / magnitude, q.w / magnitude);
             WriteSingle(buffer, ref offset, p.x);
@@ -375,7 +375,7 @@ namespace RobotSavaslari.Presentation
             WriteInt16(buffer, ref offset, QuantizeUnit(q.y));
             WriteInt16(buffer, ref offset, QuantizeUnit(q.z));
             WriteInt16(buffer, ref offset, QuantizeUnit(q.w));
-            buffer[offset++] = (byte)(finite && pose.Visible ? 1 : 0);
+            buffer[offset++] = (byte)(valid && pose.Visible ? 1 : 0);
             buffer[offset++] = wear;
         }
 
@@ -395,6 +395,8 @@ namespace RobotSavaslari.Presentation
 
         public static bool IsFinite(float value) => !float.IsNaN(value) && !float.IsInfinity(value);
         public static bool IsFinite(Vector3 value) => IsFinite(value.x) && IsFinite(value.y) && IsFinite(value.z);
+        internal static bool CanStorePosition(Vector3 value) => IsFinite(value) &&
+            Mathf.Abs(value.x) <= 1e5f && Mathf.Abs(value.y) <= 1e5f && Mathf.Abs(value.z) <= 1e5f;
         private static bool IsFinite(Vector4 value) => IsFinite(value.x) && IsFinite(value.y) && IsFinite(value.z) && IsFinite(value.w);
 
         // ---- CRC-32 (IEEE) -------------------------------------------------------------------------

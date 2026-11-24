@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.Collections.Generic;
+using RobotSavaslari.Combat;
 using RobotSavaslari.Robots;
 using RobotSavaslari.Driving;
 
@@ -13,6 +15,24 @@ namespace RobotSavaslari
         public float braking = 34f, lateralGrip = 28f, reverseSpeed = 4f;
         public Vector2 LastCommand { get; private set; }
         public Rigidbody Body { get; private set; }
+        private readonly List<MeleeAttack> holders = new List<MeleeAttack>();
+        private const float HeldCommandScale = .18f;
+        public bool IsClamped => holders.Count > 0;
+        internal void AddGrip(MeleeAttack holder)
+        {
+            if (!holders.Contains(holder)) holders.Add(holder);
+        }
+        internal void RemoveGrip(MeleeAttack holder) => holders.Remove(holder);
+        internal void ReleaseIncomingGrips()
+        {
+            while (holders.Count > 0)
+            {
+                int last = holders.Count - 1;
+                var holder = holders[last];
+                holders.RemoveAt(last);
+                if (holder) holder.ReleaseGrip();
+            }
+        }
         private Vector2 _pending;
         private RobotDamageVisuals _damage;
         private RobotMotor _sharedMotor;
@@ -48,7 +68,7 @@ namespace RobotSavaslari
                 Body.angularVelocity = Vector3.zero;
             }
         }
-        private void OnDisable() { Clear(true); }
+        private void OnDisable() { ReleaseIncomingGrips(); Clear(true); }
         private void FixedUpdate() { Step(Time.fixedDeltaTime); }
         public void Step(float dt)
         {
@@ -61,6 +81,7 @@ namespace RobotSavaslari
             float turning = _damage != null ? _damage.Turning : 1f;
             float pull = _damage != null ? _damage.SteeringPull : 0f;
             float traction = Time.time < _knockbackUntil ? _knockbackTraction : 1f;
+            float commandScale = IsClamped ? HeldCommandScale : 1f;
             if (_sharedMotor != null)
             {
                 // Keyboard and AI share the same physical motor, with one input producer per robot.
@@ -68,11 +89,11 @@ namespace RobotSavaslari
                     LastCommand = new Vector2(_keyboardDriver.ForwardInput, _keyboardDriver.TurnInput);
                 else
                     _sharedMotor.SetMoveCommand(LastCommand.x, LastCommand.y);
-                _sharedMotor.SetDriveCondition(mobility, turning, pull, traction, brakeGrip);
+                _sharedMotor.SetDriveCondition(mobility, turning, pull, traction, brakeGrip, commandScale);
                 return;
             }
             if (mobility <= 0f && brakeGrip <= 0f) return;
-            float drive = LastCommand.x, steer = LastCommand.y;
+            float drive = LastCommand.x * commandScale, steer = LastCommand.y * commandScale;
             if (traction < 1f) drive = steer = 0f;
             Quaternion heading = Quaternion.AngleAxis(Mathf.Clamp(steer + drive * pull, -1, 1) * turnSpeed * turning * dt, Vector3.up) * Body.rotation;
             if (!Body.isKinematic) Body.angularVelocity = Vector3.ProjectOnPlane(Body.angularVelocity, Vector3.up);

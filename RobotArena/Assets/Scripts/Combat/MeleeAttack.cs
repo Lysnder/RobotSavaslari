@@ -39,7 +39,9 @@ namespace RobotSavaslari.Combat
         private float _activeUntil, _strikeAt, _nextCut, _releaseAt;
         private int _cuts;
         private RobotHealth _sawContact;
-        private FixedJoint _grip;
+        private RobotDriveMotor _grip;
+        private Collider _gripContact;
+        private RobotHealth _gripHealth;
         private AudioSource _toolSpeaker;
         private AudioClip _toolCue;
         private WeaponStyle _cueStyle;
@@ -105,8 +107,15 @@ namespace RobotSavaslari.Combat
             Tick();
         }
 
+        private void Update()
+        {
+            // Opening settings can stop fixed updates altogether.
+            if (_grip && (Time.timeScale <= 0f || !IsGateOpen)) ReleaseGrip();
+        }
+
         public void ApplyProfile(CombatProfile newProfile)
         {
+            if (newProfile != profile) ReleaseGrip();
             profile = newProfile;
             if (profile != null) CopyProfile(profile);
         }
@@ -139,7 +148,8 @@ namespace RobotSavaslari.Combat
         public void Tick()
         {
             float now = Now;
-            if (_grip && (!_grip.connectedBody || now >= _releaseAt || !IsGateOpen || IsSelfDefeated)) ReleaseGrip();
+            if (_grip && (now >= _releaseAt || !IsGateOpen || IsSelfDefeated || _grip.Body.isKinematic || !_gripContact || !_gripContact.enabled ||
+                (_gripContact.ClosestPoint(Origin) - Origin).sqrMagnitude > (range + .2f) * (range + .2f))) ReleaseGrip();
             if (!_active) return;
             if (!IsGateOpen)
             {
@@ -222,14 +232,14 @@ namespace RobotSavaslari.Combat
                     if (hull) point = hull.ClosestPoint(new Vector3(point.x, hull.bounds.max.y + 1f, point.z));
                 }
                 target.TakeDamage(damage, point, Style == WeaponStyle.Hammer ? Vector3.up : -direction, direction * 2f, true, _health);
-                if (IsGateOpen && !target.IsDefeated) ApplyToolEffect(target, direction);
+                if (IsGateOpen && !target.IsDefeated) ApplyToolEffect(target, collider, direction);
                 TargetHit?.Invoke(this, target, damage);
             }
             // An interrupted cut cannot resume until the next activation.
             if (_active && _sawContact != null && !stillCutting) Finish(AttackOutcome.Hit, Now);
         }
 
-        private void ApplyToolEffect(RobotHealth target, Vector3 direction)
+        private void ApplyToolEffect(RobotHealth target, Collider collider, Vector3 direction)
         {
             if (!profile) return;
             if (!target.TryGetComponent(out RobotPrototypeController robot)) return;
@@ -240,23 +250,34 @@ namespace RobotSavaslari.Combat
                 float lift = Style == WeaponStyle.Drum ? 1.35f : 3.05f;
                 body.AddForce(Vector3.up * (lift * robot.WeaponPushMultiplier), ForceMode.VelocityChange);
             }
-            else if (Style == WeaponStyle.Clamp && !_grip && TryGetComponent(out Rigidbody owner) && !owner.isKinematic)
+            else if (Style == WeaponStyle.Clamp && !_grip && TryGetComponent(out Rigidbody owner) && !owner.isKinematic &&
+                !robot.CombatStopped && target.TryGetComponent(out RobotDriveMotor drive) && drive.isActiveAndEnabled)
             {
-                _grip = gameObject.AddComponent<FixedJoint>();
-                _grip.enableCollision = true;
-                _grip.connectedBody = body;
+                // Both drivers own their rigidbody velocities. Limit the target's powered motion
+                // without welding two actively driven, colliding hulls together.
+                _grip = drive;
+                _gripContact = collider;
+                _gripHealth = target;
+                target.Defeated += GripTargetDefeated;
+                target.Restored += ReleaseGrip;
+                drive.AddGrip(this);
                 _releaseAt = Now + .64f;
             }
         }
 
+        private void GripTargetDefeated(RobotHealth target) => ReleaseGrip();
+
         internal void ReleaseGrip()
         {
-            if (!_grip) return;
-            // Destroy takes effect at frame end. Zero break limits also release it on the next physics step.
-            _grip.breakForce = 0f;
-            _grip.breakTorque = 0f;
-            Destroy(_grip);
+            if (_grip) _grip.RemoveGrip(this);
+            if (_gripHealth)
+            {
+                _gripHealth.Defeated -= GripTargetDefeated;
+                _gripHealth.Restored -= ReleaseGrip;
+            }
             _grip = null;
+            _gripContact = null;
+            _gripHealth = null;
         }
 
         private void PlayToolCue()

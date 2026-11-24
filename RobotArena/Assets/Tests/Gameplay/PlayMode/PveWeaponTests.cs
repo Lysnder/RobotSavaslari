@@ -19,17 +19,116 @@ namespace RobotSavaslari.Gameplay.Tests
         [UnityTest, Timeout(480000)]
         public IEnumerator FiveNaturalToolDuels()
         {
-            for (int i = 2; i < WorkshopWeapons.Count; i++)
+            int previousRate = Application.targetFrameRate, previousSync = QualitySettings.vSyncCount;
+            bool capped = int.TryParse(Environment.GetEnvironmentVariable("PVE_TEST_FRAME_RATE"), out int rate) && rate >= 20 && rate <= 240;
+            if (capped) { QualitySettings.vSyncCount = 0; Application.targetFrameRate = rate; }
+            try
             {
-                var loadout = Parts("hard", "heavy", WorkshopWeapons.Id(i));
-                Apply(loadout);
-                yield return StartDuel(DuelSetup.Quick());
-                yield return PilotDuel(loadout, checkBothTools: true);
-                yield return null;
-                match.Prepare();
-                yield return null;
-                CheckToolArchive(loadout.weaponId);
+                for (int i = 2; i < WorkshopWeapons.Count; i++)
+                {
+                    var loadout = Parts("hard", "heavy", WorkshopWeapons.Id(i));
+                    Apply(loadout);
+                    yield return StartDuel(DuelSetup.Quick());
+                    yield return PilotDuel(loadout, checkBothTools: true);
+                    yield return null;
+                    match.Prepare();
+                    yield return null;
+                    CheckToolArchive(loadout.weaponId);
+                }
             }
+            finally
+            {
+                if (capped) { Application.targetFrameRate = previousRate; QualitySettings.vSyncCount = previousSync; }
+            }
+        }
+
+        private sealed class ToolReplayMotion
+        {
+            private readonly Rigidbody player, bot;
+            private readonly MatchReplayArchiveRecorder recorder;
+            private readonly Arena.ArenaBounds bounds;
+            private ReplayArchiveInfo info;
+            private MatchReplayClip.Pose[] poses;
+            private int[] columns;
+            private string peakTrack;
+            private Vector3 peakPosition;
+            private float peakCoordinate, highY = float.MinValue, lowY = float.MaxValue, boundaryExcess, peakHullSpeed;
+            private bool nonFinite;
+
+            public ToolReplayMotion(MatchController game)
+            {
+                player = game.Player.GetComponent<Rigidbody>();
+                bot = game.Opponent.GetComponent<Rigidbody>();
+                recorder = game.GetComponent<MatchReplayArchiveRecorder>();
+                bounds = UnityEngine.Object.FindAnyObjectByType<Arena.ArenaBounds>();
+            }
+
+            public IEnumerator TrackPhysics(MatchController match)
+            {
+                var step = new WaitForFixedUpdate();
+                while (match.State == MatchController.MatchState.Playing)
+                {
+                    Observe();
+                    yield return step;
+                }
+                Observe();
+            }
+
+            private void ObserveBody(Rigidbody body)
+            {
+                Vector3 p = body.position;
+                nonFinite |= !MatchReplayArchive.IsFinite(p) || !MatchReplayArchive.IsFinite(body.linearVelocity);
+                lowY = Mathf.Min(lowY, p.y);
+                highY = Mathf.Max(highY, p.y);
+                peakHullSpeed = Mathf.Max(peakHullSpeed, body.linearVelocity.magnitude);
+                Vector2 d = new Vector2(Mathf.Abs(p.x - bounds.Center.x), Mathf.Abs(p.z - bounds.Center.y)) - bounds.InnerHalfExtents;
+                boundaryExcess = Mathf.Max(boundaryExcess, Mathf.Max(d.x, d.y));
+            }
+
+            private void Observe()
+            {
+                ObserveBody(player);
+                ObserveBody(bot);
+                if (info == null && recorder.Current != null)
+                {
+                    info = recorder.Current;
+                    poses = GameplayTestScene.GetField<MatchReplayClip.Pose[]>(recorder, "_poses");
+                    columns = GameplayTestScene.GetField<int[]>(recorder, "_columnTrack");
+                }
+                if (poses == null) return;
+                for (int i = 0; i < poses.Length; i++)
+                {
+                    var point = poses[i].Position;
+                    nonFinite |= !MatchReplayArchive.IsFinite(point);
+                    float magnitude = Mathf.Max(Mathf.Abs(point.x), Mathf.Max(Mathf.Abs(point.y), Mathf.Abs(point.z)));
+                    if (magnitude <= peakCoordinate) continue;
+                    peakCoordinate = magnitude;
+                    peakTrack = info.Tracks[columns[i]].Key;
+                    peakPosition = point;
+                }
+            }
+
+            public void Report(string id)
+            {
+                TestContext.WriteLine($"PVE_REPLAY_MOTION {id} peakTrack={peakTrack} xyz={peakPosition:F2} " +
+                    $"hullY={lowY:F2}..{highY:F2} hullSpeed={peakHullSpeed:F2} outsideRing={boundaryExcess:F2}");
+                Assert.That(nonFinite, Is.False, id + " non-finite physics or recorded visual");
+                Assert.That(boundaryExcess, Is.LessThan(.10f), id + " chassis crossed the ring boundary");
+                Assert.That(lowY, Is.GreaterThan(bounds.SurfaceHeight - 1f), id + " chassis fell through floor");
+                Assert.That(highY, Is.LessThan(bounds.SurfaceHeight + 3f), id + " chassis escaped overhead");
+                Assert.That(peakHullSpeed, Is.LessThan(30f), id + " unbounded chassis velocity");
+                Assert.That(peakCoordinate, Is.LessThanOrEqualTo(1e5f), id + " visual outside replay coordinate domain");
+            }
+        }
+
+        private void PreserveToolRecording(string playerId)
+        {
+            string evidence = Environment.GetEnvironmentVariable("PVE_REPLAY_EVIDENCE");
+            if (string.IsNullOrEmpty(evidence)) return;
+            var file = match.GetComponent<MatchReplayArchivePlayer>().Store.List().FirstOrDefault();
+            if (file == null) return;
+            Directory.CreateDirectory(evidence);
+            File.Copy(file.Path, Path.Combine(evidence, playerId + "-" + Path.GetFileName(file.Path)), true);
         }
 
         private void CheckToolArchive(string playerId)
@@ -171,10 +270,11 @@ namespace RobotSavaslari.Gameplay.Tests
                 {
                     Assert.That(attack.HoldingTarget, Is.True);
                     Assert.That(attack.PhaseLabel, Is.EqualTo("Kavradı"));
-                    Assert.That(owner.GetComponent<FixedJoint>().connectedBody, Is.SameAs(target.GetComponent<Rigidbody>()));
+                    Assert.That(target.GetComponent<RobotDriveMotor>().IsClamped, Is.True);
                     now += .65f;
                     attack.Tick();
                     Assert.That(attack.HoldingTarget, Is.False, "timed release");
+                    Assert.That(target.GetComponent<RobotDriveMotor>().IsClamped, Is.False);
                 }
                 if (id == "saw")
                 {
@@ -247,6 +347,18 @@ namespace RobotSavaslari.Gameplay.Tests
             }
         }
 
+        private static IEnumerator MeasureRetreat(RobotPrototypeController target, Action<float> sample)
+        {
+            var route = target.GetComponent<RobotDriveMotor>();
+            var fixedStep = new WaitForFixedUpdate();
+            for (int i = 0; i < 10; i++)
+            {
+                route.Submit(-1f, 0f);
+                yield return fixedStep;
+            }
+            sample(Vector3.Dot(route.Body.linearVelocity, -target.transform.forward));
+        }
+
         [UnityTest]
         public IEnumerator ClampReleasesOnDetachmentAndRoundEnd()
         {
@@ -267,8 +379,14 @@ namespace RobotSavaslari.Gameplay.Tests
                     now += attack.Profile.windup + .01f;
                     attack.Tick();
                     Assert.That(attack.HoldingTarget, Is.True);
+                    var drive = target.GetComponent<RobotDriveMotor>();
+                    Assert.That(drive.IsClamped, Is.True);
+                    float held = 0f;
                     if (i == 0)
                     {
+                        target.GetComponent<RobotBotController>().enabled = false;
+                        yield return MeasureRetreat(target, value => held = value);
+                        Assert.That(drive.IsClamped, Is.True);
                         var visuals = owner.GetComponent<RobotDamageVisuals>();
                         var weapon = visuals.Parts.Single(p => p.Kind == RobotDamageVisuals.PartKind.Weapon);
                         var health = owner.GetComponent<RobotHealth>();
@@ -282,6 +400,17 @@ namespace RobotSavaslari.Gameplay.Tests
                         Assert.That(match.State, Is.EqualTo(MatchController.MatchState.Result));
                     }
                     Assert.That(attack.HoldingTarget, Is.False);
+                    Assert.That(drive.IsClamped, Is.False);
+                    if (i == 0)
+                    {
+                        target.ResetMotion();
+                        GameplayTestScene.Place(target, new Vector3(0, .82f, .82f), false, Quaternion.Euler(0, 180, 0));
+                        float free = 0f;
+                        yield return MeasureRetreat(target, value => free = value);
+                        TestContext.WriteLine($"PVE_CLAMP_CONTROL retreatHeld={held:F3} retreatFree={free:F3}");
+                        Assert.That(free, Is.GreaterThan(.8f));
+                        Assert.That(Mathf.Abs(held), Is.LessThan(free * .65f));
+                    }
                 }
                 finally { attack.Clock = null; }
                 FinishFixtureAndPrepare();

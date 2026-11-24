@@ -113,19 +113,28 @@ namespace RobotSavaslari.Gameplay.Tests
             var player = match.Player;
             var opponent = match.Opponent;
             var attack = player.GetComponent<MeleeAttack>();
-            int hits = 0, botHits = 0, swings = 0;
-            float firstReach = -1f, closest = float.PositiveInfinity;
+            int hits = 0, botHits = 0, swings = 0, botSwings = 0;
+            float firstReach = -1f, firstBotHit = -1f, closest = float.PositiveInfinity;
+            float start = Time.time, wallStart = Time.realtimeSinceStartup;
+            int startFrame = Time.frameCount;
+            var pilotInterval = new WaitForSeconds(1f / 30f);
+            var trace = checkBothTools ? new ToolReplayMotion(match) : null;
+            var tracking = trace != null ? match.StartCoroutine(trace.TrackPhysics(match)) : null;
             var enemyHull = opponent.GetComponent<BoxCollider>();
             var botTool = opponent.GetComponent<MeleeAttack>();
             void CountHit(MeleeAttack source, RobotHealth target, float damage) => hits++;
-            void CountBotHit(MeleeAttack source, RobotHealth target, float damage) => botHits++;
+            void CountBotHit(MeleeAttack source, RobotHealth target, float damage)
+            {
+                if (botHits++ == 0) firstBotHit = Time.time - start;
+            }
+            void CountBotSwing(MeleeAttack source) => botSwings++;
             void CountSwing(MeleeAttack source) => swings++;
             attack.TargetHit += CountHit;
             attack.Started += CountSwing;
             botTool.TargetHit += CountBotHit;
+            botTool.Started += CountBotSwing;
             Vector3 playerSpawn = player.transform.position, botSpawn = opponent.transform.position;
             float playerTravel = 0f, botTravel = 0f;
-            float start = Time.time;
             try
             {
                 while (match.State == MatchController.MatchState.Playing && Time.time - start < match.Rules.timeLimitSeconds + 4f)
@@ -137,10 +146,19 @@ namespace RobotSavaslari.Gameplay.Tests
                     bool contact = checkBothTools && attack.IsInReach(enemyHull, out _);
                     closest = Mathf.Min(closest, offset.magnitude);
                     if (contact && firstReach < 0f) firstReach = Time.time - start;
-                    if (!checkBothTools || contact) input.Set(Key.Space, true);
+                    float elapsed = Time.time - start;
+                    bool botOpening = checkBothTools && botHits == 0 && elapsed < 16f;
+                    if (!checkBothTools || !botOpening && contact) input.Set(Key.Space, true);
                     if (angle > 8f) input.Set(Key.D, true);
                     if (angle < -8f) input.Set(Key.A, true);
-                    if (checkBothTools && (hits == 0 || botHits == 0))
+                    if (botOpening)
+                    {
+                        // Let the approaching bot finish its telegraph against a stationary target.
+                        // If it stops just outside striking distance, creep into range without a charging ram.
+                        if (elapsed > 4f && !botTool.IsAttacking && offset.magnitude > 1.60f &&
+                            Mathf.Abs(angle) < 25f && Mathf.Repeat(elapsed, .5f) < .16f) input.Set(Key.W, true);
+                    }
+                    else if (checkBothTools && (hits == 0 || botHits == 0))
                     {
                         // Close until the equipped tool actually reaches the hull. Back away to regain a frontal angle after a glancing contact.
                         if (Mathf.Abs(angle) < 36f && !contact) input.Set(Key.W, true);
@@ -149,10 +167,11 @@ namespace RobotSavaslari.Gameplay.Tests
                     else if (Mathf.Abs(angle) < 55f) input.Set((Time.time - start) % 5f < .8f ? Key.S : Key.W, true);
                     pilot.MakeCurrent();
                     InputSystem.QueueStateEvent(pilot, input);
-                    yield return null;
+                    yield return checkBothTools ? pilotInterval : null;
                     playerTravel = Mathf.Max(playerTravel, Vector3.Distance(playerSpawn, player.transform.position));
                     botTravel = Mathf.Max(botTravel, Vector3.Distance(botSpawn, opponent.transform.position));
                 }
+                if (checkBothTools) PreserveToolRecording(value.weaponId);
                 Assert.That(match.State, Is.EqualTo(MatchController.MatchState.Result));
                 Assert.That(match.ResultCount, Is.EqualTo(1));
                 Assert.That(botTravel, Is.GreaterThan(.3f), "bot moved");
@@ -162,8 +181,10 @@ namespace RobotSavaslari.Gameplay.Tests
                 if (checkBothTools)
                 {
                     TestContext.WriteLine($"PVE_NATURAL player={value.weaponId} hits={hits} swings={swings} bot={botTool.Profile.name} hits={botHits} " +
+                        $"botSwings={botSwings} firstBotHit={firstBotHit:F2} fps={(Time.frameCount - startFrame) / Mathf.Max(.001f, Time.realtimeSinceStartup - wallStart):F1} " +
                         $"outcome={round.outcome} reason={round.reason} hp={round.player.remainingHealth:F1}/{round.opponent.remainingHealth:F1} " +
                         $"operational={player.GetComponent<RobotDamageVisuals>().WeaponOperational} nearest={closest:F2} firstReach={firstReach:F2} seconds={round.durationSeconds:F2}");
+                    trace.Report(value.weaponId);
                     Assert.That(hits, Is.GreaterThan(0), value.weaponId + " player weapon");
                     Assert.That(botHits, Is.GreaterThan(0), botTool.Profile.name + " bot weapon");
                 }
@@ -174,9 +195,11 @@ namespace RobotSavaslari.Gameplay.Tests
             }
             finally
             {
+                if (tracking != null) match.StopCoroutine(tracking);
                 attack.TargetHit -= CountHit;
                 attack.Started -= CountSwing;
                 botTool.TargetHit -= CountBotHit;
+                botTool.Started -= CountBotSwing;
                 InputSystem.RemoveDevice(pilot);
                 InputSystem.settings = settings;
                 if (previous != null && previous.added) previous.MakeCurrent();

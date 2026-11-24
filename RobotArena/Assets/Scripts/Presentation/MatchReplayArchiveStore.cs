@@ -552,8 +552,7 @@ namespace RobotSavaslari.Presentation
                 {
                     int x = at + c * MatchReplayArchive.PoseBytes;
                     float px = MatchReplayArchive.ReadSingle(_buffer, ref x), py = MatchReplayArchive.ReadSingle(_buffer, ref x), pz = MatchReplayArchive.ReadSingle(_buffer, ref x);
-                    if (!MatchReplayArchive.IsFinite(px) || !MatchReplayArchive.IsFinite(py) || !MatchReplayArchive.IsFinite(pz) ||
-                        Mathf.Abs(px) > 1e5f || Mathf.Abs(py) > 1e5f || Mathf.Abs(pz) > 1e5f)
+                    if (!MatchReplayArchive.CanStorePosition(new Vector3(px, py, pz)))
                     {
                         error = $"Kayıt parçası {index + 1} geçersiz konum içeriyor.";
                         return false;

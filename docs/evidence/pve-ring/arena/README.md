@@ -19,14 +19,14 @@ Unity 6000.4.4f1 ile MainArena sahnesinde gerçek maçlar açıldı. Her çözü
 
 VSync kapalı, kare sınırı serbest. Her koşul sahneyi yeniden yükledi. Kameranın yatay açısı 12°, eğimi 37°, uzaklığı 16 m. Oyuncu giriş vermedi, rakip üretim botunu kullandı. İlk 45 kareden sonra ardışık 300 kare kaydedildi. Önce 720p kapalı/açık, ardından 1080p açık/kapalı çalıştı. CPU ve GPU süreleri Unity FrameTimingManager'dan, fizik süresi Physics.Simulate sayacından geldi. P95 sıralı 300 örneğin 285'incisidir. [Ham kareler](frames.csv) · [Windows oyuncusu test sonucu](windows.xml)
 
-NVIDIA GeForce RTX 5090, Direct3D 12 (feature level 12.2). Test oyuncusunda dört düzenin 18 görüntüsü doğru çözünürlükte üretildi. Grafik kabulü 63,60 saniyede geçti. Açık ve kapalı ölçüm hücrelerinin her biri tek bir maç örneğidir.
+NVIDIA GeForce RTX 5090, Direct3D 12 (feature level 12.2). Kıskaç fizik düzeltmesini içeren Windows oyuncusunda dört düzenin 18 görüntüsü doğru çözünürlükte üretildi. Grafik kabulü 63,82 saniyede geçti. Açık ve kapalı ölçüm hücrelerinin her biri tek bir maç örneğidir.
 
 | Çözünürlük | Atmosfer | CPU p95, ms | GPU p95, ms | Fizik p95, ms | GC p95, B/kare | Toplam bellek medyanı, MiB |
 | --- | --- | ---: | ---: | ---: | ---: | ---: |
-| 720p | Kapalı | 1,9309 | 1,7267 | 0,0757 | 7.544 | 234,60 |
-| 720p | Açık | 1,9848 | 1,7523 | 0,0797 | 7.544 | 236,50 |
-| 1080p | Kapalı | 2,2102 | 2,0910 | 0,0723 | 7.544 | 236,54 |
-| 1080p | Açık | 2,2306 | 2,0078 | 0,0907 | 7.544 | 237,46 |
+| 720p | Kapalı | 2,8078 | 2,6639 | 0,1517 | 7.544 | 234,69 |
+| 720p | Açık | 2,8513 | 2,5935 | 0,1286 | 7.544 | 236,55 |
+| 1080p | Kapalı | 2,8999 | 2,6094 | 0,1147 | 7.544 | 236,63 |
+| 1080p | Açık | 2,9740 | 2,6051 | 0,1602 | 7.544 | 237,59 |
 
 ## PlayMode regresyonları
 
