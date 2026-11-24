@@ -92,7 +92,7 @@ namespace RobotSavaslari
         private ArenaLayout _layout;
         private MatchController _match;
         private int _matchId = -1;
-        private bool _navigationTick;
+        private bool _navigationTick, _bindHazards = true, _needsRiskObservation;
         public Transform Target
         {
             get => target;
@@ -131,19 +131,47 @@ namespace RobotSavaslari
             DecisionSamples = EvasionCount = 0; EvasionPoint = transform.position;
             _previousTarget = target;
             _anchor = transform.position;
-            _route.Reset();
-            _navigationTick = false;
+            ClearNavigationIntent();
             if (_motor == null) _motor = GetComponent<RobotDriveMotor>();
             _motor.Clear(true);
         }
+        private void ClearNavigationIntent()
+        {
+            _route.Reset();
+            _space?.Hazards.ClearObservation();
+            _bindHazards = true;
+            _navigationTick = false;
+        }
+        private void Update()
+        {
+            // A paused game receives rendered frames but no physics steps.
+            if (_navigationTick && Time.timeScale <= 0)
+            {
+                ClearNavigationIntent();
+                AttackRequested = false;
+                Send(0, 0);
+            }
+        }
         private void OnDisable() { ResetDecision(); }
-        private void FixedUpdate() { Tick(Time.fixedDeltaTime); }
+        // Verification subscribers measure the real decision step without sampling the rest of the frame.
+        public event Action<long, long> TickMeasured;
+        private void FixedUpdate()
+        {
+            if (TickMeasured == null) { Tick(Time.fixedDeltaTime); return; }
+            long before = GC.GetAllocatedBytesForCurrentThread();
+            long start = System.Diagnostics.Stopwatch.GetTimestamp();
+            Tick(Time.fixedDeltaTime);
+            TickMeasured?.Invoke(System.Diagnostics.Stopwatch.GetTimestamp() - start, GC.GetAllocatedBytesForCurrentThread() - before);
+        }
         // Public deterministic decision step for the regression harness; motion stays in the shared motor.
         public void Tick(float dt)
         {
             // Settings pauses scaled time. Do not observe, forget, sample randomness or reset a round.
             if (dt <= 0 || float.IsNaN(dt) || float.IsInfinity(dt) || Time.timeScale <= 0)
-            { AttackRequested = false; Send(0, 0); return; }
+            {
+                if (_navigationTick && Time.timeScale <= 0) ClearNavigationIntent();
+                AttackRequested = false; Send(0, 0); return;
+            }
             if (_previousTarget != target) { ResetDecision(); _previousTarget = target; }
             var ownHealth = GetComponent<RobotHealth>();
             var targetHealth = target != null ? target.GetComponentInParent<RobotHealth>() : null;
@@ -165,7 +193,22 @@ namespace RobotSavaslari
             if (enableCombatTactics)
             {
                 ObserveOpponent(dt, delta);
+                if (_navigationTick && (_sampleDecision || _needsRiskObservation))
+                {
+                    _needsRiskObservation = false;
+                    if (_space.Hazards.Observe(_space.Radius + (personality == BotPersonality.Counter ? .25f : .05f)))
+                        _route.RiskChanged();
+                }
                 bool recovering = State == Decision.BackingOut || State == Decision.EscapeTurn || State == Decision.EscapeDrive;
+                if (!recovering && _navigationTick && _space.Hazards.TryExit(_space, BotNavigationSpace.Planar(_motor.Body.position), out var exit))
+                {
+                    _route.SetEscape(exit);
+                    State = Decision.Navigating;
+                    _attackHold = false;
+                    _stuckTime = 0;
+                    DriveToPoint(AtBodyHeight(exit), false);
+                    return;
+                }
                 closeCounterPursuit = !recovering && ResumeCloseCounterPursuitIfReady();
                 if (!recovering && !closeCounterPursuit && TickOpponentDecisions(dt)) return;
             }
@@ -192,7 +235,13 @@ namespace RobotSavaslari
             float steerLimit = enableCombatTactics ? maximumSteer : 1;
             float steer = Mathf.Clamp(steeringAngle / Mathf.Max(1, fullSteerAngle), -steerLimit, steerLimit);
             bool facing = Mathf.Abs(TargetAngle) <= attackAngle;
-            AttackRequested = OwnCondition.WeaponOperational && facing && Distance <= attackEnterDistance;
+            bool reachable = true;
+            if (_navigationTick && Distance <= attackEnterDistance)
+            {
+                reachable = _space.CanSeeOpponent(BotNavigationSpace.Planar(_motor.Body.position), BotNavigationSpace.Planar(target.position));
+                if (!reachable) _attackHold = false;
+            }
+            AttackRequested = OwnCondition.WeaponOperational && reachable && facing && Distance <= attackEnterDistance;
             if (AttackRequested) AttackRequest?.Invoke(this, target);
             if (!MatchRunning || target == null) { ResetDecision(); return; }
             if (_attackHold && facing && OwnCondition.WeaponOperational)
@@ -479,7 +528,15 @@ namespace RobotSavaslari
             }
             var layout = _environment != null ? _environment.Layout : null;
             int id = _match != null ? _match.MatchCount : -1;
-            if (_layout != layout || _matchId != id) { _route.Reset(); _layout = layout; _matchId = id; }
+            if (_bindHazards || _layout != layout || _matchId != id)
+            {
+                _route.Reset();
+                _space.Hazards.Bind(_environment, _arenaBounds);
+                _layout = layout;
+                _matchId = id;
+                _bindHazards = false;
+                _needsRiskObservation = true;
+            }
             _space.BeginTick(_arenaBounds, tacticalHalfExtents, target);
             _route.BeginTick(dt, _space);
         }
@@ -539,7 +596,7 @@ namespace RobotSavaslari
                 Gizmos.DrawLine(transform.position, AtBodyHeight(_route.BlockedPoint));
             }
 #if UNITY_EDITOR
-            UnityEditor.Handles.Label(transform.position + Vector3.up, $"{NavigationReason}  queries {NavigationQueries}  nodes {NavigationExpansions}");
+            UnityEditor.Handles.Label(transform.position + Vector3.up, $"{NavigationReason}  plans {NavigationPlans}  queries {NavigationQueries}  nodes {NavigationExpansions}");
 #endif
         }
     }
