@@ -40,7 +40,7 @@ namespace RobotSavaslari.Match
         [SerializeField, Min(0f)] private float startMessageDuration = 0.8f;
         private float countdownEndsAt;
         private float startMessageEndsAt;
-        public float CountdownRemaining => State == MatchState.Countdown ? Mathf.Max(0f, countdownEndsAt - Time.time) : 0f;
+        public float CountdownRemaining => State == MatchState.Countdown ? Mathf.Clamp(countdownEndsAt - Time.time, 0f, Mathf.Max(1, countdownSeconds)) : 0f;
         public bool ShowStartMessage => State == MatchState.Playing && Time.time < startMessageEndsAt;
 
         [SerializeField] private MatchRules rules = new MatchRules();
@@ -221,12 +221,14 @@ namespace RobotSavaslari.Match
             opponentHealth.Damaged += OnOpponentDamaged;
             if (rules == null || !rules.IsValid) rules = new MatchRules();
             initialized = true;
+            if (IsMainArena) player.WeaponProfileSelected += PreviewOpponent;
             SetManualMode(manualNotificationsOnly);
             Prepare();
         }
 
         private void OnDestroy()
         {
+            if (player) player.WeaponProfileSelected -= PreviewOpponent;
             botLoadout.Dispose();
             if (!initialized) return;
             if (playerHealth != null) { playerHealth.Defeated -= OnDefeated; playerHealth.Damaged -= OnPlayerDamaged; }
@@ -307,6 +309,13 @@ namespace RobotSavaslari.Match
             var bot = GetComponent<OpponentSelectionPanel>();
             if (arena == null || arena.Layout == null || bot == null) return null;
             return CreateDuelStart(DuelSetup.Create(arena.Layout.name, bot.Personality, bot.Difficulty, rules));
+        }
+
+        private void PreviewOpponent(CombatProfile profile)
+        {
+            if (State != MatchState.Ready || LockedSetup != null || !profile) return;
+            var catalog = GetComponent<PlayerRobotSelection>();
+            if (catalog) botLoadout.Fit(opponent, catalog, catalog.IsForkProfile(profile) ? DuelSetup.Spinner : DuelSetup.Fork);
         }
 
         private bool LockDuel(DuelSetup start)

@@ -52,10 +52,13 @@ namespace RobotSavaslari
             !_opponent.CombatStopped && _health != null && !_health.IsDefeated &&
             _damage != null && _damage.WeaponOperational;
 
+        internal event System.Action<CombatProfile> WeaponProfileSelected;
+
         internal void SelectWeaponProfile(CombatProfile selected)
         {
             weaponProfile = selected;
             _melee.ApplyProfile(selected);
+            WeaponProfileSelected?.Invoke(selected);
         }
 
         private void BindWeapon()

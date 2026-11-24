@@ -113,6 +113,8 @@ namespace RobotSavaslari.UI
             ForkSelected = useFork;
         }
 
+        internal bool IsForkProfile(CombatProfile profile) => kit != null && profile == kit.profile;
+
         internal bool BuildOpponentWeapon(bool fork, Transform robot, Transform parent, out Mesh mesh,
             out Vector3 pivot, out Material material, out CombatProfile profile)
         {
