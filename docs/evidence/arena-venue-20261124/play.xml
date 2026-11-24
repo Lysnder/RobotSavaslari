@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="11" result="Passed" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-24 08:56:53Z" end-time="2026-11-24 08:57:17Z" duration="23,758487">
+  <test-suite type="TestSuite" id="1374" name="RobotArena" fullname="RobotArena" runstate="Runnable" testcasecount="292" result="Passed" start-time="2026-11-24 08:56:53Z" end-time="2026-11-24 08:57:17Z" duration="23.758487" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1190" name="RobotSavaslari.Gameplay.PlayModeTests.dll" fullname="R:/RobotArena/Library/ScriptAssemblies/RobotSavaslari.Gameplay.PlayModeTests.dll" runstate="Runnable" testcasecount="66" result="Passed" start-time="2026-11-24 08:56:53Z" end-time="2026-11-24 08:57:01Z" duration="7.496591" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="56036" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1191" name="RobotSavaslari" fullname="RobotSavaslari" runstate="Runnable" testcasecount="66" result="Passed" start-time="2026-11-24 08:56:53Z" end-time="2026-11-24 08:57:01Z" duration="7.495916" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1192" name="Gameplay" fullname="RobotSavaslari.Gameplay" runstate="Runnable" testcasecount="66" result="Passed" start-time="2026-11-24 08:56:53Z" end-time="2026-11-24 08:57:01Z" duration="7.495388" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1193" name="Tests" fullname="RobotSavaslari.Gameplay.Tests" runstate="Runnable" testcasecount="66" result="Passed" start-time="2026-11-24 08:56:53Z" end-time="2026-11-24 08:57:01Z" duration="7.494883" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1140" name="KamaPlayModeTests" fullname="RobotSavaslari.Gameplay.Tests.KamaPlayModeTests" classname="RobotSavaslari.Gameplay.Tests.KamaPlayModeTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-11-24 08:56:53Z" end-time="2026-11-24 08:57:01Z" duration="7.492902" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1143" name="MissDetachedWeaponAndRetry" fullname="RobotSavaslari.Gameplay.Tests.KamaPlayModeTests.MissDetachedWeaponAndRetry" methodname="MissDetachedWeaponAndRetry" classname="RobotSavaslari.Gameplay.Tests.KamaPlayModeTests" runstate="Runnable" seed="1566061634" result="Passed" start-time="2026-11-24 08:56:53Z" end-time="2026-11-24 08:56:54Z" duration="0.536206" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1142" name="MissingKitKeepsTheOriginalPlayerAndProfile" fullname="RobotSavaslari.Gameplay.Tests.KamaPlayModeTests.MissingKitKeepsTheOriginalPlayerAndProfile" methodname="MissingKitKeepsTheOriginalPlayerAndProfile" classname="RobotSavaslari.Gameplay.Tests.KamaPlayModeTests" runstate="Runnable" seed="1163407603" result="Passed" start-time="2026-11-24 08:56:54Z" end-time="2026-11-24 08:56:54Z" duration="0.390517" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1141" name="NormalMenuTwoDuelsAndArchivedModelIdentity" fullname="RobotSavaslari.Gameplay.Tests.KamaPlayModeTests.NormalMenuTwoDuelsAndArchivedModelIdentity" methodname="NormalMenuTwoDuelsAndArchivedModelIdentity" classname="RobotSavaslari.Gameplay.Tests.KamaPlayModeTests" runstate="Runnable" seed="1112178190" result="Passed" start-time="2026-11-24 08:56:54Z" end-time="2026-11-24 08:57:01Z" duration="6.558736" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1228" name="RobotSavaslari.Match.PlayModeTests.dll" fullname="R:/RobotArena/Library/ScriptAssemblies/RobotSavaslari.Match.PlayModeTests.dll" runstate="Runnable" testcasecount="28" result="Passed" start-time="2026-11-24 08:57:01Z" end-time="2026-11-24 08:57:04Z" duration="3.583126" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="56036" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1229" name="RobotSavaslari" fullname="RobotSavaslari" runstate="Runnable" testcasecount="28" result="Passed" start-time="2026-11-24 08:57:01Z" end-time="2026-11-24 08:57:04Z" duration="3.582124" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1230" name="Match" fullname="RobotSavaslari.Match" runstate="Runnable" testcasecount="28" result="Passed" start-time="2026-11-24 08:57:01Z" end-time="2026-11-24 08:57:04Z" duration="3.581483" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1231" name="Tests" fullname="RobotSavaslari.Match.Tests" runstate="Runnable" testcasecount="28" result="Passed" start-time="2026-11-24 08:57:01Z" end-time="2026-11-24 08:57:04Z" duration="3.580940" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1208" name="DuelSetupTests" fullname="RobotSavaslari.Match.Tests.DuelSetupTests" classname="RobotSavaslari.Match.Tests.DuelSetupTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-11-24 08:57:01Z" end-time="2026-11-24 08:57:04Z" duration="3.579970" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="ParameterizedMethod" id="1213" name="InvalidPreferencesAreRejected" fullname="RobotSavaslari.Match.Tests.DuelSetupTests.InvalidPreferencesAreRejected" classname="RobotSavaslari.Match.Tests.DuelSetupTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-11-24 08:57:01Z" end-time="2026-11-24 08:57:01Z" duration="0.006321" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1209" name="InvalidPreferencesAreRejected(&quot;{broken&quot;)" fullname="RobotSavaslari.Match.Tests.DuelSetupTests.InvalidPreferencesAreRejected(&quot;{broken&quot;)" methodname="InvalidPreferencesAreRejected" classname="RobotSavaslari.Match.Tests.DuelSetupTests" runstate="Runnable" seed="158692039" result="Passed" start-time="2026-11-24 08:57:01Z" end-time="2026-11-24 08:57:01Z" duration="0.003400" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1210" name="InvalidPreferencesAreRejected(&quot;{}&quot;)" fullname="RobotSavaslari.Match.Tests.DuelSetupTests.InvalidPreferencesAreRejected(&quot;{}&quot;)" methodname="InvalidPreferencesAreRejected" classname="RobotSavaslari.Match.Tests.DuelSetupTests" runstate="Runnable" seed="1672108922" result="Passed" start-time="2026-11-24 08:57:01Z" end-time="2026-11-24 08:57:01Z" duration="0.000675" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1211" name="InvalidPreferencesAreRejected(&quot;{\&quot;version\&quot;:99,\&quot;arenaId\&quot;:\&quot;Open\&quot;}&quot;)" fullname="RobotSavaslari.Match.Tests.DuelSetupTests.InvalidPreferencesAreRejected(&quot;{\&quot;version\&quot;:99,\&quot;arenaId\&quot;:\&quot;Open\&quot;}&quot;)" methodname="InvalidPreferencesAreRejected" classname="RobotSavaslari.Match.Tests.DuelSetupTests" runstate="Runnable" seed="1030291546" result="Passed" start-time="2026-11-24 08:57:01Z" end-time="2026-11-24 08:57:01Z" duration="0.000593" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1212" name="InvalidPreferencesAreRejected(&quot;{\&quot;version\&quot;:1,\&quot;arenaId\&quot;:\&quot;Open\&quot;}&quot;)" fullname="RobotSavaslari.Match.Tests.DuelSetupTests.InvalidPreferencesAreRejected(&quot;{\&quot;version\&quot;:1,\&quot;arenaId\&quot;:\&quot;Open\&quot;}&quot;)" methodname="InvalidPreferencesAreRejected" classname="RobotSavaslari.Match.Tests.DuelSetupTests" runstate="Runnable" seed="1662286978" result="Passed" start-time="2026-11-24 08:57:01Z" end-time="2026-11-24 08:57:01Z" duration="0.000709" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+              <test-case id="1215" name="PresetsUseExistingCatalogAndSnapshotSurvivesRematchAndReload" fullname="RobotSavaslari.Match.Tests.DuelSetupTests.PresetsUseExistingCatalogAndSnapshotSurvivesRematchAndReload" methodname="PresetsUseExistingCatalogAndSnapshotSurvivesRematchAndReload" classname="RobotSavaslari.Match.Tests.DuelSetupTests" runstate="Runnable" seed="997192869" result="Passed" start-time="2026-11-24 08:57:01Z" end-time="2026-11-24 08:57:02Z" duration="1.599704" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1214" name="SeriesRematchStartsAtZeroAndPartialSeriesKeepsItsScore" fullname="RobotSavaslari.Match.Tests.DuelSetupTests.SeriesRematchStartsAtZeroAndPartialSeriesKeepsItsScore" methodname="SeriesRematchStartsAtZeroAndPartialSeriesKeepsItsScore" classname="RobotSavaslari.Match.Tests.DuelSetupTests" runstate="Runnable" seed="1501913424" result="Passed" start-time="2026-11-24 08:57:02Z" end-time="2026-11-24 08:57:04Z" duration="1.972952" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1299" name="RobotSavaslari.Presentation.PlayModeTests.dll" fullname="R:/RobotArena/Library/ScriptAssemblies/RobotSavaslari.Presentation.PlayModeTests.dll" runstate="Runnable" testcasecount="56" result="Passed" start-time="2026-11-24 08:57:04Z" end-time="2026-11-24 08:57:17Z" duration="12.671767" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="56036" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1300" name="RobotSavaslari" fullname="RobotSavaslari" runstate="Runnable" testcasecount="56" result="Passed" start-time="2026-11-24 08:57:04Z" end-time="2026-11-24 08:57:17Z" duration="12.671330" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1301" name="Presentation" fullname="RobotSavaslari.Presentation" runstate="Runnable" testcasecount="56" result="Passed" start-time="2026-11-24 08:57:04Z" end-time="2026-11-24 08:57:17Z" duration="12.671078" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1302" name="Tests" fullname="RobotSavaslari.Presentation.Tests" runstate="Runnable" testcasecount="56" result="Passed" start-time="2026-11-24 08:57:04Z" end-time="2026-11-24 08:57:17Z" duration="12.670781" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1232" name="ArenaVenueTests" fullname="RobotSavaslari.Presentation.Tests.ArenaVenueTests" classname="RobotSavaslari.Presentation.Tests.ArenaVenueTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-11-24 08:57:04Z" end-time="2026-11-24 08:57:17Z" duration="12.669483" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1233" name="AllLayoutsKeepTheirGeometryAndUseTheSameTwoRobots" fullname="RobotSavaslari.Presentation.Tests.ArenaVenueTests.AllLayoutsKeepTheirGeometryAndUseTheSameTwoRobots" methodname="AllLayoutsKeepTheirGeometryAndUseTheSameTwoRobots" classname="RobotSavaslari.Presentation.Tests.ArenaVenueTests" runstate="Runnable" seed="522399026" result="Passed" start-time="2026-11-24 08:57:04Z" end-time="2026-11-24 08:57:17Z" duration="12.341652" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1234" name="RenderGroupsStayOutsideTheFloorAndClearALowCamera" fullname="RobotSavaslari.Presentation.Tests.ArenaVenueTests.RenderGroupsStayOutsideTheFloorAndClearALowCamera" methodname="RenderGroupsStayOutsideTheFloorAndClearALowCamera" classname="RobotSavaslari.Presentation.Tests.ArenaVenueTests" runstate="Runnable" seed="1913050989" result="Passed" start-time="2026-11-24 08:57:17Z" end-time="2026-11-24 08:57:17Z" duration="0.327009" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[VENUE_GROUPS low=False renderers=15 triangles=10068
+VENUE_GROUPS low=True renderers=7 triangles=4812
+Saving results to: C:/Users/emins/AppData/LocalLow/DefaultCompany/RobotArena\TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
