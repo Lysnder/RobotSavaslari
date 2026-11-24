@@ -127,37 +127,23 @@ namespace RobotSavaslari.UI
             if (forkMesh != null) Destroy(ForkSelected ? spinnerMesh : forkMesh);
         }
 
-        private void OnGUI()
+        internal void DrawReadyCard(float width, float height)
         {
             if (!CanSelect) return;
-            float scale = MainMenuScreen.ReadyScale(Screen.width, Screen.height);
-            float width = Screen.width / scale;
             float available = width - 340f - 384f;
             float panelWidth = Mathf.Min(280f, available - 12f);
             bool compact = panelWidth < 185f;
-            var panel = new Rect(340f + (available - panelWidth) * .5f, Screen.height / scale - 148f, panelWidth, 108f);
-            Matrix4x4 oldMatrix = GUI.matrix;
-            int oldDepth = GUI.depth;
-            try
-            {
-                GUI.depth = -2;
-                GUI.matrix = Matrix4x4.Scale(new Vector3(scale, scale, 1f));
-                ArenaMenuStyle.Panel(panel);
-                var theme = ArenaMenuStyle.Current;
-                GUI.Label(new Rect(panel.x + 8f, panel.y + 6f, panel.width - 16f, 24f), "ROBOT", theme.Heading);
-                string label = workshop.IsModular ? "‹  Atölye robotu  ›" : ForkSelected ? "‹  Kama  ›" : "‹  Döner  ›";
-                if (GUI.Button(new Rect(panel.x + 7f, panel.y + 32f, panel.width - 14f, 32f), label, theme.Selected))
-                    SelectFork(!workshop.IsModular && !ForkSelected);
-                string hint = ForkSelected ? (compact ? "Yakın itiş" : "Yakın menzil · önden itiş") :
-                    (compact ? "Geniş yay" : "Döner silah · geniş vuruş yayı");
-                GUI.Label(new Rect(panel.x + 7f, panel.y + 65f, panel.width - 14f, 41f),
-                    workshop.Notice ?? notice ?? (workshop.IsModular ? "Hazır robota geç" : hint), theme.Hint);
-            }
-            finally
-            {
-                GUI.matrix = oldMatrix;
-                GUI.depth = oldDepth;
-            }
+            var panel = new Rect(340f + (available - panelWidth) * .5f, height - 148f, panelWidth, 108f);
+            ArenaMenuStyle.Panel(panel);
+            var theme = ArenaMenuStyle.Current;
+            GUI.Label(new Rect(panel.x + 8f, panel.y + 6f, panel.width - 16f, 24f), "ROBOT", theme.Heading);
+            string label = workshop.IsModular ? "‹  Atölye robotu  ›" : ForkSelected ? "‹  Kama  ›" : "‹  Döner  ›";
+            if (GUI.Button(new Rect(panel.x + 7f, panel.y + 32f, panel.width - 14f, 32f), label, theme.Selected))
+                SelectFork(!workshop.IsModular && !ForkSelected);
+            string hint = ForkSelected ? (compact ? "Yakın itiş" : "Yakın menzil · önden itiş") :
+                (compact ? "Geniş yay" : "Döner silah · geniş vuruş yayı");
+            GUI.Label(new Rect(panel.x + 7f, panel.y + 65f, panel.width - 14f, 41f),
+                workshop.Notice ?? notice ?? (workshop.IsModular ? "Hazır robota geç" : hint), theme.Hint);
         }
     }
 }

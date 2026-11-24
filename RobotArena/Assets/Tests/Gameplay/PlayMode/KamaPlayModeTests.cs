@@ -76,7 +76,8 @@ namespace RobotSavaslari.Gameplay.Tests
             Assert.That(playback.Open(oldRecording.Path), Is.True, playback.LastError);
             playback.CloseArchiveMode();
             float scale = MainMenuScreen.ReadyScale(Screen.width, Screen.height);
-            ImmediateGui.Click(panel, new Vector2(Screen.width * .5f - 22f * scale, Screen.height - 100f * scale));
+            ImmediateGui.Click(match.GetComponent<MainMenuScreen>(),
+                new Vector2(Screen.width * .5f - 22f * scale, Screen.height - 100f * scale));
             Assert.That(panel.ForkSelected, Is.True);
             var fork = owner.GetComponent<MeleeAttack>().Profile;
             Assert.That(fork.range, Is.LessThan(spinner.range));
