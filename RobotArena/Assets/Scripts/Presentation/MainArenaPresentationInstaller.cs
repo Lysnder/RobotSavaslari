@@ -52,6 +52,7 @@ namespace RobotSavaslari.Presentation
             var archivePlayer = GetOrAdd<MatchReplayArchivePlayer>(match.gameObject);
             archivePlayer.Bind(match, controller, store, replay, inspection);
             GetOrAdd<MatchReplayArchiveScreen>(match.gameObject).Bind(match, archiveRecorder, archivePlayer, replay, inspection);
+            GetOrAdd<ArenaVenue>(match.gameObject);
             return controller;
         }
 
