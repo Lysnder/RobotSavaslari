@@ -45,3 +45,5 @@ $env:DUEL_CONTRACT_FRAMES = Join-Path $dir 'contract-frames'
 | `contract-edit-01.xml` | `367367f1f138148ae86087a242577e54eeabd364322b5ea1eaeec22b85a9aacb` |
 
 Aynı dizindeki eş adlı `.log` dosyaları çalıştırıcı günlükleridir. Paketleme günlüğü `contract-winbuild-01.log`, normal sürüm `RobotArena/Builds/Windows/RobotSavaslari.exe`.
+
+Son Ready kartını içeren normal Windows x64 paketinin derleme günlüğü `contract-build-final.log`, klavye kabul günlüğü `contract-smoke-final.log`. Bu çalıştırma fizik, bot ve silah zamanını oyunun olağan akışına bıraktı. İki maçta da iki robot gerçek silah isabeti aldı. Oyuncu ilk maçı 62,27 HP, ikinciyi 64 HP ile bitirdi. Sonuçlar birer kez üretildi. Eski düello, Kama, tekrar kimliği ve geri sayım regresyonları aynı kaynakta 17/17 geçti (`contract-regression-final.xml`). Paketlenmiş `RobotSavaslari.Gameplay.dll` SHA-256 değeri `0c22f5109c1c6eacbddb500615bcdf4083165fff19119111395a3a98bc3f25d4`.
