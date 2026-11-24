@@ -23,6 +23,7 @@ namespace RobotSavaslari.UI
         private CombatProfile spinnerProfile;
         private WorkshopSelection workshop;
         public bool ForkSelected { get; private set; }
+        public string Notice => workshop != null && !string.IsNullOrEmpty(workshop.Notice) ? workshop.Notice : notice;
         internal CombatProfile ProfileFor(bool fork) => fork ? kit?.profile : spinnerProfile;
         internal string StockName(bool fork) => fork ? playerName + " - Kama" : playerName;
 
@@ -143,7 +144,7 @@ namespace RobotSavaslari.UI
             string hint = ForkSelected ? (compact ? "Yakın itiş" : "Yakın menzil · önden itiş") :
                 (compact ? "Geniş yay" : "Döner silah · geniş vuruş yayı");
             GUI.Label(new Rect(panel.x + 7f, panel.y + 65f, panel.width - 14f, 41f),
-                workshop.Notice ?? notice ?? (workshop.IsModular ? "Hazır robota geç" : hint), theme.Hint);
+                Notice ?? (workshop.IsModular ? "Hazır robota geç" : hint), theme.Hint);
         }
     }
 }

@@ -196,7 +196,12 @@ namespace RobotSavaslari.UI
 
         private bool SetStock(bool fork, bool persist)
         {
-            if (!presets.CanFitWeapon(fork)) { Notice = "Kama bu arenada kullanılamıyor."; return false; }
+            if (!presets.CanFitWeapon(fork))
+            {
+                string current = IsModular ? "Atölye robotu" : presets.ForkSelected ? "Kama" : "Döner";
+                Notice = "Kama bu arenada kullanılamıyor. " + current + " seçili.";
+                return false;
+            }
             // A damaged or newer save stays untouched. An explicit ready robot can still play this session.
             if (persist && !store.IsProtected && !Save(fork ? "fork" : "spinner", LastModular)) return false;
             if (IsModular)

@@ -167,7 +167,7 @@ namespace RobotSavaslari.Gameplay.Tests
             Assert.That(melee.Profile, Is.SameAs(profile));
             Assert.That(match.Player, Is.SameAs(owner));
             Assert.That(owner.name, Is.EqualTo("Mavi Robot"));
-            StringAssert.Contains("Döner", GameplayTestScene.GetField<string>(panel, "notice"));
+            StringAssert.Contains("Döner", panel.Notice);
             yield return null;
         }
 
