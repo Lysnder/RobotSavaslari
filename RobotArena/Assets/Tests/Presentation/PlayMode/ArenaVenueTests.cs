@@ -63,13 +63,28 @@ namespace RobotSavaslari.Presentation.Tests
                 Assert.That(sceneModel.GetComponentsInChildren<Rigidbody>(true), Is.Empty);
                 Assert.That(sceneModel.GetComponentsInChildren<RobotHealth>(true), Is.Empty);
                 Assert.That(sceneModel.GetComponentsInChildren<Renderer>(true).Length, Is.GreaterThan(1));
+                var panels = sceneModel.GetComponentsInChildren<MeshRenderer>(true).Where(r => r.name == "Clear safety panels").ToArray();
+                Assert.That(panels.Length, Is.EqualTo(4), layout.name);
+                Assert.That(panels.All(r => r.sharedMaterial.renderQueue == 3000), Is.True);
+                Assert.That(sceneModel.GetComponentsInChildren<MeshRenderer>(true).Count(r => r.name == "Team launch markings"), Is.EqualTo(1));
                 var colliders = arena.Contents.GetComponentsInChildren<Collider>(true);
+                var safety = GameObject.Find("North Safety Barrier").GetComponent<Collider>();
+                var oldWire = GameObject.Find("North Mesh Wire").GetComponent<MeshRenderer>();
+                var floor = arena.transform.Find("Floor 0-0").GetComponentInChildren<MeshRenderer>();
+                var finish = floor.sharedMaterial;
+                Assert.That(finish.name, Is.EqualTo("Work-worn ring steel"));
+                Assert.That(oldWire.forceRenderingOff, Is.True);
+                Assert.That(safety.enabled, Is.True);
                 venue.enabled = false;
                 Assert.That(venue.IsPresenting, Is.False);
+                Assert.That(oldWire.forceRenderingOff, Is.False);
+                Assert.That(safety.enabled, Is.True);
+                Assert.That(floor.sharedMaterial, Is.Not.SameAs(finish));
                 venue.enabled = true;
                 yield return null;
                 yield return null;
                 CollectionAssert.AreEquivalent(colliders, arena.Contents.GetComponentsInChildren<Collider>(true));
+                Assert.That(floor.sharedMaterial, Is.SameAs(finish));
                 Assert.That(match.Player, Is.SameAs(originalPlayer));
                 Assert.That(match.Opponent, Is.SameAs(originalOpponent));
                 Assert.That(Object.FindObjectsByType<ArenaVenueModel>(FindObjectsInactive.Include, FindObjectsSortMode.None).Length, Is.EqualTo(1));
@@ -96,7 +111,62 @@ namespace RobotSavaslari.Presentation.Tests
         }
 
         [UnityTest]
-        public IEnumerator RenderGroupsStayOutsideTheFloorAndClearALowCamera()
+        public IEnumerator ChallengeDialogPauseAndReplaySilenceOnlyTheirOwnPhases()
+        {
+            yield return MainArenaTestScene.Load();
+            var match = MainArenaTestScene.Match;
+            match.HistoryStore = new MatchHistoryStore(Path.Combine(temporaryStore, "history.json"));
+            MainArenaPresentationInstaller.UseArchiveStore(match, new MatchReplayArchiveStore(Path.Combine(temporaryStore, "replays")));
+            var challenge = match.GetComponent<ChallengeSessionController>();
+            challenge.UseSavePath(Path.Combine(temporaryStore, "challenge.json"));
+            var venue = match.GetComponent<ArenaVenue>();
+            Assert.That(challenge.Open(), Is.True);
+            yield return null;
+            Assert.That(venue.IsPresenting, Is.False);
+            Assert.That(challenge.Begin(false), Is.True);
+            yield return null;
+            yield return null;
+            Assert.That(match.State, Is.EqualTo(MatchController.MatchState.Countdown));
+            Assert.That(challenge.InChallenge && !challenge.DialogOpen && venue.IsPresenting, Is.True);
+            yield return new WaitUntil(() => match.State == MatchController.MatchState.Playing);
+            yield return new WaitForSeconds(.32f);
+            Assert.That(venue.IsPresenting, Is.True);
+            var settings = match.GetComponent<SettingsPanelController>();
+            settings.ToggleSettings();
+            yield return null;
+            yield return null;
+            Assert.That(venue.IsPresenting, Is.False);
+            settings.ToggleSettings();
+            yield return null;
+            yield return null;
+            Assert.That(venue.IsPresenting, Is.True);
+            var bot = match.Opponent.GetComponent<RobotHealth>();
+            bot.TakeDamage(bot.MaxHealth);
+            yield return null;
+            yield return null;
+            Assert.That(match.State, Is.EqualTo(MatchController.MatchState.Result));
+            Assert.That(venue.IsPresenting && venue.BlueSignal > venue.OrangeSignal, Is.True);
+            Assert.That(challenge.Open(), Is.True);
+            yield return null;
+            yield return null;
+            Assert.That(venue.IsPresenting, Is.False);
+            challenge.Close();
+            yield return null;
+            yield return null;
+            Assert.That(venue.IsPresenting, Is.True);
+            var replay = match.GetComponent<MatchReplayPlayer>();
+            Assert.That(replay.Begin(), Is.True);
+            yield return null;
+            yield return null;
+            Assert.That(venue.IsPresenting, Is.False);
+            replay.Stop();
+            yield return null;
+            yield return null;
+            Assert.That(venue.IsPresenting, Is.True);
+        }
+
+        [UnityTest]
+        public IEnumerator FloorPaintHasNoDepthAndNearbyProtectiveFramesClearALowCamera()
         {
             yield return MainArenaTestScene.Load();
             var match = MainArenaTestScene.Match;
@@ -120,7 +190,11 @@ namespace RobotSavaslari.Presentation.Tests
                     var box = renderer.bounds;
                     bool outside = box.max.x < center.x - bounds.HalfExtents.x || box.min.x > center.x + bounds.HalfExtents.x ||
                         box.max.z < center.z - bounds.HalfExtents.y || box.min.z > center.z + bounds.HalfExtents.y;
-                    Assert.That(outside, Is.True, renderer.name);
+                    if (!outside && renderer.transform.parent.name != "Protective frame")
+                    {
+                        Assert.That(box.min.y, Is.InRange(center.y, center.y + .025f), renderer.name);
+                        Assert.That(box.size.y, Is.LessThan(.001f), renderer.name);
+                    }
                     Assert.That(renderer.sharedMaterial.shader.isSupported, Is.True);
                 }
                 if (low) Assert.That(renderers.Length, Is.LessThan(normalGroups));
@@ -130,8 +204,12 @@ namespace RobotSavaslari.Presentation.Tests
                 Assert.That(renderers[0].GetComponent<MeshFilter>().sharedMesh, Is.SameAs(first));
                 TestContext.WriteLine($"VENUE_GROUPS low={low} renderers={renderers.Length} triangles={renderers.Sum(r => (long)r.GetComponent<MeshFilter>().sharedMesh.GetIndexCount(0) / 3)}");
                 camera.transform.position = center + new Vector3(0, .5f, bounds.HalfExtents.y + 2f);
+                var frames = renderers.Where(r => r.name == "Clear safety panels").ToArray();
+                var nearest = frames.OrderBy(r => Vector3.Distance(camera.transform.position, r.bounds.center)).First();
                 model.Present(2f, 0, 0, 0, 0);
                 Assert.That(model.GetComponentsInChildren<MeshRenderer>().Length, Is.LessThan(renderers.Length));
+                Assert.That(nearest.gameObject.activeInHierarchy, Is.False);
+                Assert.That(frames.Count(r => r.gameObject.activeInHierarchy), Is.EqualTo(3));
                 camera.transform.position = center + Vector3.up * 12;
                 model.Present(3f, 0, 0, 0, 0);
                 Assert.That(model.GetComponentsInChildren<MeshRenderer>().Length, Is.EqualTo(renderers.Length));

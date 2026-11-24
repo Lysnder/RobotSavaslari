@@ -14,7 +14,7 @@ namespace RobotSavaslari.UI
         };
 
         public bool IsValid => chassisId == "standard" && (tireId == "soft" || tireId == "hard") &&
-            (armorId == "light" || armorId == "heavy") && (weaponId == "spinner" || weaponId == "fork");
+            (armorId == "light" || armorId == "heavy") && Combat.WorkshopWeapons.Index(weaponId) >= 0;
     }
 
     [Serializable]

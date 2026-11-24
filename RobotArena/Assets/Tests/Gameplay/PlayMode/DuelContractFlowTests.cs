@@ -218,8 +218,8 @@ namespace RobotSavaslari.Gameplay.Tests
             WinWithPlayerWeapon();
             var old = match.HistoryStore.Load().Single(record => record.id == previous.id);
             Assert.That(old.durationSeconds, Is.EqualTo(10));
-            var stored = File.ReadAllText(match.HistoryStore.FilePath);
-            Assert.That(stored, Does.Not.Contain("playerRobotId"));
+            Assert.That(old.setupVersion, Is.Zero);
+            Assert.That(match.HistoryStore.Load().Single(record => record.id != previous.id).setup.playerRobotId, Is.EqualTo("fork"));
             TestContext.WriteLine("DUEL_LEGACY v1 oldRecord=preserved rematch=fork/spinner results=1");
         }
 
@@ -230,6 +230,43 @@ namespace RobotSavaslari.Gameplay.Tests
             yield return new WaitUntil(() => match.State == MatchController.MatchState.Playing);
             yield return null;
             Assert.That(match.Opponent.GetComponent<RobotBotController>().Target, Is.SameAs(match.Player.transform));
+        }
+
+        [UnityTest]
+        public IEnumerator SavedHistoryRestoresBothRobotsArenaAndBotWithFreshId()
+        {
+            var workshop = match.GetComponent<WorkshopSelection>();
+            var selected = WorkshopLoadout.Default;
+            selected.weaponId = "hammer";
+            selected.tireId = "hard";
+            selected.armorId = "heavy";
+            Assert.That(workshop.TryApply(selected), Is.True);
+            Assert.That(menu.SelectPreset(DuelSetup.Tactical()), Is.True);
+            menu.StartLobbyMatch();
+            var previous = match.LockedSetup;
+            yield return Playing();
+            match.Opponent.GetComponent<RobotHealth>().TakeDamage(1000);
+            var record = match.HistoryStore.Load().Single();
+            Assert.That(record.setupVersion, Is.EqualTo(1));
+            match.Prepare();
+            Assert.That(selection.SelectFork(false), Is.True);
+            Assert.That(menu.SelectPreset(DuelSetup.Quick()), Is.True);
+            Assert.That(match.Rematch(record), Is.True);
+            var now = match.LockedSetup;
+            Assert.That(now.EncounterId, Is.Not.EqualTo(previous.EncounterId));
+            Assert.That(now.PlayerRobotId, Is.EqualTo(previous.PlayerRobotId));
+            Assert.That(now.OpponentRobotId, Is.EqualTo(previous.OpponentRobotId));
+            Assert.That(now.ArenaId, Is.EqualTo(previous.ArenaId));
+            Assert.That(now.Personality, Is.EqualTo(previous.Personality));
+            Assert.That(now.Difficulty, Is.EqualTo(previous.Difficulty));
+            Assert.That(now.Seconds, Is.EqualTo(previous.Seconds));
+            Assert.That(now.Mode, Is.EqualTo(previous.Mode));
+            Assert.That(workshop.LastModular, Is.EqualTo(selected));
+            yield return Playing();
+            match.Opponent.GetComponent<RobotHealth>().TakeDamage(1000);
+            menu.ContinueResult();
+            Assert.That(match.LockedSetup.EncounterId, Is.Not.EqualTo(now.EncounterId));
+            Assert.That(match.LockedSetup.PlayerRobotId, Is.EqualTo(now.PlayerRobotId));
         }
 
         private void AssertRoles(bool forkPlayer)

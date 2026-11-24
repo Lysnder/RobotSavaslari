@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using System.IO;
+using RobotSavaslari.Presentation;
 using NUnit.Framework;
 using RobotSavaslari.Match;
 using UnityEngine;
@@ -18,16 +20,31 @@ namespace RobotSavaslari.Gameplay.Tests
         private static Scene ownedScene;
 
         /// <summary>Loads the production arena and waits until its match has prepared the robots.</summary>
-        public static IEnumerator LoadMainArena()
+        public static IEnumerator LoadMainArena(string recordsDirectory = null)
         {
             Time.timeScale = 1f;
-            yield return SceneManager.LoadSceneAsync(MainArena, LoadSceneMode.Single);
+            void Isolate(Scene scene, LoadSceneMode mode)
+            {
+                if (scene.name != MainArena) return;
+                foreach (var root in scene.GetRootGameObjects())
+                    foreach (var game in root.GetComponentsInChildren<MatchController>(true))
+                        game.HistoryStore = new MatchHistoryStore(Path.Combine(recordsDirectory, "history.json"));
+            }
+            if (recordsDirectory != null) SceneManager.sceneLoaded += Isolate;
+            try { yield return SceneManager.LoadSceneAsync(MainArena, LoadSceneMode.Single); }
+            finally { if (recordsDirectory != null) SceneManager.sceneLoaded -= Isolate; }
             ownedScene = SceneManager.GetActiveScene();
             yield return null;
             yield return null;
             Match = Object.FindAnyObjectByType<MatchController>();
             Assert.That(Match, Is.Not.Null, "MainArena match");
             Assert.That(Match.IsInitialized, Is.True, "match initialised");
+            if (recordsDirectory != null)
+            {
+                MainArenaPresentationInstaller.Install(Match.gameObject.scene);
+                Assert.That(MainArenaPresentationInstaller.UseArchiveStore(Match,
+                    new MatchReplayArchiveStore(Path.Combine(recordsDirectory, "replays"))), Is.True);
+            }
         }
 
         public static IEnumerator StartPlaying()

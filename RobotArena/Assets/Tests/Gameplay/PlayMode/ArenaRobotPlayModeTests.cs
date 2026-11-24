@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Linq;
+using System.IO;
 using NUnit.Framework;
 using RobotSavaslari.Combat;
 using RobotSavaslari.Arena;
@@ -20,7 +21,14 @@ namespace RobotSavaslari.Gameplay.Tests
     public sealed class ArenaRobotPlayModeTests : InputTestFixture
     {
         [UnityTearDown]
-        public IEnumerator Cleanup() => GameplayTestScene.Unload();
+        public IEnumerator Cleanup()
+        {
+            yield return GameplayTestScene.Unload();
+            if (keyboardRecords != null && Directory.Exists(keyboardRecords)) Directory.Delete(keyboardRecords, true);
+            keyboardRecords = null;
+        }
+
+        private string keyboardRecords;
 
         private Keyboard _keyboard;
         private static MatchController Match => GameplayTestScene.Match;
@@ -59,10 +67,14 @@ namespace RobotSavaslari.Gameplay.Tests
         [UnityTest]
         public IEnumerator KeyboardDrivesTheRobotAndSpaceSwingsTheWeapon()
         {
-            yield return GameplayTestScene.LoadMainArena();
+            keyboardRecords = Path.Combine(Application.temporaryCachePath, "KeyboardArena-" + System.Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(keyboardRecords);
+            yield return GameplayTestScene.LoadMainArena(keyboardRecords);
+            Assert.That(Match.EquippedPlayerId, Is.EqualTo(DuelSetup.Spinner));
             yield return GameplayTestScene.StartPlaying();
             FocusPlayer();
-            // Measure driving before the first hit: these weapons already reach across FaceOff's 2.2 m gap.
+            Match.Opponent.GetComponent<RobotBotController>().SetMatchRunning(false);
+            // Measure keyboard driving at a distance, then position the robots for a stationary weapon contact.
             GameplayTestScene.Place(Match.Player, new Vector3(-3f, GameplayTestScene.Floor, 0f), false, Quaternion.Euler(0f, 90f, 0f));
             GameplayTestScene.Place(Match.Opponent, new Vector3(3f, GameplayTestScene.Floor, 0f), true, Quaternion.Euler(0f, -90f, 0f));
             Vector3 driveStart = Match.Player.GetComponent<Rigidbody>().position;
@@ -73,7 +85,8 @@ namespace RobotSavaslari.Gameplay.Tests
             }
             Assert.That(Vector3.Distance(Match.Player.GetComponent<Rigidbody>().position, driveStart), Is.GreaterThan(0.2f), "W drives forward without waiting for melee damage");
             Hold();
-            FaceOff();
+            GameplayTestScene.Place(Match.Player, new Vector3(0f, GameplayTestScene.Floor, -.82f), false, Quaternion.identity);
+            GameplayTestScene.Place(Match.Opponent, new Vector3(0f, GameplayTestScene.Floor, .82f), false, Quaternion.Euler(0f, 180f, 0f));
             var opponentHealth = Match.Opponent.GetComponent<RobotHealth>();
             Transform spinner = Match.Player.GetComponentsInChildren<Transform>(true).FirstOrDefault(t => t.name == "Spinner");
             Quaternion spinnerRest = spinner != null ? spinner.localRotation : Quaternion.identity;
@@ -81,6 +94,7 @@ namespace RobotSavaslari.Gameplay.Tests
             bool sawWeapon = false;
             int attackStarts = 0, weaponHits = 0;
             var melee = Match.Player.GetComponent<MeleeAttack>();
+            Assert.That(melee.IsInReach(Match.Opponent.GetComponent<BoxCollider>(), out _), Is.True, "opponent inside the stock swing arc");
             System.Action<MeleeAttack> onStart = _ => attackStarts++;
             System.Action<MeleeAttack, RobotHealth, float> onHit = (_, target, __) => { if (target == opponentHealth) weaponHits++; };
             melee.Started += onStart; melee.TargetHit += onHit;

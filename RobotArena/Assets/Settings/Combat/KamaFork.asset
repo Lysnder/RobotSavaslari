@@ -18,3 +18,4 @@ MonoBehaviour:
   activeDuration: 0.18
   arcDegrees: 78
   pushSpeed: 2.4
+  style: 7

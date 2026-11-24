@@ -93,7 +93,7 @@ namespace RobotSavaslari.UI
             var view = new Rect(x + left + 16, top, board.width - 80 - left - right, 350);
             OptionPair(x, top, left, "LASTİK", "Yumuşak", "Sert", "Daha kısa fren", "Daha yüksek son hız", draft.tireId == "soft", 0);
             OptionPair(x, top + 126, left, "ZIRH", "Hafif", "Ağır", "Daha hızlı ivme", "Daha fazla dayanım", draft.armorId == "light", 1);
-            OptionPair(x, top + 252, left, "SİLAH", "Döner", "Kama", "Yüksek hasar", "Kısa menzilli itiş", draft.weaponId == "spinner", 2);
+            DrawWeapon(x, top + 252, left);
             ArenaMenuStyle.Fill(view, new Color(.12f, .15f, .16f));
             GUI.DrawTexture(view, texture, ScaleMode.ScaleToFit, false);
             var evt = Event.current;
@@ -130,6 +130,21 @@ namespace RobotSavaslari.UI
             if (GUI.Button(new Rect(board.xMax - 204, board.yMax - 62, 180, 42), "Uygula", theme.Primary)) menu.ApplyWorkshop();
         }
 
+        private void DrawWeapon(float x, float y, float width)
+        {
+            var theme = ArenaMenuStyle.Current;
+            int index = Combat.WorkshopWeapons.Index(draft.weaponId);
+            GUI.Label(new Rect(x, y, width, 24), $"SİLAH    {index + 1} / {Combat.WorkshopWeapons.Count}", theme.Heading);
+            bool previous = GUI.Button(new Rect(x, y + 27, 34, 38), "‹", theme.Chip);
+            GUI.Label(new Rect(x + 36, y + 31, width - 72, 33), Combat.WorkshopWeapons.Label(draft.weaponId), theme.Body);
+            bool next = GUI.Button(new Rect(x + width - 34, y + 27, 34, 38), "›", theme.Chip);
+            GUI.Label(new Rect(x, y + 70, width, 75), Combat.WorkshopWeapons.Trade(draft.weaponId), theme.Hint);
+            if (!previous && !next) return;
+            var selection = draft;
+            selection.weaponId = Combat.WorkshopWeapons.Id((index + (next ? 1 : -1) + Combat.WorkshopWeapons.Count) % Combat.WorkshopWeapons.Count);
+            SetDraft(selection);
+        }
+
         private void OptionPair(float x, float y, float width, string title, string first, string second,
             string benefitA, string benefitB, bool firstActive, int slot)
         {
@@ -143,8 +158,7 @@ namespace RobotSavaslari.UI
             if (!(a || b) || a == firstActive) return;
             var next = draft;
             if (slot == 0) next.tireId = a ? "soft" : "hard";
-            else if (slot == 1) next.armorId = a ? "light" : "heavy";
-            else next.weaponId = a ? "spinner" : "fork";
+            else next.armorId = a ? "light" : "heavy";
             SetDraft(next);
         }
 

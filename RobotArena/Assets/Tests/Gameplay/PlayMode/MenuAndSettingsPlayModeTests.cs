@@ -79,16 +79,16 @@ namespace RobotSavaslari.Gameplay.Tests
         public IEnumerator MenuButtonsStartAndOpenSettings()
         {
             yield return GameplayTestScene.LoadMainArena();
-            float width = ImmediateGui.ScaledWidth, center = ImmediateGui.ScaledHeight * 0.5f;
-            float x = (width - 280f) * 0.5f;
-            ImmediateGui.ClickScaled(Menu, Scaled(x, center - 14f, 280f, 52f));
+            float scale = MainMenuScreen.ReadyScale(Screen.width, Screen.height);
+            ImmediateGui.Click(Menu, new Vector2(120f, Screen.height / scale - 82f) * scale);
             Assert.That(Settings.IsOpen, Is.True, "Ayarlar button");
             ImmediateGui.Draw(Menu);
             Settings.ToggleSettings();
 
-            ImmediateGui.ClickScaled(Menu, Scaled(x, center - 84f, 280f, 52f));
+            ImmediateGui.Click(Menu, new Vector2(120f, 218f) * scale);
             Assert.That(Match.State, Is.EqualTo(State.Countdown), "Oyna button");
             ImmediateGui.Draw(Menu);
+            float width = ImmediateGui.ScaledWidth;
             ImmediateGui.ClickScaled(Menu, Scaled(width - 174f, 16f, 158f, 36f));
             Assert.That(Settings.IsOpen, Is.True, "settings button during the match");
             Settings.ToggleSettings();
@@ -123,37 +123,42 @@ namespace RobotSavaslari.Gameplay.Tests
             GameSettings.QualityLevel = Mathf.Min(1, QualitySettings.names.Length - 1);
             ImmediateGui.Draw(Settings);
 
-            float x = (ImmediateGui.ScaledWidth - 520f) / 2f;
-            float valueX = x + 230f;
-            const float valueWidth = 266f;
+            void ClickPanel(float x, float y)
+            {
+                float scale = MainMenuScreen.ReadyScale(Screen.width, Screen.height);
+                Vector2 origin = new Vector2(Screen.width / scale - 676f, Screen.height / scale - 538f) * .5f;
+                ImmediateGui.Click(Settings, (origin + new Vector2(x, y)) * scale);
+            }
             bool fullscreen = GameSettings.Fullscreen;
-            ImmediateGui.ClickScaled(Settings, Scaled(valueX, 172f, valueWidth, 24f));
+            ClickPanel(fullscreen ? 535 : 363, 254);
             Assert.That(GameSettings.Fullscreen, Is.Not.EqualTo(fullscreen), "fullscreen toggle");
 
             int quality = GameSettings.QualityLevel;
             if (quality > 0)
             {
-                ImmediateGui.ClickScaled(Settings, Scaled(valueX, 209f, 36f, 30f));
+                ClickPanel(303, 309);
                 Assert.That(GameSettings.QualityLevel, Is.EqualTo(quality - 1), "lower quality");
             }
             if (GameSettings.QualityLevel < QualitySettings.names.Length - 1)
             {
                 int before = GameSettings.QualityLevel;
-                ImmediateGui.ClickScaled(Settings, Scaled(valueX + valueWidth - 36f, 209f, 36f, 30f));
+                ClickPanel(625, 309);
                 Assert.That(GameSettings.QualityLevel, Is.EqualTo(before + 1), "raise quality");
             }
 
-            ImmediateGui.ClickScaled(Settings, Scaled(valueX, 378f, valueWidth, 24f));
+            ClickPanel(287, 128); // Kamera tab
+            ClickPanel(366, 303);
             Assert.That(GameSettings.CameraInvertY, Is.True, "invert toggle");
-            ImmediateGui.ClickScaled(Settings, Scaled(x + 185f, 515f, 150f, 40f));
+            ClickPanel(149, 500);
             Assert.That(GameSettings.CameraInvertY, Is.False, "camera defaults button");
 
             GameSettings.MasterVolume = 0.2f;
-            ImmediateGui.ClickScaled(Settings, Scaled(x + 20f, 515f, 150f, 40f));
+            ClickPanel(122, 128); // Ses ve görüntü tab
+            ClickPanel(149, 500);
             Assert.That(GameSettings.MasterVolume, Is.EqualTo(1f), "all defaults button");
 
             GameSettings.MasterVolume = 0.4f;
-            ImmediateGui.ClickScaled(Settings, Scaled(x + 350f, 515f, 150f, 40f));
+            ClickPanel(552, 500);
             Assert.That(Settings.IsOpen, Is.False, "save and close");
             Assert.That(Time.timeScale, Is.EqualTo(1f));
             Assert.That(PlayerPrefs.GetFloat("Settings.MasterVolume"), Is.EqualTo(0.4f), "saved on close");

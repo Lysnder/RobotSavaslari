@@ -19,4 +19,5 @@ MonoBehaviour:
   spinner: {fileID: 3618688178560083234, guid: c1cddefbf8821984f9923f717b55107d, type: 3}
   fork: {fileID: 100, guid: 0d7aade8a2ee43ae93cf82ef99db8efb, type: 3}
   stripeMesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  rollerMesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
   teamBlue: {fileID: 2100000, guid: c7072375a6803d3488bd66d3e7c03324, type: 2}

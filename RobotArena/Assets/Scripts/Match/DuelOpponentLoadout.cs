@@ -9,16 +9,16 @@ namespace RobotSavaslari.Match
     {
         private RobotDamageVisuals.Part weapon;
         private Mesh original;
-        private readonly Mesh[] fitted = new Mesh[2];
-        private readonly Material[] materials = new Material[2];
-        private readonly CombatProfile[] profiles = new CombatProfile[2];
-        private readonly Vector3[] pivots = new Vector3[2];
+        private Material originalMaterial;
+        private readonly Mesh[] fitted = new Mesh[WorkshopWeapons.Count];
+        private readonly Material[] materials = new Material[WorkshopWeapons.Count];
+        private readonly CombatProfile[] profiles = new CombatProfile[WorkshopWeapons.Count];
+        private readonly Vector3[] pivots = new Vector3[WorkshopWeapons.Count];
         private int current = -1;
 
-        internal bool Fit(RobotPrototypeController bot, PlayerRobotSelection catalog, string id)
+        private bool Prepare(RobotPrototypeController bot, PlayerRobotSelection catalog, int index)
         {
-            if (id != DuelSetup.Fork && id != DuelSetup.Spinner) return false;
-            int index = id == DuelSetup.Fork ? 1 : 0;
+            if (index < 0 || bot == null || catalog == null) return false;
             if (weapon == null)
             {
                 var visuals = bot.GetComponent<RobotDamageVisuals>();
@@ -27,11 +27,48 @@ namespace RobotSavaslari.Match
                     if (part.Kind == RobotDamageVisuals.PartKind.Weapon) { weapon = part; break; }
                 if (weapon == null) return false;
                 original = weapon.Mesh;
+                originalMaterial = weapon.Transform.GetComponent<MeshRenderer>().sharedMaterial;
             }
-            if (fitted[index] == null && !catalog.BuildOpponentWeapon(index == 1, bot.transform, weapon.Transform.parent,
-                    out fitted[index], out pivots[index], out materials[index], out profiles[index])) return false;
+            if (fitted[index]) return true;
+            if (!catalog.BuildOpponentWeapon(WorkshopWeapons.Id(index), bot.transform, weapon.Transform.parent,
+                    out var mesh, out var pivot, out var material, out var profile))
+            {
+                if (mesh) Object.Destroy(mesh);
+                return false;
+            }
+            fitted[index] = mesh;
+            pivots[index] = pivot;
+            materials[index] = material;
+            profiles[index] = profile;
+            return true;
+        }
+
+        internal bool TryReplayWeapon(RobotPrototypeController bot, PlayerRobotSelection catalog, string partName,
+            int vertexCount, out Mesh mesh, out Material material)
+        {
+            mesh = null;
+            material = null;
+            int index = WorkshopWeapons.PartIndex(partName);
+            if (!Prepare(bot, catalog, index)) return false;
+            if (partName == "Lifter" && original && original.vertexCount == vertexCount)
+            {
+                mesh = original;
+                material = originalMaterial;
+            }
+            else if (fitted[index].vertexCount == vertexCount)
+            {
+                mesh = fitted[index];
+                material = materials[index];
+            }
+            return mesh && material;
+        }
+
+        internal bool Fit(RobotPrototypeController bot, PlayerRobotSelection catalog, string id)
+        {
+            int index = WorkshopWeapons.Index(id);
+            if (!Prepare(bot, catalog, index)) return false;
             if (current == index) return true;
-            weapon.Name = index == 1 ? "Lifter" : "Spinner";
+            weapon.Name = WorkshopWeapons.Part(id);
             weapon.Transform.name = weapon.Name;
             weapon.Mesh = fitted[index];
             weapon.Transform.GetComponent<MeshFilter>().sharedMesh = weapon.Mesh;

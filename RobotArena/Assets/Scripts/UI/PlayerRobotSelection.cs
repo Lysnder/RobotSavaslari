@@ -27,6 +27,8 @@ namespace RobotSavaslari.UI
         public string Notice => workshop != null && !string.IsNullOrEmpty(workshop.Notice) ? workshop.Notice : notice;
         internal CombatProfile ProfileFor(bool fork) => fork ? kit?.profile : spinnerProfile;
         internal string StockName(bool fork) => fork ? playerName + " - Kama" : playerName;
+        internal Mesh StockWeaponMesh(bool fork) => fork ? forkMesh : spinnerMesh;
+        internal Material StockWeaponMaterial(bool fork) => fork ? kit.material : spinnerMaterial;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void Register()
@@ -125,9 +127,12 @@ namespace RobotSavaslari.UI
             ForkSelected = useFork;
         }
 
-        internal bool IsForkProfile(CombatProfile profile) => kit != null && profile == kit.profile;
+        internal string IdFor(CombatProfile profile) => WorkshopWeapons.Id(profile.style) ?? (profile == kit?.profile ? "fork" : "spinner");
 
-        internal bool BuildOpponentWeapon(bool fork, Transform robot, Transform parent, out Mesh mesh,
+        internal CombatProfile ProfileFor(string id) => id == "fork" || id == "spinner" ? ProfileFor(id == "fork") :
+            WorkshopWeapons.Index(id) >= 2 ? Resources.Load<CombatProfile>("Robots/" + id) : null;
+
+        internal bool BuildOpponentWeapon(string id, Transform robot, Transform parent, out Mesh mesh,
             out Vector3 pivot, out Material material, out CombatProfile profile)
         {
             mesh = null;
@@ -136,7 +141,21 @@ namespace RobotSavaslari.UI
             profile = null;
             if (!PrepareKit()) return false;
             var intoModel = parent.worldToLocalMatrix * robot.localToWorldMatrix;
-            if (fork)
+            if (WorkshopWeapons.Index(id) >= 2)
+            {
+                var workshopKit = WorkshopKit.Load();
+                if (!workshopKit) return false;
+                var source = workshopKit.WeaponMesh(id);
+                if (!source) return false;
+                pivot = intoModel.MultiplyPoint3x4(new Vector3(0, .49f, .56f));
+                mesh = new Mesh { name = WorkshopWeapons.Part(id) };
+                var basis = intoModel;
+                basis.SetColumn(3, new Vector4(0, 0, 0, 1));
+                mesh.CombineMeshes(new[] { new CombineInstance { mesh = source, transform = basis } });
+                material = workshopKit.WeaponMetal;
+                profile = ProfileFor(id);
+            }
+            else if (id == "fork")
             {
                 mesh = kit.BuildMesh(robot, parent);
                 pivot = intoModel.MultiplyPoint3x4(kit.hinge);

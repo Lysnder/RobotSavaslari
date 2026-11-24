@@ -38,16 +38,18 @@ namespace RobotSavaslari.Robots
         private float turning = 1f;
         private float steeringPull;
         private float traction = 1f;
+        private float brakeGrip = 1f;
         private float speedModifier = 1f;
         private float accelerationModifier = 1f;
         private float turnModifier = 1f;
 
-        public void SetDriveCondition(float mobilityScale, float turningScale, float pull, float grip)
+        public void SetDriveCondition(float mobilityScale, float turningScale, float pull, float grip, float brakingScale = 1f)
         {
             mobility = Mathf.Clamp01(mobilityScale);
             turning = Mathf.Clamp01(turningScale);
             steeringPull = Mathf.Clamp(pull, -1f, 1f);
             traction = Mathf.Clamp01(grip);
+            brakeGrip = Mathf.Clamp01(brakingScale);
         }
 
         /// <summary>
@@ -142,8 +144,7 @@ namespace RobotSavaslari.Robots
         {
             body = GetComponent<Rigidbody>();
 
-            // Robot yalnızca Y ekseninde dönsün: köşeye sürüldüğünde devrilip
-            // duvarın üstünden çıkmasını engeller.
+            // Sağlam sürüş sabittir. Bir teker koptuğunda fizik destekleri bu iki ekseni açar.
             body.constraints |= RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
 
             // Hız doğrudan yazıldığı için ince duvarlardan geçmeyi önlemek adına
@@ -192,13 +193,20 @@ namespace RobotSavaslari.Robots
         {
             float deltaTime = Time.fixedDeltaTime;
             if (body.isKinematic) return;
+            if (mobility <= 0f && brakeGrip <= 0f)
+            {
+                // Airborne or resting on the belly: only gravity, collisions and external impulses act.
+                forwardSpeed = Vector3.Dot(body.linearVelocity, transform.forward);
+                turnSpeed = body.angularVelocity.y * Mathf.Rad2Deg;
+                return;
+            }
             // A ram briefly releases traction so the physical recoil remains visible.
             if (traction < 1f)
             {
                 Vector3 planar = Vector3.ProjectOnPlane(body.linearVelocity, Vector3.up);
                 Vector3 slowed = Vector3.MoveTowards(planar, Vector3.zero, brakeDeceleration * traction * deltaTime);
                 body.linearVelocity += slowed - planar;
-                body.angularVelocity = Vector3.zero;
+                body.angularVelocity = Vector3.ProjectOnPlane(body.angularVelocity, Vector3.up);
                 turnSpeed = 0f;
                 return;
             }
@@ -223,7 +231,7 @@ namespace RobotSavaslari.Robots
 
             bool braking = Mathf.Approximately(moveCommand, 0f) || targetSpeed * forwardSpeed < 0f;
             float speedChange = (braking
-                ? brakeDeceleration
+                ? brakeDeceleration * brakeGrip
                 : acceleration * mobility * accelerationModifier) * deltaTime;
             forwardSpeed = Mathf.MoveTowards(forwardSpeed, targetSpeed, speedChange);
 
@@ -240,7 +248,9 @@ namespace RobotSavaslari.Robots
             float turnChange = (turnBraking ? turnBrakeDeceleration : turnAcceleration) * deltaTime;
             turnSpeed = Mathf.MoveTowards(turnSpeed, targetTurnSpeed, turnChange);
 
-            body.angularVelocity = new Vector3(0f, turnSpeed * Mathf.Deg2Rad, 0f);
+            Vector3 angular = body.angularVelocity;
+            angular.y = turnSpeed * Mathf.Deg2Rad;
+            body.angularVelocity = angular;
         }
     }
 }

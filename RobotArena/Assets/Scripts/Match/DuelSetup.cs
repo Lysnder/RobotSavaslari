@@ -28,7 +28,7 @@ namespace RobotSavaslari.Match
                 opponentRobotId == OtherRobot(playerRobotId));
 
         public static string OtherRobot(string id) =>
-            id == Fork || (id != null && id.EndsWith("/fork", StringComparison.Ordinal)) ? Spinner : Fork;
+            Combat.WorkshopWeapons.Pair(id?.Substring(id.LastIndexOf('/') + 1));
 
         private static bool KnownPlayerId(string id)
         {
@@ -37,7 +37,7 @@ namespace RobotSavaslari.Match
             var parts = id.Split('/');
             return parts.Length == 5 && parts[0] == "workshop" && parts[1] == "standard" &&
                 (parts[2] == "soft" || parts[2] == "hard") && (parts[3] == "light" || parts[3] == "heavy") &&
-                (parts[4] == Spinner || parts[4] == Fork);
+                Combat.WorkshopWeapons.Index(parts[4]) >= 0;
         }
 
         public DuelSetup ForEncounter(string id, string player, string opponent)
@@ -100,5 +100,8 @@ namespace RobotSavaslari.Match
             Personality = setup.personality;
             Difficulty = setup.difficulty;
         }
+
+        internal DuelSetup ToSetup() => DuelSetup.Create(ArenaId, Personality, Difficulty,
+            new MatchRules { mode = Mode, timeLimitSeconds = Seconds }).ForEncounter(EncounterId, PlayerRobotId, OpponentRobotId);
     }
 }

@@ -101,7 +101,7 @@ namespace RobotSavaslari.Gameplay.Tests
 
         // Same steering policy in every arena. No teleporting, health edits, artificial clock
         // or bot override. Real keyboard, spawn positions, melee, contact, hazards and time limit.
-        private IEnumerator PilotDuel(WorkshopLoadout value)
+        private IEnumerator PilotDuel(WorkshopLoadout value, bool checkBothTools = false)
         {
             Keyboard previous = Keyboard.current;
             InputSettings settings = InputSystem.settings;
@@ -113,9 +113,16 @@ namespace RobotSavaslari.Gameplay.Tests
             var player = match.Player;
             var opponent = match.Opponent;
             var attack = player.GetComponent<MeleeAttack>();
-            int hits = 0;
+            int hits = 0, botHits = 0, swings = 0;
+            float firstReach = -1f, closest = float.PositiveInfinity;
+            var enemyHull = opponent.GetComponent<BoxCollider>();
+            var botTool = opponent.GetComponent<MeleeAttack>();
             void CountHit(MeleeAttack source, RobotHealth target, float damage) => hits++;
+            void CountBotHit(MeleeAttack source, RobotHealth target, float damage) => botHits++;
+            void CountSwing(MeleeAttack source) => swings++;
             attack.TargetHit += CountHit;
+            attack.Started += CountSwing;
+            botTool.TargetHit += CountBotHit;
             Vector3 playerSpawn = player.transform.position, botSpawn = opponent.transform.position;
             float playerTravel = 0f, botTravel = 0f;
             float start = Time.time;
@@ -126,10 +133,20 @@ namespace RobotSavaslari.Gameplay.Tests
                     Vector3 offset = opponent.transform.position - player.transform.position;
                     offset.y = 0f;
                     float angle = Vector3.SignedAngle(player.transform.forward, offset, Vector3.up);
-                    var input = new KeyboardState(Key.Space);
+                    var input = new KeyboardState();
+                    bool contact = checkBothTools && attack.IsInReach(enemyHull, out _);
+                    closest = Mathf.Min(closest, offset.magnitude);
+                    if (contact && firstReach < 0f) firstReach = Time.time - start;
+                    if (!checkBothTools || contact) input.Set(Key.Space, true);
                     if (angle > 8f) input.Set(Key.D, true);
                     if (angle < -8f) input.Set(Key.A, true);
-                    if (Mathf.Abs(angle) < 55f) input.Set((Time.time - start) % 5f < .8f ? Key.S : Key.W, true);
+                    if (checkBothTools && (hits == 0 || botHits == 0))
+                    {
+                        // Close until the equipped tool actually reaches the hull. Back away to regain a frontal angle after a glancing contact.
+                        if (Mathf.Abs(angle) < 36f && !contact) input.Set(Key.W, true);
+                        if (Mathf.Abs(angle) > 64f && offset.magnitude < 2.4f) input.Set(Key.S, true);
+                    }
+                    else if (Mathf.Abs(angle) < 55f) input.Set((Time.time - start) % 5f < .8f ? Key.S : Key.W, true);
                     pilot.MakeCurrent();
                     InputSystem.QueueStateEvent(pilot, input);
                     yield return null;
@@ -142,6 +159,14 @@ namespace RobotSavaslari.Gameplay.Tests
                 Assert.That(playerTravel, Is.GreaterThan(.3f), "player moved");
                 var round = match.LastRound;
                 Assert.That(round.player.receivedDamage + round.opponent.receivedDamage, Is.GreaterThan(0f), "combat occurred");
+                if (checkBothTools)
+                {
+                    TestContext.WriteLine($"PVE_NATURAL player={value.weaponId} hits={hits} swings={swings} bot={botTool.Profile.name} hits={botHits} " +
+                        $"outcome={round.outcome} reason={round.reason} hp={round.player.remainingHealth:F1}/{round.opponent.remainingHealth:F1} " +
+                        $"operational={player.GetComponent<RobotDamageVisuals>().WeaponOperational} nearest={closest:F2} firstReach={firstReach:F2} seconds={round.durationSeconds:F2}");
+                    Assert.That(hits, Is.GreaterThan(0), value.weaponId + " player weapon");
+                    Assert.That(botHits, Is.GreaterThan(0), botTool.Profile.name + " bot weapon");
+                }
                 TestContext.WriteLine(string.Format(CultureInfo.InvariantCulture,
                     "WORKSHOP_DUEL {0} {1}-{2}-{3} outcome={4} reason={5} seconds={6:F2} hp={7:F1}/{8:F1} hits={9} travel={10:F2}/{11:F2}",
                     arena.Layout.name, value.tireId, value.armorId, value.weaponId, round.outcome, round.reason,
@@ -150,6 +175,8 @@ namespace RobotSavaslari.Gameplay.Tests
             finally
             {
                 attack.TargetHit -= CountHit;
+                attack.Started -= CountSwing;
+                botTool.TargetHit -= CountBotHit;
                 InputSystem.RemoveDevice(pilot);
                 InputSystem.settings = settings;
                 if (previous != null && previous.added) previous.MakeCurrent();
@@ -220,9 +247,10 @@ namespace RobotSavaslari.Gameplay.Tests
             Assert.That(playback.CheckCompatibility(oldClip.Info), Is.Null);
             var loadout = Parts("hard", "heavy", "fork");
             Apply(loadout);
-            Assert.That(playback.CheckCompatibility(oldClip.Info), Is.Not.Null.And.Not.Empty);
+            Assert.That(playback.CheckCompatibility(oldClip.Info), Is.Null);
             Assert.That(playback.OpenArchiveMode(), Is.True);
-            Assert.That(playback.Open(oldClip.Path), Is.False);
+            Assert.That(playback.Open(oldClip.Path), Is.True, playback.LastError);
+            Assert.That(Selection.LastModular, Is.EqualTo(loadout));
             playback.CloseArchiveMode();
             yield return StartDuel(DuelSetup.Series());
             string id = match.EncounterId;

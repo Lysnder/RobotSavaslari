@@ -22,6 +22,8 @@ namespace RobotSavaslari.Match
         public string EncounterId => encounterId;
         public DuelStart LockedSetup { get; private set; }
         private readonly DuelOpponentLoadout botLoadout = new DuelOpponentLoadout();
+        internal bool TryReplayBotWeapon(string part, int vertices, out Mesh mesh, out Material material) =>
+            botLoadout.TryReplayWeapon(opponent, GetComponent<PlayerRobotSelection>(), part, vertices, out mesh, out material);
         private bool IsMainArena => gameplayInterface && string.Equals(gameObject.scene.name, "MainArena", StringComparison.OrdinalIgnoreCase);
         public int MatchCount { get; private set; }
         public MatchOutcome Outcome { get; private set; }
@@ -87,7 +89,11 @@ namespace RobotSavaslari.Match
         {
             if (!initialized || !isActiveAndEnabled || IsPaused || record == null || !record.IsValid ||
                 (State != MatchState.Ready && State != MatchState.Result)) return false;
+            if (record.setupVersion != 0 && (record.setupVersion != 1 || record.setup == null || record.setup.version != 2 ||
+                !record.setup.Valid || record.setup.encounterId != record.id || record.setup.mode != record.rules.mode ||
+                record.setup.seconds != record.rules.timeLimitSeconds || !IsMainArena)) return false;
             Prepare();
+            if (IsMainArena) return GetComponent<MainMenuScreen>().StartHistoryRematch(record);
             return ConfigureRules(record.rules) && RequestCountdown();
         }
 
@@ -315,7 +321,7 @@ namespace RobotSavaslari.Match
         {
             if (State != MatchState.Ready || LockedSetup != null || !profile) return;
             var catalog = GetComponent<PlayerRobotSelection>();
-            if (catalog) botLoadout.Fit(opponent, catalog, catalog.IsForkProfile(profile) ? DuelSetup.Spinner : DuelSetup.Fork);
+            if (catalog) botLoadout.Fit(opponent, catalog, Combat.WorkshopWeapons.Pair(catalog.IdFor(profile)));
         }
 
         private bool LockDuel(DuelSetup start)
@@ -510,6 +516,7 @@ namespace RobotSavaslari.Match
             if (EncounterComplete)
             {
                 LastMatch = new MatchRecord { id = encounterId, endedAtUtc = DateTimeOffset.UtcNow.ToString("O"), rules = rules.Copy(),
+                    setupVersion = LockedSetup != null ? 1 : 0, setup = LockedSetup?.ToSetup(),
                     outcome = outcome, playerWins = PlayerWins, opponentWins = OpponentWins, drawnRounds = DrawnRounds,
                     roundsPlayed = roundsPlayed, durationSeconds = totalSeconds, player = playerTotal, opponent = opponentTotal };
                 if (gameplayInterface && !HistoryStore.Append(LastMatch)) HistoryNotice = HistoryStore.LastError;

@@ -127,8 +127,7 @@ namespace RobotSavaslari.UI
             if (!loadout.IsValid || !Capture() || !kit || !kit.HasParts) return false;
             bool heavy = loadout.armorId == "heavy";
             bool soft = loadout.tireId == "soft";
-            bool fork = loadout.weaponId == "fork";
-            var weapon = presets.ProfileFor(fork);
+            var weapon = presets.ProfileFor(loadout.weaponId);
             if (!weapon || !(weapon.arcDegrees >= 1 && weapon.arcDegrees <= 360) ||
                 !(weapon.activeDuration >= 0 && weapon.activeDuration <= weapon.cooldown)) return false;
             stats = baseline;
@@ -154,6 +153,24 @@ namespace RobotSavaslari.UI
         {
             if (!CanSelect || (!loaded && !RestoreSelection())) return false;
             return SetStock(useFork, true);
+        }
+
+        internal bool RestoreForDuel(string id)
+        {
+            if (!CanSelect || (!loaded && !RestoreSelection())) return false;
+            if (id == DuelSetup.Spinner || id == DuelSetup.Fork) return SetStock(id == DuelSetup.Fork, false);
+            var fields = id?.Split('/');
+            if (fields == null || fields.Length != 5 || fields[0] != "workshop") return false;
+            var loadout = new WorkshopLoadout { chassisId = fields[1], tireId = fields[2], armorId = fields[3], weaponId = fields[4] };
+            return loadout.IsValid && SetModular(loadout, false);
+        }
+
+        internal Transform StockReplayModel => Capture() ? stockModel : null;
+
+        internal WorkshopModel BuildReplayModel(WorkshopLoadout parts, Transform archiveRoot)
+        {
+            if (!parts.IsValid || !Capture() || kit == null) return null;
+            return WorkshopModel.Build(kit, parts, archiveRoot, hull, stockParts);
         }
 
         private bool SetModular(WorkshopLoadout loadout, bool persist)
@@ -188,7 +205,7 @@ namespace RobotSavaslari.UI
             match.Player.name = presets.StockName(false) + " - " + loadout.tireId + "-" + loadout.armorId + "-" + loadout.weaponId;
             damage.InstallParts(next.Parts);
             next.Root.SetActive(true);
-            match.Player.SelectWeaponProfile(presets.ProfileFor(loadout.weaponId == "fork"));
+            match.Player.SelectWeaponProfile(presets.ProfileFor(loadout.weaponId));
             ApplyStats(stats);
             Notice = null;
             return true;

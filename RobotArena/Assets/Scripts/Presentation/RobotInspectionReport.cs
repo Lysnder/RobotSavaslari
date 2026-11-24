@@ -84,6 +84,8 @@ namespace RobotSavaslari.Presentation
                 case "Spinner": return "Döner silah";
                 case "Lifter": return "Kaldırıcı silah";
             }
+            int index = Combat.WorkshopWeapons.PartIndex(partName);
+            if (index >= 2) return Combat.WorkshopWeapons.Label(Combat.WorkshopWeapons.Id(index));
             if (string.IsNullOrEmpty(partName)) return string.Empty;
             string kind = partName.StartsWith("Wheel_") ? "tekerlek" : partName.StartsWith("Armor_") ? "zırh" : null;
             if (kind == null || partName.Length != partName.IndexOf('_') + 3) return partName;

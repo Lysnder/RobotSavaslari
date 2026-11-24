@@ -213,7 +213,8 @@ namespace RobotSavaslari.Presentation.Tests
             Assert.That(Match.Opponent.GetComponent<RobotHealth>().CurrentHealth, Is.EqualTo(opponentHealth));
             Assert.That(Match.MatchCount, Is.EqualTo(matchCount));
             Assert.That(Match.State, Is.EqualTo(MatchController.MatchState.Ready));
-            Assert.That(Match.Player.transform.position, Is.EqualTo(playerPosition));
+            Assert.That(Vector3.Distance(Match.Player.transform.position, playerPosition), Is.LessThan(.0001f),
+                "archive playback must leave the live player in its original position");
             Assert.That(GameObject.Find("Match Replay Archive"), Is.Null, "proxies removed");
             Assert.That(before, Is.GreaterThan(0f));
         }

@@ -72,11 +72,15 @@ namespace RobotSavaslari.Gameplay.Tests
             Assert.That(panel.ForkSelected, Is.False);
             var playback = match.GetComponent<MatchReplayArchivePlayer>();
             string historical = Environment.GetEnvironmentVariable("ROBOT_ARENA_LEGACY_REPLAY");
+            if (string.IsNullOrEmpty(historical) && Application.isEditor)
+                historical = Path.GetFullPath(Path.Combine(Application.dataPath, "../../docs/evidence/pve-ring/legacy-kama.rpl"));
             if (!string.IsNullOrEmpty(historical))
             {
+                Assert.That(File.Exists(historical), Is.True, "historical .rpl from the pre-contract Windows project");
                 Assert.That(playback.OpenArchiveMode(), Is.True, playback.LastError);
                 Assert.That(playback.Open(historical), Is.True, playback.LastError);
                 Assert.That(playback.IsActive, Is.True);
+                Assert.That(panel.ForkSelected, Is.False);
                 playback.CloseArchiveMode();
             }
             yield return WinFromMenu(spinner);
@@ -100,7 +104,7 @@ namespace RobotSavaslari.Gameplay.Tests
                 Assert.That(new Bounds(collider.center, collider.size).Contains(local), Is.True, "fork clearance " + local);
             }
             Assert.That(weapon.Mesh, Is.SameAs(weapon.Wear.GetComponent<MeshFilter>().sharedMesh));
-            StringAssert.Contains("Uyumsuz", playback.CheckCompatibility(oldRecording.Info));
+            Assert.That(playback.CheckCompatibility(oldRecording.Info), Is.Null);
             yield return WinFromMenu(fork);
 
             var forkRecording = archive.List().Single(entry => entry.Info.PlayerName == owner.name);
@@ -115,7 +119,11 @@ namespace RobotSavaslari.Gameplay.Tests
             Assert.That(owner.GetComponent<PlayerKeyboardDriver>(), Is.SameAs(driver));
             Assert.That(visuals.Parts.Count, Is.EqualTo(parts));
             Assert.That(playback.CheckCompatibility(oldRecording.Info), Is.Null);
-            StringAssert.Contains("Uyumsuz", playback.CheckCompatibility(forkRecording.Info));
+            Assert.That(playback.OpenArchiveMode(), Is.True);
+            Assert.That(playback.Open(forkRecording.Path), Is.True, playback.LastError);
+            Assert.That(panel.ForkSelected, Is.False);
+            Assert.That(weapon.Mesh, Is.SameAs(original));
+            playback.CloseArchiveMode();
         }
 
         private IEnumerator WinFromMenu(CombatProfile profile)
@@ -153,6 +161,44 @@ namespace RobotSavaslari.Gameplay.Tests
             match.Prepare();
             yield return null;
             Assert.That(match.State, Is.EqualTo(MatchController.MatchState.Ready));
+        }
+
+        [UnityTest]
+        public IEnumerator LegacyKamaFileUsesAuthoredBotLifterWhileLiveBotKeepsSpinner()
+        {
+            Assert.That(panel.SelectFork(true), Is.True);
+            var liveBot = match.Opponent.GetComponent<RobotDamageVisuals>().Parts.Single(p => p.Kind == RobotDamageVisuals.PartKind.Weapon);
+            Assert.That(liveBot.Name, Is.EqualTo("Spinner"));
+            var liveMesh = liveBot.Mesh;
+            var info = new ReplayArchiveInfo { CreatedUtc = DateTime.UtcNow.ToString("O"), Title = "Eski Kama",
+                PlayerName = match.Player.name, OpponentName = match.Opponent.name, ArenaName = "Open" };
+            // Pre-contract .rpl files recorded the authored red Lifter (42,000 vertices).
+            info.Tracks.Add(new ReplayTrack { Key = "robot/" + info.OpponentName + "/Robot Model/Lifter",
+                Kind = ReplayTrackKind.RobotPart, Robot = 1, MeshSignature = 42000, Scale = Vector3.one });
+            var writer = archive.CreateWriter(info);
+            info.Rounds.Add(new ReplayRound { MatchId = 1, RoundNumber = 1, StartTime = 0f, EndTime = .05f, Outcome = 1 });
+            var pose = new[] { new MatchReplayClip.Pose(Vector3.zero, Quaternion.identity, true) };
+            Assert.That(writer.WriteFrame(0f, 0, pose, Array.Empty<byte>()), Is.True);
+            Assert.That(writer.WriteFrame(.05f, 0, pose, Array.Empty<byte>()), Is.True);
+            info.Duration = .05f;
+            Assert.That(archive.Commit(writer, out string notice), Is.EqualTo(MatchReplayArchiveStore.CommitResult.Archived), notice);
+            var recording = archive.List().Single();
+            var playback = match.GetComponent<MatchReplayArchivePlayer>();
+            Assert.That(playback.OpenArchiveMode(), Is.True);
+            Assert.That(playback.Open(recording.Path), Is.True, playback.LastError);
+            Assert.That(playback.GetProxy(0).GetComponent<MeshFilter>().sharedMesh.vertexCount, Is.EqualTo(42000));
+            Assert.That(liveBot.Mesh, Is.SameAs(liveMesh));
+            Assert.That(panel.ForkSelected, Is.True);
+            playback.CloseArchiveMode();
+            byte[] bytes = File.ReadAllBytes(recording.Path);
+            bytes[MatchReplayArchive.HeaderBytes + 5] ^= 0x3f;
+            File.WriteAllBytes(recording.Path, bytes);
+            Assert.That(playback.OpenArchiveMode(), Is.True);
+            Assert.That(playback.Open(recording.Path), Is.False);
+            Assert.That(playback.LastError, Does.Contain("Bozuk"));
+            Assert.That(liveBot.Mesh, Is.SameAs(liveMesh));
+            playback.CloseArchiveMode();
+            yield return null;
         }
 
         [UnityTest]

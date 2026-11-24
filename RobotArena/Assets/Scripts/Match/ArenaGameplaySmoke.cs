@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using RobotSavaslari.Presentation;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
@@ -22,12 +24,18 @@ namespace RobotSavaslari.Match
         private bool botDamagedPlayer;
         private bool regionalDamage;
         private int results;
+        private string temporary;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         private static void Launch()
         {
             if (Array.IndexOf(Environment.GetCommandLineArgs(), "-arena-smoke") < 0) return;
-            new GameObject("Arena Gameplay Verification").AddComponent<ArenaGameplaySmoke>();
+            var smoke = new GameObject("Arena Gameplay Verification").AddComponent<ArenaGameplaySmoke>();
+            smoke.temporary = Path.Combine(Application.temporaryCachePath, "ArenaSmoke-" + Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(smoke.temporary);
+            var match = FindFirstObjectByType<MatchController>();
+            if (match != null)
+                match.HistoryStore = new MatchHistoryStore(Path.Combine(smoke.temporary, "history.json"));
         }
 
         private IEnumerator Start()
@@ -72,6 +80,11 @@ namespace RobotSavaslari.Match
             Require(FindObjectsByType<AudioListener>().Count(listener => listener.isActiveAndEnabled) == 1, "One active AudioListener");
             Require(match.State == MatchController.MatchState.Ready && match.GetComponent<MainMenuScreen>() != null,
                 "Menu belongs to the arena match");
+            Require(match.GetComponent<WorkshopSelection>().UseStore(new WorkshopStore(Path.Combine(temporary, WorkshopStore.FileName))),
+                "Temporary workshop initialized");
+            Require(MainArenaPresentationInstaller.UseArchiveStore(match, new MatchReplayArchiveStore(Path.Combine(temporary, "replays"))),
+                "Temporary replay archive initialized");
+            match.GetComponent<ChallengeSessionController>()?.UseSavePath(Path.Combine(temporary, "challenge-session.json"));
             var settingsPanel = match.GetComponent<SettingsPanelController>();
             Require(settingsPanel != null && !settingsPanel.IsOpen, "One shared settings panel starts closed");
             Keys(Key.Escape);
@@ -205,6 +218,12 @@ namespace RobotSavaslari.Match
             if (previousSettings != null) InputSystem.settings = previousSettings;
             if (smokeSettings != null) Destroy(smokeSettings);
             if (previousKeyboard != null && previousKeyboard.added) previousKeyboard.MakeCurrent();
+            if (temporary != null && Directory.Exists(temporary))
+            {
+                try { Directory.Delete(temporary, true); }
+                catch (IOException e) { Debug.LogWarning("Temporary smoke data: " + e.Message); }
+                catch (UnauthorizedAccessException e) { Debug.LogWarning("Temporary smoke data: " + e.Message); }
+            }
             if (passed) Debug.Log("ARENA_SMOKE PASS " + detail);
             else Debug.LogError("ARENA_SMOKE FAIL " + detail);
 #if UNITY_EDITOR

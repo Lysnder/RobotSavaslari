@@ -37,6 +37,7 @@ namespace RobotSavaslari
         private MaterialPropertyBlock _properties;
         private RobotHealth _health;
         private Rigidbody _body;
+        private WheelGroundSupport _wheelSupport;
         private Collider[] _ownerColliders;
         private Material _wearMaterial, _particleMaterial, _coreMaterial;
         private ParticleSystem _sparks, _smoke;
@@ -55,14 +56,17 @@ namespace RobotSavaslari
             if (_stockParts == null) _stockParts = new List<Part>(_parts);
             _parts.Clear();
             for (int i = 0; i < parts.Count; i++) _parts.Add(parts[i]);
+            _wheelSupport?.Bind(_parts);
         }
         public int OriginalTriangleCount { get; private set; }
         public int DetachedCount { get; private set; }
         public int LostWheels { get; private set; }
         public bool WeaponOperational { get; private set; } = true;
-        public float Mobility => Mathf.Max(0.3f, 1f - LostWheels * 0.18f);
-        public float Turning => Mathf.Max(0.45f, 1f - LostWheels * 0.12f);
-        public float SteeringPull { get; private set; }
+        public float Mobility => _wheelSupport?.Drive ?? 1f;
+        public float Turning => _wheelSupport?.Turn ?? 1f;
+        internal float Braking => _wheelSupport?.Brake ?? 1f;
+        public float SteeringPull => _wheelSupport?.Pull ?? 0f;
+        internal void UpdateWheelContacts() => _wheelSupport?.Step();
 
         private void Awake()
         {
@@ -103,6 +107,11 @@ namespace RobotSavaslari
             _wearMaterial = new Material(wearShader) { name = "Runtime Damage Wear" };
             _particleMaterial = new Material(particleShader) { name = "Runtime Impact Particles" };
             BuildParts();
+            if (_parts.Count > 0 && _body != null && TryGetComponent<BoxCollider>(out var hull))
+            {
+                _wheelSupport = new WheelGroundSupport(_body, hull);
+                _wheelSupport.Bind(_parts);
+            }
             _sparks = CreateParticles("Impact Sparks", 128, false);
             _smoke = CreateParticles("Damage Smoke", 64, true);
             _audio = gameObject.AddComponent<AudioSource>();
@@ -298,11 +307,11 @@ namespace RobotSavaslari
             box.center = part.Mesh.bounds.center;
             Vector3 size = part.Mesh.bounds.size;
             box.size = new Vector3(Mathf.Max(0.05f, size.x), Mathf.Max(0.05f, size.y), Mathf.Max(0.05f, size.z));
-            foreach (Collider owner in _ownerColliders)
-                if (owner != null) Physics.IgnoreCollision(box, owner);
             var body = debris.AddComponent<Rigidbody>();
             body.mass = part.Kind == PartKind.Wheel ? 0.45f : 0.8f;
             body.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+            foreach (Collider owner in _ownerColliders)
+                if (owner != null) Physics.IgnoreCollision(box, owner);
             body.linearVelocity = _body != null ? _body.GetPointVelocity(debris.transform.position) : Vector3.zero;
             body.AddForce(hit.Impulse + Vector3.up * 2.2f, ForceMode.Impulse);
             body.AddTorque(Random.onUnitSphere * 0.65f, ForceMode.Impulse);
@@ -315,10 +324,13 @@ namespace RobotSavaslari
             if (part.Kind == PartKind.Wheel)
             {
                 LostWheels++;
-                float side = transform.InverseTransformPoint(part.Transform.position).x;
-                SteeringPull = Mathf.Clamp(SteeringPull + Mathf.Sign(side) * 0.075f, -0.25f, 0.25f);
+                _wheelSupport?.ReleaseCorner();
             }
-            if (part.Kind == PartKind.Weapon) WeaponOperational = false;
+            if (part.Kind == PartKind.Weapon)
+            {
+                WeaponOperational = false;
+                if (TryGetComponent(out Combat.MeleeAttack attack)) attack.ReleaseGrip();
+            }
             if (part.Kind == PartKind.Armor && _coreRenderer != null) _coreRenderer.enabled = true;
         }
 
@@ -327,7 +339,7 @@ namespace RobotSavaslari
             foreach (GameObject debris in _debris) if (debris != null) Destroy(debris);
             _debris.Clear();
             DetachedCount = LostWheels = 0;
-            SteeringPull = 0f;
+            _wheelSupport?.Repair();
             WeaponOperational = true;
             if (_coreRenderer != null) _coreRenderer.enabled = false;
             foreach (Part part in _parts)

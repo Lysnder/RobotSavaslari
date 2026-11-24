@@ -105,6 +105,24 @@ namespace RobotSavaslari.Presentation.Tests
                         yield return Capture(h, true, "result");
                     }
                 }
+                foreach (string layout in new[] { "Tactical", "PulseArena", "SweepArena" })
+                {
+                    yield return MainArenaTestScene.Load();
+                    var match = MainArenaTestScene.Match;
+                    match.HistoryStore = new MatchHistoryStore(Path.Combine(temporaryStore, "history.json"));
+                    MainArenaPresentationInstaller.UseArchiveStore(match, new MatchReplayArchiveStore(Path.Combine(temporaryStore, "replays")));
+                    var menu = match.GetComponent<MainMenuScreen>();
+                    var preset = DuelSetup.Quick();
+                    preset.arenaId = layout;
+                    Assert.That(menu.SelectPreset(preset), Is.True, layout);
+                    menu.StartLobbyMatch();
+                    var camera = MainArenaTestScene.Camera;
+                    camera.SetMode(CombatCameraController.CameraMode.Follow);
+                    camera.SetOrbit(-24, 39, camera.MaxDistance);
+                    yield return new WaitForSeconds(.5f);
+                    Assert.That(match.GetComponent<ArenaVenue>().IsPresenting, Is.True, layout);
+                    yield return Capture(h, true, layout);
+                }
             }
         }
 

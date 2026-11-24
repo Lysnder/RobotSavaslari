@@ -42,7 +42,11 @@ namespace RobotSavaslari
                 _sharedMotor.SetDriveCondition(1f, 1f, 0f, 1f);
                 if (stopImmediately) _sharedMotor.ResetMotion();
             }
-            if (stopImmediately && Body != null) { Body.linearVelocity = Vector3.zero; Body.angularVelocity = Vector3.zero; }
+            if (stopImmediately && Body != null && !Body.isKinematic)
+            {
+                Body.linearVelocity = Vector3.zero;
+                Body.angularVelocity = Vector3.zero;
+            }
         }
         private void OnDisable() { Clear(true); }
         private void FixedUpdate() { Step(Time.fixedDeltaTime); }
@@ -51,7 +55,9 @@ namespace RobotSavaslari
             LastCommand = _pending;
             _pending = Vector2.zero; // No producer this step means braking, never stale input.
             if (_damage == null) _damage = GetComponent<RobotDamageVisuals>();
+            _damage?.UpdateWheelContacts();
             float mobility = _damage != null ? _damage.Mobility : 1f;
+            float brakeGrip = _damage != null ? _damage.Braking : 1f;
             float turning = _damage != null ? _damage.Turning : 1f;
             float pull = _damage != null ? _damage.SteeringPull : 0f;
             float traction = Time.time < _knockbackUntil ? _knockbackTraction : 1f;
@@ -62,18 +68,21 @@ namespace RobotSavaslari
                     LastCommand = new Vector2(_keyboardDriver.ForwardInput, _keyboardDriver.TurnInput);
                 else
                     _sharedMotor.SetMoveCommand(LastCommand.x, LastCommand.y);
-                _sharedMotor.SetDriveCondition(mobility, turning, pull, traction);
+                _sharedMotor.SetDriveCondition(mobility, turning, pull, traction, brakeGrip);
                 return;
             }
+            if (mobility <= 0f && brakeGrip <= 0f) return;
             float drive = LastCommand.x, steer = LastCommand.y;
             if (traction < 1f) drive = steer = 0f;
-            Quaternion heading = Body.rotation * Quaternion.Euler(0, Mathf.Clamp(steer + drive * pull, -1, 1) * turnSpeed * turning * dt, 0);
-            Body.angularVelocity = Vector3.zero;
+            Quaternion heading = Quaternion.AngleAxis(Mathf.Clamp(steer + drive * pull, -1, 1) * turnSpeed * turning * dt, Vector3.up) * Body.rotation;
+            if (!Body.isKinematic) Body.angularVelocity = Vector3.ProjectOnPlane(Body.angularVelocity, Vector3.up);
             Body.MoveRotation(heading);
-            Vector3 forward = heading * Vector3.forward, right = heading * Vector3.right;
+            if (Body.isKinematic) return;
+            Vector3 forward = Vector3.ProjectOnPlane(heading * Vector3.forward, Vector3.up).normalized;
+            Vector3 right = Vector3.Cross(Vector3.up, forward);
             float speed = Vector3.Dot(Body.linearVelocity, forward), side = Vector3.Dot(Body.linearVelocity, right);
             float desired = drive * (drive < 0 ? reverseSpeed : maxSpeed) * mobility;
-            float next = Mathf.MoveTowards(speed, desired, (drive == 0 || speed * drive < 0 ? braking : acceleration * mobility) * traction * dt);
+            float next = Mathf.MoveTowards(speed, desired, (drive == 0 || speed * drive < 0 ? braking * brakeGrip : acceleration * mobility) * traction * dt);
             float nextSide = Mathf.MoveTowards(side, 0, lateralGrip * traction * dt);
             Body.AddForce((forward * (next - speed) + right * (nextSide - side)) / dt, ForceMode.Acceleration);
         }
