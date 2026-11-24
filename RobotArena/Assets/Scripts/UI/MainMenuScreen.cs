@@ -18,7 +18,45 @@ namespace RobotSavaslari.UI
             _match.Player.TryGetComponent<DriveBindingsScreen>(out var bindings) && bindings.IsOpen;
 
         public bool IsShowingReadyMenu => isActiveAndEnabled && _match != null && _match.isActiveAndEnabled &&
-            _match.State == MatchController.MatchState.Ready && !_match.IsPaused && !_showHistory && !BindingsOpen && !ChallengeDialogOpen;
+            _match.State == MatchController.MatchState.Ready && !_match.IsPaused && !_showHistory && !BindingsOpen && !ChallengeDialogOpen && !WorkshopOpen;
+
+        private WorkshopScreen _workshop;
+        public bool WorkshopOpen => _workshop != null;
+
+        public bool OpenWorkshop()
+        {
+            if (!IsShowingReadyMenu || _settings.IsOpen) return false;
+            var selection = GetComponent<WorkshopSelection>();
+            if (!selection || !selection.CanSelect) return false;
+            var kit = WorkshopKit.Load();
+            if (!kit || !kit.HasParts) return false;
+            _workshop = new WorkshopScreen(selection, kit);
+            return true;
+        }
+
+        public bool SetWorkshopDraft(WorkshopLoadout value) => WorkshopOpen && _workshop.SetDraft(value);
+
+        public bool ApplyWorkshop()
+        {
+            if (!WorkshopOpen || _match.State != MatchController.MatchState.Ready) return false;
+            var current = _workshop;
+            _workshop = null;
+            if (GetComponent<WorkshopSelection>().TryApply(current.Draft))
+            {
+                current.Dispose();
+                return true;
+            }
+            _workshop = current;
+            return false;
+        }
+
+        public bool CloseWorkshop()
+        {
+            if (!WorkshopOpen) return false;
+            _workshop.Dispose();
+            _workshop = null;
+            return true;
+        }
 
         private const float ReferenceHeight = 720f;
         private MatchController _match;
@@ -73,11 +111,16 @@ namespace RobotSavaslari.UI
             _settings = GetComponent<SettingsPanelController>();
         }
 
-        private void OnDisable() => Challenge?.Close();
+        private void OnDisable()
+        {
+            CloseWorkshop();
+            Challenge?.Close();
+        }
 
         private void Update()
         {
-            if (BindingsOpen || ChallengeDialogOpen) return;
+            if (WorkshopOpen && _match.State != MatchController.MatchState.Ready) CloseWorkshop();
+            if (WorkshopOpen || BindingsOpen || ChallengeDialogOpen) return;
             var keyboard = Keyboard.current;
             if (!_match.isActiveAndEnabled || !_match.IsInitialized || _showHistory || _settings.IsOpen || keyboard == null ||
                 keyboard.escapeKey.wasPressedThisFrame) return;
@@ -102,12 +145,13 @@ namespace RobotSavaslari.UI
             Matrix4x4 previous = GUI.matrix;
             try
             {
-                float scale = IsShowingReadyMenu
+                float scale = IsShowingReadyMenu || WorkshopOpen
                     ? ReadyScale(Screen.width, Screen.height)
                     : Mathf.Max(0.01f, Mathf.Min(Screen.height / ReferenceHeight, Screen.width / 600f));
                 float width = Screen.width / scale;
                 float height = Screen.height / scale;
                 GUI.matrix = Matrix4x4.Scale(new Vector3(scale, scale, 1f));
+                if (WorkshopOpen) { _workshop.Draw(this, width, height); return; }
                 var challenge = Challenge;
                 if (challenge != null && challenge.DialogOpen)
                 {
@@ -163,12 +207,17 @@ namespace RobotSavaslari.UI
             float x = dock.x + 22f;
             float w = dock.width - 44f;
             GUI.Label(new Rect(x, 58, w, 114), "ROBOT\nSAVAŞLARI", theme.Logo);
-            if (GUI.Button(new Rect(x, 190, w, 56), "Maça başla", theme.Primary))
+            if (GUI.Button(new Rect(x, 190, w * .59f - 4, 56), "Maça başla", theme.Primary))
             {
                 StartLobbyMatch();
                 return;
             }
 
+            if (GUI.Button(new Rect(x + w * .59f + 4, 190, w * .41f - 4, 56), "Atölye", theme.Button))
+            {
+                OpenWorkshop();
+                return;
+            }
             ArenaMenuStyle.Fill(new Rect(x, 270, w, 1), ArenaMenuStyle.Border);
             GUI.Label(new Rect(x, 285, w, 28), "MÜCADELE VE EĞİTİM", theme.Heading);
             if (Button(new Rect(x, 322, w, 46), "Yerel mücadele", challenge != null && challenge.isActiveAndEnabled))
