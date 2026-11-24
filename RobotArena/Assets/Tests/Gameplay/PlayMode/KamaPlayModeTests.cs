@@ -10,6 +10,7 @@ using RobotSavaslari.Match;
 using RobotSavaslari.Presentation;
 using RobotSavaslari.UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
 namespace RobotSavaslari.Gameplay.Tests
@@ -24,12 +25,13 @@ namespace RobotSavaslari.Gameplay.Tests
         [UnitySetUp]
         public IEnumerator Load()
         {
-            yield return GameplayTestScene.LoadMainArena();
-            match = GameplayTestScene.Match;
-            panel = match.GetComponent<PlayerRobotSelection>();
             directory = Path.Combine(Path.GetTempPath(), "RobotArenaKama", Guid.NewGuid().ToString("N"));
             Directory.CreateDirectory(directory);
-            match.HistoryStore = new MatchHistoryStore(Path.Combine(directory, "history.json"));
+            SceneManager.sceneLoaded += IsolateRecords;
+            try { yield return GameplayTestScene.LoadMainArena(); }
+            finally { SceneManager.sceneLoaded -= IsolateRecords; }
+            match = GameplayTestScene.Match;
+            panel = match.GetComponent<PlayerRobotSelection>();
             archive = new MatchReplayArchiveStore(Path.Combine(directory, "replays"));
             MainArenaPresentationInstaller.Install(match.gameObject.scene);
             Assert.That(MainArenaPresentationInstaller.UseArchiveStore(match, archive), Is.True);
@@ -38,6 +40,14 @@ namespace RobotSavaslari.Gameplay.Tests
             int open = arena.Layouts.ToList().FindIndex(layout => layout.name.IndexOf("Open", StringComparison.OrdinalIgnoreCase) >= 0);
             Assert.That(open, Is.GreaterThanOrEqualTo(0), "Open duel layout");
             Assert.That(arena.Select(open), Is.True);
+        }
+
+        private void IsolateRecords(Scene scene, LoadSceneMode mode)
+        {
+            if (scene.name != GameplayTestScene.MainArena) return;
+            foreach (var root in scene.GetRootGameObjects())
+                foreach (var controller in root.GetComponentsInChildren<MatchController>(true))
+                    controller.HistoryStore = new MatchHistoryStore(Path.Combine(directory, "history.json"));
         }
 
         [UnityTearDown]

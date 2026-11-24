@@ -83,8 +83,8 @@ namespace RobotSavaslari.UI
 
         internal bool PrepareKit()
         {
-            if (forkMesh != null) return true;
             if (kit == null || match.Player == null) return false;
+            if (forkMesh != null) return true;
             var damage = match.Player.GetComponent<RobotDamageVisuals>();
             damage.Initialize();
             foreach (var part in damage.Parts)
