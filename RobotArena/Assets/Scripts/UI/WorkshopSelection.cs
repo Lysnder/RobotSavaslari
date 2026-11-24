@@ -28,7 +28,7 @@ namespace RobotSavaslari.UI
     }
 
     [DisallowMultipleComponent]
-    public sealed class WorkshopSelection : MonoBehaviour
+    public sealed class WorkshopSelection : MonoBehaviour, IEquippedDuelRobot
     {
         private MatchController match;
         private PlayerRobotSelection presets;
@@ -47,6 +47,8 @@ namespace RobotSavaslari.UI
 
         public WorkshopLoadout LastModular { get; private set; } = WorkshopLoadout.Default;
         public bool IsModular => modularModel != null;
+        public string ModularRobotId => IsModular && LastModular.IsValid
+            ? $"workshop/{LastModular.chassisId}/{LastModular.tireId}/{LastModular.armorId}/{LastModular.weaponId}" : null;
         public string Notice { get; private set; }
         public bool CanSelect => presets != null && presets.CanSelect && !match.IsPaused && match.RoundNumber == 1;
 
