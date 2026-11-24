@@ -10,6 +10,7 @@ using RobotSavaslari.Presentation;
 using RobotSavaslari.UI;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
 namespace RobotSavaslari.Gameplay.Tests
@@ -30,15 +31,26 @@ namespace RobotSavaslari.Gameplay.Tests
             preference = PlayerPrefs.GetString(DuelSetup.PreferenceKey);
             temporary = Path.Combine(Application.temporaryCachePath, "DuelContract-" + Guid.NewGuid().ToString("N"));
             Directory.CreateDirectory(temporary);
-            yield return GameplayTestScene.LoadMainArena();
+            // Ready extensions can resolve their save directory in Start. Attach the
+            // temporary history store before the first frame of the production scene.
+            SceneManager.sceneLoaded += IsolateSceneRecords;
+            try { yield return GameplayTestScene.LoadMainArena(); }
+            finally { SceneManager.sceneLoaded -= IsolateSceneRecords; }
             match = GameplayTestScene.Match;
             menu = match.GetComponent<MainMenuScreen>();
             selection = match.GetComponent<PlayerRobotSelection>();
-            match.HistoryStore = new MatchHistoryStore(Path.Combine(temporary, "history.json"));
             MainArenaPresentationInstaller.Install(match.gameObject.scene);
             Assert.That(MainArenaPresentationInstaller.UseArchiveStore(match,
                 new MatchReplayArchiveStore(Path.Combine(temporary, "replays"))), Is.True);
             match.ResultDetermined += CountResult;
+        }
+
+        private void IsolateSceneRecords(Scene scene, LoadSceneMode mode)
+        {
+            if (scene.name != GameplayTestScene.MainArena) return;
+            foreach (var root in scene.GetRootGameObjects())
+                foreach (var controller in root.GetComponentsInChildren<MatchController>(true))
+                    controller.HistoryStore = new MatchHistoryStore(Path.Combine(temporary, "history.json"));
         }
 
         private void CountResult(MatchController.MatchOutcome _) => notifications++;
