@@ -48,6 +48,7 @@ namespace RobotSavaslari
         public bool IsComputer { get; private set; }
         public bool CombatStopped { get; private set; }
         public bool WeaponActive { get; private set; }
+        internal float WeaponPushMultiplier { get; set; } = 1f;
         bool IMatchGate.IsOpen => isActiveAndEnabled && !CombatStopped && _opponent != null &&
             !_opponent.CombatStopped && _health != null && !_health.IsDefeated &&
             _damage != null && _damage.WeaponOperational;

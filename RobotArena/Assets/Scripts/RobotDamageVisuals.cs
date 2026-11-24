@@ -32,6 +32,7 @@ namespace RobotSavaslari
         [SerializeField, Min(1)] private float weaponDurability = 45f;
         [SerializeField, Range(2, 30)] private float debrisLifetime = 12f;
         private readonly List<Part> _parts = new List<Part>();
+        private List<Part> _stockParts;
         private readonly List<GameObject> _debris = new List<GameObject>();
         private MaterialPropertyBlock _properties;
         private RobotHealth _health;
@@ -47,6 +48,14 @@ namespace RobotSavaslari
         private bool _initialized;
 
         public IReadOnlyList<Part> Parts => _parts;
+        // Each rig owns its runtime meshes. The currently installed parts receive the normal hit,
+        // repair and detach callbacks regardless of which look is mounted on this robot.
+        internal void InstallParts(IReadOnlyList<Part> parts)
+        {
+            if (_stockParts == null) _stockParts = new List<Part>(_parts);
+            _parts.Clear();
+            for (int i = 0; i < parts.Count; i++) _parts.Add(parts[i]);
+        }
         public int OriginalTriangleCount { get; private set; }
         public int DetachedCount { get; private set; }
         public int LostWheels { get; private set; }
@@ -428,7 +437,7 @@ namespace RobotSavaslari
         private void OnDestroy()
         {
             foreach (GameObject debris in _debris) if (debris != null) Destroy(debris);
-            foreach (Part part in _parts) if (part.Mesh != null) Destroy(part.Mesh);
+            foreach (Part part in _stockParts ?? _parts) if (part.Mesh != null) Destroy(part.Mesh);
             if (_wearMaterial != null) Destroy(_wearMaterial);
             if (_particleMaterial != null) Destroy(_particleMaterial);
             if (_impactClip != null) Destroy(_impactClip);
