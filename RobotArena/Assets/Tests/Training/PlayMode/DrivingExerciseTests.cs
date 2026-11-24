@@ -229,6 +229,84 @@ namespace RobotSavaslari.Training.Tests
             }
         }
 
+        [UnityTest]
+        public IEnumerator PreparationUsesTwoRealAttemptsAndRestoresTheTimeTrial()
+        {
+            yield return SceneManager.LoadSceneAsync("MainArena");
+            yield return null;
+            var match = Object.FindAnyObjectByType<MatchController>();
+            var installer = Object.FindAnyObjectByType<DrivingFeatureInstaller>();
+            bool ownsInstaller = installer == null;
+            if (ownsInstaller) installer = new GameObject("Preparation test").AddComponent<DrivingFeatureInstaller>();
+            yield return null;
+            var session = installer.TimeTrial;
+            var driver = match.Player.GetComponent<PlayerKeyboardDriver>();
+            session.ExerciseStore = new DrivingExerciseStore(SavePath);
+            string course = session.CourseId;
+            int count = match.MatchCount;
+            try
+            {
+                Assert.That(session.StartPreparation(installer.ExerciseCatalog), Is.False);
+                Assert.That(session.Enter(), Is.True);
+                Assert.That(session.StartPreparation(installer.ExerciseCatalog), Is.True);
+                Assert.That(session.StartPreparation(installer.ExerciseCatalog), Is.False);
+                driver.ApplyBindings(UnityEngine.InputSystem.Key.I, UnityEngine.InputSystem.Key.K,
+                    UnityEngine.InputSystem.Key.J, UnityEngine.InputSystem.Key.L,
+                    UnityEngine.InputSystem.Key.B, UnityEngine.InputSystem.Key.H);
+                Assert.That(session.PreparationControls, Does.Contain("I / K").And.Contain("J / L"));
+                Assert.That(session.PreparationControls, Does.Contain("Boost  B").And.Contain("El freni  H"));
+                var body = session.Motor.Body;
+                for (int step = 1; step <= 2; step++)
+                {
+                    Assert.That(session.PreparationStep, Is.EqualTo(step));
+                    Assert.That(session.NextPreparationStep(), Is.False);
+                    // Supply a measured impact to the real active evaluator, then finish the attempt.
+                    var evaluator = (DrivingExerciseSession)typeof(TimeTrialSession)
+                        .GetField("exerciseRun", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                        .GetValue(session);
+                    evaluator.Step(session.GetCheckpoint(0).position, session.Exercise.targetYaw, Vector3.zero,
+                        session.Exercise.dwellSeconds + .1f, 1);
+                    yield return new WaitForFixedUpdate();
+                    Assert.That(session.State, Is.EqualTo(TimeTrialState.Finished));
+                    Assert.That(session.ExerciseResult.success, Is.False);
+                    Assert.That(session.NextPreparationStep(), Is.False);
+                    int revision = session.AttemptRevision;
+                    session.Retry();
+                    Assert.That(session.AttemptRevision, Is.EqualTo(revision + 1));
+                    var target = session.GetCheckpoint(0).position;
+                    target.y = body.position.y;
+                    for (int tick = 0; tick < 120 && session.State == TimeTrialState.Running; tick++)
+                    {
+                        body.position = target;
+                        body.rotation = Quaternion.Euler(0f, session.Exercise.targetYaw, 0f);
+                        body.linearVelocity = Vector3.zero;
+                        yield return new WaitForFixedUpdate();
+                    }
+                    Assert.That(session.ExerciseResult.success, Is.True, session.Notice);
+                    if (step == 1) Assert.That(session.NextPreparationStep(), Is.True);
+                }
+                yield return new WaitForFixedUpdate();
+                Assert.That(session.NextPreparationStep(), Is.False);
+                Assert.That(File.Exists(SavePath), Is.False);
+                session.Exit();
+                yield return null;
+                Assert.That(session.CourseId, Is.EqualTo(course));
+                Assert.That(session.PreparationStep, Is.Zero);
+                Assert.That(match.MatchCount, Is.EqualTo(count));
+                Assert.That(match.GetComponent<MainMenuScreen>().IsShowingReadyMenu, Is.True);
+                Assert.That(session.Enter(), Is.True);
+                Assert.That(session.StartPreparation(installer.ExerciseCatalog), Is.True);
+                session.enabled = false;
+                Assert.That(session.State, Is.EqualTo(TimeTrialState.Inactive));
+                Assert.That(match.RequestCountdown(), Is.True);
+            }
+            finally
+            {
+                session.Exit();
+                if (ownsInstaller) Object.Destroy(installer.gameObject);
+            }
+        }
+
         [Test]
         public void MeasureWarmedEvaluationAndGhostInterpolation()
         {

@@ -187,6 +187,14 @@ namespace RobotSavaslari.Driving
             ClearInput();
         }
 
+        private bool waitForInputRelease;
+
+        public void RequireInputRelease()
+        {
+            ClearInput();
+            waitForInputRelease = true;
+        }
+
         private void ClearInput()
         {
             ForwardInput = 0f;
@@ -240,6 +248,16 @@ namespace RobotSavaslari.Driving
             BoostInput = KeyboardDriveAxes.IsHeld(keyboard, boostKey);
             HandbrakeInput = KeyboardDriveAxes.IsHeld(keyboard, handbrakeKey);
 
+            if (waitForInputRelease)
+            {
+                waitForInputRelease = KeyboardDriveAxes.IsHeld(keyboard, forwardKey) ||
+                    KeyboardDriveAxes.IsHeld(keyboard, backwardKey) || KeyboardDriveAxes.IsHeld(keyboard, turnLeftKey) ||
+                    KeyboardDriveAxes.IsHeld(keyboard, turnRightKey) || BoostInput || HandbrakeInput ||
+                    keyboard.upArrowKey.isPressed || keyboard.downArrowKey.isPressed ||
+                    keyboard.leftArrowKey.isPressed || keyboard.rightArrowKey.isPressed;
+                ClearInput();
+                return;
+            }
             motor.SetMoveCommand(ForwardInput, TurnInput);
 
             if (boost != null)
