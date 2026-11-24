@@ -139,9 +139,9 @@ namespace RobotSavaslari.Presentation
         {
             if (IsPresenting)
             {
-                room.Stop();
-                signals.Stop();
-                model.gameObject.SetActive(false);
+                if (room) room.Stop();
+                if (signals) signals.Stop();
+                if (model) model.gameObject.SetActive(false);
             }
             IsPresenting = false;
             lastCount = 0;
