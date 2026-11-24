@@ -11,6 +11,10 @@ using UnityEngine;
 using UnityEngine.Profiling;
 using UnityEngine.TestTools;
 
+#if UNITY_STANDALONE_WIN && !UNITY_EDITOR
+[assembly: UnityEngine.TestRunner.TestRunCallback(typeof(RobotSavaslari.Presentation.Tests.VenuePlayerResult))]
+#endif
+
 namespace RobotSavaslari.Presentation.Tests
 {
     [UnityPlatform(RuntimePlatform.WindowsPlayer)]
@@ -68,7 +72,12 @@ namespace RobotSavaslari.Presentation.Tests
                     QualitySettings.vSyncCount = 0;
                     Application.targetFrameRate = -1;
                     Screen.SetResolution(h * 16 / 9, h, FullScreenMode.Windowed);
-                    for (int i = 0; i < 25; i++) yield return null;
+                    // Use the game's regular orbit and range so both A/B samples see the stands.
+                    var camera = MainArenaTestScene.Camera;
+                    camera.SetMode(CombatCameraController.CameraMode.Follow);
+                    camera.SetOrbit(12, 37, camera.MaxDistance);
+                    float settle = Time.realtimeSinceStartup + 1.2f;
+                    while (Time.realtimeSinceStartup < settle) yield return null;
                     var menu = match.GetComponent<MainMenuScreen>();
                     var venue = match.GetComponent<ArenaVenue>();
                     venue.enabled = show;
@@ -147,4 +156,22 @@ namespace RobotSavaslari.Presentation.Tests
             Assert.That(Array.Exists(gpu, t => t > 0), Is.True, "GPU frame timing samples");
         }
     }
+
+#if UNITY_STANDALONE_WIN && !UNITY_EDITOR
+    [UnityEngine.Scripting.Preserve]
+    public sealed class VenuePlayerResult : UnityEngine.TestRunner.ITestRunCallback
+    {
+        public void RunStarted(NUnit.Framework.Interfaces.ITest tests) { }
+        public void TestStarted(NUnit.Framework.Interfaces.ITest test) { }
+        public void TestFinished(NUnit.Framework.Interfaces.ITestResult result) { }
+
+        public void RunFinished(NUnit.Framework.Interfaces.ITestResult result)
+        {
+            string target = Environment.GetEnvironmentVariable("ARENA_VENUE_EVIDENCE");
+            if (string.IsNullOrEmpty(target)) return;
+            File.WriteAllText(Path.Combine(target, "player-result.xml"), result.ToXml(true).OuterXml);
+            Application.Quit(result.FailCount == 0 && result.PassCount > 0 ? 0 : 1);
+        }
+    }
+#endif
 }
