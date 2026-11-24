@@ -186,6 +186,8 @@ namespace RobotSavaslari.Combat
                 direction.y = 0f;
                 direction = direction.sqrMagnitude > 1e-6f ? direction.normalized : transform.forward;
                 target.TakeDamage(damage, point, -direction, direction * 2f, true, _health);
+                if (profile != null && profile.pushSpeed > 0f && target.TryGetComponent(out RobotPrototypeController robot))
+                    robot.ApplyKnockback(direction, profile.pushSpeed);
                 TargetHit?.Invoke(this, target, damage);
             }
         }
