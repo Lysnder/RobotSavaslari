@@ -11,14 +11,29 @@ namespace RobotSavaslari.UI
 
         public static WorkshopKit Load() => Resources.Load<WorkshopKit>("WorkshopKit");
 
-        public bool HasParts => chassis && wheel && lightArmor && heavyArmor && spinner && fork && stripeMesh && teamBlue;
+        public bool HasParts => chassis && wheel && lightArmor && heavyArmor && spinner && fork &&
+            fork.TryGetComponent<RobotSavaslari.Combat.ForkLoadout>(out _) && stripeMesh && teamBlue;
 
         public GameObject Build(WorkshopLoadout loadout, Transform parent)
         {
             if (!HasParts || !loadout.IsValid) return null;
             var robot = Instantiate(chassis, parent, false);
             robot.name = "Workshop model";
-            var body = robot.transform;
+            try
+            {
+                Assemble(loadout, robot.transform, parent.rotation);
+                return robot;
+            }
+            catch (System.InvalidOperationException)
+            {
+                robot.SetActive(false);
+                Destroy(robot);
+                return null;
+            }
+        }
+
+        private void Assemble(WorkshopLoadout loadout, Transform body, Quaternion forward)
+        {
             var mount = ModularRobotPreview.Find(body, "WeaponMount_A");
             if (body.InverseTransformPoint(mount.position).z < 0)
                 body.localRotation = Quaternion.Euler(0, 180, 0);
@@ -45,11 +60,10 @@ namespace RobotSavaslari.UI
                 // The stock fork is authored in robot space. Seat its hinge on the kit socket.
                 var tool = Instantiate(fork, mount, false);
                 var module = tool.GetComponent<RobotSavaslari.Combat.ForkLoadout>();
-                tool.transform.rotation = parent.rotation;
+                tool.transform.rotation = forward;
                 tool.transform.localScale = Vector3.one * .76f;
                 tool.transform.position += mount.position - tool.transform.TransformPoint(module.hinge);
             }
-            return robot;
         }
     }
 }

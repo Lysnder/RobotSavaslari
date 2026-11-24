@@ -27,10 +27,25 @@ namespace RobotSavaslari.UI
         {
             if (!IsShowingReadyMenu || _settings.IsOpen) return false;
             var selection = GetComponent<WorkshopSelection>();
-            if (!selection || !selection.CanSelect) return false;
+            if (!selection || !selection.CanSelect)
+            {
+                _setupNotice = "Atölye seçimi şu anda kullanılamıyor.";
+                return false;
+            }
             var kit = WorkshopKit.Load();
-            if (!kit || !kit.HasParts) return false;
+            if (!kit || !kit.HasParts)
+            {
+                _setupNotice = "Atölye parçası eksik. Hazır robot seçebilirsiniz.";
+                return false;
+            }
             _workshop = new WorkshopScreen(selection, kit);
+            if (!_workshop.Draft.IsValid)
+            {
+                CloseWorkshop();
+                _setupNotice = "Şasi ve parça yuvaları doğrulanamadı. Hazır robot seçebilirsiniz.";
+                return false;
+            }
+            _setupNotice = null;
             return true;
         }
 
