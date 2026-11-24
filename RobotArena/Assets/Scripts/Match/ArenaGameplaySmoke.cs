@@ -97,8 +97,8 @@ namespace RobotSavaslari.Match
             var opponentDamage = opponent.GetComponent<RobotDamageVisuals>();
             Vector3 playerSpawn = player.transform.position;
             Vector3 opponentSpawn = opponent.transform.position;
-            playerHealth.Damaged += _ => botDamagedPlayer = true;
-            opponentHealth.Damaged += _ => playerDamagedOpponent = true;
+            playerHealth.Damaged += hit => botDamagedPlayer |= hit.Weapon && hit.Source == opponentHealth;
+            opponentHealth.Damaged += hit => playerDamagedOpponent |= hit.Weapon && hit.Source == playerHealth;
             match.ResultDetermined += _ => results++;
             for (int round = 1; round <= 2; round++)
             {
@@ -160,7 +160,9 @@ namespace RobotSavaslari.Match
                     Vector3 offset = opponent.transform.position - player.transform.position;
                     offset.y = 0;
                     float angle = Vector3.SignedAngle(player.transform.forward, offset, Vector3.up);
-                    var keys = new List<Key> { Key.Space };
+                    // A counterattack is an acceptance condition. Give the bot a real first strike.
+                    var keys = new List<Key>();
+                    if (botDamagedPlayer) keys.Add(Key.Space);
                     if (angle > 8f) keys.Add(Key.D);
                     if (angle < -8f) keys.Add(Key.A);
                     if (Mathf.Abs(angle) < 55f)
