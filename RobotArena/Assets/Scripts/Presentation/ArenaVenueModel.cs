@@ -91,6 +91,7 @@ namespace RobotSavaslari.Presentation
             var steel = new Geometry();
             float pitch = (half.x * 2 - 1.2f) / 3;
             int rows = economy ? 2 : 3;
+            Apron(steel, 2 * half.x + 10.4f, true);
             for (int bay = 0; bay < 3; bay++)
             {
                 float x = (bay - 1) * pitch;
@@ -117,6 +118,15 @@ namespace RobotSavaslari.Presentation
                 steel.Beam(new Vector3(x - pitch * .46f, -.42f, back), new Vector3(x - pitch * .46f, high + .33f, back), .055f, Ink.Frame);
                 steel.Beam(new Vector3(x + pitch * .46f, -.42f, back), new Vector3(x + pitch * .46f, high + .33f, back), .055f, Ink.Frame);
                 steel.Block(x, high + .32f, back, pitch - .12f, .055f, .055f, Ink.Nosing);
+                // A short lit canopy ties each seating bay to the building behind it.
+                float gantry = 1.88f;
+                steel.Block(x, .33f, 4.87f, pitch - .12f, 1.42f, .15f, Ink.Steel);
+                steel.Block(x, .92f, 4.77f, pitch - .12f, .095f, .065f, Ink.Cap);
+                for (int post = -1; post <= 1; post += 2)
+                    steel.Beam(new Vector3(x + post * pitch * .45f, -.38f, 4.83f),
+                        new Vector3(x + post * pitch * .45f, gantry, 4.59f), .075f, Ink.Frame);
+                steel.Block(x, gantry, 4.60f, pitch - .07f, .12f, .30f, Ink.Frame);
+                steel.Block(x, gantry - .035f, 4.43f, pitch - .43f, .042f, .048f, Ink.Ice);
                 if (bay < 2)
                     for (int step = 0; step < rows * 2; step++)
                         steel.Block(x + pitch * .5f, -.40f + step * .17f, 1.41f + step * .39f,
@@ -145,6 +155,7 @@ namespace RobotSavaslari.Presentation
         {
             Ink color = team == 0 ? Ink.Blue : Ink.Orange;
             var steel = new Geometry();
+            Apron(steel, half.y * 2, false);
             steel.Block(0, -.22f, 2.20f, 3.02f, .25f, 1.74f, Ink.Frame);
             steel.Block(0, -.077f, 2.20f, 3.07f, .055f, 1.77f, Ink.Nosing);
             // Open front preserves the sight line to the pilot and the two desk monitors.
@@ -168,6 +179,11 @@ namespace RobotSavaslari.Presentation
             Digit(steel, team + 1, -1.02f, .97f, 2.67f, .66f, Ink.Ivory);
             // Same marking on the fascia is visible from both follow and elevated duel views.
             Digit(steel, team + 1, -.89f, .26f, 1.386f, .37f, Ink.Ivory);
+            // The numbers on the upright panels and on the canopy read from floor and orbit views.
+            steel.Block(-.78f, 1.50f, 2.54f, 1.04f, .046f, .95f, color);
+            int signStart = steel.VertexCount;
+            Digit(steel, team + 1, 0, 0, 0, .70f, Ink.White);
+            steel.PlaceFrom(signStart, new Vector3(-.78f, 1.54f, 2.54f), Quaternion.Euler(90, 0, 0));
             var people = economy ? steel : new Geometry();
             Pilot(people, .12f, 2.24f, color, true);
             if (!economy) Pilot(people, .91f, 2.43f, Ink.Navy, false);
@@ -178,6 +194,22 @@ namespace RobotSavaslari.Presentation
             signal.Block(.73f, 1.44f, 2.22f, .87f, .065f, .063f, Ink.White);
             signal.Block(.67f, .41f, 1.39f, .76f, .052f, .045f, Ink.White);
             lamps[team] = Draw(parent, "Team signal " + (team + 1), signal);
+        }
+
+        private static void Apron(Geometry geometry, float width, bool bleachers)
+        {
+            const float depth = 5.15f;
+            geometry.Block(0, -.48f, depth * .5f + .04f, width, .22f, depth, Ink.Navy);
+            geometry.Block(0, -.355f, .44f, width, .024f, .075f, Ink.Nosing);
+            geometry.Block(0, -.355f, depth + .01f, width, .024f, .10f, Ink.Frame);
+            int panels = Mathf.CeilToInt(width / 2);
+            for (int i = 1; i < panels; i++)
+            {
+                float x = width * ((float)i / panels - .5f);
+                geometry.Block(x, -.366f, depth * .5f, .019f, .009f, depth - .20f, Ink.Frame);
+                if (bleachers || Mathf.Abs(x) < 1.5f) continue;
+                geometry.Block(x, -.350f, .72f, .52f, .012f, .08f, Ink.Ochre);
+            }
         }
 
         private static void Pilot(Geometry g, float x, float z, Ink jacket, bool primary)
@@ -224,7 +256,7 @@ namespace RobotSavaslari.Presentation
                     float across = i < 2 ? Mathf.Abs(p.x) : Mathf.Abs(p.z);
                     // Sightline from the lens to a robot at the nearest legal edge.
                     float sightHeight = .35f + (p.y - .35f) * 2.0f / Mathf.Max(2.0f, edge + .7f);
-                    bool obscure = edge > .85f && across < (i < 2 ? half.x + .6f : 1.9f) && sightHeight < (i < 2 ? 1.85f : 1.75f);
+                    bool obscure = edge > .85f && across < (i < 2 ? half.x + .6f : 1.9f) && sightHeight < (i < 2 ? 2.1f : 1.75f);
                     if (sides[i].gameObject.activeSelf == obscure) sides[i].gameObject.SetActive(!obscure);
                 }
             }
@@ -289,6 +321,12 @@ namespace RobotSavaslari.Presentation
             private readonly List<Vector3> vertices = new List<Vector3>();
             private readonly List<Vector2> uv = new List<Vector2>();
             private readonly List<int> indices = new List<int>();
+            public int VertexCount => vertices.Count;
+
+            public void PlaceFrom(int first, Vector3 position, Quaternion rotation)
+            {
+                for (int i = first; i < vertices.Count; i++) vertices[i] = position + rotation * vertices[i];
+            }
 
             public void Block(float x, float y, float z, float w, float h, float d, Ink ink) =>
                 Taper(new Vector3(x, y, z), w, d, w, d, h, ink, Quaternion.identity);
