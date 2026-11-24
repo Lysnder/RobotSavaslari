@@ -48,6 +48,7 @@ namespace RobotSavaslari.UI
         private Vector2 _exerciseScroll;
         private string _exerciseNotice;
         private OpponentSelectionPanel _opponentPanel;
+        private PlayerRobotSelection _robotPanel;
         private MatchReplayArchiveScreen _archive;
 
         private static readonly float[] RoundLimits = { 0f, 60f, 120f, 180f };
@@ -196,6 +197,7 @@ namespace RobotSavaslari.UI
                 QuitGame();
 
             DrawSetup(new Rect(width - Outer - SetupWidth, Outer, SetupWidth, height - Outer * 2), width, height);
+            if (_robotPanel != null) _robotPanel.DrawReadyCard(width, height);
         }
 
         private bool DrawExerciseMenu(TimeTrialSession trial, float x, float width)
@@ -338,6 +340,7 @@ namespace RobotSavaslari.UI
         {
             if (_arena == null) _arena = FindAnyObjectByType<ArenaEnvironment>();
             if (_opponentPanel == null) _opponentPanel = GetComponent<OpponentSelectionPanel>();
+            if (_robotPanel == null) _robotPanel = GetComponent<PlayerRobotSelection>();
             if (_loadedSetup || !IsShowingReadyMenu || _arena?.Layout == null || _opponentPanel == null) return;
             _loadedSetup = true;
             if (!PlayerPrefs.HasKey(DuelSetup.PreferenceKey)) return;
