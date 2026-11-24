@@ -550,6 +550,28 @@ namespace RobotSavaslari.Presentation.Tests
             Assert.That(entries[0].Bytes, Is.EqualTo(new FileInfo(entry.Path).Length));
         }
 
+        [TestCase("Open")]
+        [TestCase("Tactical")]
+        public void OriginalRevisionOneBytesStillSeekAcrossTheEncounter(string arena)
+        {
+            string path = Path.Combine(Application.dataPath, "Tests/Presentation/EditMode/Fixtures", arena + "V1.bytes");
+            byte[] original = File.ReadAllBytes(path);
+            using (var reader = MatchReplayArchiveReader.Open(path, out string error))
+            {
+                Assert.That(reader, Is.Not.Null, error);
+                Assert.That(reader.Info.ContentRevision, Is.EqualTo(1));
+                Assert.That(reader.Info.ArenaName, Is.EqualTo(arena));
+                Assert.That(reader.Info.HazardTrackCount, Is.Zero);
+                Assert.That(reader.VerifyAllChunks(out error), Is.True, error);
+                var poses = new MatchReplayClip.Pose[reader.Info.DynamicTrackCount];
+                foreach (float t in new[] { reader.EndTime, reader.StartTime, reader.EndTime * 0.5f })
+                    Assert.That(reader.Sample(t, poses, null, null, out error), Is.True, error);
+                foreach (ReplayEvent item in reader.Info.Events)
+                    Assert.That(item.Source, Is.EqualTo(ReplayImpactSource.Unknown));
+            }
+            CollectionAssert.AreEqual(original, File.ReadAllBytes(path));
+        }
+
         [Test]
         public void KeysFollowTheWhitelist()
         {
@@ -557,6 +579,8 @@ namespace RobotSavaslari.Presentation.Tests
             Assert.That(MatchReplayArchive.IsValidKey("robot/Kırmızı Robot/Robot Model/Body#2"), Is.True);
             Assert.That(MatchReplayArchive.IsValidKey("debris/Mavi Robot/Robot Model/Spinner"), Is.True);
             Assert.That(MatchReplayArchive.IsValidKey("layout/3/Arena Conveyor (2, 1)/Conveyor Direction/Direction Mark"), Is.True);
+            Assert.That(MatchReplayArchive.IsValidKey("layout/3/Pulse (2, 2)/Pulse floor marker"), Is.True);
+            Assert.That(MatchReplayArchive.IsValidKey("layout/3/Sweep (2, 2)/Pulse floor marker"), Is.False);
             foreach (string key in new[] { null, "", "robot/", "robot/Name", "robot/Name//Part", "robot/../Part", "robot/Name/ Part", "robot/Name/Part\\x",
                          "robot/Name/Part:1", "file/Name/Part", "layout/x/Arena Obstacle", "layout/1/Pulse (2, 2)", "layout/1/Arena Obstacle/Hazard Cylinder",
                          "robot/Name/" + new string('a', 600) })

@@ -152,6 +152,8 @@ namespace RobotSavaslari.Presentation.Tests
             float playerHealth = Match.Player.GetComponent<RobotHealth>().CurrentHealth;
             float opponentHealth = Match.Opponent.GetComponent<RobotHealth>().CurrentHealth;
             int matchCount = Match.MatchCount;
+            // A Ready rigidbody can settle between rendered frames. Hold the reference pose for the ownership check.
+            MainArenaTestScene.PlaceRobot(Match.Player, Match.Player.transform.position, true);
             Vector3 playerPosition = Match.Player.transform.position;
             int healthEvents = 0;
             Action<RobotHealth> onHealth = _ => healthEvents++;
@@ -257,6 +259,7 @@ namespace RobotSavaslari.Presentation.Tests
             Assert.That(info.Chunks.Count(c => c.Round == 0), Is.GreaterThan(0));
             Assert.That(info.Chunks.Count(c => c.Round == 1), Is.GreaterThan(0));
             StringAssert.StartsWith("Seri 2-0", info.Title);
+            SaveAcceptanceCopy(SingleEntry());
 
             // A second encounter gets its own archive.
             yield return BackToReady();
@@ -605,7 +608,11 @@ namespace RobotSavaslari.Presentation.Tests
             string Compatibility(string path) => _player.CheckCompatibility(entries.First(e => e.Path == path).Info);
             Assert.That(Compatibility(good.Path), Is.Null);
             StringAssert.Contains("robot bulunamadı", Compatibility(renamed));
-            StringAssert.Contains("içerik revizyonu", Compatibility(revision));
+            var future = entries.Single(e => e.Path == revision);
+            StringAssert.Contains("içerik revizyonu", future.Error);
+            byte[] futureBytes = File.ReadAllBytes(future.Path);
+            Assert.That(_screen.Play(future), Is.False);
+            CollectionAssert.AreEqual(futureBytes, File.ReadAllBytes(future.Path));
 
             Assert.That(_screen.Play(entries.First(e => e.Path == renamed)), Is.False);
             StringAssert.Contains("Uyumsuz", _screen.Notice);
@@ -658,6 +665,196 @@ namespace RobotSavaslari.Presentation.Tests
         }
 
         // ---- Arena and cost -------------------------------------------------------------------------
+
+        [UnityTest, UnityPlatform(RuntimePlatform.WindowsEditor)]
+        public IEnumerator ReadyMenuPlaysOriginalV1Archive([Values("Open", "Tactical")] string arena)
+        {
+            yield return Load();
+            string fixture = Path.Combine(Application.dataPath, "Tests/Presentation/EditMode/Fixtures", arena + "V1.bytes");
+            var info = MatchReplayArchive.ReadInfo(fixture, out string error);
+            Assert.That(info, Is.Not.Null, error);
+            Directory.CreateDirectory(_store.DirectoryPath);
+            File.Copy(fixture, Path.Combine(_store.DirectoryPath, info.Id + ".rpl"));
+            Assert.That(_screen.OpenArchive(), Is.True, _screen.Notice);
+            Assert.That(_screen.Play(_screen.Entries.Single()), Is.True, _screen.Notice);
+            AssertLookOnly(_player.ProxyRoot);
+            _screen.FilterEvents(4, 0);
+            Assert.That(_screen.JumpToListedEvent(0), Is.True);
+            _player.Seek(_player.Duration);
+            Assert.That(_player.IsFinished, Is.True);
+            _player.Seek(0f);
+            _screen.CloseArchive();
+            Assert.That(Match.GetComponent<MainMenuScreen>().IsShowingReadyMenu, Is.True);
+        }
+
+        [UnityTest]
+        public IEnumerator FullEncounterReopensWithFilteredEventsAndRecordedHazards(
+            [Values("Open", "Tactical", "PulseArena", "SweepArena")] string arena)
+        {
+            yield return Load();
+            var environment = Object.FindAnyObjectByType<ArenaEnvironment>();
+            int layoutIndex = environment.Layouts.ToList().FindIndex(layout => layout.displayName == arena);
+            Assert.That(environment.Select(layoutIndex), Is.True, arena);
+            yield return MainArenaTestScene.StartPlaying();
+            SeparateRobots();
+            yield return new WaitForSeconds(1.2f);
+            Match.Opponent.GetComponent<RobotHealth>().TakeDamage(1f, Match.Opponent.transform.position, Vector3.up, Vector3.zero, true);
+            yield return new WaitForSeconds(3.2f);
+            long held = _recorder.HeldBytes;
+            _recorder.GetSampleTimings(out _, out float writeP95, out _);
+            Match.Defeat(false);
+            yield return null;
+            var entry = SingleEntry();
+            Assert.That(entry.Info.IsComplete, Is.True, entry.Info.Warning);
+            Assert.That(entry.Info.ArenaName, Is.EqualTo(arena));
+            Assert.That(entry.Info.Tracks.Count, Is.LessThanOrEqualTo(128));
+            string originalId = entry.Id;
+            SaveAcceptanceCopy(entry);
+
+            // Dispose all scene objects and reopen the same archive directory on a fresh Ready screen.
+            yield return MainArenaTestScene.Load();
+            var reopened = new MatchReplayArchiveStore(_store.DirectoryPath);
+            Assert.That(MainArenaPresentationInstaller.UseArchiveStore(Match, reopened), Is.True);
+            _screen = Match.GetComponent<MatchReplayArchiveScreen>();
+            _player = Match.GetComponent<MatchReplayArchivePlayer>();
+            Assert.That(_screen.OpenArchive(), Is.True, _screen.Notice);
+            Assert.That(_screen.Entries.Single().Id, Is.EqualTo(originalId));
+            Assert.That(_screen.Play(_screen.Entries[0]), Is.True, _screen.Notice);
+            AssertLookOnly(_player.ProxyRoot);
+            var info = _player.Info;
+            _screen.FilterEvents(1, 0);
+            Assert.That(_screen.JumpToListedEvent(0), Is.True);
+            var hit = info.Events.First(item => item.Type == ReplayEventType.Impact);
+            Assert.That(_player.PlaybackTime, Is.EqualTo(hit.Time).Within(.0001f));
+            Assert.That(_player.IsPaused, Is.True);
+            Assert.That(info.Events.Exists(item => item.Source == ReplayImpactSource.Weapon), Is.True);
+            Assert.That(_player.StepFrame(-1), Is.True);
+            Assert.That(_player.PlaybackTime, Is.LessThan(hit.Time));
+            _player.Seek(hit.Time);
+            Assert.That(_player.StepFrame(1), Is.True);
+            Assert.That(_player.PlaybackTime, Is.GreaterThan(hit.Time));
+
+            if (arena == "PulseArena" || arena == "SweepArena")
+            {
+                _screen.FilterEvents(3, 0);
+                Assert.That(_screen.JumpToListedEvent(0), Is.True);
+                int track = info.Tracks.FindIndex(t => t.Kind == ReplayTrackKind.HazardMarker);
+                Assert.That(track, Is.GreaterThanOrEqualTo(0));
+                var marker = _player.GetProxy(track).transform;
+                var changes = info.Events.Where(item => item.Type == ReplayEventType.HazardPhaseChanged && item.Track == track).ToList();
+                foreach (HazardPhase phase in new[] { HazardPhase.Warning, HazardPhase.Active, HazardPhase.Recovery })
+                    Assert.That(changes.Exists(item => item.Phase == phase), Is.True, phase.ToString());
+                float active = changes.First(item => item.Phase == HazardPhase.Active).Time;
+                _player.Seek(active);
+                Vector3 start = marker.position;
+                Assert.That(marker.localScale.y, Is.EqualTo(.24f).Within(.001f));
+                _player.Seek(active + .4f);
+                float distance = Vector3.Distance(start, marker.position);
+                if (arena == "SweepArena") Assert.That(distance, Is.GreaterThan(.1f));
+                else Assert.That(distance, Is.LessThan(.01f));
+                _player.Seek(active - .001f);
+                Assert.That(marker.localScale.y, Is.LessThan(.15f), "previous warning frame");
+                _player.Seek(changes.First(item => item.Phase == HazardPhase.Recovery).Time);
+                Assert.That(marker.localScale.y, Is.EqualTo(.015f).Within(.001f));
+            }
+
+            var random = new System.Random(24);
+            var times = new double[100];
+            for (int i = 0; i < times.Length; i++)
+            {
+                var clock = System.Diagnostics.Stopwatch.StartNew();
+                _player.Seek((float)random.NextDouble() * _player.Duration);
+                times[i] = clock.Elapsed.TotalMilliseconds;
+            }
+            Array.Sort(times);
+            Debug.Log($"[REPLAY-03] {arena} tracks={info.Tracks.Count} frames={info.Chunks.Sum(c => c.FrameCount)} " +
+                $"bytes={entry.Bytes} writeP95ms={writeP95:F3} seekP95ms={times[94]:F3} writerHeld={held} readerHeld={_player.Reader.DecodedBytes}");
+            Assert.That(times[94], Is.LessThan(200));
+            Assert.That(writeP95, Is.LessThan(2));
+            _screen.FilterEvents(4, 0);
+            Assert.That(_screen.JumpToListedEvent(2), Is.True);
+            Assert.That(_player.IsFinished, Is.True);
+            Assert.That(_player.StepFrame(1), Is.False);
+            _screen.CloseArchive();
+            Assert.That(Match.GetComponent<MainMenuScreen>().IsShowingReadyMenu, Is.True);
+        }
+
+        // An opt-in Windows player run leaves its five encounters in a fresh QA directory for a second process.
+        private static void SaveAcceptanceCopy(MatchReplayArchiveStore.Entry entry)
+        {
+            string output = Environment.GetEnvironmentVariable("REPLAY03_ACCEPTANCE_DIR");
+            if (string.IsNullOrEmpty(output)) return;
+            File.Copy(entry.Path, Path.Combine(output, entry.Id + MatchReplayArchive.FileExtension));
+        }
+
+        [UnityTest, UnityPlatform(RuntimePlatform.WindowsPlayer), Explicit("Requires the five files recorded by the preceding Windows player run.")]
+        public IEnumerator ReopenEncountersAfterPlayerRestart()
+        {
+            string path = Environment.GetEnvironmentVariable("REPLAY03_ACCEPTANCE_DIR");
+            if (string.IsNullOrEmpty(path)) Assert.Ignore("Run with the isolated archive directory from the preceding Windows test player.");
+            yield return Load();
+            var previousRun = new MatchReplayArchiveStore(path);
+            Assert.That(MainArenaPresentationInstaller.UseArchiveStore(Match, previousRun), Is.True);
+            Assert.That(_screen.OpenArchive(), Is.True, _screen.Notice);
+            var entries = _screen.Entries;
+            Assert.That(entries.Count, Is.EqualTo(5));
+            Assert.That(entries.Select(e => e.Info.ArenaName).Distinct().Count(), Is.EqualTo(4));
+            Assert.That(entries.Any(e => e.Info.Rounds.Count == 2), Is.True);
+            foreach (var entry in entries)
+            {
+                Assert.That(_screen.Play(entry), Is.True, _screen.Notice);
+                _screen.FilterEvents(4, entry.Info.Rounds.Count - 1);
+                Assert.That(_screen.JumpToListedEvent(2), Is.True);
+                Assert.That(_player.IsFinished, Is.True);
+                _player.Stop();
+            }
+            _screen.CloseArchive();
+            Assert.That(Match.GetComponent<MainMenuScreen>().IsShowingReadyMenu, Is.True);
+        }
+
+        [UnityTest]
+        public IEnumerator PulseDamageKeepsItsUnknownSourceWhileWeaponAndRobotContactAreIdentified()
+        {
+            yield return Load();
+            var arena = Object.FindAnyObjectByType<ArenaEnvironment>();
+            Assert.That(arena.Select(arena.Layouts.ToList().FindIndex(layout => layout.displayName == "PulseArena")), Is.True);
+            yield return MainArenaTestScene.StartPlaying();
+            SeparateRobots();
+            var hazard = arena.Contents.GetComponentInChildren<ArenaHazard>();
+            Vector3 point = hazard.transform.position;
+            point.y = MainArenaTestScene.Floor;
+            MainArenaTestScene.PlaceRobot(Match.Player, point, true);
+            yield return null;
+            var source = Match.Player.GetComponent<RobotHealth>();
+            var target = Match.Opponent.GetComponent<RobotHealth>();
+            target.TakeDamage(1f, target.transform.position, Vector3.up, Vector3.zero, true, source);
+            target.TakeDamage(1f, target.transform.position, Vector3.up, Vector3.zero, false, source);
+            yield return new WaitForSeconds(3f);
+            Match.Defeat(false);
+            yield return null;
+            var info = SingleEntry().Info;
+            var impacts = info.Events.FindAll(item => item.Type == ReplayEventType.Impact);
+            Assert.That(impacts.Exists(item => item.Robot == MatchReplayRecorder.OpponentRobot && item.Source == ReplayImpactSource.Weapon), Is.True);
+            Assert.That(impacts.Exists(item => item.Robot == MatchReplayRecorder.OpponentRobot && item.Source == ReplayImpactSource.RobotContact), Is.True);
+            var environmental = impacts.First(item => item.Robot == MatchReplayRecorder.PlayerRobot);
+            Assert.That(environmental.Source, Is.EqualTo(ReplayImpactSource.Unknown));
+            StringAssert.Contains("Kaynak belirsiz", MatchReplayArchive.DescribeEvent(environmental, info));
+        }
+
+        [UnityTest]
+        public IEnumerator InterruptedEncounterIsCommittedOnceWhenRecorderIsEnabledAgain()
+        {
+            yield return Load();
+            yield return MainArenaTestScene.StartPlaying();
+            yield return new WaitForSeconds(.2f);
+            _recorder.enabled = false;
+            Assert.That(SingleEntry().Info.Completeness, Is.EqualTo(ReplayCompleteness.Interrupted));
+            _recorder.enabled = true;
+            yield return new WaitForSeconds(.2f);
+            Match.Defeat(false);
+            yield return null;
+            Assert.That(_store.List().Count, Is.EqualTo(1));
+        }
 
         [UnityTest]
         public IEnumerator ExistingBarrierAndConveyorsAreRecordedAsWhitelistedTracks()
@@ -741,6 +938,7 @@ namespace RobotSavaslari.Presentation.Tests
         public IEnumerator RecordingAddsNoManagedHeapGrowth()
         {
             yield return Load();
+            _recorder.enabled = false;
             yield return MainArenaTestScene.StartPlaying();
             SeparateRobots();
             Time.captureDeltaTime = 1f / MatchReplayArchive.SampleRate;
@@ -750,7 +948,7 @@ namespace RobotSavaslari.Presentation.Tests
                 _recorder.enabled = phase == 1;
                 if (phase == 1)
                 {
-                    // Re-enabling starts a fresh archive on the next playing frame (the previous one was closed as interrupted).
+                    // First enable in this encounter begins its one interrupted archive.
                     yield return null;
                     Assert.That(_recorder.IsRecording, Is.True, _recorder.LastStatus);
                 }

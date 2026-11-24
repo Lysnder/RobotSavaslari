@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using UnityEngine;
+using RobotSavaslari.Arena;
 
 namespace RobotSavaslari.Presentation
 {
@@ -17,7 +18,16 @@ namespace RobotSavaslari.Presentation
         LayoutStatic = 3,
         /// <summary>Arena layout geometry that moves or blinks (the warning barrier).</summary>
         LayoutDynamic = 4,
+        HazardMarker = 5,
     }
+
+    public struct ReplayHazardSample
+    {
+        public Vector3 Scale;
+        public HazardPhase Phase;
+    }
+
+    public enum ReplayImpactSource : byte { Unknown, Weapon, RobotContact }
 
     public enum ReplayEventType : byte
     {
@@ -26,6 +36,7 @@ namespace RobotSavaslari.Presentation
         PartDetached = 3,
         RoundEnd = 4,
         EncounterEnd = 5,
+        HazardPhaseChanged = 6,
     }
 
     /// <summary>Why an archive is not a full record of its encounter. Zero means complete.</summary>
@@ -66,6 +77,8 @@ namespace RobotSavaslari.Presentation
         /// <summary>Wear column in each frame, or -1. Assigned by <see cref="ReplayArchiveInfo.AssignColumns"/>.</summary>
         public int WearColumn = -1;
 
+        public int HazardColumn = -1;
+        public bool IsLayout => Kind == ReplayTrackKind.LayoutStatic || Kind == ReplayTrackKind.LayoutDynamic || Kind == ReplayTrackKind.HazardMarker;
         public bool IsDynamic => Kind != ReplayTrackKind.LayoutStatic;
     }
 
@@ -87,6 +100,8 @@ namespace RobotSavaslari.Presentation
         /// <summary>Order of arrival; ties in <see cref="Time"/> keep this order.</summary>
         public int Sequence;
         public ReplayEventType Type;
+        public ReplayImpactSource Source;
+        public HazardPhase Phase;
         public int Robot;
         public int Round;
         /// <summary>The detached part's track, or -1.</summary>
@@ -149,20 +164,23 @@ namespace RobotSavaslari.Presentation
         public long FileBytes;
 
         public int DynamicTrackCount { get; private set; }
+        public int HazardTrackCount { get; private set; }
         public int WearTrackCount { get; private set; }
         public bool IsComplete => Completeness == ReplayCompleteness.Complete;
 
         /// <summary>Gives every dynamic track its frame column and every wear track its wear column.</summary>
         public void AssignColumns()
         {
-            int columns = 0, wear = 0;
+            int columns = 0, wear = 0, hazards = 0;
             foreach (ReplayTrack track in Tracks)
             {
                 track.Column = track.IsDynamic ? columns++ : -1;
+                track.HazardColumn = track.Kind == ReplayTrackKind.HazardMarker ? hazards++ : -1;
                 track.WearColumn = track.IsDynamic && track.Wear ? wear++ : -1;
             }
             DynamicTrackCount = columns;
             WearTrackCount = wear;
+            HazardTrackCount = hazards;
         }
 
         public DateTime CreatedLocal => DateTime.TryParse(CreatedUtc, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime value)
@@ -183,10 +201,12 @@ namespace RobotSavaslari.Presentation
     public static class MatchReplayArchive
     {
         public const int SchemaVersion = 1;
-        /// <summary>Version of the track key rules and template mapping. Archives of another revision are incompatible.</summary>
-        public const int ContentRevision = 1;
+        /// <summary>Revision 2 adds hazard samples and known impact sources. Revision 1 retains its original layout.</summary>
+        public const int ContentRevision = 2;
+        public static bool SupportsRevision(int revision) => revision == 1 || revision == ContentRevision;
         public const int SampleRate = 20;
         public const int FramesPerChunk = 20;
+        public const int HazardBytes = 13; // world scale + phase for each hazard marker
         public const int MaxTracks = 128;
         public const int MaxEvents = 4096;
         /// <summary>Round and encounter boundaries may use this many slots beyond <see cref="MaxEvents"/>.</summary>
@@ -206,10 +226,14 @@ namespace RobotSavaslari.Presentation
 
         private static readonly byte[] Magic = { (byte)'R', (byte)'S', (byte)'R', (byte)'A' };
 
-        public static int FrameBytes(int dynamicTracks) => 4 + dynamicTracks * PoseBytes;
+        public static string ReadFailureLabel(string error) =>
+            error != null && error.StartsWith("Uyumsuz:", StringComparison.Ordinal)
+                ? error : "Bozuk kayıt: " + error;
+
+        public static int FrameBytes(int dynamicTracks, int hazards = 0) => 4 + dynamicTracks * PoseBytes + hazards * HazardBytes;
         public static int ChunkPrefixBytes(int wearTracks) => 12 + wearTracks * MarksPerWearTrack * 16;
-        public static long ChunkBytes(int frames, int dynamicTracks, int wearTracks) =>
-            ChunkPrefixBytes(wearTracks) + (long)frames * FrameBytes(dynamicTracks);
+        public static long ChunkBytes(int frames, int dynamicTracks, int wearTracks, int hazards = 0) =>
+            ChunkPrefixBytes(wearTracks) + (long)frames * FrameBytes(dynamicTracks, hazards);
 
         // ---- Track keys -------------------------------------------------------------------------
 
@@ -228,15 +252,21 @@ namespace RobotSavaslari.Presentation
         public static bool IsDynamicLayoutName(string name) => name == "Moving Barrier" || name == "Barrier Warning";
 
         /// <summary>ArenaContent values whose visuals this build records and draws.</summary>
-        public static readonly string[] SupportedCellContents = { "Floor", "Obstacle", "Hazard", "Conveyor" };
+        public static readonly string[] SupportedCellContents = { "Floor", "Obstacle", "Hazard", "Conveyor", "Pulse", "Sweep" };
 
         public static bool IsSupportedLayoutName(string name)
         {
             if (string.IsNullOrEmpty(name)) return false;
+            if (name == "Pulse floor marker" || name == "Sweep floor marker" ||
+                IsHazardParent(name)) return true;
             foreach (string allowed in LayoutNames)
                 if (name == allowed || name.StartsWith(allowed + " ", StringComparison.Ordinal)) return true;
             return false;
         }
+
+        private static bool IsHazardParent(string name) =>
+            name.Length == 12 && (name.StartsWith("Pulse (", StringComparison.Ordinal) || name.StartsWith("Sweep (", StringComparison.Ordinal)) &&
+            name[7] >= '0' && name[7] <= '7' && name[8] == ',' && name[9] == ' ' && name[10] >= '0' && name[10] <= '7' && name[11] == ')';
 
         public static bool IsSupportedCellContent(string content) => Array.IndexOf(SupportedCellContents, content) >= 0;
 
@@ -266,7 +296,12 @@ namespace RobotSavaslari.Presentation
                 // layout/<index>/<object path>: the index is a number and every object is a known layout object.
                 if (!int.TryParse(segments[0], out int index) || index < 0) return false;
                 for (int i = 1; i < segments.Length; i++)
-                    if (!IsSupportedLayoutName(segments[i])) return false;
+                {
+                    string segment = segments[i];
+                    if (!IsSupportedLayoutName(segment)) return false;
+                    if (IsHazardParent(segment) || segment.EndsWith(" floor marker", StringComparison.Ordinal))
+                        return segments.Length == 3 && i == 1 && IsHazardParent(segment) && segments[2] == segment.Substring(0, 5) + " floor marker";
+                }
             }
             return true;
         }
@@ -467,6 +502,8 @@ namespace RobotSavaslari.Presentation
                     WriteVector(writer, item.Normal);
                     writer.Write(item.Amount);
                     writer.Write(item.Outcome);
+                    if (info.ContentRevision >= 2 && item.Type == ReplayEventType.Impact) writer.Write((byte)item.Source);
+                    if (info.ContentRevision >= 2 && item.Type == ReplayEventType.HazardPhaseChanged) writer.Write((byte)item.Phase);
                 }
 
                 writer.Write(info.Cells.Count);
@@ -552,8 +589,8 @@ namespace RobotSavaslari.Presentation
                 if (header[i] != Magic[i]) return Fail("Bu bir tekrar kaydı değil.", out error);
             int offset = Magic.Length;
             int schema = ReadInt32(header, ref offset);
-            if (schema > SchemaVersion) return Fail($"Kayıt daha yeni bir sürümden (biçim {schema}); bu sürüm açamaz.", out error);
-            if (schema != SchemaVersion) return Fail($"Bilinmeyen kayıt biçimi {schema}.", out error);
+            if (schema > SchemaVersion) return Fail($"Uyumsuz: Kayıt daha yeni bir sürümden (biçim {schema}); bu sürüm açamaz.", out error);
+            if (schema != SchemaVersion) return Fail($"Uyumsuz: Bilinmeyen kayıt biçimi {schema}.", out error);
             long footerOffset = (uint)ReadInt32(header, ref offset) | (long)ReadInt32(header, ref offset) << 32;
             int footerLength = ReadInt32(header, ref offset);
             uint footerCrc = unchecked((uint)ReadInt32(header, ref offset));
@@ -590,6 +627,7 @@ namespace RobotSavaslari.Presentation
             {
                 var info = new ReplayArchiveInfo();
                 info.ContentRevision = reader.ReadInt32();
+                if (!SupportsRevision(info.ContentRevision)) return Fail($"Uyumsuz: içerik revizyonu {info.ContentRevision}.", out error);
                 info.Id = ReadString(reader);
                 info.EncounterId = ReadString(reader);
                 info.CreatedUtc = ReadString(reader);
@@ -640,7 +678,11 @@ namespace RobotSavaslari.Presentation
                     if (!Enum.IsDefined(typeof(ReplayTrackKind), track.Kind) || track.Robot < -1 || track.Robot > 1 || track.MeshSignature < 0)
                         return Fail("İz türü geçersiz.", out error);
                     bool layoutKey = track.Key.StartsWith(LayoutPrefix, StringComparison.Ordinal);
-                    bool layoutKind = track.Kind == ReplayTrackKind.LayoutStatic || track.Kind == ReplayTrackKind.LayoutDynamic;
+                    bool layoutKind = track.IsLayout;
+                    bool markerKey = layoutKey && IsHazardKey(track.Key);
+                    if ((track.Kind == ReplayTrackKind.HazardMarker) != markerKey ||
+                        (markerKey && (info.ContentRevision == 1 || track.Wear || track.Robot != -1)))
+                        return Fail("Tehlike izi içerik revizyonuyla uyuşmuyor.", out error);
                     if (layoutKey != layoutKind || (track.Kind == ReplayTrackKind.RobotDebris) != track.Key.StartsWith(DebrisPrefix, StringComparison.Ordinal))
                         return Fail("İz anahtarı türüyle uyuşmuyor.", out error);
                     if (!IsFinite(track.Scale) || !IsFinite(track.StaticPosition) || !IsFinite(new Vector4(track.StaticRotation.x, track.StaticRotation.y, track.StaticRotation.z, track.StaticRotation.w)) ||
@@ -680,6 +722,18 @@ namespace RobotSavaslari.Presentation
                         Robot = reader.ReadSByte(), Round = reader.ReadInt32(), Track = reader.ReadInt32(),
                         Point = ReadVector(reader), Normal = ReadVector(reader), Amount = reader.ReadSingle(), Outcome = reader.ReadInt32(),
                     };
+                    if (info.ContentRevision >= 2 && item.Type == ReplayEventType.Impact)
+                    {
+                        item.Source = (ReplayImpactSource)reader.ReadByte();
+                        if (item.Source > ReplayImpactSource.RobotContact) return Fail("Darbe kaynağı geçersiz.", out error);
+                    }
+                    if (item.Type == ReplayEventType.HazardPhaseChanged)
+                    {
+                        if (info.ContentRevision < 2 || item.Track < 0 || item.Track >= trackCount ||
+                            info.Tracks[item.Track].Kind != ReplayTrackKind.HazardMarker) return Fail("Tehlike olayı geçersiz.", out error);
+                        item.Phase = (HazardPhase)reader.ReadByte();
+                        if (item.Phase > HazardPhase.Recovery) return Fail("Tehlike evresi geçersiz.", out error);
+                    }
                     if (!IsFinite(item.Time) || item.Time < 0f || item.Time > info.Duration + 0.001f || !Enum.IsDefined(typeof(ReplayEventType), item.Type) ||
                         item.Robot < -1 || item.Robot > 1 || item.Round < 0 || item.Round >= Math.Max(1, roundCount) ||
                         item.Track < -1 || item.Track >= trackCount || !IsFinite(item.Point) || !IsFinite(item.Normal) || !IsFinite(item.Amount))
@@ -715,7 +769,7 @@ namespace RobotSavaslari.Presentation
                         FrameCount = reader.ReadInt32(), Round = reader.ReadInt32(), Crc = reader.ReadUInt32(),
                     };
                     if (chunk.Offset != expectedOffset || chunk.FrameCount < 1 || chunk.FrameCount > FramesPerChunk ||
-                        chunk.Length != ChunkBytes(chunk.FrameCount, info.DynamicTrackCount, info.WearTrackCount) ||
+                        chunk.Length != ChunkBytes(chunk.FrameCount, info.DynamicTrackCount, info.WearTrackCount, info.HazardTrackCount) ||
                         chunk.Offset + chunk.Length > footerOffset || !IsFinite(chunk.StartTime) || !IsFinite(chunk.EndTime) ||
                         chunk.StartTime < 0f || chunk.EndTime < chunk.StartTime || chunk.StartTime <= previousChunkEnd ||
                         chunk.EndTime > info.Duration + 0.001f || chunk.Round < 0 || chunk.Round >= Math.Max(1, roundCount))
@@ -798,7 +852,16 @@ namespace RobotSavaslari.Presentation
             switch (item.Type)
             {
                 case ReplayEventType.RoundStart: return $"Raund {roundNumber} başladı";
-                case ReplayEventType.Impact: return $"Darbe: {robot} -{item.Amount:0.#}";
+                case ReplayEventType.Impact:
+                    string source = item.Source == ReplayImpactSource.Weapon ? "Silah" :
+                        item.Source == ReplayImpactSource.RobotContact ? "Robot kaynaklı" : "Kaynak belirsiz";
+                    return $"{source} · {robot} -{item.Amount:0.#}";
+                case ReplayEventType.HazardPhaseChanged:
+                    string phase = item.Phase == HazardPhase.Warning ? "Uyarı" : item.Phase == HazardPhase.Active ? "Etkin" :
+                        item.Phase == HazardPhase.Recovery ? "Toparlanma" : "Bekleme";
+                    string markerKey = info.Tracks[item.Track].Key;
+                    string hazard = LastSegment(markerKey.Substring(0, markerKey.LastIndexOf('/')));
+                    return $"{hazard} · {phase}";
                 case ReplayEventType.PartDetached:
                     string part = item.Track >= 0 && item.Track < info.Tracks.Count ? LastSegment(info.Tracks[item.Track].Key) : "parça";
                     return $"Parça koptu: {robot} {part}";
@@ -810,6 +873,9 @@ namespace RobotSavaslari.Presentation
 
         public static string DescribeOutcome(int outcome) =>
             outcome == 1 ? "Oyuncu kazandı" : outcome == 2 ? "Rakip kazandı" : outcome == 3 ? "Berabere" : "Sonuçsuz";
+
+        public static bool IsHazardKey(string key) => key.EndsWith("/Pulse floor marker", StringComparison.Ordinal) ||
+            key.EndsWith("/Sweep floor marker", StringComparison.Ordinal);
 
         public static string LastSegment(string key)
         {

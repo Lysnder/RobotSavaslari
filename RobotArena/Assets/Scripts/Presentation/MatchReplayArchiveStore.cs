@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using RobotSavaslari.Arena;
 using UnityEngine;
 
 namespace RobotSavaslari.Presentation
@@ -29,7 +30,7 @@ namespace RobotSavaslari.Presentation
             if (info.Tracks.Count > MatchReplayArchive.MaxTracks) throw new ArgumentException("Too many replay tracks.");
             info.AssignColumns();
             TemporaryPath = temporaryPath;
-            _chunk = new byte[MatchReplayArchive.ChunkBytes(MatchReplayArchive.FramesPerChunk, info.DynamicTrackCount, info.WearTrackCount)];
+            _chunk = new byte[MatchReplayArchive.ChunkBytes(MatchReplayArchive.FramesPerChunk, info.DynamicTrackCount, info.WearTrackCount, info.HazardTrackCount)];
             _marks = new Vector4[info.WearTrackCount * MatchReplayArchive.MarksPerWearTrack];
             Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(temporaryPath)));
             _stream = new FileStream(temporaryPath, FileMode.CreateNew, FileAccess.ReadWrite, FileShare.None, 64 * 1024);
@@ -68,10 +69,11 @@ namespace RobotSavaslari.Presentation
         /// <paramref name="wear"/> one per wear column. Returns false when the frame was not written
         /// (closed, full, not later than the last frame, or an I/O error).
         /// </summary>
-        public bool WriteFrame(float time, int round, MatchReplayClip.Pose[] poses, byte[] wear)
+        public bool WriteFrame(float time, int round, MatchReplayClip.Pose[] poses, byte[] wear, ReplayHazardSample[] hazards = null)
         {
             if (_stream == null || IsFull || !MatchReplayArchive.IsFinite(time) || time < 0f || time <= _lastTime) return false;
             if (poses == null || poses.Length < Info.DynamicTrackCount || wear == null || wear.Length < Info.WearTrackCount) return false;
+            if (Info.HazardTrackCount > 0 && (hazards == null || hazards.Length < Info.HazardTrackCount)) return false;
             try
             {
                 if (_chunkFrames > 0 && round != _chunkRound) FlushChunk();
@@ -83,6 +85,14 @@ namespace RobotSavaslari.Presentation
                     if (track.Column < 0) continue;
                     byte amount = track.WearColumn >= 0 ? wear[track.WearColumn] : (byte)0;
                     MatchReplayArchive.WritePose(_chunk, ref offset, poses[track.Column], amount);
+                }
+                for (int i = 0; i < Info.HazardTrackCount; i++)
+                {
+                    var sample = hazards[i];
+                    MatchReplayArchive.WriteSingle(_chunk, ref offset, sample.Scale.x);
+                    MatchReplayArchive.WriteSingle(_chunk, ref offset, sample.Scale.y);
+                    MatchReplayArchive.WriteSingle(_chunk, ref offset, sample.Scale.z);
+                    _chunk[offset++] = (byte)sample.Phase;
                 }
                 _chunkLength = offset;
                 _chunkFrames++;
@@ -183,7 +193,7 @@ namespace RobotSavaslari.Presentation
 
         private bool BeginChunk(float time, int round)
         {
-            long chunkBytes = MatchReplayArchive.ChunkBytes(MatchReplayArchive.FramesPerChunk, Info.DynamicTrackCount, Info.WearTrackCount);
+            long chunkBytes = MatchReplayArchive.ChunkBytes(MatchReplayArchive.FramesPerChunk, Info.DynamicTrackCount, Info.WearTrackCount, Info.HazardTrackCount);
             if (BytesWritten + chunkBytes + MatchReplayArchive.MaxFooterBytes > MatchReplayArchive.MaxFileBytes ||
                 Info.Chunks.Count >= MatchReplayArchive.MaxChunks)
             {
@@ -276,6 +286,7 @@ namespace RobotSavaslari.Presentation
             public float[] Times;
             public MatchReplayClip.Pose[] Poses;
             public byte[] Wear;
+            public ReplayHazardSample[] Hazards;
             public Vector4[] Marks;
             public int LastUse;
         }
@@ -290,12 +301,13 @@ namespace RobotSavaslari.Presentation
             _stream = stream;
             Info = info;
             int frames = MatchReplayArchive.FramesPerChunk, columns = info.DynamicTrackCount, wear = info.WearTrackCount;
-            _buffer = new byte[MatchReplayArchive.ChunkBytes(frames, columns, wear)];
+            _buffer = new byte[MatchReplayArchive.ChunkBytes(frames, columns, wear, info.HazardTrackCount)];
             for (int i = 0; i < _slots.Length; i++)
                 _slots[i] = new DecodedChunk
                 {
                     Times = new float[frames],
                     Poses = new MatchReplayClip.Pose[frames * columns],
+                    Hazards = new ReplayHazardSample[frames * info.HazardTrackCount],
                     Wear = new byte[frames * Math.Max(1, wear)],
                     Marks = new Vector4[wear * MatchReplayArchive.MarksPerWearTrack],
                 };
@@ -307,7 +319,7 @@ namespace RobotSavaslari.Presentation
         /// <summary>Chunks read from disk so far (tests use it to show seeks read only what they need).</summary>
         public int ChunkReads { get; private set; }
         /// <summary>Bytes of frame data held in memory, whatever the recording's length.</summary>
-        public long DecodedBytes => _buffer.Length + 2L * (_slots[0].Times.Length * 4 + _slots[0].Poses.Length * 32 + _slots[0].Wear.Length + _slots[0].Marks.Length * 16);
+        public long DecodedBytes => _buffer.Length + 2L * (_slots[0].Times.Length * 4 + _slots[0].Poses.Length * 32 + _slots[0].Wear.Length + _slots[0].Hazards.Length * 16 + _slots[0].Marks.Length * 16);
 
         public static MatchReplayArchiveReader Open(string path, out string error)
         {
@@ -346,7 +358,7 @@ namespace RobotSavaslari.Presentation
         /// visibility. Frames are never blended across a round boundary. Wear steps with the earlier frame;
         /// <paramref name="marks"/> receives the hit marks stored with that frame's chunk.
         /// </summary>
-        public bool Sample(float time, MatchReplayClip.Pose[] poses, byte[] wear, Vector4[] marks, out string error)
+        public bool Sample(float time, MatchReplayClip.Pose[] poses, byte[] wear, Vector4[] marks, out string error, ReplayHazardSample[] hazards = null)
         {
             error = null;
             int columns = Info.DynamicTrackCount;
@@ -387,6 +399,19 @@ namespace RobotSavaslari.Presentation
                     Quaternion.Slerp(Normalize(start.Rotation), Normalize(end.Rotation), blend),
                     blend >= 1f ? end.Visible : start.Visible && end.Visible);
             }
+            foreach (ReplayTrack track in Info.Tracks)
+            {
+                int column = track.HazardColumn;
+                if (column < 0) continue;
+                var before = lower.Hazards[from * Info.HazardTrackCount + column];
+                var after = upperChunk.Hazards[to * Info.HazardTrackCount + column];
+                // A change of phase can teleport the sweep and reset the pulse size.
+                if (blend < 1f && before.Phase != after.Phase)
+                    poses[track.Column] = lower.Poses[a + track.Column];
+                if (hazards == null || column >= hazards.Length) continue;
+                if (before.Phase == after.Phase) before.Scale = Vector3.Lerp(before.Scale, after.Scale, blend);
+                hazards[column] = blend >= 1f ? after : before;
+            }
             int wearColumns = Info.WearTrackCount;
             if (wear != null && wear.Length >= wearColumns)
             {
@@ -403,6 +428,32 @@ namespace RobotSavaslari.Presentation
         {
             _stream?.Dispose();
             _stream = null;
+        }
+
+        public bool AdjacentFrame(float time, int direction, out float next, out string error)
+        {
+            next = time;
+            error = null;
+            if (Info.Chunks.Count == 0 || direction == 0) return false;
+            int index = FindChunk(time);
+            var chunk = Load(index, out error);
+            if (chunk == null) return false;
+            // A chunk holds at most twenty real sample times, including hitches and short result frames.
+            if (direction > 0)
+            {
+                for (int i = 0; i < chunk.FrameCount; i++)
+                    if (chunk.Times[i] > time) { next = chunk.Times[i]; return true; }
+                if (index + 1 >= Info.Chunks.Count) return false;
+                next = Info.Chunks[index + 1].StartTime;
+            }
+            else
+            {
+                for (int i = chunk.FrameCount - 1; i >= 0; i--)
+                    if (chunk.Times[i] < time) { next = chunk.Times[i]; return true; }
+                if (index == 0) return false;
+                next = Info.Chunks[index - 1].EndTime;
+            }
+            return true;
         }
 
         private int FindChunk(float time)
@@ -486,7 +537,7 @@ namespace RobotSavaslari.Presentation
             }
             offset = MatchReplayArchive.ChunkPrefixBytes(wear);
             float previous = float.NegativeInfinity;
-            int frameBytes = MatchReplayArchive.FrameBytes(columns);
+            int frameBytes = MatchReplayArchive.FrameBytes(columns, Info.HazardTrackCount);
             for (int f = 0; f < frames; f++)
             {
                 int at = offset + f * frameBytes;
@@ -508,8 +559,29 @@ namespace RobotSavaslari.Presentation
                         return false;
                     }
                 }
+                at += columns * MatchReplayArchive.PoseBytes;
+                for (int h = 0; h < Info.HazardTrackCount; h++)
+                {
+                    ReplayHazardSample hazard = ReadHazard(ref at);
+                    if (!MatchReplayArchive.IsFinite(hazard.Scale) || hazard.Scale.x < 0 || hazard.Scale.y < 0 || hazard.Scale.z < 0 ||
+                        hazard.Scale.x > 1000 || hazard.Scale.y > 1000 || hazard.Scale.z > 1000 || hazard.Phase > HazardPhase.Recovery)
+                    {
+                        error = $"Kayıt parçası {index + 1} geçersiz tehlike örneği içeriyor.";
+                        return false;
+                    }
+                }
             }
             return true;
+        }
+
+        private ReplayHazardSample ReadHazard(ref int offset)
+        {
+            return new ReplayHazardSample
+            {
+                Scale = new Vector3(MatchReplayArchive.ReadSingle(_buffer, ref offset), MatchReplayArchive.ReadSingle(_buffer, ref offset),
+                    MatchReplayArchive.ReadSingle(_buffer, ref offset)),
+                Phase = (HazardPhase)_buffer[offset++],
+            };
         }
 
         private void Decode(int index, DecodedChunk target)
@@ -531,6 +603,8 @@ namespace RobotSavaslari.Presentation
                     target.Poses[f * columns + c] = MatchReplayArchive.ReadPose(_buffer, ref offset, out byte wear);
                     if (IsWearColumn(c)) target.Wear[f * wearStride + wearColumn++] = wear;
                 }
+                for (int h = 0; h < Info.HazardTrackCount; h++)
+                    target.Hazards[f * Info.HazardTrackCount + h] = ReadHazard(ref offset);
             }
             target.FrameCount = frames;
             target.Index = index;

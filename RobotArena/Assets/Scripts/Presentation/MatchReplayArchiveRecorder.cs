@@ -47,6 +47,10 @@ namespace RobotSavaslari.Presentation
         private Action<RobotHit> _onPlayerDamaged, _onOpponentDamaged;
         private MaterialPropertyBlock _block;
         private MatchReplayArchiveWriter _writer;
+        private ArenaHazard[] _hazards = Array.Empty<ArenaHazard>();
+        private ReplayHazardSample[] _hazardSamples = Array.Empty<ReplayHazardSample>();
+        private HazardPhase[] _lastPhases = Array.Empty<HazardPhase>();
+        private int[] _hazardTracks = Array.Empty<int>();
         private Renderer[] _columnRenderers = Array.Empty<Renderer>();
         private DebrisSlot[] _columnDebris = Array.Empty<DebrisSlot>();
         private bool[] _columnDebrisWear = Array.Empty<bool>();
@@ -81,7 +85,7 @@ namespace RobotSavaslari.Presentation
         public long BytesWritten => _writer != null ? _writer.BytesWritten : 0;
         public int FramesWritten => _writer != null ? _writer.FramesWritten : 0;
         /// <summary>Managed memory held for the recording in progress (writer buffers and lists plus sampling arrays).</summary>
-        public long HeldBytes => _writer == null ? 0 : _writer.HeldBytes + _poses.Length * 32L + _columnRenderers.Length * 24L + _wear.Length;
+        public long HeldBytes => _writer == null ? 0 : _writer.HeldBytes + _poses.Length * 32L + _columnRenderers.Length * 24L + _wear.Length + _hazards.Length * 32L;
 
         public void Bind(MatchController match, MatchReplayArchiveStore store)
         {
@@ -89,6 +93,7 @@ namespace RobotSavaslari.Presentation
             if (_match == match) return;
             if (IsRecording) FinishSession(ReplayCompleteness.Interrupted, "Kayıt yarıda kesildi.");
             Unsubscribe();
+            _roundMatchCount = -1;
             _match = match;
             if (isActiveAndEnabled) Subscribe();
         }
@@ -100,8 +105,7 @@ namespace RobotSavaslari.Presentation
         private void OnDisable()
         {
             if (IsRecording) FinishSession(ReplayCompleteness.Interrupted, "Kayıt yarıda kesildi (oyun kapandı veya kayıt durdu).");
-            // Enabled again during play, a new (incomplete) archive starts with the next playing frame.
-            _roundMatchCount = -1;
+            // Remember the interrupted match so re-enabling cannot produce a second archive for it.
             Unsubscribe();
         }
 
@@ -219,6 +223,7 @@ namespace RobotSavaslari.Presentation
             }
             for (int robot = 0; robot < 2; robot++)
                 if (_detached[robot] != null) Array.Clear(_detached[robot], 0, _detached[robot].Length);
+            Array.Fill(_lastPhases, (HazardPhase)(-1));
             _roundActive = true;
             _breakChunk = true;
             Capture(_roundOffset);
@@ -283,6 +288,7 @@ namespace RobotSavaslari.Presentation
             float now = TimelineNow();
             if (now <= _writer.LastTime) now = _writer.LastTime + 1e-4f;
             Capture(now);
+            if (_writer == null) return; // A final-frame I/O failure already ended this session.
             _roundActive = false;
             _timelineEnd = Mathf.Max(now, _writer.LastTime);
             _roundsCompleted++;
@@ -424,7 +430,6 @@ namespace RobotSavaslari.Presentation
             // Robots first, then the arena, then debris: when a limit cuts tracks, the robots stay whole.
             var ordered = new List<ReplayTrack>();
             var orderedSources = new List<Renderer>();
-            var orderedDebris = new List<int>();
             ordered.AddRange(robots); orderedSources.AddRange(sources);
             ordered.AddRange(layoutTracks); orderedSources.AddRange(layoutSources);
             int debrisStart = ordered.Count;
@@ -500,9 +505,15 @@ namespace RobotSavaslari.Presentation
                     unsupported = "arena nesnesi adı desteklenmiyor (" + renderer.name + ").";
                     return false;
                 }
+                bool marker = MatchReplayArchive.IsHazardKey(key);
+                if (marker && renderer.GetComponentInParent<ArenaHazard>() == null)
+                {
+                    unsupported = "arena tehlikesi bulunamadı (" + path + ").";
+                    return false;
+                }
                 var track = new ReplayTrack
                 {
-                    Key = key, Kind = dynamic ? ReplayTrackKind.LayoutDynamic : ReplayTrackKind.LayoutStatic, Robot = -1,
+                    Key = key, Kind = marker ? ReplayTrackKind.HazardMarker : dynamic ? ReplayTrackKind.LayoutDynamic : ReplayTrackKind.LayoutStatic, Robot = -1,
                     MeshSignature = filter.sharedMesh.vertexCount, Scale = renderer.transform.lossyScale,
                     StaticPosition = renderer.transform.position, StaticRotation = renderer.transform.rotation,
                     StaticVisible = RobotVisualProxyFactory.IsVisible(renderer),
@@ -535,6 +546,10 @@ namespace RobotSavaslari.Presentation
         private void PrepareColumns(ReplayArchiveInfo info)
         {
             int columns = info.DynamicTrackCount;
+            _hazards = new ArenaHazard[info.HazardTrackCount];
+            _hazardSamples = new ReplayHazardSample[info.HazardTrackCount];
+            _lastPhases = new HazardPhase[info.HazardTrackCount];
+            _hazardTracks = new int[info.HazardTrackCount];
             _columnRenderers = new Renderer[columns];
             _columnDebris = new DebrisSlot[columns];
             _columnDebrisWear = new bool[columns];
@@ -546,6 +561,11 @@ namespace RobotSavaslari.Presentation
             {
                 ReplayTrack track = info.Tracks[t];
                 if (track.Column < 0) continue;
+                if (track.HazardColumn >= 0)
+                {
+                    _hazards[track.HazardColumn] = _trackSources[t].GetComponentInParent<ArenaHazard>();
+                    _hazardTracks[track.HazardColumn] = t;
+                }
                 _columnTrack[track.Column] = t;
                 _columnRenderers[track.Column] = t < _trackSources.Length ? _trackSources[t] : null;
             }
@@ -601,6 +621,8 @@ namespace RobotSavaslari.Presentation
                 if (renderer != null)
                 {
                     Transform node = renderer.transform;
+                    if (track.HazardColumn >= 0)
+                        _hazardSamples[track.HazardColumn] = new ReplayHazardSample { Scale = node.lossyScale, Phase = _hazards[track.HazardColumn].Phase };
                     _poses[column] = new MatchReplayClip.Pose(node.position, node.rotation, RobotVisualProxyFactory.IsVisible(renderer));
                 }
                 else
@@ -613,7 +635,16 @@ namespace RobotSavaslari.Presentation
                     _wear[track.WearColumn] = ReadWear(renderer, track.WearColumn, needsMarks);
                 }
             }
-            bool written = _writer.WriteFrame(time, _roundIndex, _poses, _wear);
+            bool written = _writer.WriteFrame(time, _roundIndex, _poses, _wear, _hazardSamples);
+            if (written)
+                for (int h = 0; h < _hazardSamples.Length; h++)
+                {
+                    HazardPhase phase = _hazardSamples[h].Phase;
+                    if (phase == _lastPhases[h]) continue;
+                    _lastPhases[h] = phase;
+                    _writer.AddEvent(new ReplayEvent { Type = ReplayEventType.HazardPhaseChanged, Time = time, Round = _roundIndex,
+                        Robot = -1, Track = _hazardTracks[h], Phase = phase });
+                }
             if (!written && _writer.Error != null)
             {
                 string error = _writer.Error;
@@ -694,6 +725,7 @@ namespace RobotSavaslari.Presentation
             _writer.AddEvent(new ReplayEvent
             {
                 Time = Mathf.Max(TimelineNow(), Mathf.Max(0f, _writer.LastTime)), Type = ReplayEventType.Impact, Robot = robot,
+                Source = hit.Weapon ? ReplayImpactSource.Weapon : hit.Source != null ? ReplayImpactSource.RobotContact : ReplayImpactSource.Unknown,
                 Round = Mathf.Max(0, _roundIndex), Track = -1, Point = hit.Point, Normal = hit.Normal, Amount = hit.Amount,
             });
             // The damage system updates wear and marks in this same event; store fresh marks with the next frame.

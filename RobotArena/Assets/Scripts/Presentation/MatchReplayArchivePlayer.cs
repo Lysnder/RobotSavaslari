@@ -55,6 +55,7 @@ namespace RobotSavaslari.Presentation
         private MeshRenderer[] _proxies;
         private MeshRenderer[] _templates;
         private MatchReplayClip.Pose[] _poses;
+        private ReplayHazardSample[] _hazards;
         private byte[] _wear, _appliedWear;
         private Vector4[] _marks, _appliedMarks;
         private MaterialPropertyBlock _block;
@@ -239,16 +240,17 @@ namespace RobotSavaslari.Presentation
         {
             layoutMaterial = null;
             if (info == null) return "Kayıt okunamadı.";
-            if (info.Schema != MatchReplayArchive.SchemaVersion || info.ContentRevision != MatchReplayArchive.ContentRevision)
+            if (info.Schema != MatchReplayArchive.SchemaVersion) return $"Uyumsuz: kayıt biçimi {info.Schema}.";
+            if (!MatchReplayArchive.SupportsRevision(info.ContentRevision))
                 return $"Uyumsuz: içerik revizyonu {info.ContentRevision}, bu sürüm {MatchReplayArchive.ContentRevision}.";
             foreach (ReplayCell cell in info.Cells)
-                if (!MatchReplayArchive.IsSupportedCellContent(cell.Content)) return "Uyumsuz: desteklenmeyen arena içeriği (" + cell.Content + ").";
+                if (!MatchReplayArchive.IsSupportedCellContent(cell.Content) || (info.ContentRevision == 1 && (cell.Content == "Pulse" || cell.Content == "Sweep"))) return "Uyumsuz: desteklenmeyen arena içeriği (" + cell.Content + ").";
             if (_match == null) return "Uyumsuz: maç bulunamadı.";
             bool needsLayout = false;
             for (int t = 0; t < info.Tracks.Count; t++)
             {
                 ReplayTrack track = info.Tracks[t];
-                if (track.Kind == ReplayTrackKind.LayoutStatic || track.Kind == ReplayTrackKind.LayoutDynamic)
+                if (track.IsLayout)
                 {
                     needsLayout = true;
                     if (track.MeshSignature != CubeMesh.vertexCount) return "Uyumsuz: arena nesnesi görünümü değişti.";
@@ -347,7 +349,7 @@ namespace RobotSavaslari.Presentation
             MatchReplayArchiveReader reader = MatchReplayArchiveReader.Open(path, out string error);
             if (reader == null)
             {
-                LastError = "Bozuk kayıt: " + error;
+                LastError = MatchReplayArchive.ReadFailureLabel(error);
                 return false;
             }
             var templates = new MeshRenderer[reader.Info.Tracks.Count];
@@ -366,6 +368,7 @@ namespace RobotSavaslari.Presentation
             ReplayArchiveInfo info = reader.Info;
             BuildProxies(info, layoutMaterial);
             _poses = new MatchReplayClip.Pose[info.DynamicTrackCount];
+            _hazards = new ReplayHazardSample[info.HazardTrackCount];
             _wear = new byte[info.WearTrackCount];
             _appliedWear = new byte[info.WearTrackCount];
             for (int i = 0; i < _appliedWear.Length; i++) _appliedWear[i] = 255;
@@ -446,6 +449,14 @@ namespace RobotSavaslari.Presentation
                     return true;
                 }
             return false;
+        }
+
+        public bool StepFrame(int direction)
+        {
+            if (!IsActive || !_reader.AdjacentFrame(_reader.StartTime + PlaybackTime, direction, out float time, out _)) return false;
+            SetPaused(true);
+            Seek(time - _reader.StartTime);
+            return true;
         }
 
         public void SetView(View view)
@@ -558,7 +569,7 @@ namespace RobotSavaslari.Presentation
         {
             if (!IsActive || _reader == null) return;
             float time = _reader.StartTime + PlaybackTime;
-            if (!_reader.Sample(time, _poses, _wear, _marks, out string error))
+            if (!_reader.Sample(time, _poses, _wear, _marks, out string error, _hazards))
             {
                 Stop();
                 LastError = "Bozuk kayıt: " + (error ?? "kare okunamadı.");
@@ -573,6 +584,7 @@ namespace RobotSavaslari.Presentation
                 MatchReplayClip.Pose pose = _poses[track.Column];
                 proxy.transform.SetPositionAndRotation(pose.Position, pose.Rotation);
                 proxy.enabled = pose.Visible;
+                if (track.HazardColumn >= 0) proxy.transform.localScale = _hazards[track.HazardColumn].Scale;
                 if (track.WearColumn >= 0) ApplyWear(proxy, track.WearColumn);
             }
             UpdateMarker(time);
@@ -608,7 +620,7 @@ namespace RobotSavaslari.Presentation
             {
                 ReplayTrack track = info.Tracks[t];
                 MeshRenderer proxy;
-                if (track.Kind == ReplayTrackKind.LayoutStatic || track.Kind == ReplayTrackKind.LayoutDynamic)
+                if (track.IsLayout)
                     proxy = CreateLayoutProxy(track, layoutMaterial);
                 else
                 {
