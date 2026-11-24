@@ -50,5 +50,11 @@ namespace RobotSavaslari
             Restored?.Invoke();
             HealthChanged?.Invoke(this);
         }
+
+        internal void ConfigureCapacity(float capacity)
+        {
+            maxHealth = capacity;
+            Restore();
+        }
     }
 }

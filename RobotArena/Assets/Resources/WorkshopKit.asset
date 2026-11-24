@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41ed7d86a0214433bdcedc7146999753, type: 3}
+  m_Name: WorkshopKit
+  m_EditorClassIdentifier:
+  chassis: {fileID: 6840727674429396759, guid: dbb804789d9f8194f8a0d7526c0b6621, type: 3}
+  wheel: {fileID: 191665652406950853, guid: a7b58d51509785a46b115d427647db9c, type: 3}
+  lightArmor: {fileID: 5939184916403502229, guid: 178af1ef187fc4d479a6ebd8d842ce75, type: 3}
+  heavyArmor: {fileID: 3925364961396532, guid: cab4cbc6c0df49441ad53cce0e580989, type: 3}
+  spinner: {fileID: 3618688178560083234, guid: c1cddefbf8821984f9923f717b55107d, type: 3}
+  fork: {fileID: 100, guid: 0d7aade8a2ee43ae93cf82ef99db8efb, type: 3}
+  stripeMesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  teamBlue: {fileID: 2100000, guid: c7072375a6803d3488bd66d3e7c03324, type: 2}

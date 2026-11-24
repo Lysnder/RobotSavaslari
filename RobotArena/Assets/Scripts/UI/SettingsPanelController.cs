@@ -29,7 +29,7 @@ namespace RobotSavaslari.UI
         {
             if (Bindings is { IsOpen: true }) return;
             if (Keyboard.current == null || !Keyboard.current.escapeKey.wasPressedThisFrame) return;
-            if (!IsOpen && _menu != null && _menu.TryCloseHistory()) return;
+            if (!IsOpen && _menu != null && (_menu.CloseWorkshop() || _menu.TryCloseHistory())) return;
             ToggleSettings();
         }
 

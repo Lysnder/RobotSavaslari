@@ -21,7 +21,11 @@ namespace RobotSavaslari.UI
         private string playerName, spinnerName, notice;
         private Vector3 spinnerPivot, forkPivot;
         private CombatProfile spinnerProfile;
+        private WorkshopSelection workshop;
         public bool ForkSelected { get; private set; }
+        public string Notice => workshop != null && !string.IsNullOrEmpty(workshop.Notice) ? workshop.Notice : notice;
+        internal CombatProfile ProfileFor(bool fork) => fork ? kit?.profile : spinnerProfile;
+        internal string StockName(bool fork) => fork ? playerName + " - Kama" : playerName;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void Register()
@@ -50,6 +54,7 @@ namespace RobotSavaslari.UI
             archive = GetComponent<MatchReplayArchivePlayer>();
             var prefab = Resources.Load<GameObject>("Robots/Kama");
             if (prefab != null) kit = prefab.GetComponent<ForkLoadout>();
+            workshop = GetComponent<WorkshopSelection>() ?? gameObject.AddComponent<WorkshopSelection>();
         }
 
         public bool CanSelect => isActiveAndEnabled && match != null && match.IsInitialized && menu != null &&
@@ -57,10 +62,14 @@ namespace RobotSavaslari.UI
 
         public bool SelectFork(bool useFork)
         {
+            return workshop != null && workshop.SelectStock(useFork);
+        }
+
+        internal bool FitStockWeapon(bool useFork)
+        {
             if (!CanSelect) return false;
             if (useFork == ForkSelected) return true;
-            if (useFork && (arena == null || arena.Layout == null ||
-                ArenaLayoutValidator.Validate(arena.Layout, arena.ClearanceRadius).Count != 0 || !PrepareKit()))
+            if (!CanFitWeapon(useFork))
             {
                 notice = "Kama kullanılamıyor. Döner seçili.";
                 return false;
@@ -70,10 +79,13 @@ namespace RobotSavaslari.UI
             return true;
         }
 
-        private bool PrepareKit()
+        internal bool CanFitWeapon(bool useFork) => !useFork || (arena != null && arena.Layout != null &&
+            ArenaLayoutValidator.Validate(arena.Layout, arena.ClearanceRadius).Count == 0 && PrepareKit());
+
+        internal bool PrepareKit()
         {
-            if (forkMesh != null) return true;
             if (kit == null || match.Player == null) return false;
+            if (forkMesh != null) return true;
             var damage = match.Player.GetComponent<RobotDamageVisuals>();
             damage.Initialize();
             foreach (var part in damage.Parts)
@@ -116,36 +128,23 @@ namespace RobotSavaslari.UI
             if (forkMesh != null) Destroy(ForkSelected ? spinnerMesh : forkMesh);
         }
 
-        private void OnGUI()
+        internal void DrawReadyCard(float width, float height)
         {
             if (!CanSelect) return;
-            float scale = MainMenuScreen.ReadyScale(Screen.width, Screen.height);
-            float width = Screen.width / scale;
             float available = width - 340f - 384f;
             float panelWidth = Mathf.Min(280f, available - 12f);
             bool compact = panelWidth < 185f;
-            var panel = new Rect(340f + (available - panelWidth) * .5f, Screen.height / scale - 148f, panelWidth, 108f);
-            Matrix4x4 oldMatrix = GUI.matrix;
-            int oldDepth = GUI.depth;
-            try
-            {
-                GUI.depth = -2;
-                GUI.matrix = Matrix4x4.Scale(new Vector3(scale, scale, 1f));
-                ArenaMenuStyle.Panel(panel);
-                var theme = ArenaMenuStyle.Current;
-                GUI.Label(new Rect(panel.x + 8f, panel.y + 6f, panel.width - 16f, 24f), "ROBOT", theme.Heading);
-                string label = ForkSelected ? "‹  Kama  ›" : "‹  Döner  ›";
-                if (GUI.Button(new Rect(panel.x + 7f, panel.y + 32f, panel.width - 14f, 32f), label, theme.Selected))
-                    SelectFork(!ForkSelected);
-                string hint = ForkSelected ? (compact ? "Yakın itiş" : "Yakın menzil · önden itiş") :
-                    (compact ? "Geniş yay" : "Döner silah · geniş vuruş yayı");
-                GUI.Label(new Rect(panel.x + 7f, panel.y + 65f, panel.width - 14f, 41f), notice ?? hint, theme.Hint);
-            }
-            finally
-            {
-                GUI.matrix = oldMatrix;
-                GUI.depth = oldDepth;
-            }
+            var panel = new Rect(340f + (available - panelWidth) * .5f, height - 148f, panelWidth, 108f);
+            ArenaMenuStyle.Panel(panel);
+            var theme = ArenaMenuStyle.Current;
+            GUI.Label(new Rect(panel.x + 8f, panel.y + 6f, panel.width - 16f, 24f), "ROBOT", theme.Heading);
+            string label = workshop.IsModular ? "‹  Atölye robotu  ›" : ForkSelected ? "‹  Kama  ›" : "‹  Döner  ›";
+            if (GUI.Button(new Rect(panel.x + 7f, panel.y + 32f, panel.width - 14f, 32f), label, theme.Selected))
+                SelectFork(!workshop.IsModular && !ForkSelected);
+            string hint = ForkSelected ? (compact ? "Yakın itiş" : "Yakın menzil · önden itiş") :
+                (compact ? "Geniş yay" : "Döner silah · geniş vuruş yayı");
+            GUI.Label(new Rect(panel.x + 7f, panel.y + 65f, panel.width - 14f, 41f),
+                Notice ?? (workshop.IsModular ? "Hazır robota geç" : hint), theme.Hint);
         }
     }
 }

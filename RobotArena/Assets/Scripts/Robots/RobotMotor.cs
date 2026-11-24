@@ -122,6 +122,18 @@ namespace RobotSavaslari.Robots
         public float MaxForwardSpeed => maxForwardSpeed;
         public float MaxReverseSpeed => maxReverseSpeed;
         public float MaxTurnSpeed => maxTurnSpeed;
+        public float Acceleration => acceleration;
+        public float Braking => brakeDeceleration;
+        public float TurnAcceleration => turnAcceleration;
+
+        public void ConfigureChassis(float forwardLimit, float driveAcceleration, float brake, float turnLimit, float steeringAcceleration)
+        {
+            maxForwardSpeed = forwardLimit;
+            acceleration = driveAcceleration;
+            brakeDeceleration = brake;
+            maxTurnSpeed = turnLimit;
+            turnAcceleration = steeringAcceleration;
+        }
 
         /// <summary>Fizik gövdesi; test ve tanı amaçlı dışarıya açıktır.</summary>
         public Rigidbody Body => body;
